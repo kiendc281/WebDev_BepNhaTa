@@ -112,6 +112,9 @@
   font-weight: 600;
   text-decoration: none;
 }
+.policy-links a:hover {
+  text-decoration: underline;
+}
 .social-section {
   width: 221px;
 }
@@ -143,10 +146,6 @@
   .payment-methods {
     justify-content: center;
   }
-}
-.payment-icon {
-  height: 49px;
-  border-radius: 5px;
 }
 .newsletter-section {
   width: 218px;
@@ -181,6 +180,12 @@
   background: transparent;
   border-radius: 5px 0 0 5px;
   padding: 0 10px;
+}
+.email-input::placeholder {
+  color: #ffffff;
+  font-style: normal;
+  font-size: 14px;
+  opacity: 0.5;
 }
 .submit-button {
   width: 40px;
