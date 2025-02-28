@@ -1,6 +1,11 @@
 :host {
   display: contents;
 }
+* {
+  font-family: "Open Sans", sans-serif;
+  color: white;
+  font-size: 14px;
+}
 .footer {
   padding: 40px 0 0;
   background-color: #ff7f3f;
@@ -48,9 +53,6 @@
   }
 }
 .company-description {
-  color: #fff;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
   font-weight: 600;
   text-align: justify;
 }
@@ -73,8 +75,6 @@
   }
 }
 .section-title {
-  color: #fff;
-  font-family: "Open Sans", sans-serif;
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 14px;
@@ -84,24 +84,9 @@
     text-align: center;
   }
 }
-.company-name {
-  color: #fff;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  margin-top: 10px;
-}
-.company-address {
-  color: #fff;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  margin-top: 10px;
-}
+.company-name,
+.company-address,
 .contact-info {
-  color: #fff;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
   font-weight: 600;
   margin-top: 10px;
 }
@@ -123,12 +108,9 @@
   flex-direction: column;
   gap: 10px;
 }
-.policy-link {
-  color: #fff;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
+.policy-links a {
   font-weight: 600;
-  cursor: pointer;
+  text-decoration: none;
 }
 .social-section {
   width: 221px;
@@ -180,9 +162,6 @@
   }
 }
 .newsletter-description {
-  color: #fff;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
   margin: 14px 0;
 }
 .email-input-container {
@@ -202,8 +181,6 @@
   background: transparent;
   border-radius: 5px 0 0 5px;
   padding: 0 10px;
-  color: #fff;
-  font-family: "Open Sans", sans-serif;
 }
 .submit-button {
   width: 40px;
@@ -226,12 +203,8 @@
   }
 }
 .copyright {
-  color: #fff;
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
   text-align: center;
   margin-top: 18px;
   padding: 10px 0;
   background-color: #ea5c2b;
-  width: 1600px;
 }
