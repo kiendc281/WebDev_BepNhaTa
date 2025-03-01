@@ -134,10 +134,6 @@
   transform: translate(-50%, -50%);
 }
 
-.last-pic {
-  margin-top: 0;
-}
-
 @media (max-width: 768px) {
   .mission,
   .core-value,
