@@ -3,4 +3,5 @@ app-header {
   position: fixed;
   background-color: #fff;
   z-index: 1000;
+  top: 0;
 }
