@@ -4,6 +4,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { AboutusComponent } from './aboutus/aboutus.component';
 import { FaqComponent } from './faq/faq.component';
+import { ChinhSachComponent } from './chinh-sach/chinh-sach.component';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { FaqComponent } from './faq/faq.component';
     AboutusComponent,
     FooterComponent,
     FaqComponent,
+    ChinhSachComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
