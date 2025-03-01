@@ -1,0 +1,155 @@
+.first-pic,
+.last-pic {
+  width: 100%;
+  height: auto;
+  margin: 24px 0;
+}
+
+.intro {
+  text-align: center;
+}
+
+.intro > h1 {
+  padding-bottom: 24px;
+}
+
+.intro > p {
+  max-width: 720px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.value {
+  text-align: center;
+  padding: 24px 0 0 0;
+}
+
+.value > h3 {
+  background-color: rgba(255, 127, 63, 0.3);
+  padding: 24px;
+  margin-bottom: 30px;
+}
+
+.value p {
+  margin: 0;
+}
+
+.row1 {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.row2 {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+.row2 > .recipes {
+  margin: 0px;
+  max-width: 360px;
+  min-width: 300px;
+  flex-grow: 1;
+}
+
+.recipes {
+  flex: 1;
+  max-width: 320px;
+  text-align: center;
+}
+
+.recipes img {
+  width: auto;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.mission,
+.core-value,
+.journey {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px;
+  margin: 24px 0px;
+}
+
+.mission {
+  background-color: rgba(255, 127, 63, 0.3);
+}
+
+.core-value {
+  background-color: rgba(111, 111, 111, 0.2);
+  flex-direction: row-reverse;
+}
+
+.journey {
+  background-color: rgba(255, 127, 63, 0.3);
+}
+
+.mission img,
+.journey img {
+  width: 250px;
+  height: auto;
+  border-radius: 10px;
+  margin-right: 20px;
+  margin-left: 50px;
+}
+
+.core-value img {
+  width: 400px;
+  height: auto;
+  border-radius: 20px;
+  margin-right: 40px;
+}
+
+.content {
+  padding: 0px 100px;
+  text-align: justify;
+}
+
+.core-value > .content {
+  padding-left: 50px;
+}
+
+.cta {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.cta-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.last-pic {
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .mission,
+  .core-value,
+  .journey {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .mission img,
+  .core-value img,
+  .journey img {
+    margin: 0 auto 20px auto;
+    padding: 0;
+  }
+
+  .text-content {
+    text-align: center;
+  }
+}
