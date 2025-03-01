@@ -1,0 +1,623 @@
+<div class="main-container">
+  <h1>CÂU HỎI THƯỜNG GẶP</h1>
+  <div class="container">
+    <div class="container-leftpanel">
+      <button
+        class="button-trang"
+        (click)="showContent('uu-dai')"
+        [ngClass]="{ active: selectedCategory === 'uu-dai' }"
+      >
+        Ưu đãi thành viên
+        <img
+          [src]="
+            selectedCategory === 'uu-dai'
+              ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
+              : 'assets/faq/cuida-arrow-right-outline.svg'
+          "
+          alt="arrow"
+        />
+      </button>
+      <button
+        class="button-trang"
+        (click)="showContent('dat-hang')"
+        [ngClass]="{ active: selectedCategory === 'dat-hang' }"
+      >
+        Đặt hàng và giao nhận
+        <img
+          [src]="
+            selectedCategory === 'dat-hang'
+              ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
+              : 'assets/faq/cuida-arrow-right-outline.svg'
+          "
+          alt="arrow"
+        />
+      </button>
+      <button
+        class="button-trang"
+        (click)="showContent('san-pham')"
+        [ngClass]="{ active: selectedCategory === 'san-pham' }"
+      >
+        Sản phẩm
+        <img
+          [src]="
+            selectedCategory === 'san-pham'
+              ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
+              : 'assets/faq/cuida-arrow-right-outline.svg'
+          "
+          alt="arrow"
+        />
+      </button>
+      <button
+        class="button-trang"
+        (click)="showContent('ho-tro')"
+        [ngClass]="{ active: selectedCategory === 'ho-tro' }"
+      >
+        Hỗ trợ khách hàng
+        <img
+          [src]="
+            selectedCategory === 'ho-tro'
+              ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
+              : 'assets/faq/cuida-arrow-right-outline.svg'
+          "
+          alt="arrow"
+        />
+      </button>
+      <button
+        class="button-trang"
+        (click)="showContent('thanh-toan')"
+        [ngClass]="{ active: selectedCategory === 'thanh-toan' }"
+      >
+        Phương thức thanh toán
+        <img
+          [src]="
+            selectedCategory === 'thanh-toan'
+              ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
+              : 'assets/faq/cuida-arrow-right-outline.svg'
+          "
+          alt="arrow"
+        />
+      </button>
+    </div>
+
+    <!-- ƯU ĐÃI THÀNH VIÊN -->
+    <div class="container-rightpanel" *ngIf="selectedCategory === 'uu-dai'">
+      <h2 class="text-center">ƯU ĐÃI THÀNH VIÊN</h2>
+      <!-- q1 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question1')"
+        [class.expanded]="isAnswerVisible('question1')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Tôi có thể đăng ký thành viên để nhận ưu đãi không?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question1')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question1')">
+          Có, bạn có thể đăng ký thành viên miễn phí trên Bếp Nhà Ta để nhận
+          nhiều ưu đãi hấp dẫn. Khi trở thành thành viên, bạn sẽ được cập nhật
+          sớm về các chương trình khuyến mãi, sự kiện đặc biệt và ưu đãi dành
+          riêng cho khách hàng thân thiết. Đăng ký rất đơn giản, chỉ cần tạo tài
+          khoản trên website hoặc ứng dụng của chúng tôi.
+        </div>
+      </div>
+      <!-- q2 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question2')"
+        [class.expanded]="isAnswerVisible('question2')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Khi đăng ký thành viên, tôi sẽ nhận được những ưu đãi gì?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question2')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question2')">
+          Khi đăng ký thành viên, bạn có thể nhận được mã giảm giá chào mừng, ưu
+          đãi cho lần mua hàng đầu tiên và điểm thưởng khi mua sắm. Ngoài ra,
+          thành viên còn được thông báo trước về các chương trình khuyến mãi và
+          sự kiện đặc biệt. Một số ưu đãi dành riêng cho thành viên VIP sẽ bao
+          gồm quà tặng hoặc giảm giá đặc biệt vào dịp sinh nhật.
+        </div>
+      </div>
+      <!-- q3 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question3')"
+        [class.expanded]="isAnswerVisible('question3')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Có chương trình tích điểm hoặc giảm giá cho khách hàng thân thiết
+            không?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question3')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question3')">
+          Có, Bếp Nhà Ta có chương trình tích điểm dành cho khách hàng thân
+          thiết. Mỗi lần mua hàng, bạn sẽ tích lũy điểm thưởng và có thể sử dụng
+          điểm này để đổi mã giảm giá hoặc quà tặng. Ngoài ra, chúng tôi cũng có
+          các chương trình giảm giá đặc biệt cho khách hàng thân thiết, đặc biệt
+          vào các dịp lễ hoặc sinh nhật.
+        </div>
+      </div>
+      <!-- q4 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question4')"
+        [class.expanded]="isAnswerVisible('question4')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Làm thế nào để kiểm tra và sử dụng ưu đãi của tôi?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question4')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question4')">
+          Bạn có thể kiểm tra ưu đãi bằng cách đăng nhập vào tài khoản của mình
+          trên website hoặc ứng dụng Bếp Nhà Ta. Trong mục "Ưu đãi của tôi" hoặc
+          "Tích điểm", bạn sẽ thấy danh sách các mã giảm giá hoặc phần thưởng
+          đang có. Khi thanh toán, bạn chỉ cần chọn hoặc nhập mã ưu đãi để áp
+          dụng giảm giá cho đơn hàng.
+        </div>
+      </div>
+    </div>
+
+    <!-- ĐẶT HÀNG VÀ GIAO NHẬN -->
+    <div class="container-rightpanel" *ngIf="selectedCategory === 'dat-hang'">
+      <h2 class="text-center">ĐẶT HÀNG VÀ GIAO NHẬN</h2>
+      <!-- q1 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question1')"
+        [class.expanded]="isAnswerVisible('question1')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Làm thế nào để đặt hàng nguyên liệu trên Bếp Nhà Ta?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question1')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question1')">
+          Bạn có thể đặt hàng nguyên liệu dễ dàng trên website của Bếp Nhà Ta.
+          Chỉ cần tìm kiếm nguyên liệu bạn cần, thêm vào giỏ hàng và tiến hành
+          thanh toán theo hướng dẫn. Sau khi đặt hàng thành công, bạn sẽ nhận
+          được xác nhận đơn hàng qua email hoặc tin nhắn.
+        </div>
+      </div>
+      <!-- q2 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question2')"
+        [class.expanded]="isAnswerVisible('question2')"
+      >
+        <div class="question-container">
+          <div class="question">Bếp Nhà Ta có giao hàng toàn quốc không?</div>
+          <img
+            [src]="
+              isAnswerVisible('question2')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question2')">
+          Hiện tại, Bếp Nhà Ta hỗ trợ giao hàng đến hầu hết các tỉnh thành trên
+          toàn quốc. Tuy nhiên, một số khu vực vùng sâu, vùng xa có thể bị hạn
+          chế hoặc thời gian giao hàng lâu hơn so với thông thường. Bạn có thể
+          kiểm tra phạm vi giao hàng khi nhập địa chỉ nhận hàng trước khi thanh
+          toán.
+        </div>
+      </div>
+      <!-- q3 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question3')"
+        [class.expanded]="isAnswerVisible('question3')"
+      >
+        <div class="question-container">
+          <div class="question">Thời gian giao hàng là bao lâu?</div>
+          <img
+            [src]="
+              isAnswerVisible('question3')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question3')">
+          Thời gian giao hàng phụ thuộc vào địa điểm nhận hàng của bạn. Đối với
+          các khu vực trung tâm, đơn hàng thường được giao trong vòng 1 - 3 ngày
+          làm việc. Các khu vực xa hơn có thể mất từ 3 - 5 ngày, và trong mùa
+          cao điểm, thời gian giao hàng có thể kéo dài hơn.
+        </div>
+      </div>
+      <!-- q4 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question4')"
+        [class.expanded]="isAnswerVisible('question4')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Nếu nhận hàng mà nguyên liệu bị hỏng hoặc thiếu thì tôi phải làm
+            sao?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question4')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question4')">
+          Nếu bạn nhận được nguyên liệu bị hỏng hoặc thiếu, vui lòng liên hệ
+          ngay với bộ phận chăm sóc khách hàng của Bếp Nhà Ta. Chúng tôi sẽ hỗ
+          trợ kiểm tra và gửi bù sản phẩm hoặc hoàn tiền theo chính sách đổi
+          trả. Để được xử lý nhanh chóng, bạn nên cung cấp hình ảnh sản phẩm lỗi
+          và thông tin đơn hàng.
+        </div>
+      </div>
+    </div>
+    <!-- SẢN PHẨM -->
+    <div class="container-rightpanel" *ngIf="selectedCategory === 'san-pham'">
+      <h2 class="text-center">SẢN PHẨM</h2>
+      <!-- q1 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question1')"
+        [class.expanded]="isAnswerVisible('question1')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Tôi có thể mua nguyên liệu riêng lẻ mà không theo công thức không?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question1')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question1')">
+          Có, bạn có thể chọn mua từng nguyên liệu riêng lẻ theo nhu cầu mà
+          không cần mua theo công thức nấu ăn. Chúng tôi cung cấp nhiều loại
+          nguyên liệu đa dạng, từ rau củ, thịt cá đến gia vị và thực phẩm chế
+          biến sẵn. Việc mua lẻ giúp bạn linh hoạt hơn khi chuẩn bị bữa ăn theo
+          sở thích cá nhân.
+        </div>
+      </div>
+      <!-- q2 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question2')"
+        [class.expanded]="isAnswerVisible('question2')"
+      >
+        <div class="question-container">
+          <div class="question">Nguyên liệu có đảm bảo tươi ngon không?</div>
+          <img
+            [src]="
+              isAnswerVisible('question2')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question2')">
+          Bếp Nhà Ta cam kết cung cấp nguyên liệu tươi ngon, đạt tiêu chuẩn an
+          toàn thực phẩm. Chúng tôi lựa chọn nhà cung cấp uy tín và bảo quản
+          nguyên liệu trong điều kiện tốt nhất trước khi giao đến khách hàng.
+          Nếu bạn nhận được sản phẩm không đạt yêu cầu, chúng tôi sẵn sàng hỗ
+          trợ đổi trả hoặc hoàn tiền.
+        </div>
+      </div>
+      <!-- q3 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question3')"
+        [class.expanded]="isAnswerVisible('question3')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Bếp Nhà Ta có cung cấp dụng cụ nấu ăn không?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question3')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question3')">
+          Hiện tại, Bếp Nhà Ta không chỉ cung cấp nguyên liệu mà còn có các dụng
+          cụ nấu ăn cơ bản. Bạn có thể tìm thấy chảo, nồi, dao, thớt, cũng như
+          các dụng cụ chuyên dụng như cân định lượng hoặc máy đánh trứng. Các
+          sản phẩm này giúp bạn nấu ăn tiện lợi và chuẩn xác hơn theo công thức.
+        </div>
+      </div>
+      <!-- q4 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question4')"
+        [class.expanded]="isAnswerVisible('question4')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Làm thế nào để bảo quản nguyên liệu đúng cách sau khi nhận hàng?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question4')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question4')">
+          Sau khi nhận hàng, bạn nên kiểm tra ngay tình trạng nguyên liệu và bảo
+          quản theo hướng dẫn để đảm bảo độ tươi ngon. Các loại rau, củ, quả nên
+          được bảo quản trong ngăn mát tủ lạnh, trong khi thịt, hải sản cần được
+          cấp đông nếu chưa sử dụng ngay. Đối với nguyên liệu khô như bột, gia
+          vị, hãy để ở nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp. Nếu có
+          hướng dẫn bảo quản kèm theo từ Bếp Nhà Ta, bạn nên làm theo để giữ
+          nguyên liệu ở trạng thái tốt nhất.
+        </div>
+      </div>
+    </div>
+    <!-- HỖ TRỢ KHÁCH HÀNG -->
+    <div class="container-rightpanel" *ngIf="selectedCategory === 'ho-tro'">
+      <h2 class="text-center">HỖ TRỢ KHÁCH HÀNG</h2>
+      <!-- q1 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question1')"
+        [class.expanded]="isAnswerVisible('question1')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Bếp Nhà Ta có hỗ trợ tư vấn công thức nấu ăn không?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question1')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question1')">
+          Có, chúng tôi cung cấp tư vấn công thức nấu ăn thông qua website, ứng
+          dụng và kênh hỗ trợ khách hàng. Bạn có thể tham khảo công thức miễn
+          phí hoặc yêu cầu tư vấn về cách điều chỉnh khẩu vị phù hợp.
+        </div>
+      </div>
+      <!-- q2 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question2')"
+        [class.expanded]="isAnswerVisible('question2')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Bếp Nhà Ta có hỗ trợ khách hàng qua điện thoại hoặc email không?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question2')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question2')">
+          Có, bạn có thể liên hệ với chúng tôi qua hotline hoặc email để được hỗ
+          trợ nhanh chóng. Thông tin liên hệ được hiển thị trên website, và đội
+          ngũ chăm sóc khách hàng sẵn sàng giải đáp mọi thắc mắc của bạn.
+        </div>
+      </div>
+      <!-- q3 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question3')"
+        [class.expanded]="isAnswerVisible('question3')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Tôi có thể yêu cầu công thức cho một món ăn không có sẵn trên Bếp
+            Nhà Ta không?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question3')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question3')">
+          Hiện tại, chúng tôi chỉ cung cấp công thức phổ biến, nhưng luôn tiếp
+          nhận yêu cầu từ khách hàng để bổ sung công thức mới. Bạn có thể gửi đề
+          xuất món ăn và đội ngũ của chúng tôi sẽ xem xét thêm vào danh sách
+          công thức trong tương lai.
+        </div>
+      </div>
+      <!-- q4 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question4')"
+        [class.expanded]="isAnswerVisible('question4')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Nếu tôi gặp khó khăn khi nấu theo công thức, tôi có thể liên hệ để
+            được hướng dẫn không?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question4')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question4')">
+          Có, bạn có thể liên hệ với chúng tôi qua tin nhắn, email hoặc hotline
+          để được hỗ trợ. Ngoài ra, bạn có thể tham khảo video hướng dẫn trên
+          website hoặc kênh YouTube của Bếp Nhà Ta.
+        </div>
+      </div>
+    </div>
+    <!-- PHƯƠNG THỨC THANH TOÁN -->
+    <div class="container-rightpanel" *ngIf="selectedCategory === 'thanh-toan'">
+      <h2 class="text-center">PHƯƠNG THỨC THANH TOÁN</h2>
+      <!-- q1 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question1')"
+        [class.expanded]="isAnswerVisible('question1')"
+      >
+        <div class="question-container">
+          <div class="question">Phương thức thanh toán nào được chấp nhận?</div>
+          <img
+            [src]="
+              isAnswerVisible('question1')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question1')">
+          Bếp Nhà Ta hỗ trợ nhiều phương thức thanh toán như thẻ ngân hàng, ví
+          điện tử và thanh toán khi nhận hàng (COD). Bạn có thể chọn phương thức
+          phù hợp khi đặt hàng để thuận tiện nhất.
+        </div>
+      </div>
+      <!-- q2 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question2')"
+        [class.expanded]="isAnswerVisible('question2')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Bếp Nhà Ta có hỗ trợ thanh toán khi nhận hàng (COD) không?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question2')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question2')">
+          Có, chúng tôi hỗ trợ thanh toán COD tại nhiều khu vực, nhưng một số
+          địa điểm có thể yêu cầu thanh toán trước. Bạn có thể kiểm tra chính
+          sách thanh toán khi đặt hàng.
+        </div>
+      </div>
+      <!-- q3 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question3')"
+        [class.expanded]="isAnswerVisible('question3')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Nếu tôi gặp lỗi khi thanh toán, tôi nên làm gì?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question3')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question3')">
+          Nếu gặp lỗi khi thanh toán, bạn có thể thử lại sau vài phút hoặc đổi
+          sang phương thức khác. Nếu vẫn gặp vấn đề, hãy liên hệ với bộ phận hỗ
+          trợ khách hàng để được xử lý ngay.
+        </div>
+      </div>
+      <!-- q4 -->
+      <div
+        class="right-content"
+        (click)="toggleAnswer('question4')"
+        [class.expanded]="isAnswerVisible('question4')"
+      >
+        <div class="question-container">
+          <div class="question">
+            Tôi có thể thanh toán bằng ví điện tử như Momo, ZaloPay hay không?
+          </div>
+          <img
+            [src]="
+              isAnswerVisible('question4')
+                ? 'assets/faq/icon-down.svg'
+                : 'assets/faq/icon-right.svg'
+            "
+            alt="Toggle"
+          />
+        </div>
+        <div class="answer" *ngIf="isAnswerVisible('question4')">
+          Không, Bếp Nhà Ta hiện tại chưa chấp nhận thanh toán qua Momo, ZaloPay
+          và các ví điện tử khác.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

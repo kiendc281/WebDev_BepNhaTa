@@ -3,14 +3,22 @@
   font-family: "Open Sans", sans-serif;
 }
 
+:root {
+  --color-camdam: #ea5c2b;
+  --color-camvua: #ff7f3f;
+  --color-camnhat: #ffbf9f;
+  --color-xamnhat: #ededed;
+  --color-xamdam: #6f6f6f;
+}
+
 h1,
 h2,
 h3 {
-  color: #ea5c2b !important;
+  color: var(--color-camdam) !important;
 }
 
 h1 {
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   font-size: 40px !important;
 }
 
@@ -33,15 +41,31 @@ p {
   color: white;
   font-size: 16px;
   font-family: Quicksand, sans-serif !important;
-  font-weight: 600;
-  background-color: #ea5c2b;
+  font-weight: 700;
+  background-color: var(--color-camdam);
   border: none;
   border-radius: 10px;
-  padding: 10px 40px;
+  padding: 10px 20px;
   text-align: center;
   gap: 10px;
 }
 
 .button-cam:hover {
   background-color: #d9531e;
+}
+
+.button-trang {
+  color: black;
+  font-size: 16px;
+  font-family: Quicksand, sans-serif !important;
+  font-weight: 700;
+  /* background-color: white; */
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  text-align: center;
+  gap: 10px;
+  border-radius: 10px;
+  border: 1px solid #ea5c2b;
+  background: #fff;
 }

@@ -1,0 +1,97 @@
+.main-container {
+  /* margin-top: 100px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 50px 70px;
+  flex-shrink: 0;
+  gap: 20px;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 71px;
+}
+.container-leftpanel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  height: auto;
+}
+
+.button-cam,
+.button-trang {
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: space-between; /* Chữ bên trái, icon bên phải */
+  width: 300px;
+  border: 2px solid var(--color-camdam);
+  cursor: pointer;
+}
+.button-cam img,
+.button-trang img {
+  width: 20px; /* Điều chỉnh kích thước icon */
+  height: 20px;
+  margin-left: auto; /* Đẩy icon về phía bên phải */
+}
+
+.container-rightpanel {
+  display: flex;
+  width: 953px;
+  padding: 20px;
+  flex-direction: column;
+  gap: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--color-camdam);
+  background: white;
+}
+
+.right-content {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--color-camnhat);
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.right-content.expanded {
+  border: 1px solid var(--color-camdam); /* Khi mở rộng, đổi màu viền */
+}
+
+.question-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.question {
+  flex: 1;
+}
+
+.question-container img {
+  width: 20px;
+  height: 20px;
+}
+
+.answer {
+  font-weight: normal;
+  margin-top: 10px;
+  color: #333;
+  font-size: 16px;
+  display: none;
+}
+
+.right-content.expanded .answer {
+  display: block;
+}
+
+.button-trang.active {
+  background-color: var(--color-camdam) !important;
+  color: white !important;
+  font-weight: bold;
+}
