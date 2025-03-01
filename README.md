@@ -6,4 +6,6 @@ Chúng mình là sinh viên Trường Đại học Kinh tế - Luật. 5 chàng 
 
 GOAT
 
-Đặc sản món dê 
+Đặc sản món dê
+
+Hệ thống thông tin
