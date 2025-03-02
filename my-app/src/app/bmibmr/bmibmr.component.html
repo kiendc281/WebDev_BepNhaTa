@@ -1,0 +1,78 @@
+<div class="maincontainer">
+  <h2>Tính BMI, BMR</h2>
+  <div class="info">
+    <p>
+      <span class="symbol">* </span>
+      <span class="special">BMI (Body Mass Index)</span> hay còn gọi là chỉ số
+      khối cơ thể, chỉ số thể trọng, là một công cụ thường được sử dụng để đo
+      lượng mỡ trong cơ thể.
+    </p>
+    <p>
+      <span class="symbol">* </span>
+      <span class="special">BMR (Basal Metabolic Rate)</span> là tỷ lệ trao đổi
+      chất cơ bản của cơ thể. Chỉ số này cho biết mức năng lượng tối thiểu mà cơ
+      thể bạn cần để duy trì các hoạt động bình thường là bao nhiêu.
+    </p>
+  </div>
+  <div class="form-container">
+    <div class="form-group">
+      <label for="gender"
+        ><span class="symbol">*</span> Giới tính của bạn:</label
+      >
+      <div class="radio-group">
+        <input type="radio" id="male" name="gender" />
+        <label for="male">Nam</label>
+        <input type="radio" id="female" name="gender" />
+        <label for="female">Nữ</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="height"
+        ><span class="symbol">*</span> Chiều cao của bạn:</label
+      >
+      <div class="input-group">
+        <div class="display-group">
+          <div class="input-display">0</div>
+          <span class="unit">cm</span>
+        </div>
+        <div class="input-with-unit">
+          <input type="number" id="height" />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="weight"
+        ><span class="symbol">*</span> Cân nặng của bạn:</label
+      >
+      <div class="input-group">
+        <div class="display-group">
+          <div class="input-display">0</div>
+          <span class="unit">kg</span>
+        </div>
+        <div class="input-with-unit">
+          <input type="number" id="weight" />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="age"><span class="symbol">*</span> Số tuổi của bạn:</label>
+      <div class="input-group">
+        <div class="display-group">
+          <div class="input-display">0</div>
+          <span class="unit">tuổi</span>
+        </div>
+        <div class="input-with-unit">
+          <input type="number" id="age" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="button-group">
+    <button class="button-cam">Tính BMI</button>
+    <button class="button-cam">Tính BMR</button>
+    <button class="button-trang" id="reset-btn">Đặt lại</button>
+  </div>
+</div>

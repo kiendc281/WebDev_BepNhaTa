@@ -5,6 +5,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AboutusComponent } from './aboutus/aboutus.component';
 import { FaqComponent } from './faq/faq.component';
 import { ChinhSachComponent } from './chinh-sach/chinh-sach.component';
+import { BmibmrComponent } from './bmibmr/bmibmr.component';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { ChinhSachComponent } from './chinh-sach/chinh-sach.component';
     FooterComponent,
     FaqComponent,
     ChinhSachComponent,
+    BmibmrComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
