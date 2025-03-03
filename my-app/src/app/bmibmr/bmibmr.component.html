@@ -33,11 +33,18 @@
       >
       <div class="input-group">
         <div class="display-group">
-          <div class="input-display">0</div>
+          <div class="input-display">{{ height }}</div>
           <span class="unit">cm</span>
         </div>
         <div class="input-with-unit">
-          <input type="number" id="height" placeholder="170" />
+          <input
+            type="number"
+            id="height"
+            placeholder="170"
+            [(ngModel)]="height"
+            min="0"
+            (ngModelChange)="onHeightChange()"
+          />
         </div>
       </div>
     </div>
@@ -48,11 +55,18 @@
       >
       <div class="input-group">
         <div class="display-group">
-          <div class="input-display">0</div>
+          <div class="input-display">{{ weight }}</div>
           <span class="unit">kg</span>
         </div>
         <div class="input-with-unit">
-          <input type="number" id="weight" placeholder="65" />
+          <input
+            type="number"
+            id="weight"
+            placeholder="65"
+            [(ngModel)]="weight"
+            min="0"
+            (ngModelChange)="onWeightChange()"
+          />
         </div>
       </div>
     </div>
@@ -61,11 +75,18 @@
       <label for="age"><span class="symbol">*</span> Số tuổi của bạn:</label>
       <div class="input-group">
         <div class="display-group">
-          <div class="input-display">0</div>
+          <div class="input-display">{{ age }}</div>
           <span class="unit">tuổi</span>
         </div>
         <div class="input-with-unit">
-          <input type="number" id="age" placeholder="20" />
+          <input
+            type="number"
+            id="age"
+            placeholder="20"
+            [(ngModel)]="age"
+            (ngModelChange)="onAgeChange()"
+            min="0"
+          />
         </div>
       </div>
     </div>
