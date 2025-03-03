@@ -1,11 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-aboutus',
-  imports: [],
+  imports: [CommonModule, RouterLink],
   templateUrl: './aboutus.component.html',
-  styleUrl: './aboutus.component.css'
+  styleUrl: './aboutus.component.css',
 })
-export class AboutusComponent {
-
-}
+export class AboutusComponent {}
