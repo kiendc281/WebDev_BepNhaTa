@@ -9,6 +9,9 @@
   --color-camnhat: #ffbf9f;
   --color-xamnhat: #ededed;
   --color-xamdam: #6f6f6f;
+  --color-camdam-rgb: 234, 92, 43;
+  --color-camnhat-rgb: 255, 191, 159;
+  --color-xam-rgb: 237, 237, 237;
 }
 
 h1,
@@ -49,35 +52,82 @@ p {
   font-weight: 400 !important;
 }
 
-.button-cam {
-  color: white;
+.button-cam,
+.button-trang,
+.button-camnhat,
+.button-xam {
   font-size: 16px;
   font-family: Quicksand, sans-serif !important;
   font-weight: 700;
-  background-color: var(--color-camdam);
-  border: none;
   border-radius: 10px;
   padding: 10px 40px;
   text-align: center;
   gap: 10px;
+}
+
+.button-cam {
+  color: white;
+  background-color: var(--color-camdam);
+  border: none;
 }
 
 .button-cam:hover {
-  background-color: #d9531e;
+  background-color: rgba(var(--color-camdam-rgb), 0.9);
+}
+
+.button-cam:active {
+  background-color: var(--color-camdam);
 }
 
 .button-trang {
-  color: black;
-  font-size: 16px;
-  font-family: Quicksand, sans-serif !important;
-  font-weight: 700;
-  /* background-color: white; */
+  color: var(--color-camdam);
+  background-color: white;
+  border: 1px solid var(--color-camdam);
+}
+
+.button-trang:hover {
+  background-color: var(--color-camnhat);
+}
+
+.button-trang:active {
+  background-color: var(--color-camvua);
+  color: #fff;
+}
+
+.button-camnhat {
+  background-color: var(--color-camnhat);
+  color: var(--color-camdam);
   border: none;
-  border-radius: 10px;
-  padding: 10px 40px;
-  text-align: center;
-  gap: 10px;
-  border-radius: 10px;
-  border: 1px solid #ea5c2b;
-  background: #fff;
+}
+
+.button-camnhat:hover {
+  background-color: rgba(var(--color-camnhat-rgb), 0.9);
+}
+
+.button-camnhat:active {
+  background-color: var(--color-camnhat);
+}
+
+.button-xam {
+  background-color: var(--color-xamnhat);
+  border: none;
+  color: #000;
+}
+
+.button-xam:hover {
+  background-color: rgba(var(--color-xam-rgb), 0.8);
+}
+
+.button-xam:active {
+  background-color: var(--color-xamnhat);
+}
+
+.input-xam {
+  background-color: rgba(0, 0, 0, 0.05);
+  border: none !important;
+}
+
+.input-xam:active,
+.input-xam:focus {
+  outline: 2px solid var(--color-camdam);
 }
