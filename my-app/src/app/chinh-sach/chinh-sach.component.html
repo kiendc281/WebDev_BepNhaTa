@@ -64,7 +64,11 @@
     </div>
 
     <!-- CHÍNH SÁCH ĐỔI TRẢ -->
-    <div class="container-rightpanel" *ngIf="selectedCategory === 'doi-tra'">
+    <div
+      class="container-rightpanel"
+      *ngIf="selectedCategory === 'doi-tra'"
+      id="chinhsachdoitra"
+    >
       <h1 class="text-center">CHÍNH SÁCH ĐỔI TRẢ</h1>
       <div>
         <h4>1. ĐIỀU KIỆN ĐỔI TRẢ</h4>
@@ -149,7 +153,11 @@
     </div>
 
     <!-- CHÍNH SÁCH BÁN HÀNG -->
-    <div class="container-rightpanel" *ngIf="selectedCategory === 'ban-hang'">
+    <div
+      class="container-rightpanel"
+      *ngIf="selectedCategory === 'ban-hang'"
+      #chinhsachbanhang
+    >
       <h1 class="text-center">CHÍNH SÁCH BÁN HÀNG</h1>
       <div>
         <h4>1. NGUYÊN TẮC CHUNG</h4>
