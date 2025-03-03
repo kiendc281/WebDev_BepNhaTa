@@ -156,7 +156,7 @@
     <div
       class="container-rightpanel"
       *ngIf="selectedCategory === 'ban-hang'"
-      #chinhsachbanhang
+      id="chinhsachbanhang"
     >
       <h1 class="text-center">CHÍNH SÁCH BÁN HÀNG</h1>
       <div>
@@ -239,7 +239,11 @@
     </div>
 
     <!-- CHÍNH SÁCH DỊCH VỤ -->
-    <div class="container-rightpanel" *ngIf="selectedCategory === 'dich-vu'">
+    <div
+      class="container-rightpanel"
+      *ngIf="selectedCategory === 'dich-vu'"
+      #chinhsachdichvu
+    >
       <h1 class="text-center">CHÍNH SÁCH DỊCH VỤ</h1>
       <div>
         <h4>1. PHẠM VI DỊCH VỤ</h4>
@@ -278,8 +282,12 @@
       </div>
     </div>
 
-    <!-- CHÍNH SÁCH DỊCH VỤ -->
-    <div class="container-rightpanel" *ngIf="selectedCategory === 'bao-mat'">
+    <!-- CHÍNH SÁCH BẢO MẬT -->
+    <div
+      class="container-rightpanel"
+      *ngIf="selectedCategory === 'bao-mat'"
+      #chinhsachbaomat
+    >
       <h1 class="text-center">CHÍNH SÁCH BẢO MẬT</h1>
       <div>
         <h4>1. THU THẬP THÔNG TIN</h4>
