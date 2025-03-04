@@ -1,0 +1,7 @@
+.maincontainer {
+  display: flex;
+  /* width: 1420px; */
+  flex-direction: column;
+  align-items: center;
+  gap: 33px;
+}
