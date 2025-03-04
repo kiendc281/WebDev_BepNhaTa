@@ -14,6 +14,11 @@ import { AboutusComponent } from './aboutus/aboutus.component';
 import { FaqComponent } from './faq/faq.component';
 import { ChinhSachComponent } from './chinh-sach/chinh-sach.component';
 import { BmibmrComponent } from './bmibmr/bmibmr.component';
+import { CongThucComponent } from './cong-thuc/cong-thuc.component';
+import { LenThucDonComponent } from './len-thuc-don/len-thuc-don.component';
+import { LienHeComponent } from './lien-he/lien-he.component';
+import { SanPhamComponent } from './san-pham/san-pham.component';
+import { TrangChuComponent } from './trang-chu/trang-chu.component';
 
 @Component({
   selector: 'app-root',
@@ -23,11 +28,16 @@ import { BmibmrComponent } from './bmibmr/bmibmr.component';
     RouterLinkActive,
     RouterLink,
     HeaderComponent,
-    AboutusComponent,
     FooterComponent,
-    FaqComponent,
-    ChinhSachComponent,
+    AboutusComponent,
     BmibmrComponent,
+    ChinhSachComponent,
+    CongThucComponent,
+    FaqComponent,
+    LenThucDonComponent,
+    LienHeComponent,
+    SanPhamComponent,
+    TrangChuComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

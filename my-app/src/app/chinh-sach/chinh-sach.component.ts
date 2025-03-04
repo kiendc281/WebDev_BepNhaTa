@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -8,9 +8,21 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
   templateUrl: './chinh-sach.component.html',
   styleUrl: './chinh-sach.component.css',
 })
-export class ChinhSachComponent implements AfterViewInit {
+export class ChinhSachComponent implements AfterViewInit, OnInit {
   // navigate
   selectedCategory: string = 'doi-tra';
+  private readonly HEADER_HEIGHT = 180; // Chiều cao của header
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    // Scroll to top when component is initialized
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant',
+    });
+  }
 
   showContent(contentId: string): void {
     this.selectedCategory = contentId;
@@ -26,14 +38,23 @@ export class ChinhSachComponent implements AfterViewInit {
   //   return this.visibleAnswers[questionId] || false;
   // }
   // footer navigate
-  constructor(private route: ActivatedRoute) {}
 
   ngAfterViewInit() {
     this.route.fragment.subscribe((fragment) => {
       if (fragment) {
-        document
-          .getElementById(fragment)
-          ?.scrollIntoView({ behavior: 'smooth' });
+        this.selectedCategory = fragment;
+        setTimeout(() => {
+          const element = document.getElementById(fragment);
+          if (element) {
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition =
+              elementPosition + window.pageYOffset - this.HEADER_HEIGHT;
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth',
+            });
+          }
+        }, 100);
       }
     });
   }
