@@ -1,5 +1,13 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import {
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterModule,
+  RouterOutlet,
+  Scroll,
+} from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { AboutusComponent } from './aboutus/aboutus.component';
@@ -11,6 +19,9 @@ import { BmibmrComponent } from './bmibmr/bmibmr.component';
   selector: 'app-root',
   imports: [
     RouterOutlet,
+    RouterModule,
+    RouterLinkActive,
+    RouterLink,
     HeaderComponent,
     AboutusComponent,
     FooterComponent,
@@ -21,6 +32,18 @@ import { BmibmrComponent } from './bmibmr/bmibmr.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
-  title = 'my-app';
+export class AppComponent implements OnInit {
+  private router: Router; //auto scroll top when route
+
+  constructor(router: Router) {
+    this.router = router;
+  }
+
+  ngOnInit() {
+    this.router.events.subscribe((x) => {
+      if (x instanceof NavigationEnd) {
+        window.scrollTo(0, 0);
+      }
+    });
+  }
 }
