@@ -1,3 +1,7 @@
+.header-placeholder {
+  margin-top: 180px;
+}
+
 app-header {
   width: 100%;
   position: fixed;
