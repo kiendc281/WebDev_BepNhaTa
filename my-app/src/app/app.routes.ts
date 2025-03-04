@@ -7,6 +7,7 @@ import { SanPhamComponent } from './san-pham/san-pham.component';
 import { LenThucDonComponent } from './len-thuc-don/len-thuc-don.component';
 import { BmibmrComponent } from './bmibmr/bmibmr.component';
 import { BlogComponent } from './blog/blog.component';
+import { LienHeComponent } from './lien-he/lien-he.component';
 
 export const routes: Routes = [
   { path: 'trang-chu', component: TrangChuComponent },
@@ -17,4 +18,6 @@ export const routes: Routes = [
   { path: 'cong-cu', component: BmibmrComponent },
   { path: 'about-us', component: AboutusComponent },
   { path: 'chinh-sach', component: ChinhSachComponent },
+  { path: 'chinh-sach/:id', component: ChinhSachComponent },
+  { path: 'lien-he', component: LienHeComponent },
 ];
