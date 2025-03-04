@@ -6,6 +6,7 @@
   margin: 50px 70px;
   flex-shrink: 0;
   gap: 20px;
+  padding-top: 20px;
 }
 .container {
   display: flex;
