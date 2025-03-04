@@ -8,6 +8,7 @@ import { LenThucDonComponent } from './len-thuc-don/len-thuc-don.component';
 import { BmibmrComponent } from './bmibmr/bmibmr.component';
 import { BlogComponent } from './blog/blog.component';
 import { LienHeComponent } from './lien-he/lien-he.component';
+import { FaqComponent } from './faq/faq.component';
 
 export const routes: Routes = [
   { path: 'trang-chu', component: TrangChuComponent },
@@ -20,4 +21,5 @@ export const routes: Routes = [
   { path: 'chinh-sach', component: ChinhSachComponent },
   { path: 'chinh-sach/:id', component: ChinhSachComponent },
   { path: 'lien-he', component: LienHeComponent },
+  { path: 'faq', component: FaqComponent },
 ];

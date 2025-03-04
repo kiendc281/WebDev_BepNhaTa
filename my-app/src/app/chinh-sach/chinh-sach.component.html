@@ -3,13 +3,13 @@
     <div class="container-leftpanel">
       <button
         class="button-trang"
-        (click)="showContent('doi-tra')"
-        [ngClass]="{ active: selectedCategory === 'doi-tra' }"
+        (click)="showContent('ban-hang')"
+        [ngClass]="{ active: selectedCategory === 'ban-hang' }"
       >
-        Chính sách đổi trả
+        Chính sách bán hàng
         <img
           [src]="
-            selectedCategory === 'doi-tra'
+            selectedCategory === 'ban-hang'
               ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
               : 'assets/faq/cuida-arrow-right-outline.svg'
           "
@@ -18,13 +18,13 @@
       </button>
       <button
         class="button-trang"
-        (click)="showContent('ban-hang')"
-        [ngClass]="{ active: selectedCategory === 'ban-hang' }"
+        (click)="showContent('doi-tra')"
+        [ngClass]="{ active: selectedCategory === 'doi-tra' }"
       >
-        Chính sách bán hàng
+        Chính sách đổi trả
         <img
           [src]="
-            selectedCategory === 'ban-hang'
+            selectedCategory === 'doi-tra'
               ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
               : 'assets/faq/cuida-arrow-right-outline.svg'
           "
