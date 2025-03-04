@@ -47,20 +47,28 @@
       <div class="policy-links">
         <a
           [routerLink]="'/chinh-sach'"
-          [fragment]="'chinh-sach-ban-hang'"
+          [fragment]="'ban-hang'"
           routerLinkActive="active"
           >Chính sách bán hàng</a
         >
         <a
-          routerLink="/chinh-sach/doi-tra"
+          [routerLink]="'/chinh-sach'"
+          [fragment]="'doi-tra'"
           routerLinkActive="active"
-          [fragment]="'chinh-sach-doi-tra'"
           >Chính sách đổi trả</a
         >
-        <a routerLink="/chinh-sach/dich-vu" routerLinkActive="active"
+        <a
+          [routerLink]="'/chinh-sach'"
+          [fragment]="'dich-vu'"
+          routerLinkActive="active"
           >Chính sách dịch vụ</a
         >
-        <a routerLink="/chinh-sach">Chính sách bảo mật</a>
+        <a
+          [routerLink]="'/chinh-sach'"
+          [fragment]="'bao-mat'"
+          routerLinkActive="active"
+          >Chính sách bảo mật</a
+        >
       </div>
     </div>
     <div class="social-section">
