@@ -73,14 +73,31 @@
   color: var(--color-camvua);
   font-size: 20px;
   padding: 5px 10px;
-  border-radius: 5px;
+  position: relative;
+  z-index: 1;
+}
+
+.nav a::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-camvua);
+  border-radius: 30px;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
 }
 
 .nav a:hover {
-  background-color: var(--color-camvua);
   color: #fff;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 30px;
+}
+
+.nav a:hover::before {
+  opacity: 1;
 }
 
 .hr-decor {
