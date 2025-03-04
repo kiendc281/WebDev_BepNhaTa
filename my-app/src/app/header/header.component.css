@@ -75,7 +75,6 @@
   font-size: 18px;
   padding: 5px 10px;
   border-radius: 5px;
-  transition: background-color 0.3s;
 }
 
 .nav a:hover {
