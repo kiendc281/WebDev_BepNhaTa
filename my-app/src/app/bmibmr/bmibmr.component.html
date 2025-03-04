@@ -20,10 +20,30 @@
         ><span class="symbol">*</span> Giới tính của bạn:</label
       >
       <div class="radio-group">
-        <input type="radio" id="male" name="gender" />
+        <input
+          type="radio"
+          id="male"
+          name="gender"
+          [(ngModel)]="gender"
+          value="male"
+          (change)="onGenderChange()"
+        />
         <label for="male">Nam</label>
-        <input type="radio" id="female" name="gender" />
+        <input
+          type="radio"
+          id="female"
+          name="gender"
+          [(ngModel)]="gender"
+          value="female"
+          (change)="onGenderChange()"
+        />
         <label for="female">Nữ</label>
+      </div>
+      <div
+        class="error-message"
+        *ngIf="errorMessages.includes('* Giới tính không được trống')"
+      >
+        * Giới tính không được trống
       </div>
     </div>
 
@@ -43,9 +63,16 @@
             placeholder="170"
             [(ngModel)]="height"
             min="0"
+            max="250"
             (ngModelChange)="onHeightChange()"
           />
         </div>
+      </div>
+      <div
+        class="error-message"
+        *ngIf="errorMessages.includes('* Chiều cao không được trống')"
+      >
+        * Chiều cao không được trống
       </div>
     </div>
 
@@ -65,9 +92,16 @@
             placeholder="65"
             [(ngModel)]="weight"
             min="0"
+            max="500"
             (ngModelChange)="onWeightChange()"
           />
         </div>
+      </div>
+      <div
+        class="error-message"
+        *ngIf="errorMessages.includes('* Cân nặng không được trống')"
+      >
+        * Cân nặng không được trống
       </div>
     </div>
 
@@ -89,11 +123,46 @@
           />
         </div>
       </div>
+      <div
+        class="error-message"
+        *ngIf="errorMessages.includes('* Số tuổi không được trống')"
+      >
+        * Số tuổi không được trống
+      </div>
     </div>
   </div>
   <div class="button-group">
-    <button class="button-cam">Tính BMI</button>
-    <button class="button-cam">Tính BMR</button>
-    <button class="button-trang" id="reset-btn">Đặt lại</button>
+    <button class="button-cam" (click)="calculateBMI()">Tính BMI</button>
+    <button class="button-cam" (click)="calculateBMR()">Tính BMR</button>
+    <button class="button-trang" id="reset-btn" (click)="resetForm()">
+      Đặt lại
+    </button>
+  </div>
+
+  <div class="results-container" *ngIf="showResults">
+    <div class="result-box">
+      <h2>Kết quả BMI</h2>
+      <div class="result-content">
+        <p>
+          Chỉ số BMI của bạn là
+          <span class="result-value">{{ bmiResult | number : "1.1-1" }}</span
+          >, bạn thuộc <span class="result-value">{{ bmiCategory }}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="bmi-info">
+      <h3>Bảng phân loại BMI cho người lớn (từ 20 tuổi trở lên)</h3>
+      <ul>
+        <li>BMI < 16: Gầy độ III</li>
+        <li>16 ≤ BMI < 17: Gầy độ II</li>
+        <li>17 ≤ BMI < 18.5: Gầy độ I</li>
+        <li>18.5 ≤ BMI < 25: Bình thường</li>
+        <li>25 ≤ BMI < 30: Thừa cân</li>
+        <li>30 ≤ BMI < 35: Béo phì độ I</li>
+        <li>35 ≤ BMI < 40: Béo phì độ II</li>
+        <li>BMI ≥ 40: Béo phì độ III</li>
+      </ul>
+    </div>
   </div>
 </div>
