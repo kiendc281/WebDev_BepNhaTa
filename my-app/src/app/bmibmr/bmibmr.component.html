@@ -70,9 +70,16 @@
       </div>
       <div
         class="error-message"
-        *ngIf="errorMessages.includes('* Chiều cao không được trống')"
+        *ngIf="
+          errorMessages.includes('* Chiều cao không được trống') ||
+          errorMessages.includes('* Chiều cao không được vượt quá 250cm')
+        "
       >
-        * Chiều cao không được trống
+        {{
+          errorMessages.includes("* Chiều cao không được vượt quá 250cm")
+            ? "* Chiều cao không được vượt quá 250cm"
+            : "* Chiều cao không được trống"
+        }}
       </div>
     </div>
 
@@ -92,16 +99,23 @@
             placeholder="65"
             [(ngModel)]="weight"
             min="0"
-            max="500"
+            max="250"
             (ngModelChange)="onWeightChange()"
           />
         </div>
       </div>
       <div
         class="error-message"
-        *ngIf="errorMessages.includes('* Cân nặng không được trống')"
+        *ngIf="
+          errorMessages.includes('* Cân nặng không được trống') ||
+          errorMessages.includes('* Cân nặng không được vượt quá 250kg')
+        "
       >
-        * Cân nặng không được trống
+        {{
+          errorMessages.includes("* Cân nặng không được vượt quá 250kg")
+            ? "* Cân nặng không được vượt quá 250kg"
+            : "* Cân nặng không được trống"
+        }}
       </div>
     </div>
 
@@ -142,27 +156,46 @@
   <div class="results-container" *ngIf="showResults">
     <div class="result-box">
       <h2>Kết quả BMI</h2>
-      <div class="result-content">
-        <p>
-          Chỉ số BMI của bạn là
-          <span class="result-value">{{ bmiResult | number : "1.1-1" }}</span
-          >, bạn thuộc <span class="result-value">{{ bmiCategory }}</span>
-        </p>
-      </div>
+      <span class="result-content">
+        Chỉ số BMI của bạn là
+        <span class="result-value">{{ bmiResult | number : "1.1-1" }}</span
+        >, bạn thuộc <span class="result-value">{{ bmiCategory }}</span>
+      </span>
     </div>
 
     <div class="bmi-info">
-      <h3>Bảng phân loại BMI cho người lớn (từ 20 tuổi trở lên)</h3>
-      <ul>
-        <li>BMI < 16: Gầy độ III</li>
-        <li>16 ≤ BMI < 17: Gầy độ II</li>
-        <li>17 ≤ BMI < 18.5: Gầy độ I</li>
-        <li>18.5 ≤ BMI < 25: Bình thường</li>
-        <li>25 ≤ BMI < 30: Thừa cân</li>
-        <li>30 ≤ BMI < 35: Béo phì độ I</li>
-        <li>35 ≤ BMI < 40: Béo phì độ II</li>
-        <li>BMI ≥ 40: Béo phì độ III</li>
-      </ul>
+      <div class="bmi-header">
+        <span class="symbol">*</span>
+        <span
+          >Đối với người lớn từ 20 tuổi trở lên, sử dụng bảng phân loại chuẩn
+          cho cả nam và nữ để đánh giá chỉ số BMI.</span
+        >
+      </div>
+      <div class="bmi-columns">
+        <ul class="bmi-list">
+          <li>BMI < 16: Gầy độ III</li>
+          <li>16 ≤ BMI < 17: Gầy độ II</li>
+          <li>17 ≤ BMI < 18.5: Gầy độ I</li>
+          <li>18.5 ≤ BMI < 25: Bình thường</li>
+        </ul>
+        <ul class="bmi-list">
+          <li>25 ≤ BMI < 30: Thừa cân</li>
+          <li>30 ≤ BMI < 35: Béo phì độ I</li>
+          <li>35 ≤ BMI < 40: Béo phì độ II</li>
+          <li>BMI ≥ 40: Béo phì độ III</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="results-container" *ngIf="showBMRResult">
+    <div class="result-box">
+      <h2>Kết quả BMR</h2>
+      <span class="result-content">
+        Chỉ số BMR của bạn là
+        <span class="result-value">{{ bmrResult | number : "0.0-0" }}</span>
+        calo/ngày
+      </span>
     </div>
   </div>
 </div>

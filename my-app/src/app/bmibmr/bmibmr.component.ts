@@ -14,30 +14,40 @@ export class BmibmrComponent {
   weight: string = '';
   age: string = '';
   gender: string = '';
-  errorMessages: string[] = [];
   bmiResult: number = 0;
+  bmrResult: number = 0;
   bmiCategory: string = '';
+  errorMessages: string[] = [];
   showResults: boolean = false;
+  showBMRResult: boolean = false;
 
   onHeightChange(): void {
     const heightValue = parseFloat(this.height);
+    this.errorMessages = this.errorMessages.filter(
+      (msg) => !msg.includes('Chiều cao')
+    );
+
     if (heightValue < 0 || isNaN(heightValue)) {
       this.height = '0';
     } else if (heightValue > 250) {
       this.height = '250';
+      this.errorMessages.push('* Chiều cao không được vượt quá 250cm');
     }
-    this.errorMessages = [];
     this.showResults = false;
   }
 
   onWeightChange(): void {
     const weightValue = parseFloat(this.weight);
+    this.errorMessages = this.errorMessages.filter(
+      (msg) => !msg.includes('Cân nặng')
+    );
+
     if (weightValue < 0 || isNaN(weightValue)) {
       this.weight = '0';
-    } else if (weightValue > 500) {
-      this.weight = '500';
+    } else if (weightValue > 250) {
+      this.weight = '250';
+      this.errorMessages.push('* Cân nặng không được vượt quá 250kg');
     }
-    this.errorMessages = [];
     this.showResults = false;
   }
 
@@ -46,7 +56,9 @@ export class BmibmrComponent {
     if (ageValue < 0 || isNaN(ageValue)) {
       this.age = '0';
     }
-    this.errorMessages = [];
+    this.errorMessages = this.errorMessages.filter(
+      (msg) => !msg.includes('Số tuổi')
+    );
     this.showResults = false;
   }
 
@@ -66,13 +78,26 @@ export class BmibmrComponent {
     this.bmiResult = weightKg / (heightM * heightM);
     this.bmiCategory = this.getBMICategory(this.bmiResult);
     this.showResults = true;
+    this.showBMRResult = false;
   }
 
   calculateBMR(): void {
     this.validateFields();
     if (this.errorMessages.length > 0) return;
-    // BMR calculation logic will go here
-    this.showResults = true;
+
+    const weight = parseFloat(this.weight);
+    const height = parseFloat(this.height);
+    const age = parseInt(this.age);
+
+    // Công thức tính BMR: BMR = (10 × cân nặng) + (6.25 × chiều cao) - (5 × tuổi) + 5 (nam) hoặc -161 (nữ)
+    if (this.gender === 'male') {
+      this.bmrResult = 10 * weight + 6.25 * height - 5 * age + 5;
+    } else {
+      this.bmrResult = 10 * weight + 6.25 * height - 5 * age - 161;
+    }
+
+    this.showBMRResult = true;
+    this.showResults = false;
   }
 
   resetForm(): void {
@@ -82,7 +107,9 @@ export class BmibmrComponent {
     this.gender = '';
     this.errorMessages = [];
     this.showResults = false;
+    this.showBMRResult = false;
     this.bmiResult = 0;
+    this.bmrResult = 0;
     this.bmiCategory = '';
   }
 
@@ -111,8 +138,8 @@ export class BmibmrComponent {
       this.errorMessages.push('* Cân nặng không được trống');
     } else {
       const weightValue = parseFloat(this.weight);
-      if (weightValue > 500) {
-        this.errorMessages.push('* Cân nặng không được vượt quá 500kg');
+      if (weightValue > 250) {
+        this.errorMessages.push('* Cân nặng không được vượt quá 250kg');
       }
     }
     if (!this.age) {

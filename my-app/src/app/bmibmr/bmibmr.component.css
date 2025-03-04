@@ -4,19 +4,17 @@
 }
 
 h1 {
-  margin: 40px 0 24px 0;
-  text-decoration: underline;
+  margin-bottom: 24px;
+}
+
+.symbol,
+.special {
+  font-weight: 600;
+  font-style: italic;
 }
 
 .symbol {
   color: var(--color-camvua);
-  font-weight: 600;
-  font-style: italic;
-}
-
-.special {
-  font-weight: 600;
-  font-style: italic;
 }
 
 .info {
@@ -72,14 +70,15 @@ h1 {
   width: 100%;
 }
 
-.display-group {
+.display-group,
+.input-with-unit {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
 .input-display {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   color: var(--color-camdam);
 }
@@ -90,30 +89,19 @@ h1 {
   color: #000;
 }
 
-.input-with-unit {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.input-group select,
-.input-group input[type="number"] {
-  padding: 5px;
-  border: 1px solid #000;
-  border-radius: 10px;
-}
-
 .input-group input[type="number"] {
   width: 110px;
   text-align: center;
+  padding: 5px;
+  border: 1px solid #000;
+  border-radius: 10px;
 }
 
 .button-group {
   display: flex;
   justify-content: center;
   gap: 200px;
-  margin-top: 60px;
-  margin-bottom: 120px;
+  margin: 40px;
 }
 
 .error-message {
@@ -126,7 +114,7 @@ h1 {
 }
 
 .results-container {
-  margin-top: 40px;
+  margin-bottom: 40px;
   padding: 20px;
   background-color: #fff;
   border-radius: 30px;
@@ -135,7 +123,6 @@ h1 {
 
 .result-box {
   text-align: center;
-  margin-bottom: 30px;
 }
 
 .result-box h2 {
@@ -144,36 +131,34 @@ h1 {
 }
 
 .result-content {
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 400;
 }
 
 .result-value {
-  font-size: 20px;
   font-weight: bold;
   color: var(--color-camdam);
-  font-style: italic;
 }
 
 .bmi-info {
-  padding: 20px;
-  background-color: #f9f9f9;
+  padding: 20px 20px 0;
   border-radius: 20px;
 }
 
-.bmi-info h3 {
-  color: var(--color-camdam);
-  margin-bottom: 15px;
+.bmi-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
   font-size: 16px;
 }
 
-.bmi-info ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.bmi-columns {
+  display: flex;
+  gap: 60px;
 }
 
-.bmi-info li {
+.bmi-list li {
   margin-bottom: 10px;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 16px;
 }
