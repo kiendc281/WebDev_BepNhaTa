@@ -10,8 +10,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 })
 export class ChinhSachComponent implements AfterViewInit, OnInit {
   // navigate
-  selectedCategory: string = 'doi-tra';
-  private readonly HEADER_HEIGHT = 180; // Chiều cao của header
+  selectedCategory: string = 'ban-hang';
+  private readonly HEADER_HEIGHT = 170; // Chiều cao của header
 
   constructor(private route: ActivatedRoute) {}
 
