@@ -99,7 +99,7 @@
 
 .product-title {
   font-size: 1.1em;
-  color: #333;
+  color: black !important;
   margin: 0 0 15px;
   font-weight: bold;
   display: -webkit-box;
@@ -119,11 +119,12 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  color: #666;
+  color: black;
   font-size: 0.9em;
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 5px;
+  background-color: var(--color-xamnhat);
 }
 
 .info-item img {
@@ -212,7 +213,7 @@
 
 .price-container {
   display: inline-flex;
-  align-items: flex-start;
+  align-items: flex-end;
   gap: 15px;
 }
 
@@ -223,8 +224,8 @@
 }
 
 .discount-tag {
-  background-color: var(--color-camdam);
-  color: white;
+  background-color: var(--color-camnhat);
+  color: var(--color-camdam);
   padding: 2px 8px;
   border-radius: 4px;
   /* font-size: 0.9em; */
