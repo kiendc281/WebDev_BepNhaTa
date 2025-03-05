@@ -7,7 +7,7 @@
     Tạo tài khoản để lưu ngay công thức yêu thích và nhận những ưu đãi đặc biết!
   </p>
 
-  <form>
+  <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <input
         type="text"
@@ -15,7 +15,12 @@
         name="name"
         placeholder="Tên của bạn (*)"
         required
+        #name="ngModel"
+        [(ngModel)]="userData.name"
       />
+      <div class="error-message" *ngIf="submitted && name.invalid">
+        (*) Vui lòng nhập tên của bạn
+      </div>
     </div>
 
     <div class="form-group">
@@ -25,7 +30,12 @@
         name="phone"
         placeholder="SĐT của bạn (*)"
         required
+        #phone="ngModel"
+        [(ngModel)]="userData.phone"
       />
+      <div class="error-message" *ngIf="submitted && phone.invalid">
+        (*) Vui lòng nhập số điện thoại của bạn
+      </div>
     </div>
 
     <div class="form-group">
@@ -35,38 +45,75 @@
         name="email"
         placeholder="Email của bạn (*)"
         required
+        #email="ngModel"
+        [(ngModel)]="userData.email"
       />
+      <div class="error-message" *ngIf="submitted && email.invalid">
+        (*) Vui lòng nhập email của bạn
+      </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group password-input">
       <input
-        type="password"
+        [type]="showPassword ? 'text' : 'password'"
         id="password"
         name="password"
         placeholder="Mật khẩu (*)"
         required
+        #password="ngModel"
+        [(ngModel)]="userData.password"
       />
+      <img
+        [src]="passwordIcon"
+        alt=""
+        class="toggle-password"
+        (click)="togglePassword()"
+      />
+      <div class="error-message" *ngIf="submitted && password.invalid">
+        (*) Vui lòng nhập mật khẩu
+      </div>
       <div class="password-note">
         • Tối thiểu 8 ký tự<br />• Bao gồm chữ thường, chữ in hoa và số
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group password-input">
       <input
-        type="password"
+        [type]="showConfirmPassword ? 'text' : 'password'"
         id="confirmPassword"
         name="confirmPassword"
         placeholder="Nhập lại mật khẩu (*)"
         required
+        #confirmPassword="ngModel"
+        [(ngModel)]="userData.confirmPassword"
       />
+      <img
+        [src]="confirmPasswordIcon"
+        alt=""
+        class="toggle-password"
+        (click)="toggleConfirmPassword()"
+      />
+      <div class="error-message" *ngIf="submitted && confirmPassword.invalid">
+        (*) Vui lòng nhập lại mật khẩu
+      </div>
     </div>
 
     <div class="terms">
-      <input type="checkbox" id="terms" name="terms" required />
-      <label for="terms"
-        >Tôi xác nhận đã đọc và chấp nhận <a href="#">Điều khoản sử dụng</a> và
-        <a href="#">Chính sách bảo vệ dữ liệu cá nhân</a> của website.</label
-      >
+      <input
+        type="checkbox"
+        id="terms"
+        name="terms"
+        required
+        #terms="ngModel"
+        [(ngModel)]="userData.terms"
+      />
+      <label for="terms">
+        Tôi xác nhận đã đọc và chấp nhận <a href="#">Điều khoản sử dụng</a> và
+        <a href="#">Chính sách bảo vệ dữ liệu cá nhân</a> của website.
+      </label>
+    </div>
+    <div class="error-message" *ngIf="submitted && terms.invalid">
+      (*) Vui lòng đồng ý với điều khoản sử dụng
     </div>
 
     <button class="button-cam" type="submit">HOÀN TẤT</button>

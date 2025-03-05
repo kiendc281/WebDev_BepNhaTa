@@ -98,3 +98,10 @@ input[type="password"]:focus {
   text-decoration: none;
   font-weight: 500;
 }
+
+.error-message {
+  color: red;
+  font-style: italic;
+  font-size: 14px;
+  margin-top: 5px;
+}

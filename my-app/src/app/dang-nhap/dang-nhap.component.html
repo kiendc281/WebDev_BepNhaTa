@@ -3,9 +3,9 @@
     <img src="../../assets/sign in up/zondicons-close-outline.svg" alt="" />
   </button>
   <div class="title">Đăng nhập</div>
-  <p>Cùng Bếp Nhà Ta khám phá 200+ món ăn cùng nhiều công thức hấp dẫn!</p>
+  <p>Cùng Bếp Nhà Ta khám phá 200+ món ăn và công thức hấp dẫn!</p>
 
-  <form>
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <input
         type="text"
@@ -13,7 +13,12 @@
         name="emailOrPhone"
         placeholder="Email/SĐT của bạn"
         required
+        #emailOrPhone="ngModel"
+        [(ngModel)]="email"
       />
+      <div class="error-message" *ngIf="submitted && emailOrPhone.invalid">
+        (*) Vui lòng nhập Email hoặc SĐT của bạn
+      </div>
     </div>
 
     <div class="form-group password-input">
@@ -23,12 +28,18 @@
         name="password"
         placeholder="Mật khẩu"
         required
+        #password="ngModel"
+        [(ngModel)]="pass"
       />
       <img
         src="../../assets/sign in up/clarity-eye-hide-line.svg"
         alt=""
         class="toggle-password"
+        (click)="togglePassword()"
       />
+      <div class="error-message" *ngIf="submitted && password.invalid">
+        (*) Vui lòng nhập mật khẩu
+      </div>
     </div>
 
     <button class="button-cam" type="submit">ĐĂNG NHẬP</button>
