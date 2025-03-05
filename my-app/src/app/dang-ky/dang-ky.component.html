@@ -38,6 +38,9 @@
       <div class="error-message" *ngIf="submitted && phone.invalid">
         (*) Vui lòng nhập số điện thoại của bạn
       </div>
+      <div class="error-message" *ngIf="phoneError">
+        {{ phoneError }}
+      </div>
     </div>
 
     <div class="form-group">
@@ -53,6 +56,9 @@
       />
       <div class="error-message" *ngIf="submitted && email.invalid">
         (*) Vui lòng nhập email của bạn
+      </div>
+      <div class="error-message" *ngIf="emailError">
+        {{ emailError }}
       </div>
     </div>
 
@@ -75,6 +81,9 @@
       />
       <div class="error-message" *ngIf="submitted && password.invalid">
         (*) Vui lòng nhập mật khẩu
+      </div>
+      <div class="error-message" *ngIf="passwordError">
+        {{ passwordError }}
       </div>
       <div class="password-note">
         • Tối thiểu 8 ký tự<br />• Bao gồm chữ thường, chữ in hoa và số
@@ -100,6 +109,9 @@
       />
       <div class="error-message" *ngIf="submitted && confirmPassword.invalid">
         (*) Vui lòng nhập lại mật khẩu
+      </div>
+      <div class="error-message" *ngIf="confirmPasswordError">
+        {{ confirmPasswordError }}
       </div>
     </div>
 
