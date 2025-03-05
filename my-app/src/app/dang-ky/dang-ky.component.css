@@ -87,7 +87,6 @@ input[type="password"]:focus {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 15px;
 }
 
 .terms input[type="checkbox"] {
@@ -131,12 +130,9 @@ input[type="password"]:focus {
   text-decoration: none;
 }
 
-.terms + .error-message {
-  margin-bottom: 20px;
-}
-
 .button-cam {
   width: 100%;
+  margin-top: 15px;
 }
 
 .login-link {
