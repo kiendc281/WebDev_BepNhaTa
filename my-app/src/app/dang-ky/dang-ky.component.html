@@ -17,6 +17,7 @@
         required
         #name="ngModel"
         [(ngModel)]="userData.name"
+        [class.submitted]="submitted"
       />
       <div class="error-message" *ngIf="submitted && name.invalid">
         (*) Vui lòng nhập tên của bạn
@@ -32,6 +33,7 @@
         required
         #phone="ngModel"
         [(ngModel)]="userData.phone"
+        [class.submitted]="submitted"
       />
       <div class="error-message" *ngIf="submitted && phone.invalid">
         (*) Vui lòng nhập số điện thoại của bạn
@@ -47,6 +49,7 @@
         required
         #email="ngModel"
         [(ngModel)]="userData.email"
+        [class.submitted]="submitted"
       />
       <div class="error-message" *ngIf="submitted && email.invalid">
         (*) Vui lòng nhập email của bạn
@@ -62,6 +65,7 @@
         required
         #password="ngModel"
         [(ngModel)]="userData.password"
+        [class.submitted]="submitted"
       />
       <img
         [src]="passwordIcon"
@@ -86,6 +90,7 @@
         required
         #confirmPassword="ngModel"
         [(ngModel)]="userData.confirmPassword"
+        [class.submitted]="submitted"
       />
       <img
         [src]="confirmPasswordIcon"

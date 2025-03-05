@@ -364,32 +364,6 @@
   }
 }
 
-.maincontainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  z-index: 1000;
-}
-
-:host {
-  display: block;
-  height: 116px;
-}
-
-@media screen and (max-width: 992px) {
-  :host {
-    height: 98px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  :host {
-    height: 88px;
-  }
-}
-
 .popup-overlay {
   position: fixed;
   top: 0;

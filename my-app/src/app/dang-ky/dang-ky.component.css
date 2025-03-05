@@ -77,6 +77,15 @@ input[type="password"]:focus {
   border: 2px solid var(--color-camvua) !important;
 }
 
+input[type="text"].ng-invalid.ng-touched.submitted,
+input[type="email"].ng-invalid.ng-touched.submitted,
+input[type="password"].ng-invalid.ng-touched.submitted,
+input[type="text"].ng-invalid.submitted,
+input[type="email"].ng-invalid.submitted,
+input[type="password"].ng-invalid.submitted {
+  border: 2px solid red !important;
+}
+
 .password-note {
   font-size: 14px;
   margin-top: 8px;

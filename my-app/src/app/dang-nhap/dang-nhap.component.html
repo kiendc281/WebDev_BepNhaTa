@@ -15,6 +15,7 @@
         required
         #emailOrPhone="ngModel"
         [(ngModel)]="email"
+        [class.submitted]="submitted"
       />
       <div class="error-message" *ngIf="submitted && emailOrPhone.invalid">
         (*) Vui lòng nhập Email hoặc SĐT của bạn
@@ -30,6 +31,7 @@
         required
         #password="ngModel"
         [(ngModel)]="pass"
+        [class.submitted]="submitted"
       />
       <img
         [src]="eyeIcon"
