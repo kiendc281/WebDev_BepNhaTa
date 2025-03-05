@@ -25,6 +25,7 @@ import { QuenMatKhauComponent } from './quen-mat-khau/quen-mat-khau.component';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [
     RouterOutlet,
     RouterModule,
@@ -45,8 +46,11 @@ import { QuenMatKhauComponent } from './quen-mat-khau/quen-mat-khau.component';
     DangNhapComponent,
     QuenMatKhauComponent,
   ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  template: `
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
+  `,
 })
 export class AppComponent implements OnInit {
   title = 'my-app';

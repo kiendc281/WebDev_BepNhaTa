@@ -59,8 +59,24 @@
         <input type="text" placeholder="Tìm kiếm" />
       </div>
       <img src="../../assets/header/mdi-cart-outline.svg" alt="" />
-      <img src="../../assets/header/group.svg" alt="" />
+      <img
+        src="../../assets/header/group.svg"
+        alt=""
+        (click)="toggleLoginPopup()"
+        style="cursor: pointer"
+      />
     </div>
   </div>
   <hr class="hr-decor" />
+</div>
+
+<!-- Login Popup -->
+<div
+  class="popup-overlay"
+  *ngIf="showLoginPopup"
+  (click)="closeLoginPopup($event)"
+>
+  <div class="popup-content">
+    <app-dang-nhap></app-dang-nhap>
+  </div>
 </div>
