@@ -89,11 +89,6 @@
   transform: translateY(0);
 }
 
-.save-button img {
-  /* width: 16px;
-  height: 16px; */
-}
-
 .save-button:hover {
   background-color: var(--color-camdam);
 }
