@@ -1,1 +1,96 @@
-<p>san-pham works!</p>
+<div class="maincontainer">
+  <div class="banner">
+    <img src="../../assets/san-pham/banner.png" alt="" />
+  </div>
+  <div class="products-container">
+    <div class="filter-bar">
+      <div class="filter-button-container">
+        <button class="button-cam">Tất Cả Công Thức</button>
+        <button class="button-trang">Miền Bắc</button>
+        <button class="button-trang">Miền Trung</button>
+        <button class="button-trang">Miền Nam</button>
+      </div>
+      <div class="search-container">
+        <button class="button-trang">
+          Bộ lọc <img src="../../assets/san-pham/filter.svg" alt="Bộ lọc" />
+        </button>
+        <button class="button-trang">Sắp xếp theo</button>
+      </div>
+    </div>
+
+    <div class="products-grid">
+      <div class="product-card" *ngFor="let product of paginatedProducts">
+        <div class="save-button">
+          <img
+            src="../../assets/san-pham/favourite.svg"
+            alt="Lưu vào yêu thích"
+          />
+        </div>
+        <img
+          [src]="product.image"
+          [alt]="product.title"
+          class="product-image"
+        />
+        <div class="product-content">
+          <h5 class="product-title">{{ product.title }}</h5>
+          <div class="product-info">
+            <div class="info-item">
+              <img src="../../assets/san-pham/khauphan.svg" alt="category" />
+              <span>{{ product.category }}</span>
+            </div>
+            <div class="info-item">
+              <img src="../../assets/san-pham/dokho.svg" alt="difficulty" />
+              <span>Trung bình</span>
+            </div>
+            <div class="info-item">
+              <img src="../../assets/san-pham/ph-cooking-pot.svg" alt="time" />
+              <span>25 phút</span>
+            </div>
+          </div>
+          <div class="product-actions">
+            <div class="price-container">
+              <div class="price-info">
+                <div class="price">
+                  <span class="old-price"
+                    >{{ product.price | number : "1.0-0" }}đ</span
+                  >
+                  <span class="new-price"
+                    >{{ product.price * 0.8 | number : "1.0-0" }}đ</span
+                  >
+                </div>
+              </div>
+              <div class="discount-tag">-20%</div>
+            </div>
+            <button class="button-camnhat">XEM CHI TIẾT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phân trang -->
+    <div class="pagination">
+      <button
+        class="page-number"
+        (click)="previousPage()"
+        [disabled]="currentPage === 1"
+      >
+        ←
+      </button>
+      <button
+        class="page-number"
+        *ngFor="let page of displayedPages"
+        [class.active]="currentPage === page"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+      <button
+        class="page-number"
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages"
+      >
+        →
+      </button>
+    </div>
+  </div>
+</div>
