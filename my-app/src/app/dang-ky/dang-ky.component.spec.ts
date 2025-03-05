@@ -8,9 +8,8 @@ describe('DangKyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DangKyComponent]
-    })
-    .compileComponents();
+      imports: [DangKyComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DangKyComponent);
     component = fixture.componentInstance;

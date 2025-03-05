@@ -5,36 +5,40 @@
   <div class="title">Đăng nhập</div>
   <p>Cùng Bếp Nhà Ta khám phá 200+ món ăn và công thức hấp dẫn!</p>
 
-  <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <input
         type="text"
-        id="emailOrPhone"
-        name="emailOrPhone"
+        formControlName="emailOrPhone"
         placeholder="Email/SĐT của bạn"
-        required
-        #emailOrPhone="ngModel"
-        [(ngModel)]="email"
-        [class.submitted]="submitted"
+        [class.submitted]="submitted && f['emailOrPhone'].errors"
       />
-      <div class="error-message" *ngIf="submitted && emailOrPhone.invalid">
+      <div
+        class="error-message"
+        *ngIf="submitted && f['emailOrPhone'].errors?.['required']"
+      >
         (*) Vui lòng nhập Email hoặc SĐT của bạn
       </div>
-      <div class="error-message" *ngIf="emailError">
-        {{ emailError }}
+      <div
+        class="error-message"
+        *ngIf="submitted && f['emailOrPhone'].errors?.['invalidEmail']"
+      >
+        Email không hợp lệ
+      </div>
+      <div
+        class="error-message"
+        *ngIf="submitted && f['emailOrPhone'].errors?.['invalidPhone']"
+      >
+        Số điện thoại không hợp lệ
       </div>
     </div>
 
     <div class="form-group password-input">
       <input
         [type]="showPassword ? 'text' : 'password'"
-        id="password"
-        name="password"
+        formControlName="password"
         placeholder="Mật khẩu"
-        required
-        #password="ngModel"
-        [(ngModel)]="pass"
-        [class.submitted]="submitted"
+        [class.submitted]="submitted && f['password'].errors"
       />
       <img
         [src]="eyeIcon"
@@ -42,7 +46,10 @@
         class="toggle-password"
         (click)="togglePassword()"
       />
-      <div class="error-message" *ngIf="submitted && password.invalid">
+      <div
+        class="error-message"
+        *ngIf="submitted && f['password'].errors?.['required']"
+      >
         (*) Vui lòng nhập mật khẩu
       </div>
     </div>

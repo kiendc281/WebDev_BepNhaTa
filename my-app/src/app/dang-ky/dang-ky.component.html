@@ -7,19 +7,18 @@
     Tạo tài khoản để lưu ngay công thức yêu thích và nhận những ưu đãi đặc biết!
   </p>
 
-  <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <input
         type="text"
-        id="name"
-        name="name"
+        formControlName="name"
         placeholder="Tên của bạn (*)"
-        required
-        #name="ngModel"
-        [(ngModel)]="userData.name"
-        [class.submitted]="submitted"
+        [class.submitted]="submitted && f['name'].errors"
       />
-      <div class="error-message" *ngIf="submitted && name.invalid">
+      <div
+        class="error-message"
+        *ngIf="submitted && f['name'].errors?.['required']"
+      >
         (*) Vui lòng nhập tên của bạn
       </div>
     </div>
@@ -27,51 +26,51 @@
     <div class="form-group">
       <input
         type="text"
-        id="phone"
-        name="phone"
+        formControlName="phone"
         placeholder="SĐT của bạn (*)"
-        required
-        #phone="ngModel"
-        [(ngModel)]="userData.phone"
-        [class.submitted]="submitted"
+        [class.submitted]="submitted && f['phone'].errors"
       />
-      <div class="error-message" *ngIf="submitted && phone.invalid">
+      <div
+        class="error-message"
+        *ngIf="submitted && f['phone'].errors?.['required']"
+      >
         (*) Vui lòng nhập số điện thoại của bạn
       </div>
-      <div class="error-message" *ngIf="phoneError">
-        {{ phoneError }}
+      <div
+        class="error-message"
+        *ngIf="submitted && f['phone'].errors?.['pattern']"
+      >
+        Số điện thoại không hợp lệ
       </div>
     </div>
 
     <div class="form-group">
       <input
         type="email"
-        id="email"
-        name="email"
+        formControlName="email"
         placeholder="Email của bạn (*)"
-        required
-        #email="ngModel"
-        [(ngModel)]="userData.email"
-        [class.submitted]="submitted"
+        [class.submitted]="submitted && f['email'].errors"
       />
-      <div class="error-message" *ngIf="submitted && email.invalid">
+      <div
+        class="error-message"
+        *ngIf="submitted && f['email'].errors?.['required']"
+      >
         (*) Vui lòng nhập email của bạn
       </div>
-      <div class="error-message" *ngIf="emailError">
-        {{ emailError }}
+      <div
+        class="error-message"
+        *ngIf="submitted && f['email'].errors?.['email']"
+      >
+        Email không hợp lệ
       </div>
     </div>
 
     <div class="form-group password-input">
       <input
         [type]="showPassword ? 'text' : 'password'"
-        id="password"
-        name="password"
+        formControlName="password"
         placeholder="Mật khẩu (*)"
-        required
-        #password="ngModel"
-        [(ngModel)]="userData.password"
-        [class.submitted]="submitted"
+        [class.submitted]="submitted && f['password'].errors"
       />
       <img
         [src]="passwordIcon"
@@ -79,27 +78,30 @@
         class="toggle-password"
         (click)="togglePassword()"
       />
-      <div class="error-message" *ngIf="submitted && password.invalid">
+      <div
+        class="error-message"
+        *ngIf="submitted && f['password'].errors?.['required']"
+      >
         (*) Vui lòng nhập mật khẩu
       </div>
-      <div class="error-message" *ngIf="passwordError">
-        {{ passwordError }}
+      <div
+        class="error-message"
+        *ngIf="submitted && (f['password'].errors?.['minlength'] || f['password'].errors?.['pattern'])"
+      >
+        Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ in hoa, số và ký tự đặc
+        biệt
       </div>
       <div class="password-note">
-        • Tối thiểu 8 ký tự<br />• Bao gồm chữ thường, chữ in hoa và số
+        • Tối thiểu 8 ký tự<br />• Bao gồm chữ in hoa, số và ký tự đặc biệt
       </div>
     </div>
 
     <div class="form-group password-input">
       <input
         [type]="showConfirmPassword ? 'text' : 'password'"
-        id="confirmPassword"
-        name="confirmPassword"
+        formControlName="confirmPassword"
         placeholder="Nhập lại mật khẩu (*)"
-        required
-        #confirmPassword="ngModel"
-        [(ngModel)]="userData.confirmPassword"
-        [class.submitted]="submitted"
+        [class.submitted]="submitted && (f['confirmPassword'].errors || registerForm.errors?.['mismatch'])"
       />
       <img
         [src]="confirmPasswordIcon"
@@ -107,29 +109,31 @@
         class="toggle-password"
         (click)="toggleConfirmPassword()"
       />
-      <div class="error-message" *ngIf="submitted && confirmPassword.invalid">
+      <div
+        class="error-message"
+        *ngIf="submitted && f['confirmPassword'].errors?.['required']"
+      >
         (*) Vui lòng nhập lại mật khẩu
       </div>
-      <div class="error-message" *ngIf="confirmPasswordError">
-        {{ confirmPasswordError }}
+      <div
+        class="error-message"
+        *ngIf="submitted && registerForm.errors?.['mismatch']"
+      >
+        Mật khẩu xác nhận không khớp
       </div>
     </div>
 
     <div class="terms">
-      <input
-        type="checkbox"
-        id="terms"
-        name="terms"
-        required
-        #terms="ngModel"
-        [(ngModel)]="userData.terms"
-      />
+      <input type="checkbox" formControlName="terms" id="terms" />
       <label for="terms">
         Tôi xác nhận đã đọc và chấp nhận <a href="#">Điều khoản sử dụng</a> và
         <a href="#">Chính sách bảo vệ dữ liệu cá nhân</a> của website.
       </label>
     </div>
-    <div class="error-message" *ngIf="submitted && terms.invalid">
+    <div
+      class="error-message"
+      *ngIf="submitted && f['terms'].errors?.['required']"
+    >
       (*) Vui lòng đồng ý với điều khoản sử dụng
     </div>
 
