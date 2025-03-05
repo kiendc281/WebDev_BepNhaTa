@@ -9,6 +9,9 @@ import { BmibmrComponent } from './bmibmr/bmibmr.component';
 import { BlogComponent } from './blog/blog.component';
 import { LienHeComponent } from './lien-he/lien-he.component';
 import { FaqComponent } from './faq/faq.component';
+import { DangKyComponent } from './dang-ky/dang-ky.component';
+import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
+import { QuenMatKhauComponent } from './quen-mat-khau/quen-mat-khau.component';
 
 export const routes: Routes = [
   { path: 'trang-chu', component: TrangChuComponent },
@@ -22,4 +25,7 @@ export const routes: Routes = [
   { path: 'chinh-sach/:id', component: ChinhSachComponent },
   { path: 'lien-he', component: LienHeComponent },
   { path: 'faq', component: FaqComponent },
+  { path: 'dang-ky', component: DangKyComponent },
+  { path: 'dang-nhap', component: DangNhapComponent },
+  { path: 'quen-mat-khau', component: QuenMatKhauComponent },
 ];

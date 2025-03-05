@@ -19,6 +19,9 @@ import { LenThucDonComponent } from './len-thuc-don/len-thuc-don.component';
 import { LienHeComponent } from './lien-he/lien-he.component';
 import { SanPhamComponent } from './san-pham/san-pham.component';
 import { TrangChuComponent } from './trang-chu/trang-chu.component';
+import { DangKyComponent } from './dang-ky/dang-ky.component';
+import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
+import { QuenMatKhauComponent } from './quen-mat-khau/quen-mat-khau.component';
 
 @Component({
   selector: 'app-root',
@@ -38,6 +41,9 @@ import { TrangChuComponent } from './trang-chu/trang-chu.component';
     LienHeComponent,
     SanPhamComponent,
     TrangChuComponent,
+    DangKyComponent,
+    DangNhapComponent,
+    QuenMatKhauComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
