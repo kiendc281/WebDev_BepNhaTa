@@ -1,0 +1,133 @@
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.title {
+  color: black;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+p {
+  font-weight: 600 !important;
+  margin: 20px 0;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.close-button img {
+  width: 35px;
+  height: 35px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 15px;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 2px solid transparent !important;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  background-color: white;
+  border: 2px solid var(--color-camvua) !important;
+}
+
+.password-note {
+  font-size: 14px;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.terms {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.terms input[type="checkbox"] {
+  width: 28px;
+  height: 18px;
+  margin: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid var(--color-camvua);
+  border-radius: 4px;
+  position: relative;
+  outline: none;
+}
+
+.terms input[type="checkbox"]:checked {
+  background-color: var(--color-camvua);
+}
+
+.terms input[type="checkbox"]:checked::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.terms label {
+  font-size: 14px;
+  margin-bottom: 0;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.terms a {
+  color: var(--color-camdam);
+  text-decoration: none;
+}
+
+.button-cam {
+  width: 100%;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.login-link a {
+  color: var(--color-camdam);
+  text-decoration: none;
+  font-weight: 500;
+}

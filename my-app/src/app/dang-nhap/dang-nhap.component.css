@@ -1,0 +1,100 @@
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.title {
+  color: black;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+p {
+  font-weight: 600 !important;
+  margin: 22px 0;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.close-button img {
+  width: 35px;
+  height: 35px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 15px;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 2px solid transparent !important;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  background-color: white;
+  border: 2px solid var(--color-camvua) !important;
+}
+
+.password-input {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.forgot-password {
+  text-align: center;
+  margin: 15px 0;
+}
+
+.forgot-password a {
+  color: var(--color-camdam);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.button-cam {
+  width: 100%;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.login-link p {
+  font-size: 14px;
+}
+
+.login-link a {
+  color: var(--color-camdam);
+  text-decoration: none;
+  font-weight: 500;
+}

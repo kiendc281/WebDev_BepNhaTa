@@ -49,6 +49,7 @@ import { QuenMatKhauComponent } from './quen-mat-khau/quen-mat-khau.component';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
+  title = 'my-app';
   private router: Router; //auto scroll top when route
 
   constructor(router: Router) {
