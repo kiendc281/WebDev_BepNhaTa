@@ -23,7 +23,7 @@
 
     <div class="form-group password-input">
       <input
-        type="password"
+        [type]="showPassword ? 'text' : 'password'"
         id="password"
         name="password"
         placeholder="Mật khẩu"
@@ -32,7 +32,7 @@
         [(ngModel)]="pass"
       />
       <img
-        src="../../assets/sign in up/clarity-eye-hide-line.svg"
+        [src]="eyeIcon"
         alt=""
         class="toggle-password"
         (click)="togglePassword()"
@@ -50,6 +50,9 @@
   </div>
 
   <div class="login-link">
-    <p>Chưa có tài khoản? <a href="#">Đăng ký ngay!</a></p>
+    <p>
+      Chưa có tài khoản?
+      <a routerLink="/dang-ky" style="cursor: pointer">Đăng ký ngay!</a>
+    </p>
   </div>
 </div>

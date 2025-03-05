@@ -28,5 +28,5 @@ export const routes: Routes = [
   { path: 'dang-ky', component: DangKyComponent },
   { path: 'dang-nhap', component: DangNhapComponent },
   { path: 'quen-mat-khau', component: QuenMatKhauComponent },
-  { path: '', component: TrangChuComponent },
+  { path: '', redirectTo: '/dang-nhap', pathMatch: 'full' },
 ];

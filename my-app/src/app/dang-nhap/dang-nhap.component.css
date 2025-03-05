@@ -1,9 +1,7 @@
 .container {
   max-width: 500px;
-  margin: 40px auto;
   padding: 30px;
   border-radius: 20px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
@@ -40,7 +38,7 @@ p {
 input[type="text"],
 input[type="password"] {
   width: 100%;
-  padding: 12px 15px;
+  padding: 12px 40px 12px 15px;
   border-radius: 15px;
   font-size: 16px;
   background-color: rgba(0, 0, 0, 0.05);
@@ -62,8 +60,7 @@ input[type="password"]:focus {
 .toggle-password {
   position: absolute;
   right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 15px;
   cursor: pointer;
   width: 20px;
   height: 20px;
@@ -82,6 +79,7 @@ input[type="password"]:focus {
 
 .button-cam {
   width: 100%;
+  margin-top: 15px;
 }
 
 .login-link {

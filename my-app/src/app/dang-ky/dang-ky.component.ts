@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dang-ky',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './dang-ky.component.html',
   styleUrls: ['./dang-ky.component.css'],
 })
@@ -27,6 +28,8 @@ export class DangKyComponent {
   passwordIcon = '../../assets/sign in up/clarity-eye-hide-line.svg';
   confirmPasswordIcon = '../../assets/sign in up/clarity-eye-hide-line.svg';
 
+  constructor(private router: Router) {}
+
   onSubmit() {
     this.submitted = true;
     if (this.registerForm.valid) {
@@ -47,5 +50,9 @@ export class DangKyComponent {
     this.confirmPasswordIcon = this.showConfirmPassword
       ? '../../assets/sign in up/unhide.svg'
       : '../../assets/sign in up/clarity-eye-hide-line.svg';
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/dang-nhap']);
   }
 }
