@@ -1,0 +1,182 @@
+<div class="product-detail-container" *ngIf="product">
+  <!-- Left column -->
+  <div class="product-main">
+    <div class="product-gallery">
+      <div class="thumbnail-list">
+        <div class="thumbnail">
+          <img [src]="product.image" [alt]="product.title" />
+        </div>
+      </div>
+      <div class="main-image">
+        <img [src]="product.image" [alt]="product.title" />
+      </div>
+    </div>
+
+    <div class="product-description">
+      <p class="description-text">{{ product.description }}</p>
+
+      <div class="note-section">
+        <h3>Lưu ý</h3>
+        <p>
+          Gói nguyên liệu {{ product.title }} dùng để nấu cho khẩu phần
+          {{ selectedServing }} người
+        </p>
+      </div>
+
+      <div class="product-details">
+        <h3>THÔNG TIN SẢN PHẨM</h3>
+        <div class="details-grid">
+          <div class="detail-item">
+            <h4>Thành phần nguyên liệu</h4>
+            <ul>
+              <li>{{ product.category }}</li>
+              <li>Chất lượng cao cấp</li>
+              <li>Đóng gói cẩn thận</li>
+            </ul>
+          </div>
+          <div class="detail-item">
+            <h4>Bảo quản</h4>
+            <p>Bảo quản nơi khô ráo và thoáng mát</p>
+          </div>
+          <div class="detail-item">
+            <h4>Hạn sử dụng</h4>
+            <p>
+              Dùng ngon nhất trong vòng 7 ngày và tối đa 1 tháng khi để tủ đông
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tags">
+        <h3>TAGS</h3>
+        <div class="tag-list">
+          <span class="tag">{{ product.category }}</span>
+        </div>
+      </div>
+
+      <div class="faq">
+        <h3>CÂU HỎI THƯỜNG GẶP</h3>
+        <div class="faq-item" *ngFor="let faq of faqs">
+          <div class="faq-question" (click)="toggleFaq(faq)">
+            {{ faq.question }}
+            <i
+              class="fas"
+              [class.fa-chevron-down]="!faq.isOpen"
+              [class.fa-chevron-up]="faq.isOpen"
+            ></i>
+          </div>
+          <div class="faq-answer" *ngIf="faq.isOpen">
+            {{ faq.answer }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right column - Sticky sidebar -->
+  <div class="product-sidebar">
+    <div class="sidebar-content">
+      <h1 class="product-title">{{ product.title }}</h1>
+
+      <div class="rating">
+        <span class="stars">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </span>
+        <span class="rating-score">{{ product.rating?.rate || 5.0 }}</span>
+        <span class="review-count"
+          >{{ product.rating?.count || 0 }} đánh giá</span
+        >
+      </div>
+
+      <div class="price-section">
+        <div class="price">
+          <span class="original-price"
+            >{{ product.price | number : "1.0-0" }}đ</span
+          >
+          <span class="discounted-price"
+            >{{ product.price * 0.8 | number : "1.0-0" }}đ</span
+          >
+          <span class="discount-tag">-20%</span>
+        </div>
+        <div class="price-note">
+          <div>Mã giảm giá <span class="discount-code">Giảm 20%</span></div>
+          <div>Khấu phần <span class="portion">Giảm 10%</span></div>
+        </div>
+      </div>
+
+      <div class="serving-options">
+        <span
+          class="option"
+          [class.active]="selectedServing === '2'"
+          (click)="selectServing('2')"
+          >2 Người</span
+        >
+        <span
+          class="option"
+          [class.active]="selectedServing === '4'"
+          (click)="selectServing('4')"
+          >4 Người</span
+        >
+      </div>
+
+      <div class="quantity-section">
+        <label>Số lượng:</label>
+        <div class="quantity-control">
+          <button (click)="decreaseQuantity()">-</button>
+          <input type="number" [(ngModel)]="quantity" min="1" />
+          <button (click)="increaseQuantity()">+</button>
+        </div>
+        <button class="add-to-wishlist button-trang" (click)="addToCart()">
+          Thêm vào giỏ hàng
+        </button>
+        <button class="save button-xam" (click)="addToWishlist()">Lưu</button>
+      </div>
+
+      <button class="buy-now" (click)="buyNow()">MUA NGAY</button>
+
+      <div class="special-offer">
+        <i class="fas fa-gift"></i> ƯU ĐÃI ĐẶC BIỆT
+      </div>
+      <div class="promotion">Khuyến mãi giảm giá khi mua kèm</div>
+
+      <div class="related-products">
+        <h3>SẢN PHẨM LIÊN QUAN</h3>
+        <div class="product-grid">
+          <div
+            class="related-product-card"
+            *ngFor="let relatedProduct of relatedProducts"
+          >
+            <a
+              class="product-link"
+              (click)="navigateToProduct(relatedProduct.id)"
+              style="cursor: pointer"
+            >
+              <img
+                [src]="relatedProduct.image"
+                [alt]="relatedProduct.title"
+                class="product-image"
+              />
+              <div class="product-info">
+                <h4 class="product-title">{{ relatedProduct.title }}</h4>
+                <div class="product-price">
+                  <span class="original-price"
+                    >{{ relatedProduct.price | number : "1.0-0" }}đ</span
+                  >
+                  <span class="discounted-price"
+                    >{{ relatedProduct.price * 0.8 | number : "1.0-0" }}đ</span
+                  >
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loading" *ngIf="!product">Đang tải thông tin sản phẩm...</div>
