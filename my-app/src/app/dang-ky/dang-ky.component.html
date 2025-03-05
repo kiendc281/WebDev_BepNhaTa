@@ -1,5 +1,5 @@
 <div class="container">
-  <button class="close-button">
+  <button class="close-button" (click)="onClose()">
     <img src="../../assets/sign in up/zondicons-close-outline.svg" alt="" />
   </button>
   <div class="title">Đăng ký</div>
@@ -127,7 +127,7 @@
   <div class="login-link">
     <p>
       Đã có tài khoản?
-      <a routerLink="/dang-nhap" style="cursor: pointer">Đăng nhập ngay!</a>
+      <a (click)="navigateToLogin()" style="cursor: pointer">Đăng nhập ngay!</a>
     </p>
   </div>
 </div>

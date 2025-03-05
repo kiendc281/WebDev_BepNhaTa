@@ -382,11 +382,34 @@
   background: white;
   border-radius: 40px;
   animation: slideIn 0.3s ease;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
-.popup-content app-dang-nhap .container {
+.popup-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.popup-content::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 40px 0;
+}
+
+.popup-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.popup-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.popup-content app-dang-nhap .container,
+.popup-content app-dang-ky .container {
   margin: 0;
   padding: 30px;
+  padding-right: 26px;
   box-shadow: none;
   max-width: none;
   border-radius: 20px;

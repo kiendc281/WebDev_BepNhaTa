@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -12,6 +12,8 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class DangKyComponent {
   @ViewChild('registerForm') registerForm!: NgForm;
+  @Output() closePopup = new EventEmitter<void>();
+  @Output() switchToLogin = new EventEmitter<void>();
 
   userData = {
     name: '',
@@ -53,6 +55,10 @@ export class DangKyComponent {
   }
 
   navigateToLogin() {
-    this.router.navigate(['/dang-nhap']);
+    this.switchToLogin.emit();
+  }
+
+  onClose() {
+    this.closePopup.emit();
   }
 }

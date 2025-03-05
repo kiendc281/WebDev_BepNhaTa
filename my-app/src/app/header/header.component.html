@@ -77,6 +77,15 @@
   (click)="closeLoginPopup($event)"
 >
   <div class="popup-content">
-    <app-dang-nhap></app-dang-nhap>
+    <app-dang-nhap
+      *ngIf="isLoginForm"
+      (closePopup)="closeLoginPopup()"
+      (switchToRegister)="switchForm()"
+    ></app-dang-nhap>
+    <app-dang-ky
+      *ngIf="!isLoginForm"
+      (closePopup)="closeLoginPopup()"
+      (switchToLogin)="switchForm()"
+    ></app-dang-ky>
   </div>
 </div>

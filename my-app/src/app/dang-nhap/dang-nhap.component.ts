@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, EventEmitter, Output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -12,6 +12,9 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class DangNhapComponent {
   @ViewChild('loginForm') loginForm!: NgForm;
+  @Output() closePopup = new EventEmitter<void>();
+  @Output() switchToRegister = new EventEmitter<void>();
+
   email: string = '';
   pass: string = '';
   submitted: boolean = false;
@@ -36,6 +39,10 @@ export class DangNhapComponent {
   }
 
   navigateToRegister() {
-    this.router.navigate(['/dang-ky']);
+    this.switchToRegister.emit();
+  }
+
+  onClose() {
+    this.closePopup.emit();
   }
 }
