@@ -1,1 +1,45 @@
-<p>nhapma works!</p>
+<div class="container">
+  <button class="close-button" (click)="onClose()">
+    <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="" />
+  </button>
+  <div class="title">Nhập mã xác thực</div>
+  <p>Một mã xác thực đã được gửi đến số điện thoại/ Email mà bạn đã đăng ký</p>
+
+  <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <div class="input-container">
+        <input
+          type="text"
+          formControlName="verificationCode"
+          placeholder="Nhập mã"
+          [class.submitted]="submitted && f['verificationCode'].errors"
+        />
+        <div class="timer-resend">
+          <span class="timer"
+            >{{ minutes }}:{{ seconds < 10 ? "0" : "" }}{{ seconds }}</span
+          >
+          <button
+            type="button"
+            class="resend-button"
+            [disabled]="!canResend"
+            (click)="resendCode()"
+          >
+            Gửi lại
+          </button>
+        </div>
+      </div>
+      <div
+        class="error-message"
+        *ngIf="submitted && f['verificationCode'].errors?.['required']"
+      >
+        (*) Vui lòng nhập mã xác thực
+      </div>
+    </div>
+
+    <button class="button-cam" type="submit">XÁC NHẬN</button>
+  </form>
+
+  <div class="back-link">
+    <a (click)="onBack()">Quay lại</a>
+  </div>
+</div>
