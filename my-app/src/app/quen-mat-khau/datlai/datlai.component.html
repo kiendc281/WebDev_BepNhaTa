@@ -1,0 +1,45 @@
+<div class="container">
+  <button class="close-button" (click)="onClose()">
+    <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="" />
+  </button>
+  <div class="title">Đặt lại mật khẩu</div>
+  <p>
+    Để đặt lại mật khẩu, vui lòng nhập Email/Số điện thoại đã đăng ký trên Bếp
+    Nhà Ta
+  </p>
+
+  <form [formGroup]="resetForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <input
+        type="text"
+        formControlName="emailOrPhone"
+        placeholder="Email/SĐT của bạn"
+        [class.submitted]="submitted && f['emailOrPhone'].errors"
+      />
+      <div
+        class="error-message"
+        *ngIf="submitted && f['emailOrPhone'].errors?.['required']"
+      >
+        (*) Vui lòng nhập Email hoặc SĐT của bạn
+      </div>
+      <div
+        class="error-message"
+        *ngIf="submitted && f['emailOrPhone'].errors?.['invalidEmail']"
+      >
+        Email không hợp lệ
+      </div>
+      <div
+        class="error-message"
+        *ngIf="submitted && f['emailOrPhone'].errors?.['invalidPhone']"
+      >
+        Số điện thoại không hợp lệ
+      </div>
+    </div>
+
+    <button class="button-cam" type="submit">TIẾP TỤC</button>
+  </form>
+
+  <div class="back-link">
+    <a (click)="onBack()">Quay lại</a>
+  </div>
+</div>
