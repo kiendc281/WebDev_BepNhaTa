@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './tai-khoan.component.css',
 })
 export class TaiKhoanComponent {
-  selectedCategory: string = 'ban-hang';
+  selectedCategory: string = 'thong-tin';
 
   showContent(contentId: string): void {
     this.selectedCategory = contentId;

@@ -24,10 +24,10 @@ import { TrangChuComponent } from './trang-chu/trang-chu.component';
 import { DangKyComponent } from './dang-ky/dang-ky.component';
 import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
 import { QuenMatKhauComponent } from './quen-mat-khau/quen-mat-khau.component';
-import { TaiKhoanComponent } from './tai-khoan/tai-khoan.component';
 import { DatlaiComponent } from './quen-mat-khau/datlai/datlai.component';
-import { NhapemailComponent } from './quen-mat-khau/nhapemail/nhapemail.component';
 import { NhapmaComponent } from './quen-mat-khau/nhapma/nhapma.component';
+import { NhapemailComponent } from './quen-mat-khau/nhapemail/nhapemail.component';
+import { TaiKhoanComponent } from './tai-khoan/tai-khoan.component';
 
 @Component({
   selector: 'app-root',
@@ -51,10 +51,10 @@ import { NhapmaComponent } from './quen-mat-khau/nhapma/nhapma.component';
     DangKyComponent,
     DangNhapComponent,
     QuenMatKhauComponent,
-    TaiKhoanComponent,
-    NhapemailComponent,
-    NhapmaComponent,
     DatlaiComponent,
+    NhapmaComponent,
+    NhapemailComponent,
+    TaiKhoanComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

@@ -1,0 +1,95 @@
+.container {
+  background: white;
+  border-radius: 40px;
+  padding: 30px;
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.close-button img {
+  width: 35px;
+  height: auto;
+}
+
+.title {
+  color: black;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+p,
+.title {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 40px 12px 15px;
+  border-radius: 15px;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 2px solid transparent !important;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  background-color: white;
+  border: 2px solid var(--color-camvua) !important;
+}
+
+input[type="text"].ng-invalid.ng-touched.submitted,
+input[type="password"].ng-invalid.ng-touched.submitted,
+input[type="text"].ng-invalid.submitted,
+input[type="password"].ng-invalid.submitted {
+  border: 2px solid red !important;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.button-cam {
+  width: 100%;
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-link a {
+  color: var(--color-camvua);
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}
+
+input.submitted.ng-invalid {
+  border: 2px solid red;
+}

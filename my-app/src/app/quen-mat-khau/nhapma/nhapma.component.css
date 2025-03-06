@@ -90,7 +90,7 @@ input {
   color: red;
   font-size: 14px;
   margin-top: 5px;
-  margin-left: 20px;
+  font-style: italic;
 }
 
 .button-cam {
@@ -110,7 +110,7 @@ input {
 }
 
 .back-link a:hover {
-  color: var(--color-camdam);
+  text-decoration: underline;
 }
 
 input.submitted.ng-invalid {

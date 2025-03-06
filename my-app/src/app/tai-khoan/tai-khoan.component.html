@@ -3,13 +3,23 @@
     <div class="container-leftpanel">
       <button
         class="button-trang"
-        (click)="showContent('ban-hang')"
-        [ngClass]="{ active: selectedCategory === 'ban-hang' }"
+        (click)="showContent('thong-tin')"
+        [ngClass]="{ active: selectedCategory === 'thong-tin' }"
       >
-        Thông tin tài khoản
+        <div class="button-content">
+          <img
+            [src]="
+              selectedCategory === 'thong-tin'
+                ? 'assets/tai-khoan/thongtintk-trang.svg'
+                : 'assets/tai-khoan/thongtintk-cam.svg'
+            "
+            alt="arrow"
+          />
+          Thông tin tài khoản
+        </div>
         <img
           [src]="
-            selectedCategory === 'ban-hang'
+            selectedCategory === 'thong-tin'
               ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
               : 'assets/faq/cuida-arrow-right-outline.svg'
           "
@@ -18,13 +28,23 @@
       </button>
       <button
         class="button-trang"
-        (click)="showContent('doi-tra')"
-        [ngClass]="{ active: selectedCategory === 'doi-tra' }"
+        (click)="showContent('lich-su')"
+        [ngClass]="{ active: selectedCategory === 'lich-su' }"
       >
-        Lịch sử đơn hàng
+        <div class="button-content">
+          <img
+            [src]="
+              selectedCategory === 'lich-su'
+                ? 'assets/tai-khoan/lichsudonhang-trang.svg'
+                : 'assets/tai-khoan/lichsudonhang-cam.svg'
+            "
+            alt="arrow"
+          />
+          Lịch sử đơn hàng
+        </div>
         <img
           [src]="
-            selectedCategory === 'doi-tra'
+            selectedCategory === 'lich-su'
               ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
               : 'assets/faq/cuida-arrow-right-outline.svg'
           "
@@ -33,13 +53,23 @@
       </button>
       <button
         class="button-trang"
-        (click)="showContent('dich-vu')"
-        [ngClass]="{ active: selectedCategory === 'dich-vu' }"
+        (click)="showContent('yeu-thich')"
+        [ngClass]="{ active: selectedCategory === 'yeu-thich' }"
       >
-        Mục yêu thích
+        <div class="button-content">
+          <img
+            [src]="
+              selectedCategory === 'yeu-thich'
+                ? 'assets/tai-khoan/heart-trang.svg'
+                : 'assets/tai-khoan/heart-cam.svg'
+            "
+            alt="arrow"
+          />
+          Mục yêu thích
+        </div>
         <img
           [src]="
-            selectedCategory === 'dich-vu'
+            selectedCategory === 'yeu-thich'
               ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
               : 'assets/faq/cuida-arrow-right-outline.svg'
           "
@@ -48,28 +78,44 @@
       </button>
       <button
         class="button-trang"
-        (click)="showContent('bao-mat')"
-        [ngClass]="{ active: selectedCategory === 'bao-mat' }"
+        (click)="showContent('so-dia-chi')"
+        [ngClass]="{ active: selectedCategory === 'so-dia-chi' }"
       >
-        Sổ địa chỉ
+        <div class="button-content">
+          <img
+            [src]="
+              selectedCategory === 'so-dia-chi'
+                ? 'assets/tai-khoan/location-trang.svg'
+                : 'assets/tai-khoan/location-cam.svg'
+            "
+            alt="sổ địa chỉ"
+          />
+          Sổ địa chỉ
+        </div>
         <img
           [src]="
-            selectedCategory === 'bao-mat'
+            selectedCategory === 'so-dia-chi'
               ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
               : 'assets/faq/cuida-arrow-right-outline.svg'
           "
           alt="arrow"
         />
       </button>
-      <button
-        class="button-trang"
-        (click)="showContent('bao-mat')"
-        [ngClass]="{ active: selectedCategory === 'bao-mat' }"
-      >
-        Đăng xuất
+      <button class="button-trang">
+        <div class="button-content">
+          <img
+            [src]="
+              selectedCategory === 'dang-xuat'
+                ? 'assets/tai-khoan/dangxuat-trang.svg'
+                : 'assets/tai-khoan/dangxuat-cam.svg'
+            "
+            alt="arrow"
+          />
+          Đăng xuất
+        </div>
         <img
           [src]="
-            selectedCategory === 'bao-mat'
+            selectedCategory === 'dang-xuat'
               ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
               : 'assets/faq/cuida-arrow-right-outline.svg'
           "
@@ -78,294 +124,40 @@
       </button>
     </div>
 
-    <!-- CHÍNH SÁCH ĐỔI TRẢ -->
+    <!-- THÔNG TIN TÀI KHOẢN -->
     <div
       class="container-rightpanel"
-      *ngIf="selectedCategory === 'doi-tra'"
-      id="doi-tra"
+      *ngIf="selectedCategory === 'thong-tin'"
+      id="thong-tin"
     >
-      <h1 class="text-center">CHÍNH SÁCH ĐỔI TRẢ</h1>
-      <div>
-        <h4>1. ĐIỀU KIỆN ĐỔI TRẢ</h4>
-        <div>
-          Chúng tôi cam kết cung cấp nguyên liệu chất lượng tốt nhất đến khách
-          hàng. Trong trường hợp có vấn đề phát sinh, Bếp Nhà Ta hỗ trợ đổi/trả
-          sản phẩm theo các điều kiện sau:
-          <ul>
-            <li>
-              Sản phẩm nhận được bị hỏng, dập nát hoặc không đạt chất lượng.
-            </li>
-            <li>Sản phẩm giao không đúng với đơn đặt hàng.</li>
-            <li>Sản phẩm còn nguyên vẹn, chưa qua chế biến hoặc sử dụng.</li>
-            <li>
-              Yêu cầu đổi/trả phải được gửi trong vòng 12 giờ sau khi nhận hàng
-              đối với nguyên liệu tươi sống, 24 giờ đối với các sản phẩm khô
-              hoặc đóng gói.
-            </li>
-          </ul>
-        </div>
-        <h4>2. CÁCH THỨC YÊU CẦU ĐỔI TRẢ</h4>
-        <div>
-          Nếu gặp vấn đề với đơn hàng, khách hàng có thể thực hiện yêu cầu
-          đổi/trả theo các bước sau:
-          <ol>
-            <li>Chụp ảnh hoặc quay video sản phẩm bị lỗi/hỏng.</li>
-            <li>
-              Gửi thông tin qua email hoặc hotline kèm hình ảnh, số đơn hàng và
-              mô tả vấn đề.
-            </li>
-            <li>
-              Chờ phản hồi từ đội ngũ chăm sóc khách hàng trong vòng 24 giờ.
-            </li>
-            <li>
-              Sau khi xác nhận, chúng tôi sẽ tiến hành đổi/trả sản phẩm hoặc
-              hoàn tiền tùy theo từng trường hợp.
-            </li>
-          </ol>
-        </div>
-        <h4>3. CÁC HÌNH THỨC HOÀN TIỀN & ĐỔI HÀNG</h4>
-        <div>
-          Bếp Nhà Ta hỗ trợ các phương án sau:
-          <ul>
-            <li>Đổi sản phẩm mới: Giao lại sản phẩm mới nếu có sẵn.</li>
-            <li>
-              Hoàn tiền: Hoàn tiền qua phương thức thanh toán ban đầu hoặc tích
-              điểm cho lần mua tiếp theo.
-            </li>
-            <li>
-              Mã giảm giá: Cung cấp mã giảm giá có giá trị tương đương cho lần
-              mua sau.
-            </li>
-          </ul>
-        </div>
-        <h4>4. CÁC TRƯỜNG HỢP KHÔNG HỖ TRỢ ĐỔI TRẢ</h4>
-        <div>
-          Bếp Nhà Ta xin phép từ chối đổi/trả trong các trường hợp sau:
-          <ul>
-            <li>Sản phẩm đã quá thời hạn yêu cầu đổi/trả.</li>
-            <li>
-              Sản phẩm bị hư hỏng do bảo quản không đúng cách sau khi giao hàng.
-            </li>
-            <li>Sản phẩm đã qua chế biến hoặc sử dụng.</li>
-            <li>
-              Lỗi phát sinh do khách hàng cung cấp sai địa chỉ hoặc thông tin
-              nhận hàng.
-            </li>
-          </ul>
-        </div>
-        <h4>5. LIÊN HỆ HỖ TRỢ</h4>
-        <div>
-          Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ với Bếp Nhà Ta qua:
-          <ul>
-            <li>Hotline: 0909.868.686</li>
-            <li>Email: bepnhata&#64;gmail.com</li>
-            <li>Chat trực tuyến: Trên website Bếp Nhà Ta</li>
-            Chúng tôi luôn sẵn sàng hỗ trợ để mang đến trải nghiệm mua sắm tốt
-            nhất cho bạn!
-          </ul>
-        </div>
-      </div>
+      <h1>THÔNG TIN TÀI KHOẢN</h1>
     </div>
 
-    <!-- CHÍNH SÁCH BÁN HÀNG -->
+    <!-- LỊCH SỬ ĐƠN HÀNG -->
     <div
       class="container-rightpanel"
-      *ngIf="selectedCategory === 'ban-hang'"
-      id="ban-hang"
+      *ngIf="selectedCategory === 'lich-su'"
+      id="lich-su"
     >
-      <h1 class="text-center">CHÍNH SÁCH BÁN HÀNG</h1>
-      <div>
-        <h4>1. NGUYÊN TẮC CHUNG</h4>
-        <p>
-          Bếp Nhà Ta cam kết mang đến cho khách hàng những nguyên liệu nấu ăn
-          tươi ngon, chất lượng và dịch vụ tốt nhất. Khi mua hàng tại Bếp Nhà
-          Ta, khách hàng đồng ý với các điều khoản và điều kiện dưới đây.
-        </p>
-        <h4>2. QUY TRÌNH ĐẶT HÀNG</h4>
-        <div>
-          Khách hàng có thể đặt hàng thông qua:
-          <ul>
-            <li>
-              Website chính thức của Bếp Nhà Ta. Ứng dụng di động (nếu có).
-            </li>
-            <li>Hotline hoặc fanpage chính thức.</li>
-          </ul>
-          <p>
-            Sau khi đặt hàng, khách hàng sẽ nhận được thông báo xác nhận hàng
-            qua email hoặc tin nhắn.
-          </p>
-        </div>
-        <h4>3. PHƯƠNG THỨC THANH TOÁN</h4>
-        <div>
-          Bếp Nhà Ta hỗ trợ các phương thức thanh toán:
-          <ul>
-            <li>Thanh toán khi nhận hàng (COD).</li>
-            <li>Chuyển khoản ngân hàng.</li>
-          </ul>
-          <p>
-            Khách hàng cần thanh toán đúng số tiền hiển thị trên đơn hàng. Nếu
-            có vấn đề phát sinh, vui lòng liên hệ ngay với bộ phận hỗ trợ.
-          </p>
-        </div>
-        <h4>4. CHÍNH SÁCH GIAO HÀNG</h4>
-        <div>
-          <ul>
-            <li>
-              Thời gian giao hàng: Nội thành 24-48 giờ, ngoại thành 3-5 ngày.
-            </li>
-            <li>Phí giao hàng sẽ được thông báo cụ thể khi đặt hàng.</li>
-            <li>
-              Khách hàng vui lòng kiểm tra hàng ngay khi nhận và phản hồi ngay
-              nếu có vấn đề.
-            </li>
-          </ul>
-        </div>
-        <h4>5. CHÍNH SÁCH ĐỔI TRẢ</h4>
-        <div>
-          Bếp Nhà Ta hỗ trợ đổi trả sản phẩm trong các trường hợp:
-
-          <ul>
-            <li>Sản phẩm bị lỗi, hư hỏng do vận chuyển.</li>
-
-            <li>Giao sai sản phẩm so với đơn đặt hàng.</li>
-            <li>
-              Đơn yêu cầu đổi trả cần được gửi trong vòng 12-24 giờ sau khi nhận
-              hàng.
-            </li>
-          </ul>
-        </div>
-        <h4>6. CHÍNH SÁCH BẢO MẬT</h4>
-        <p>
-          Chúng tôi cam kết bảo mật thông tin cá nhân khách hàng và chỉ sử dụng
-          để xử lý đơn hàng, chăm sóc khách hàng.
-        </p>
-        <h4>7. LIÊN HỆ HỖ TRỢ</h4>
-        <div>
-          Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ với Bếp Nhà Ta qua:
-          <ul>
-            <li>Hotline: 0909.868.686</li>
-            <li>Email: bepnhata&#64;gmail.com</li>
-            <li>Chat trực tuyến: Trên website Bếp Nhà Ta</li>
-            Chúng tôi luôn sẵn sàng hỗ trợ để mang đến trải nghiệm mua sắm tốt
-            nhất cho bạn!
-          </ul>
-        </div>
-      </div>
+      <h1>LỊCH SỬ ĐƠN HÀNG</h1>
     </div>
 
-    <!-- CHÍNH SÁCH DỊCH VỤ -->
+    <!-- MỤC YÊU THÍCH -->
     <div
       class="container-rightpanel"
-      *ngIf="selectedCategory === 'dich-vu'"
-      id="dich-vu"
+      *ngIf="selectedCategory === 'yeu-thich'"
+      id="yeu-thich"
     >
-      <h1 class="text-center">CHÍNH SÁCH DỊCH VỤ</h1>
-      <div>
-        <h4>1. PHẠM VI DỊCH VỤ</h4>
-        <p>
-          Bếp Nhà Ta cung cấp nguyên liệu nấu ăn chất lượng cao, giao hàng tận
-          nơi và hỗ trợ tư vấn công thức nấu ăn để giúp khách hàng có trải
-          nghiệm nấu nướng tốt nhất.
-        </p>
-        <h4>2. CAM KẾT DỊCH VỤ</h4>
-        <p>
-          Cung cấp sản phẩm tươi ngon, đảm bảo nguồn gốc rõ ràng. Hỗ trợ khách
-          hàng trong quá trình chọn mua và sử dụng sản phẩm. Giao hàng đúng thời
-          gian và đảm bảo chất lượng sản phẩm khi đến tay khách hàng.
-        </p>
-        <h4>3. THỜI GIAN HOẠT ĐỘNG</h4>
-        <div>
-          <ul>
-            <li>Đặt hàng trực tuyến: 24/7.</li>
-            <li>Hỗ trợ khách hàng: 08:00 - 22:00 hàng ngày.</li>
-            <li>Giao hàng: Từ 08:00 - 20:00, các ngày trong tuần.</li>
-          </ul>
-        </div>
-        <h4>4. HỖ TRỢ KHÁCH HÀNG</h4>
-        <div>
-          Khách hàng có thể liên hệ với Bếp Nhà Ta để được hỗ trợ qua các kênh:
-
-          <ul>
-            <li>Hotline: 0909.868.686</li>
-            <li>Email: bepnhata&#64;.com</li>
-            <li>Chat trực tuyến: Trên website Bếp Nhà Ta</li>
-            <li>Mạng xã hội: Facebook, Zalo, Instagram</li>
-          </ul>
-          Bếp Nhà Ta luôn sẵn sàng phục vụ và mang đến cho khách hàng những trải
-          nghiệm mua sắm tốt nhất!
-        </div>
-      </div>
+      <h1>MỤC YÊU THÍCH</h1>
     </div>
 
-    <!-- CHÍNH SÁCH BẢO MẬT -->
+    <!-- SỔ ĐỊA CHỈ -->
     <div
       class="container-rightpanel"
-      *ngIf="selectedCategory === 'bao-mat'"
-      id="bao-mat"
+      *ngIf="selectedCategory === 'so-dia-chi'"
+      id="so-dia-chi"
     >
-      <h1 class="text-center">CHÍNH SÁCH BẢO MẬT</h1>
-      <div>
-        <h4>1. THU THẬP THÔNG TIN</h4>
-        <div>
-          Bếp Nhà Ta thu thập thông tin cá nhân của khách hàng nhằm mục đích xử
-          lý đơn hàng, hỗ trợ khách hàng và cải thiện dịch vụ. Các thông tin thu
-          thập bao gồm:
-          <ul>
-            <li>Họ và tên</li>
-            <li>Số điện thoại</li>
-            <li>Địa chỉ giao hàng</li>
-            <li>Email (nếu có)</li>
-            <li>Thông tin giao dịch, lịch sử mua hàng</li>
-          </ul>
-        </div>
-        <h4>2. MỤC ĐÍCH SỬ DỤNG THÔNG TIN</h4>
-        <div>
-          Thông tin khách hàng được sử dụng để:
-          <ul>
-            <li>Xử lý đơn hàng, giao hàng nhanh chóng.</li>
-            <li>Hỗ trợ, tư vấn khách hàng trong quá trình sử dụng sản phẩm.</li>
-            <li>
-              Cung cấp thông tin về chương trình khuyến mãi, ưu đãi (nếu khách
-              hàng đồng ý nhận thông tin).
-            </li>
-            <li>Cải thiện dịch vụ và trải nghiệm mua sắm.</li>
-          </ul>
-        </div>
-        <h4>3. BẢO MẬT THÔNG TIN</h4>
-        <p>
-          Chúng tôi cam kết không chia sẻ, trao đổi hoặc bán thông tin khách
-          hàng cho bên thứ ba. Thông tin cá nhân được bảo vệ bằng các biện pháp
-          an toàn và bảo mật. Chỉ những nhân viên có thẩm quyền mới được tiếp
-          cận thông tin khách hàng để xử lý đơn hàng.
-        </p>
-        <h4>4. QUYỀN LỢI KHÁCH HÀNG</h4>
-        <div>
-          Khách hàng có quyền:
-
-          <ul>
-            <li>Kiểm tra, yêu cầu chỉnh sửa hoặc xóa thông tin cá nhân.</li>
-            <li>
-              Từ chối nhận các thông tin quảng cáo, khuyến mãi bất cứ lúc nào.
-            </li>
-            <li>
-              Yêu cầu giải đáp thắc mắc liên quan đến bảo mật thông tin cá nhân.
-            </li>
-          </ul>
-        </div>
-        <h4>5. LIÊN HỆ</h4>
-        <div>
-          Khách hàng có thể liên hệ với Bếp Nhà Ta để được hỗ trợ qua các kênh:
-
-          <ul>
-            <li>Hotline: 0909.868.686</li>
-            <li>Email: bepnhata&#64;.com</li>
-            <li>Chat trực tuyến: Trên website Bếp Nhà Ta</li>
-            <li>Mạng xã hội: Facebook, Zalo, Instagram</li>
-          </ul>
-          Bếp Nhà Ta luôn sẵn sàng phục vụ và mang đến cho khách hàng những trải
-          nghiệm mua sắm tốt nhất!
-        </div>
-      </div>
+      <h1>SỔ ĐỊA CHỈ</h1>
     </div>
   </div>
 </div>

@@ -1,20 +1,43 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const Account = new Schema({
-    _id: { type: mongoose.Schema.Types.ObjectId },
-    username: { type: String, required: true },
-    password: { type: String, required: true },
-    role: { type: String, default: "customer" },
-    name: { type: String, required: true },
-    birthOfDate: { type: Date, required: true },
-    email: { type: String, required: true },
-    phone: { type: String, required: true },
-    gender: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
-}, {
-    collection: 'Accounts'
+const accountSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    phone: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    birthOfDate: {
+        type: Date
+    },
+    gender: {
+        type: String
+    },
+    role: {
+        type: String,
+        enum: ['customer', 'admin'],
+        default: 'customer'
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
-module.exports = mongoose.model('Account', Account); 
+module.exports = mongoose.model('Account', accountSchema); 

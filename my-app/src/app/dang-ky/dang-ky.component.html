@@ -137,6 +137,10 @@
       (*) Vui lòng đồng ý với điều khoản sử dụng
     </div>
 
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
     <button class="button-cam" type="submit">HOÀN TẤT</button>
   </form>
 

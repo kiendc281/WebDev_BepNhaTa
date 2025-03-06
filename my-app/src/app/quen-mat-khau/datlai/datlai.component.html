@@ -2,44 +2,64 @@
   <button class="close-button" (click)="onClose()">
     <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="" />
   </button>
-  <div class="title">Đặt lại mật khẩu</div>
-  <p>
-    Để đặt lại mật khẩu, vui lòng nhập Email/Số điện thoại đã đăng ký trên Bếp
-    Nhà Ta
-  </p>
+  <div class="title">Thay đổi mật khẩu mới</div>
 
   <form [formGroup]="resetForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
+    <div class="form-group password-input">
       <input
-        type="text"
-        formControlName="emailOrPhone"
-        placeholder="Email/SĐT của bạn"
-        [class.submitted]="submitted && f['emailOrPhone'].errors"
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password"
+        placeholder="Mật khẩu mới"
+        [class.submitted]="submitted && f['password'].errors"
+      />
+      <img
+        [src]="passwordIcon"
+        alt=""
+        class="toggle-password"
+        (click)="togglePassword()"
       />
       <div
         class="error-message"
-        *ngIf="submitted && f['emailOrPhone'].errors?.['required']"
+        *ngIf="submitted && f['password'].errors?.['required']"
       >
-        (*) Vui lòng nhập Email hoặc SĐT của bạn
+        (*) Vui lòng nhập mật khẩu mới
       </div>
       <div
         class="error-message"
-        *ngIf="submitted && f['emailOrPhone'].errors?.['invalidEmail']"
+        *ngIf="submitted && (f['password'].errors?.['minlength'] || f['password'].errors?.['pattern'])"
       >
-        Email không hợp lệ
-      </div>
-      <div
-        class="error-message"
-        *ngIf="submitted && f['emailOrPhone'].errors?.['invalidPhone']"
-      >
-        Số điện thoại không hợp lệ
+        Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ in hoa, số và ký tự đặc
+        biệt
       </div>
     </div>
 
-    <button class="button-cam" type="submit">TIẾP TỤC</button>
-  </form>
+    <div class="form-group password-input">
+      <input
+        [type]="showConfirmPassword ? 'text' : 'password'"
+        formControlName="confirmPassword"
+        placeholder="Nhập lại mật khẩu mới"
+        [class.submitted]="submitted && (f['confirmPassword'].errors || resetForm.errors?.['mismatch'])"
+      />
+      <img
+        [src]="confirmPasswordIcon"
+        alt=""
+        class="toggle-password"
+        (click)="toggleConfirmPassword()"
+      />
+      <div
+        class="error-message"
+        *ngIf="submitted && f['confirmPassword'].errors?.['required']"
+      >
+        (*) Vui lòng nhập lại mật khẩu mới
+      </div>
+      <div
+        class="error-message"
+        *ngIf="submitted && resetForm.errors?.['mismatch']"
+      >
+        Mật khẩu xác nhận không khớp
+      </div>
+    </div>
 
-  <div class="back-link">
-    <a (click)="onBack()">Quay lại</a>
-  </div>
+    <button class="button-cam" type="submit">LƯU THAY ĐỔI</button>
+  </form>
 </div>

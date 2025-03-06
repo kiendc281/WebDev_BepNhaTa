@@ -16,15 +16,40 @@ import { CommonModule } from '@angular/common';
 })
 export class DatlaiComponent {
   @Output() closePopup = new EventEmitter<void>();
-  @Output() backToLogin = new EventEmitter<void>();
 
   resetForm: FormGroup;
   submitted = false;
+  showPassword = false;
+  showConfirmPassword = false;
+  passwordIcon = '../../../assets/sign in up/clarity-eye-hide-line.svg';
+  confirmPasswordIcon = '../../../assets/sign in up/clarity-eye-hide-line.svg';
 
   constructor(private fb: FormBuilder) {
-    this.resetForm = this.fb.group({
-      emailOrPhone: ['', [Validators.required, this.emailOrPhoneValidator]],
-    });
+    this.resetForm = this.fb.group(
+      {
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern(
+              /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z\d!@#$%^&*(),.?":{}|<>]{8,}$/
+            ),
+          ],
+        ],
+        confirmPassword: ['', Validators.required],
+      },
+      {
+        validator: this.passwordMatchValidator,
+      }
+    );
+  }
+
+  // Custom validator for password match
+  passwordMatchValidator(g: FormGroup) {
+    return g.get('password')?.value === g.get('confirmPassword')?.value
+      ? null
+      : { mismatch: true };
   }
 
   // Getter for easy access to form fields
@@ -32,37 +57,30 @@ export class DatlaiComponent {
     return this.resetForm.controls;
   }
 
-  // Custom validator for email or phone
-  emailOrPhoneValidator(control: any) {
-    const value = control.value;
-    if (!value) return null;
-
-    // Check if input is email
-    const emailRegex = /^\S+@\S+\.\S+$/;
-    const phoneRegex =
-      /^(?:\+84|0)(3[2-9]|5[6-9]|7[0|6-9]|8[1-9]|9[0-4|6-9])[0-9]{7}$/;
-
-    if (value.includes('@')) {
-      return emailRegex.test(value) ? null : { invalidEmail: true };
-    } else {
-      return phoneRegex.test(value) ? null : { invalidPhone: true };
-    }
-  }
-
   onSubmit() {
     this.submitted = true;
 
     if (this.resetForm.valid) {
-      console.log('Form submitted:', this.resetForm.value);
-      // Thêm logic xử lý đặt lại mật khẩu ở đây
+      console.log('Password reset submitted:', this.resetForm.value);
+      // Add password reset logic here
     }
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+    this.passwordIcon = this.showPassword
+      ? '../../../assets/sign in up/unhide.svg'
+      : '../../../assets/sign in up/clarity-eye-hide-line.svg';
+  }
+
+  toggleConfirmPassword() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+    this.confirmPasswordIcon = this.showConfirmPassword
+      ? '../../../assets/sign in up/unhide.svg'
+      : '../../../assets/sign in up/clarity-eye-hide-line.svg';
   }
 
   onClose() {
     this.closePopup.emit();
-  }
-
-  onBack() {
-    this.backToLogin.emit();
   }
 }

@@ -7,12 +7,16 @@ router.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-// Account routes
+// Account Management Routes
 router.get('/accounts', accountController.getAllAccounts);
 router.get('/accounts/:id', accountController.getAccountById);
 router.post('/accounts', accountController.createAccount);
 router.patch('/accounts/:id', accountController.updateAccount);
 router.delete('/accounts/:id', accountController.deleteAccount);
+
+// Auth Routes
+router.post('/auth/register', accountController.register);
+router.post('/auth/login', accountController.login);
 
 module.exports = router;
 
