@@ -24,6 +24,7 @@ import { TrangChuComponent } from './trang-chu/trang-chu.component';
 import { DangKyComponent } from './dang-ky/dang-ky.component';
 import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
 import { QuenMatKhauComponent } from './quen-mat-khau/quen-mat-khau.component';
+import { TaiKhoanComponent } from './tai-khoan/tai-khoan.component';
 
 @Component({
   selector: 'app-root',
@@ -47,6 +48,7 @@ import { QuenMatKhauComponent } from './quen-mat-khau/quen-mat-khau.component';
     DangKyComponent,
     DangNhapComponent,
     QuenMatKhauComponent,
+    TaiKhoanComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
