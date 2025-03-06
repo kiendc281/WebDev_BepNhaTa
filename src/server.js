@@ -1,19 +1,23 @@
 require('dotenv').config();
-const express = require('express'); // Importing express  
+const express = require('express');
 const path = require("path");
-const configviewEngine = require('./config/viewEngine')
-const webRoutes = require('./routes/web')
-
+const exampleRoutes = require('./routes/example.routes');
 const app = express(); // Creating an Express app  
 const port = process.env.PORT || 3000; // Setting a port number 
 const hostname = process.env.HOST_NAME
+const db = require('./config/database')
+const cors = require('cors');
 
-// config template engine, config static file
-configviewEngine(app)
+// config cors
+app.use(cors());
+app.use(express.json());
 
 // Khai báo route
-app.use('/', webRoutes)
+app.use('/', exampleRoutes);
+
+// Connect to DB
+db.connect();
 
 app.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`); // Logging the server status  
-});  
+    console.log(`Server listening on port ${port}`);
+});
