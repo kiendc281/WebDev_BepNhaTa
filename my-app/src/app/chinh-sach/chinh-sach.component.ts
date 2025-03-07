@@ -9,7 +9,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
   styleUrl: './chinh-sach.component.css',
 })
 export class ChinhSachComponent implements AfterViewInit, OnInit {
-  // navigate
   selectedCategory: string = 'ban-hang';
   private readonly HEADER_HEIGHT = 170; // Chiều cao của header
 
@@ -26,18 +25,26 @@ export class ChinhSachComponent implements AfterViewInit, OnInit {
 
   showContent(contentId: string): void {
     this.selectedCategory = contentId;
+
+    // Tìm phần tử container-rightpanel tương ứng
+    setTimeout(() => {
+      const element = document.getElementById(contentId);
+      if (element) {
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition =
+          elementPosition + window.pageYOffset - this.HEADER_HEIGHT;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
+      } else {
+        window.scrollTo({
+          top: this.HEADER_HEIGHT,
+          behavior: 'smooth',
+        });
+      }
+    }, 100);
   }
-
-  // visibleAnswers: { [key: string]: boolean } = {};
-  // // toggle list
-  // toggleAnswer(questionId: string): void {
-  //   this.visibleAnswers[questionId] = !this.visibleAnswers[questionId];
-  // }
-
-  // isAnswerVisible(questionId: string): boolean {
-  //   return this.visibleAnswers[questionId] || false;
-  // }
-  // footer navigate
 
   ngAfterViewInit() {
     this.route.fragment.subscribe((fragment) => {
