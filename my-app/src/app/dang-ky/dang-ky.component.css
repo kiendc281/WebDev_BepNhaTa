@@ -154,6 +154,10 @@ input[type="password"].ng-invalid.submitted {
   font-weight: 500;
 }
 
+.login-link a:hover {
+  cursor: pointer;
+}
+
 .error-message {
   color: red;
   font-style: italic;

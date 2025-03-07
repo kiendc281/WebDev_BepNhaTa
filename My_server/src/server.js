@@ -36,6 +36,7 @@ app.get('/', (req, res) => {
 app.use('/api', accountRoutes);
 app.use('/api', recipeRoutes);
 app.use('/api', menuRoutes);
+
 // Error handling
 app.use((req, res) => {
     res.status(404).json({ message: 'Route not found' });

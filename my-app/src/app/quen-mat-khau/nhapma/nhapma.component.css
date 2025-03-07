@@ -1,0 +1,118 @@
+.container {
+  background: white;
+  border-radius: 40px;
+  padding: 30px;
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.close-button img {
+  width: 35px;
+  height: auto;
+}
+
+.title {
+  color: black;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+p,
+.title {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
+  padding-right: 15px;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+input {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  outline: none;
+  background: transparent;
+}
+
+.timer-resend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timer {
+  color: #000;
+  font-size: 14px;
+}
+
+.resend-button {
+  background: none;
+  border: none;
+  color: var(--color-camvua);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+}
+
+.resend-button:disabled {
+  color: #979797;
+  cursor: not-allowed;
+}
+
+.resend-button:hover:not(:disabled) {
+  color: var(--color-camdam);
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.button-cam {
+  width: 100%;
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-link a {
+  color: var(--color-camvua);
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}
+
+input.submitted.ng-invalid {
+  border-color: red;
+}

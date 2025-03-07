@@ -1,0 +1,65 @@
+<div class="container">
+  <button class="close-button" (click)="onClose()">
+    <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="" />
+  </button>
+  <div class="title">Thay đổi mật khẩu mới</div>
+
+  <form [formGroup]="resetForm" (ngSubmit)="onSubmit()">
+    <div class="form-group password-input">
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password"
+        placeholder="Mật khẩu mới"
+        [class.submitted]="submitted && f['password'].errors"
+      />
+      <img
+        [src]="passwordIcon"
+        alt=""
+        class="toggle-password"
+        (click)="togglePassword()"
+      />
+      <div
+        class="error-message"
+        *ngIf="submitted && f['password'].errors?.['required']"
+      >
+        (*) Vui lòng nhập mật khẩu mới
+      </div>
+      <div
+        class="error-message"
+        *ngIf="submitted && (f['password'].errors?.['minlength'] || f['password'].errors?.['pattern'])"
+      >
+        Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ in hoa, số và ký tự đặc
+        biệt
+      </div>
+    </div>
+
+    <div class="form-group password-input">
+      <input
+        [type]="showConfirmPassword ? 'text' : 'password'"
+        formControlName="confirmPassword"
+        placeholder="Nhập lại mật khẩu mới"
+        [class.submitted]="submitted && (f['confirmPassword'].errors || resetForm.errors?.['mismatch'])"
+      />
+      <img
+        [src]="confirmPasswordIcon"
+        alt=""
+        class="toggle-password"
+        (click)="toggleConfirmPassword()"
+      />
+      <div
+        class="error-message"
+        *ngIf="submitted && f['confirmPassword'].errors?.['required']"
+      >
+        (*) Vui lòng nhập lại mật khẩu mới
+      </div>
+      <div
+        class="error-message"
+        *ngIf="submitted && resetForm.errors?.['mismatch']"
+      >
+        Mật khẩu xác nhận không khớp
+      </div>
+    </div>
+
+    <button class="button-cam" type="submit">LƯU THAY ĐỔI</button>
+  </form>
+</div>

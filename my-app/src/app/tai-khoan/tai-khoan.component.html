@@ -1,0 +1,163 @@
+<div class="main-container">
+  <div class="container">
+    <div class="container-leftpanel">
+      <button
+        class="button-trang"
+        (click)="showContent('thong-tin')"
+        [ngClass]="{ active: selectedCategory === 'thong-tin' }"
+      >
+        <div class="button-content">
+          <img
+            [src]="
+              selectedCategory === 'thong-tin'
+                ? 'assets/tai-khoan/thongtintk-trang.svg'
+                : 'assets/tai-khoan/thongtintk-cam.svg'
+            "
+            alt="arrow"
+          />
+          Thông tin tài khoản
+        </div>
+        <img
+          [src]="
+            selectedCategory === 'thong-tin'
+              ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
+              : 'assets/faq/cuida-arrow-right-outline.svg'
+          "
+          alt="arrow"
+        />
+      </button>
+      <button
+        class="button-trang"
+        (click)="showContent('lich-su')"
+        [ngClass]="{ active: selectedCategory === 'lich-su' }"
+      >
+        <div class="button-content">
+          <img
+            [src]="
+              selectedCategory === 'lich-su'
+                ? 'assets/tai-khoan/lichsudonhang-trang.svg'
+                : 'assets/tai-khoan/lichsudonhang-cam.svg'
+            "
+            alt="arrow"
+          />
+          Lịch sử đơn hàng
+        </div>
+        <img
+          [src]="
+            selectedCategory === 'lich-su'
+              ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
+              : 'assets/faq/cuida-arrow-right-outline.svg'
+          "
+          alt="arrow"
+        />
+      </button>
+      <button
+        class="button-trang"
+        (click)="showContent('yeu-thich')"
+        [ngClass]="{ active: selectedCategory === 'yeu-thich' }"
+      >
+        <div class="button-content">
+          <img
+            [src]="
+              selectedCategory === 'yeu-thich'
+                ? 'assets/tai-khoan/heart-trang.svg'
+                : 'assets/tai-khoan/heart-cam.svg'
+            "
+            alt="arrow"
+          />
+          Mục yêu thích
+        </div>
+        <img
+          [src]="
+            selectedCategory === 'yeu-thich'
+              ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
+              : 'assets/faq/cuida-arrow-right-outline.svg'
+          "
+          alt="arrow"
+        />
+      </button>
+      <button
+        class="button-trang"
+        (click)="showContent('so-dia-chi')"
+        [ngClass]="{ active: selectedCategory === 'so-dia-chi' }"
+      >
+        <div class="button-content">
+          <img
+            [src]="
+              selectedCategory === 'so-dia-chi'
+                ? 'assets/tai-khoan/location-trang.svg'
+                : 'assets/tai-khoan/location-cam.svg'
+            "
+            alt="sổ địa chỉ"
+          />
+          Sổ địa chỉ
+        </div>
+        <img
+          [src]="
+            selectedCategory === 'so-dia-chi'
+              ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
+              : 'assets/faq/cuida-arrow-right-outline.svg'
+          "
+          alt="arrow"
+        />
+      </button>
+      <button class="button-trang">
+        <div class="button-content">
+          <img
+            [src]="
+              selectedCategory === 'dang-xuat'
+                ? 'assets/tai-khoan/dangxuat-trang.svg'
+                : 'assets/tai-khoan/dangxuat-cam.svg'
+            "
+            alt="arrow"
+          />
+          Đăng xuất
+        </div>
+        <img
+          [src]="
+            selectedCategory === 'dang-xuat'
+              ? 'assets/faq/cuida-arrow-right-outline-trang.svg'
+              : 'assets/faq/cuida-arrow-right-outline.svg'
+          "
+          alt="arrow"
+        />
+      </button>
+    </div>
+
+    <!-- THÔNG TIN TÀI KHOẢN -->
+    <div
+      class="container-rightpanel"
+      *ngIf="selectedCategory === 'thong-tin'"
+      id="thong-tin"
+    >
+      <h1>THÔNG TIN TÀI KHOẢN</h1>
+    </div>
+
+    <!-- LỊCH SỬ ĐƠN HÀNG -->
+    <div
+      class="container-rightpanel"
+      *ngIf="selectedCategory === 'lich-su'"
+      id="lich-su"
+    >
+      <h1>LỊCH SỬ ĐƠN HÀNG</h1>
+    </div>
+
+    <!-- MỤC YÊU THÍCH -->
+    <div
+      class="container-rightpanel"
+      *ngIf="selectedCategory === 'yeu-thich'"
+      id="yeu-thich"
+    >
+      <h1>MỤC YÊU THÍCH</h1>
+    </div>
+
+    <!-- SỔ ĐỊA CHỈ -->
+    <div
+      class="container-rightpanel"
+      *ngIf="selectedCategory === 'so-dia-chi'"
+      id="so-dia-chi"
+    >
+      <h1>SỔ ĐỊA CHỈ</h1>
+    </div>
+  </div>
+</div>

@@ -1,19 +1,10 @@
 .container {
-  max-width: 500px;
+  background: white;
+  border-radius: 40px;
   padding: 30px;
-  border-radius: 20px;
   position: relative;
-}
-
-.title {
-  color: black;
-  font-size: 40px;
-  font-weight: 700;
-}
-
-p {
-  font-weight: 600 !important;
-  margin: 22px 0;
+  width: 100%;
+  max-width: 500px;
 }
 
 .close-button {
@@ -23,16 +14,30 @@ p {
   background: none;
   border: none;
   cursor: pointer;
+  padding: 0;
 }
 
 .close-button img {
   width: 35px;
-  height: 35px;
+  height: auto;
+}
+
+.title {
+  color: black;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 .form-group {
   margin-bottom: 20px;
   position: relative;
+}
+
+.password-input {
+  position: relative;
+  margin-bottom: 25px;
 }
 
 input[type="text"],
@@ -60,61 +65,36 @@ input[type="password"].ng-invalid.submitted {
   border: 2px solid red !important;
 }
 
-.password-input {
-  position: relative;
-}
-
 .toggle-password {
   position: absolute;
   right: 15px;
-  top: 15px;
+  top: 12px;
   cursor: pointer;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.forgot-password {
-  text-align: center;
-  margin: 15px 0;
-}
-
-.forgot-password a {
-  color: var(--color-camdam);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.forgot-password a:hover {
-  cursor: pointer;
-}
-
-.button-cam {
+.toggle-password img {
   width: 100%;
-  margin-top: 15px;
-}
-
-.login-link {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.login-link p {
-  font-size: 14px;
-}
-
-.login-link a {
-  color: var(--color-camdam);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.login-link a {
-  cursor: pointer;
+  height: 100%;
+  object-fit: contain;
 }
 
 .error-message {
   color: red;
-  font-style: italic;
   font-size: 14px;
   margin-top: 5px;
+  display: block;
+  font-style: italic;
+}
+
+.button-cam {
+  width: 100%;
+}
+
+input.submitted.ng-invalid {
+  border: 2px solid red;
 }

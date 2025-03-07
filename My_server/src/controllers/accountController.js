@@ -1,4 +1,4 @@
-const accountService = require('../services/accountServices');
+const accountService = require('../services/accountService');
 
 const accountController = {
     // Đăng ký

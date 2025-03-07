@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-dang-nhap',
@@ -14,17 +15,24 @@ import { Router, RouterModule } from '@angular/router';
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './dang-nhap.component.html',
   styleUrl: './dang-nhap.component.css',
+  providers: [AuthService],
 })
 export class DangNhapComponent {
   @Output() closePopup = new EventEmitter<void>();
   @Output() switchToRegister = new EventEmitter<void>();
+  @Output() switchToForgotPass = new EventEmitter<void>();
 
   loginForm: FormGroup;
   submitted = false;
   showPassword = false;
   eyeIcon = '../../assets/sign in up/clarity-eye-hide-line.svg';
+  errorMessage: string = '';
 
-  constructor(private router: Router, private fb: FormBuilder) {
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private authService: AuthService
+  ) {
     this.loginForm = this.fb.group({
       emailOrPhone: ['', [Validators.required, this.emailOrPhoneValidator]],
       password: ['', Validators.required],
@@ -55,9 +63,31 @@ export class DangNhapComponent {
 
   onSubmit() {
     this.submitted = true;
+    this.errorMessage = '';
 
     if (this.loginForm.valid) {
-      console.log('Form submitted:', this.loginForm.value);
+      const { emailOrPhone, password } = this.loginForm.value;
+
+      this.authService.login(emailOrPhone, password).subscribe({
+        next: (response) => {
+          console.log('Đăng nhập thành công:', response);
+          // Lưu thông tin đăng nhập
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('user', JSON.stringify(response.account));
+
+          // Đóng popup đăng nhập
+          this.onClose();
+
+          // Chuyển hướng sau khi đăng nhập thành công
+          this.router.navigate(['/']); // hoặc trang bạn muốn chuyển đến
+        },
+        error: (error) => {
+          console.error('Lỗi đăng nhập:', error);
+          this.errorMessage =
+            error.error.message ||
+            'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+        },
+      });
     }
   }
 
@@ -70,6 +100,10 @@ export class DangNhapComponent {
 
   navigateToRegister() {
     this.switchToRegister.emit();
+  }
+
+  navigateToForgotPass() {
+    this.switchToForgotPass.emit();
   }
 
   onClose() {

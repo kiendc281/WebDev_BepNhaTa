@@ -117,7 +117,7 @@
       </div>
       <div
         class="error-message"
-        *ngIf="submitted && registerForm.errors?.['mismatch']"
+        *ngIf="submitted && registerForm.errors?.['mismatch'] && f['confirmPassword'].value"
       >
         Mật khẩu xác nhận không khớp
       </div>
@@ -137,13 +137,17 @@
       (*) Vui lòng đồng ý với điều khoản sử dụng
     </div>
 
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
     <button class="button-cam" type="submit">HOÀN TẤT</button>
   </form>
 
   <div class="login-link">
     <p>
       Đã có tài khoản?
-      <a (click)="navigateToLogin()" style="cursor: pointer">Đăng nhập ngay!</a>
+      <a (click)="navigateToLogin()">Đăng nhập ngay!</a>
     </p>
   </div>
 </div>
