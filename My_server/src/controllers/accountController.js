@@ -1,62 +1,98 @@
-const Account = require('../models/account');
+const accountService = require('../services/accountServices');
 
-// Định nghĩa các phương thức xử lý
 const accountController = {
+    // Đăng ký
+    register: async (req, res) => {
+        try {
+            const result = await accountService.register(req.body);
+            res.status(201).json({
+                message: 'Đăng ký thành công',
+                ...result
+            });
+        } catch (error) {
+            res.status(400).json({
+                message: error.message
+            });
+        }
+    },
+
+    // Đăng nhập
+    login: async (req, res) => {
+        try {
+            const result = await accountService.login(req.body);
+            res.json({
+                message: 'Đăng nhập thành công',
+                ...result
+            });
+        } catch (error) {
+            res.status(401).json({
+                message: error.message
+            });
+        }
+    },
+
     // Lấy tất cả accounts
     getAllAccounts: async (req, res) => {
         try {
-            let accounts = await Account.find();
+            const accounts = await accountService.getAllAccounts();
             res.json(accounts);
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({
+                message: error.message
+            });
         }
     },
 
     // Lấy account theo id
     getAccountById: async (req, res) => {
         try {
-            let account = await Account.findById(req.params.id);
+            const account = await accountService.getAccountById(req.params.id);
             res.json(account);
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(404).json({
+                message: error.message
+            });
         }
     },
-
-    // Tạo account mới
+    // Tạo account
     createAccount: async (req, res) => {
-        const account = new Account({
-            name: req.body.name,
-            price: req.body.price
-        });
         try {
-            const savedAccount = await account.save();
-            console.log(savedAccount);
-            res.json({ message: "success" });
+            const result = await accountService.createAccount(req.body);
+            res.status(201).json({
+                message: 'Tạo account thành công',
+                ...result
+            });
         } catch (error) {
-            res.json({ message: error.message });
+            res.status(400).json({
+                message: error.message
+            });
         }
     },
-
     // Cập nhật account
     updateAccount: async (req, res) => {
         try {
-            await Account.updateOne(
-                { _id: req.params.id },
-                { $set: { name: req.body.name, price: req.body.price } }
-            );
-            res.json({ message: "success" });
+            await accountService.updateAccount(req.params.id, req.body);
+            res.json({
+                message: "Cập nhật thành công"
+            });
         } catch (error) {
-            res.json({ message: error.message });
+            res.status(400).json({
+                message: error.message
+            });
         }
     },
 
     // Xóa account
     deleteAccount: async (req, res) => {
         try {
-            await Account.deleteOne({ _id: req.params.id });
-            res.json({ message: "success" });
+            await accountService.deleteAccount(req.params.id);
+            res.json({
+                message: "Xóa thành công"
+            });
         } catch (error) {
-            res.json({ message: error.message });
+            res.status(400).json({
+                message: error.message
+            });
         }
     }
 };
