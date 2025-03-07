@@ -3,8 +3,9 @@ const express = require('express');
 const path = require("path");
 const accountRoutes = require('./routes/account.routes');
 const recipeRoutes = require('./routes/recipe.routes');
+const menuRoutes = require('./routes/menu.routes');
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 const hostname = process.env.HOST_NAME;
 const db = require('./config/database');
 const cors = require('cors');
@@ -25,7 +26,8 @@ app.get('/', (req, res) => {
         message: 'Welcome to BepNhaTa API',
         endpoints: {
             recipes: '/api/recipes',
-            accounts: '/api/accounts'
+            accounts: '/api/accounts',
+            menus: '/api/menus' 
         }
     });
 });
@@ -33,7 +35,7 @@ app.get('/', (req, res) => {
 // Khai báo route
 app.use('/api', accountRoutes);
 app.use('/api', recipeRoutes);
-
+app.use('/api', menuRoutes);
 // Error handling
 app.use((req, res) => {
     res.status(404).json({ message: 'Route not found' });
