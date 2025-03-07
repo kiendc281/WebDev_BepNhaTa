@@ -29,10 +29,10 @@
 - Frontend: Angular Framework
 - Server: NodeJS
 - Database: MongoDB
-  Others:
-- Github
-- Figma
-- Google Sheets
+- Others:
+  - Github
+  - Figma
+  - Google Sheets
 
 ## THÀNH VIÊN NHÓM 6
 
