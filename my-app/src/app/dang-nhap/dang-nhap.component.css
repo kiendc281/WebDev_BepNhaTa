@@ -84,6 +84,10 @@ input[type="password"].ng-invalid.submitted {
   font-weight: 500;
 }
 
+.forgot-password a:hover {
+  cursor: pointer;
+}
+
 .button-cam {
   width: 100%;
   margin-top: 15px;
@@ -102,6 +106,10 @@ input[type="password"].ng-invalid.submitted {
   color: var(--color-camdam);
   text-decoration: none;
   font-weight: 500;
+}
+
+.login-link a {
+  cursor: pointer;
 }
 
 .error-message {

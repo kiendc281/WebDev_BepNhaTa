@@ -15,11 +15,12 @@ import { AuthService } from '../services/auth.service';
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './dang-nhap.component.html',
   styleUrl: './dang-nhap.component.css',
-  providers: [AuthService]
+  providers: [AuthService],
 })
 export class DangNhapComponent {
   @Output() closePopup = new EventEmitter<void>();
   @Output() switchToRegister = new EventEmitter<void>();
+  @Output() switchToForgotPass = new EventEmitter<void>();
 
   loginForm: FormGroup;
   submitted = false;
@@ -82,8 +83,10 @@ export class DangNhapComponent {
         },
         error: (error) => {
           console.error('Lỗi đăng nhập:', error);
-          this.errorMessage = error.error.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
-        }
+          this.errorMessage =
+            error.error.message ||
+            'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+        },
       });
     }
   }
@@ -97,6 +100,10 @@ export class DangNhapComponent {
 
   navigateToRegister() {
     this.switchToRegister.emit();
+  }
+
+  navigateToForgotPass() {
+    this.switchToForgotPass.emit();
   }
 
   onClose() {
