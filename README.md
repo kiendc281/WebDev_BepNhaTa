@@ -4,6 +4,8 @@
   </a>
 </p>
 
+<div align="center">
+
 # BẾP NHÀ TA
 
 ## ĐỒ ÁN CUỐI KỲ MÔN PHÁT TRIỂN WEB KINH DOANH
