@@ -13,6 +13,9 @@ import { FaqComponent } from './faq/faq.component';
 import { DangKyComponent } from './dang-ky/dang-ky.component';
 import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
 import { QuenMatKhauComponent } from './quen-mat-khau/quen-mat-khau.component';
+import { DatlaiComponent } from './quen-mat-khau/datlai/datlai.component';
+import { NhapemailComponent } from './quen-mat-khau/nhapemail/nhapemail.component';
+import { NhapmaComponent } from './quen-mat-khau/nhapma/nhapma.component';
 
 export const routes: Routes = [
   { path: 'trang-chu', component: TrangChuComponent },
@@ -30,6 +33,9 @@ export const routes: Routes = [
   { path: 'dang-ky', component: DangKyComponent },
   { path: 'dang-nhap', component: DangNhapComponent },
   { path: 'quen-mat-khau', component: QuenMatKhauComponent },
+  { path: 'nhapemail', component: NhapemailComponent },
+  { path: 'nhapma', component: NhapmaComponent },
+  { path: 'datlai', component: DatlaiComponent },
   { path: '', component: TrangChuComponent },
   // { path: '', redirectTo: '/dang-nhap', pathMatch: 'full' },
 ];

@@ -78,14 +78,25 @@
 >
   <div class="popup-content">
     <app-dang-nhap
-      *ngIf="isLoginForm"
+      *ngIf="currentForm === 'login'"
       (closePopup)="closeLoginPopup()"
-      (switchToRegister)="switchForm()"
-    ></app-dang-nhap>
+      (switchToRegister)="switchToRegister()"
+      (switchToForgotPass)="switchToForgotPass()"
+    >
+    </app-dang-nhap>
+
     <app-dang-ky
-      *ngIf="!isLoginForm"
+      *ngIf="currentForm === 'register'"
       (closePopup)="closeLoginPopup()"
-      (switchToLogin)="switchForm()"
-    ></app-dang-ky>
+      (switchToLogin)="switchToLogin()"
+    >
+    </app-dang-ky>
+
+    <app-nhapemail
+      *ngIf="currentForm === 'forgot'"
+      (closePopup)="closeLoginPopup()"
+      (backToLogin)="switchToLogin()"
+    >
+    </app-nhapemail>
   </div>
 </div>

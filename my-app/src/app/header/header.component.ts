@@ -3,23 +3,30 @@ import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DangNhapComponent } from '../dang-nhap/dang-nhap.component';
 import { DangKyComponent } from '../dang-ky/dang-ky.component';
+import { NhapemailComponent } from '../quen-mat-khau/nhapemail/nhapemail.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, CommonModule, DangNhapComponent, DangKyComponent],
+  imports: [
+    RouterModule,
+    CommonModule,
+    DangNhapComponent,
+    DangKyComponent,
+    NhapemailComponent,
+  ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
   showLoginPopup = false;
-  isLoginForm = true; // true for login, false for register
+  currentForm = 'login'; // 'login', 'register', or 'forgot'
 
   constructor(private router: Router) {}
 
   toggleLoginPopup() {
     this.showLoginPopup = !this.showLoginPopup;
-    this.isLoginForm = true; // Reset to login form when toggling
+    this.currentForm = 'login'; // Reset to login form when toggling
   }
 
   closeLoginPopup(event?: MouseEvent) {
@@ -31,8 +38,16 @@ export class HeaderComponent {
     }
   }
 
-  switchForm() {
-    this.isLoginForm = !this.isLoginForm;
+  switchToRegister() {
+    this.currentForm = 'register';
+  }
+
+  switchToLogin() {
+    this.currentForm = 'login';
+  }
+
+  switchToForgotPass() {
+    this.currentForm = 'forgot';
   }
 
   navigateToLogin() {
