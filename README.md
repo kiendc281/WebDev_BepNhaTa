@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://www.uel.edu.vn/" title="Trường Đại học Kinh tế - Luật - ĐHQG HCM" >
-    <img src="https://imgur.com/a/ugTWaR1" alt="Ngôi trường tôi yêu">
+    <img src="https://i.imgur.com/a/ugTWaR1" alt="Ngôi trường tôi yêu">
   </a>
 </p>
 
