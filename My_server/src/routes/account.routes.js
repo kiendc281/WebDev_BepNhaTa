@@ -19,4 +19,3 @@ router.post('/auth/register', accountController.register);
 router.post('/auth/login', accountController.login);
 
 module.exports = router;
-
