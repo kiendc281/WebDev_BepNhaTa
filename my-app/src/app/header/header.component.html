@@ -75,8 +75,9 @@
   class="popup-overlay"
   *ngIf="showLoginPopup"
   (click)="closeLoginPopup($event)"
+  (mousedown)="onMouseDown($event)"
 >
-  <div class="popup-content">
+  <div class="popup-content" (click)="$event.stopPropagation()">
     <app-dang-nhap
       *ngIf="currentForm === 'login'"
       (closePopup)="closeLoginPopup()"
