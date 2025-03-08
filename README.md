@@ -21,7 +21,7 @@
 
 ## GIỚI THIỆU ĐỒ ÁN
 
-- **Đề tài:** Trang web ?????
+- **Đề tài:** Trang web chia sẻ công thức nấu ăn
 - **Repository:** [242MI5701_WEBDEVELOPMENT](https://github.com/kiendc281/WebDev_BepNhaTa)
 
 ## CÔNG NGHỆ SỬ DỤNG

@@ -21,7 +21,7 @@ import { NhapemailComponent } from '../quen-mat-khau/nhapemail/nhapemail.compone
 export class HeaderComponent {
   showLoginPopup = false;
   currentForm = 'login'; // 'login', 'register', or 'forgot'
-
+  mouseDownTarget: EventTarget | null = null;
   constructor(private router: Router) {}
 
   toggleLoginPopup() {
@@ -29,10 +29,19 @@ export class HeaderComponent {
     this.currentForm = 'login'; // Reset to login form when toggling
   }
 
+  onMouseDown(event: MouseEvent) {
+    this.mouseDownTarget = event.target;
+  }
+
   closeLoginPopup(event?: MouseEvent) {
+    if (!event) {
+      this.showLoginPopup = false;
+      return;
+    }
+
     if (
-      !event ||
-      (event.target as HTMLElement).classList.contains('popup-overlay')
+      (event.target as HTMLElement).classList.contains('popup-overlay') &&
+      this.mouseDownTarget === event.target
     ) {
       this.showLoginPopup = false;
     }
