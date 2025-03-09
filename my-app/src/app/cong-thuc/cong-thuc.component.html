@@ -1,1 +1,118 @@
-<p>cong-thuc works!</p>
+<div class="maincontainer">
+  <div class="banner">
+    <img src="../../assets/san-pham/banner.png" alt="" />
+  </div>
+  <div class="products-container">
+    <div class="filter-bar">
+      <div class="filter-button-container">
+        <button
+          *ngFor="let region of regions"
+          [class.button-cam]="selectedRegion === region"
+          [class.button-trang]="selectedRegion !== region"
+          (click)="onRegionChange(region)"
+        >
+          {{ region }}
+        </button>
+      </div>
+      <div class="search-container">
+        <button class="button-trang">
+          <img src="../../assets/san-pham/filter.svg" alt="Bộ lọc" />
+          Bộ lọc
+        </button>
+        <div class="sort-dropdown">
+          <button class="sort-button">
+            Sắp xếp theo: {{ getSelectedSortLabel() }}
+          </button>
+          <div class="sort-options">
+            <div
+              *ngFor="let option of sortOptions"
+              class="sort-option"
+              (click)="selectSort(option.value)"
+              [class.active]="selectedSort === option.value"
+            >
+              {{ option.label }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="loading-error" *ngIf="isLoading || errorMessage">
+      <div class="loading" *ngIf="isLoading">Đang tải công thức...</div>
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+    </div>
+
+    <div class="products-grid">
+      <div class="product-card" *ngFor="let recipe of paginatedRecipes">
+        <div class="save-button">
+          <img
+            src="../../assets/san-pham/favourite.svg"
+            alt="Lưu vào yêu thích"
+          />
+        </div>
+        <a [routerLink]="['/cong-thuc', recipe._id]">
+          <img
+            [src]="recipe.recipeImage"
+            [alt]="recipe.recipeName"
+            class="product-image"
+          />
+          <div class="product-content">
+            <h5 class="product-title">{{ recipe.recipeName }}</h5>
+            <div class="product-info">
+              <div class="info-item">
+                <img src="../../assets/san-pham/khauphan.svg" alt="category" />
+                <span>4 Người</span>
+              </div>
+              <div class="info-item">
+                <img src="../../assets/san-pham/dokho.svg" alt="difficulty" />
+                <span>{{ recipe.difficulty }}</span>
+              </div>
+              <div class="info-item">
+                <img
+                  src="../../assets/san-pham/ph-cooking-pot.svg"
+                  alt="time"
+                />
+                <span>{{ recipe.time }}</span>
+              </div>
+            </div>
+            <div class="product-actions">
+              <button class="button-camnhat">XEM CHI TIẾT</button>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div
+      class="no-results"
+      *ngIf="!isLoading && !errorMessage && filteredRecipes.length === 0"
+    >
+      <p>Không tìm thấy công thức nào phù hợp.</p>
+    </div>
+
+    <div class="pagination" *ngIf="filteredRecipes.length > itemsPerPage">
+      <button
+        class="page-number"
+        (click)="previousPage()"
+        [disabled]="currentPage === 1"
+      >
+        ←
+      </button>
+      <button
+        class="page-number"
+        *ngFor="let page of displayedPages"
+        [class.active]="currentPage === page"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+      <button
+        class="page-number"
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages"
+      >
+        →
+      </button>
+    </div>
+  </div>
+</div>

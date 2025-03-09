@@ -1,0 +1,157 @@
+<div class="recipe-detail-container" *ngIf="recipe">
+  <div class="recipe-header">
+    <h1>{{ recipe.recipeName }}</h1>
+    <div class="recipe-meta">
+      <div class="time-info">
+        <div class="time-item">
+          <span class="number">{{ recipe.time }}</span>
+          <span class="label">Thời gian</span>
+        </div>
+        <div class="time-item">
+          <span class="number">{{ recipe.difficulty }}</span>
+          <span class="label">Độ khó</span>
+        </div>
+      </div>
+      <div class="serving-selector">
+        <label>Khẩu phần cho</label>
+        <select
+          (change)="onServingSizeChange($event)"
+          [value]="selectedServingSize"
+        >
+          <option
+            *ngFor="let size of recipe.servingsOptions | keyvalue"
+            [value]="size.key"
+          >
+            {{ size.key }} người
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="recipe-content">
+    <div class="recipe-main">
+      <img
+        [src]="recipe.recipeImage"
+        [alt]="recipe.recipeName"
+        class="recipe-image"
+      />
+
+      <div class="recipe-tabs">
+        <button
+          [class.active]="activeTab === 'Nguyên liệu'"
+          (click)="setActiveTab('Nguyên liệu')"
+        >
+          Nguyên liệu
+        </button>
+        <button
+          [class.active]="activeTab === 'Sơ chế'"
+          (click)="setActiveTab('Sơ chế')"
+        >
+          Sơ chế
+        </button>
+        <button
+          [class.active]="activeTab === 'Thực hiện'"
+          (click)="setActiveTab('Thực hiện')"
+        >
+          Thực hiện
+        </button>
+        <button
+          [class.active]="activeTab === 'Cách dùng'"
+          (click)="setActiveTab('Cách dùng')"
+        >
+          Cách dùng
+        </button>
+        <button
+          [class.active]="activeTab === 'Mách nhỏ'"
+          (click)="setActiveTab('Mách nhỏ')"
+        >
+          Mách nhỏ
+        </button>
+      </div>
+
+      <div class="tab-content">
+        <!-- Nguyên liệu -->
+        <div *ngIf="activeTab === 'Nguyên liệu'" class="ingredients-list">
+          <h3>Nguyên liệu</h3>
+          <ul>
+            <li *ngFor="let ingredient of getCurrentIngredients()">
+              {{ ingredient.name }} - {{ ingredient.amount }}
+              {{ ingredient.unit }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sơ chế -->
+        <div *ngIf="activeTab === 'Sơ chế'" class="preparation">
+          <h3>Sơ chế</h3>
+          <ul>
+            <li *ngFor="let step of recipe.preparation">{{ step }}</li>
+          </ul>
+        </div>
+
+        <!-- Thực hiện -->
+        <div *ngIf="activeTab === 'Thực hiện'" class="steps">
+          <h3>Các bước thực hiện</h3>
+          <ol>
+            <li *ngFor="let step of recipe.steps">{{ step }}</li>
+          </ol>
+        </div>
+
+        <!-- Cách dùng -->
+        <div *ngIf="activeTab === 'Cách dùng'" class="serving">
+          <h3>Cách dùng</h3>
+          <p>{{ recipe.servingSuggestion }}</p>
+        </div>
+
+        <!-- Mách nhỏ -->
+        <div *ngIf="activeTab === 'Mách nhỏ'" class="tips">
+          <h3>Mách nhỏ</h3>
+          <ul>
+            <li *ngFor="let tip of recipe.tips">{{ tip }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-sidebar">
+      <div class="tags">
+        <h4>Tags</h4>
+        <div class="tag-list">
+          <span *ngFor="let tag of recipe.tags" class="tag">{{ tag }}</span>
+        </div>
+      </div>
+
+      <div class="related-recipes" *ngIf="recipe.relatedRecipes.length > 0">
+        <h4>Xem thêm thông tin hữu ích</h4>
+        <ul>
+          <li *ngFor="let relatedRecipe of recipe.relatedRecipes">
+            <a [routerLink]="['/cong-thuc', relatedRecipe]">{{
+              relatedRecipe
+            }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loading" *ngIf="isLoading">
+  <p>Đang tải công thức...</p>
+</div>
+
+<div
+  class="error"
+  *ngIf="errorMessage"
+  [class.not-found]="errorMessage.includes('Không tìm thấy')"
+>
+  <div class="error-content">
+    <h2>{{ errorMessage }}</h2>
+    <p>Bạn có thể thử:</p>
+    <ul>
+      <li>Kiểm tra lại đường dẫn</li>
+      <li>Quay lại <a routerLink="/cong-thuc">danh sách công thức</a></li>
+      <li>Tìm kiếm công thức khác</li>
+    </ul>
+  </div>
+</div>

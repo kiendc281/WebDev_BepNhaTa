@@ -26,10 +26,18 @@
       <div class="dropdown">
         <a routerLink="/cong-thuc" class="dropdown-toggle">Công thức</a>
         <div class="dropdown-content">
-          <a routerLink="/cong-thuc">Tất cả</a>
-          <a routerLink="/cong-thuc/mien-bac">Miền Bắc</a>
-          <a routerLink="/cong-thuc/mien-trung">Miền Trung</a>
-          <a routerLink="/cong-thuc/mien-nam">Miền Nam</a>
+          <a [routerLink]="['/cong-thuc']" [queryParams]="{ region: null }"
+            >Tất cả</a
+          >
+          <a [routerLink]="['/cong-thuc']" [queryParams]="{ region: 'bac' }"
+            >Miền Bắc</a
+          >
+          <a [routerLink]="['/cong-thuc']" [queryParams]="{ region: 'trung' }"
+            >Miền Trung</a
+          >
+          <a [routerLink]="['/cong-thuc']" [queryParams]="{ region: 'nam' }"
+            >Miền Nam</a
+          >
         </div>
       </div>
       <div class="dropdown">
