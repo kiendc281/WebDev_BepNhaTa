@@ -1,5 +1,27 @@
 export interface Recipe {
-  id: number;
-  name: string;
-  ingredients: string[];
+  _id: string;
+  recipeName: string;
+  recipeImage: string;
+  servingsOptions: {
+    [key: string]: {
+      ingredients: {
+        name: string;
+        amount: number;
+        unit: string;
+      }[];
+    };
+  };
+  time: string;
+  difficulty: string;
+  description: string;
+  notes: string;
+  preparation: string[];
+  steps: string[];
+  servingSuggestion: string;
+  tips: string[];
+  relatedRecipes: string[];
+  tags: string[];
+  likes: number;
+  region: string;
+  category: string;
 }
