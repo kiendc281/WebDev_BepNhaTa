@@ -25,3 +25,15 @@ export interface Recipe {
   region: string;
   category: string;
 }
+
+export interface RecipeIngredient {
+  name: string;
+  amount: number;
+  unit: string;
+}
+
+export interface RecipeStep {
+  step: number;
+  description: string;
+  image?: string;
+}

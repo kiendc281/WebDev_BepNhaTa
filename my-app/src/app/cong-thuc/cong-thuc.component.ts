@@ -45,7 +45,9 @@ export class CongThucComponent implements OnInit {
     // Đăng ký theo dõi thay đổi params
     this.route.queryParams.subscribe((params) => {
       const region = params['region'];
-      if (region) {
+      if (!region) {
+        this.selectedRegion = 'Tất cả';
+      } else {
         // Chuyển đổi param thành tên hiển thị
         switch (region.toLowerCase()) {
           case 'bac':
@@ -63,11 +65,6 @@ export class CongThucComponent implements OnInit {
       }
       this.loadRecipes();
     });
-  }
-
-  getServings(recipe: Recipe): string {
-    const servings = Object.keys(recipe.servingsOptions)[0];
-    return servings || '2';
   }
 
   loadRecipes(): void {
@@ -135,10 +132,8 @@ export class CongThucComponent implements OnInit {
     // Cập nhật URL query parameter
     const queryParams =
       region === 'Tất cả'
-        ? {}
-        : {
-            region: this.getRegionParam(region),
-          };
+        ? { region: null }
+        : { region: this.getRegionParam(region) };
 
     this.router.navigate([], {
       relativeTo: this.route,
