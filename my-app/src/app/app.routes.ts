@@ -3,6 +3,7 @@ import { AboutusComponent } from './aboutus/aboutus.component';
 import { ChinhSachComponent } from './chinh-sach/chinh-sach.component';
 import { TrangChuComponent } from './trang-chu/trang-chu.component';
 import { CongThucComponent } from './cong-thuc/cong-thuc.component';
+import { ChiTietCongThucComponent } from './chi-tiet-cong-thuc/chi-tiet-cong-thuc.component';
 import { SanPhamComponent } from './san-pham/san-pham.component';
 import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { LenThucDonComponent } from './len-thuc-don/len-thuc-don.component';
@@ -20,6 +21,7 @@ import { NhapmaComponent } from './quen-mat-khau/nhapma/nhapma.component';
 export const routes: Routes = [
   { path: 'trang-chu', component: TrangChuComponent },
   { path: 'cong-thuc', component: CongThucComponent },
+  { path: 'cong-thuc/:id', component: ChiTietCongThucComponent },
   { path: 'san-pham', component: SanPhamComponent },
   { path: 'chi-tiet-san-pham/:id', component: ChiTietSanPhamComponent },
   { path: 'len-thuc-don', component: LenThucDonComponent },

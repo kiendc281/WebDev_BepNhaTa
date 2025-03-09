@@ -28,7 +28,7 @@ import { DatlaiComponent } from './quen-mat-khau/datlai/datlai.component';
 import { NhapmaComponent } from './quen-mat-khau/nhapma/nhapma.component';
 import { NhapemailComponent } from './quen-mat-khau/nhapemail/nhapemail.component';
 import { TaiKhoanComponent } from './tai-khoan/tai-khoan.component';
-
+import { ChiTietCongThucComponent } from './chi-tiet-cong-thuc/chi-tiet-cong-thuc.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -55,6 +55,7 @@ import { TaiKhoanComponent } from './tai-khoan/tai-khoan.component';
     NhapmaComponent,
     NhapemailComponent,
     TaiKhoanComponent,
+    ChiTietCongThucComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
