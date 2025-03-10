@@ -1,0 +1,579 @@
+.maincontainer {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.banner {
+  margin: auto;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 40px;
+}
+
+/* Section Header Styles */
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.line {
+  height: 2px;
+  width: 120px;
+  background-color: var(--color-camdam);
+}
+
+.heart-icon {
+  width: 40px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.first-word {
+  color: #000 !important;
+}
+
+/* Food Categories Slider */
+.food-categories {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.categories-slider {
+  display: flex;
+  gap: 40px;
+  overflow: hidden;
+  max-width: 1200px;
+  padding-bottom: 40px;
+}
+
+.category-card {
+  position: relative;
+  width: 270px;
+  text-align: center;
+  cursor: pointer;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.category-card img {
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Thêm pseudo-element để làm hiệu ứng hover */
+.category-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 270px;
+  background-size: cover;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Món trộn hover */
+.category-card[data-category="mon-tron"]::before {
+  background-image: url("../../assets/trang-chu/mon-tron2.png");
+}
+
+/* Món chay hover */
+.category-card[data-category="mon-chay"]::before {
+  background-image: url("../../assets/trang-chu/mon-chay2.png");
+}
+
+/* Món xào hover */
+.category-card[data-category="mon-xao"]::before {
+  background-image: url("../../assets/trang-chu/mon-xao2.png");
+}
+
+/* Món nước hover */
+.category-card[data-category="mon-nuoc"]::before {
+  background-image: url("../../assets/trang-chu/mon-nuoc2.png");
+}
+
+.category-card:hover img {
+  opacity: 0;
+}
+
+.category-card:hover::before {
+  opacity: 1;
+}
+
+/* Category Name Styles */
+.category-name {
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 8px 35px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 18px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  z-index: 1;
+  border: 1.5px solid #fff;
+  color: #000;
+  letter-spacing: 0.2px;
+}
+
+.category-card:hover .category-name {
+  border: 1.6px solid var(--color-camdam);
+  color: var(--color-camdam);
+}
+
+/* Trending Dishes Slider */
+.dishes-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  position: relative;
+}
+
+.dishes-container {
+  display: flex;
+  gap: 24px;
+  overflow: hidden;
+  max-width: 1200px;
+  padding: 10px 0;
+}
+
+.dish-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 270px;
+  border: 1px solid #e6e6e6;
+  transition: all 0.3s ease;
+}
+
+.dish-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+.dish-image {
+  position: relative;
+  margin-bottom: 0;
+  gap: 40px;
+}
+
+.dish-image img {
+  width: auto;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 16px 16px 0 0;
+}
+
+.likes {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.likes img {
+  width: 16px;
+  height: 16px;
+}
+
+.likes span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.dish-name {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin: 16px 0;
+  padding: 0 16px;
+}
+
+/* Navigation Button Styles */
+.nav-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-camdam);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: no;
+}
+
+.next {
+  rotate: 180deg;
+}
+
+.nav-button:hover {
+  box-shadow: 0 0 10px 4px var(--color-camvua);
+}
+
+/* Dots Navigation Styles */
+.dots-navigation {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e6e6e6;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: var(--color-camdam);
+}
+
+.button-cam {
+  justify-content: center;
+  color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .categories-slider,
+  .dishes-container {
+    gap: 20px;
+  }
+
+  .category-card,
+  .dish-card {
+    width: 180px;
+  }
+
+  .category-card img,
+  .dish-image img {
+    height: 180px;
+  }
+
+  .category-card {
+    width: 220px;
+  }
+
+  .category-card img {
+    height: 220px;
+  }
+
+  .category-card::before {
+    height: 220px;
+  }
+}
+
+/* Hot Products Section */
+.hot-products {
+  margin-bottom: 60px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 10px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-camdam);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  position: relative;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.like-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .like-button {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.like-button:hover {
+  background-color: var(--color-camdam);
+}
+
+.like-button img {
+  width: 16px;
+  height: 16px;
+}
+
+.product-content {
+  padding: 15px;
+}
+
+h5 {
+  color: black !important;
+}
+
+.product-info {
+  display: flex;
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: black;
+  font-size: 0.9em;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: var(--color-xamnhat);
+}
+
+.info-item img {
+  width: 16px;
+  height: 16px;
+}
+
+.button-camnhat {
+  padding: 8px 16px;
+  background-color: var(--color-camnhat);
+  color: var(--color-camdam);
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  transform: translateY(0);
+  width: calc(100% - 30px);
+  margin: 0 15px 15px;
+}
+
+.product-card:hover .button-camnhat {
+  background-color: var(--color-camdam);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(var(--color-camdam-rgb), 0.2);
+}
+
+/* Dots Navigation */
+.dots-navigation {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e6e6e6;
+  cursor: pointer;
+}
+
+.dot.active {
+  border: 1px solid var(--color-camdam);
+  background-color: #fff;
+}
+
+/* View More Button */
+.button-cam {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto;
+  padding: 10px 24px;
+  background: var(--color-camdam);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-cam:hover {
+  background: var(--color-camvua);
+}
+
+.button-cam img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+}
+
+/* Tips Nấu Ăn Section */
+.cooking-tips {
+  margin-bottom: 60px;
+}
+
+.tips-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  position: relative;
+}
+
+.tips-container {
+  display: flex;
+  gap: 24px;
+  overflow: hidden;
+  max-width: 1200px;
+  padding: 10px 0;
+}
+
+.tip-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  width: 380px;
+}
+
+.tip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-camdam);
+}
+
+.tip-image {
+  position: relative;
+  width: 100%;
+  height: 220px;
+}
+
+.tip-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.date-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--color-camdam);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tip-content {
+  padding: 20px;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.author img {
+  width: 20px;
+  height: 20px;
+}
+
+.author span {
+  color: var(--color-camdam);
+  font-weight: 500;
+}
+
+.tip-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+
+.tip-description {
+  color: #666666;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
