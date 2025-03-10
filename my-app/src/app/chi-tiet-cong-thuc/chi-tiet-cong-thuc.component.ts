@@ -1,9 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
 import { Recipe } from '../models/recipe.interface';
 import { HttpClientModule } from '@angular/common/http';
+
+interface IngredientPackage {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
+}
 
 @Component({
   selector: 'app-chi-tiet-cong-thuc',
@@ -15,10 +22,12 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class ChiTietCongThucComponent implements OnInit {
   recipe: Recipe | null = null;
-  isLoading = false;
+  isLoading = true;
   errorMessage = '';
-  selectedServingSize: string = '';
+  selectedServingSize: string = '4';
+  ingredientPackages: IngredientPackage[] = [];
   activeTab: string = 'Nguyên liệu';
+  activeSection: string = 'description';
 
   constructor(
     private route: ActivatedRoute,
@@ -34,6 +43,45 @@ export class ChiTietCongThucComponent implements OnInit {
     });
   }
 
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    this.updateActiveSection();
+  }
+
+  updateActiveSection() {
+    const sections = [
+      'description',
+      'ingredients',
+      'preparation',
+      'steps',
+      'serving',
+      'tips',
+    ];
+
+    for (const section of sections) {
+      const element = document.getElementById(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= 150 && rect.bottom >= 150) {
+          this.activeSection = section;
+          break;
+        }
+      }
+    }
+  }
+
+  scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      this.activeSection = sectionId;
+    }
+  }
+
+  isActiveSection(sectionId: string): boolean {
+    return this.activeSection === sectionId;
+  }
+
   loadRecipe(id: string): void {
     this.isLoading = true;
     this.recipeService.getRecipeById(id).subscribe({
@@ -42,7 +90,9 @@ export class ChiTietCongThucComponent implements OnInit {
         if (this.recipe && this.recipe.servingsOptions) {
           this.selectedServingSize = Object.keys(
             this.recipe.servingsOptions
-          )[0];
+          ).includes('4')
+            ? '4'
+            : Object.keys(this.recipe.servingsOptions)[0];
         }
         this.isLoading = false;
       },
@@ -52,6 +102,11 @@ export class ChiTietCongThucComponent implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  getServingSizes(): string[] {
+    if (!this.recipe || !this.recipe.servingsOptions) return [];
+    return Object.keys(this.recipe.servingsOptions);
   }
 
   onServingSizeChange(event: Event): void {
@@ -68,14 +123,5 @@ export class ChiTietCongThucComponent implements OnInit {
     return (
       this.recipe.servingsOptions[this.selectedServingSize]?.ingredients || []
     );
-  }
-
-  getTimeDisplay(minutes: number): string {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    if (hours > 0) {
-      return `${hours} giờ ${mins > 0 ? mins + ' phút' : ''}`;
-    }
-    return `${mins} phút`;
   }
 }
