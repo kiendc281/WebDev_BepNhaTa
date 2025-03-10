@@ -83,7 +83,7 @@ export class RecipeService {
           : [],
         steps: Array.isArray(recipe.steps) ? recipe.steps : [],
         servingSuggestion: recipe.servingSuggestion || '',
-        tips: Array.isArray(recipe.tips) ? recipe.tips : [],
+        tips: recipe.tips || '',
         relatedRecipes: Array.isArray(recipe.relatedRecipes)
           ? recipe.relatedRecipes
           : [],
@@ -91,6 +91,14 @@ export class RecipeService {
         likes: typeof recipe.likes === 'number' ? recipe.likes : 0,
         region: recipe.region || '',
         category: recipe.category || '',
+        relatedInfo: Array.isArray(recipe.relatedInfo)
+          ? recipe.relatedInfo
+          : recipe.relatedRecipes
+          ? recipe.relatedRecipes.map((title: string) => ({
+              title,
+              link: `/cong-thuc/${title}`,
+            }))
+          : [],
       };
     } catch (error) {
       console.error('Lỗi khi chuyển đổi dữ liệu:', error);

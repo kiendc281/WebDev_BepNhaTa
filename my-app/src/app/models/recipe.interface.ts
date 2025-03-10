@@ -6,8 +6,9 @@ export interface Recipe {
     [key: string]: {
       ingredients: {
         name: string;
-        amount: number;
-        unit: string;
+        quantity: string;
+        // amount: number;
+        // unit: string;
       }[];
     };
   };
@@ -18,12 +19,16 @@ export interface Recipe {
   preparation: string[];
   steps: string[];
   servingSuggestion: string;
-  tips: string[];
+  tips: string;
   relatedRecipes: string[];
   tags: string[];
   likes: number;
   region: string;
   category: string;
+  relatedInfo: Array<{
+    title: string;
+    link: string;
+  }>;
 }
 
 export interface RecipeIngredient {
