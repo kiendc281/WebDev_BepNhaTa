@@ -1,8 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const path = require("path");
-const accountRoutes = require('./routes/account.routes');
-const blogRoutes = require('./routes/blog.routes');
 const app = express(); // Creating an Express app  
 const port = process.env.PORT || 3000; // Setting a port number 
 const hostname = process.env.HOST_NAME
@@ -10,6 +7,9 @@ const db = require('./config/database')
 const recipeRoutes = require('./routes/recipe.routes');
 const menuRoutes = require('./routes/menu.routes');
 const ingredientRoutes = require('./routes/ingredient.routes');
+const accountRoutes = require('./routes/account.routes');
+const blogRoutes = require('./routes/blog.routes');
+const cartRoutes = require('./routes/cart.routes');
 const cors = require('cors');
 
 // Kiểm tra JWT_SECRET
@@ -28,6 +28,8 @@ app.use('/api', blogRoutes);
 app.use('/api', recipeRoutes);
 app.use('/api', menuRoutes);
 app.use('/api', ingredientRoutes);
+app.use('/api', cartRoutes);
+
 // Connect to DB
 db.connect().then(() => {
     console.log('Connected to MongoDB successfully');
