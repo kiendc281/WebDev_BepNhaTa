@@ -247,26 +247,6 @@
   box-shadow: 0 0 10px 4px var(--color-camvua);
 }
 
-/* Dots Navigation Styles */
-.dots-navigation {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin-top: 24px;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #e6e6e6;
-  cursor: pointer;
-}
-
-.dot.active {
-  background: var(--color-camdam);
-}
-
 .button-cam {
   justify-content: center;
   color: #fff;
@@ -455,20 +435,7 @@ h5 {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
   margin: 0 auto;
-  padding: 10px 24px;
-  background: var(--color-camdam);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.button-cam:hover {
-  background: var(--color-camvua);
 }
 
 .button-cam img {
