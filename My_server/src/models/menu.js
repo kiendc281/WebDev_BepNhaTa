@@ -1,19 +1,66 @@
 const mongoose = require('mongoose');
 
 const menuSchema = new mongoose.Schema({
-    menuId: {
-        type: String,
-        required: true,
-        unique: true
+    _id: {
+        type: String
     },
-    ingredientId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'menu',  // reference tới collection recipes
+    menuName: {
+        type: String,
         required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    mainImage: {
+        type: String,
+        required: true
+    },
+    subImage: String,
+    category: {
+        type: String,
+        required: true
+    },
+    region: {
+        type: String,
+        required: true
+    },
+    ingredients: [{
+        type: String,
+        ref: 'Ingredient'
+    }],
+    price: {
+        type: Number,
+        required: true
+    },
+    discount: {
+        type: Number,
+        min: 0,
+        max: 100
+    },
+    status: {
+        type: String,
+        enum: ['Còn hàng', 'Hết hàng', 'Ngừng kinh doanh'],
+        default: 'Còn hàng'
     }
-}, {
-      
-    collection: 'menu' // Tên collection trong MongoDB
+}, { 
+    timestamps: true,
+    versionKey: false,
+    collection: 'menu' // Chỉ định rõ tên collection
 });
 
-module.exports = mongoose.model('menu', menuSchema);
+// Middleware tự động tạo ID
+menuSchema.pre('save', async function(next) {
+    try {
+        if (this.isNew) {
+            const lastMenu = await this.constructor.findOne({}, {}, { sort: { '_id': -1 } });
+            const nextNumber = lastMenu ? parseInt(lastMenu._id.slice(2)) + 1 : 1;
+            this._id = `MN${nextNumber.toString().padStart(2, '0')}`;
+        }
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
+
+module.exports = mongoose.model('Menu', menuSchema);

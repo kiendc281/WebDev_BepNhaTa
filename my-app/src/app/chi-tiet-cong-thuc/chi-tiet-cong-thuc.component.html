@@ -1,157 +1,192 @@
 <div class="recipe-detail-container" *ngIf="recipe">
-  <div class="recipe-header">
-    <h1>{{ recipe.recipeName }}</h1>
-    <div class="recipe-meta">
-      <div class="time-info">
-        <div class="time-item">
-          <span class="number">{{ recipe.time }}</span>
-          <span class="label">Thời gian</span>
-        </div>
-        <div class="time-item">
-          <span class="number">{{ recipe.difficulty }}</span>
-          <span class="label">Độ khó</span>
-        </div>
-      </div>
-      <div class="serving-selector">
-        <label>Khẩu phần cho</label>
-        <select
-          (change)="onServingSizeChange($event)"
-          [value]="selectedServingSize"
-        >
-          <option
-            *ngFor="let size of recipe.servingsOptions | keyvalue"
-            [value]="size.key"
-          >
-            {{ size.key }} người
-          </option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <div class="recipe-content">
-    <div class="recipe-main">
+  <!-- left panel -->
+  <div class="left-panel col-md-9">
+    <div class="recipe-header">
+      <h1 class="px-3">{{ recipe.recipeName }}</h1>
       <img
-        [src]="recipe.recipeImage"
-        [alt]="recipe.recipeName"
-        class="recipe-image"
+        src="../../assets/chi-tiet-cong-thuc/chef-recommend.png"
+        alt="chef-recommend"
       />
-
-      <div class="recipe-tabs">
-        <button
-          [class.active]="activeTab === 'Nguyên liệu'"
-          (click)="setActiveTab('Nguyên liệu')"
-        >
-          Nguyên liệu
-        </button>
-        <button
-          [class.active]="activeTab === 'Sơ chế'"
-          (click)="setActiveTab('Sơ chế')"
-        >
-          Sơ chế
-        </button>
-        <button
-          [class.active]="activeTab === 'Thực hiện'"
-          (click)="setActiveTab('Thực hiện')"
-        >
-          Thực hiện
-        </button>
-        <button
-          [class.active]="activeTab === 'Cách dùng'"
-          (click)="setActiveTab('Cách dùng')"
-        >
-          Cách dùng
-        </button>
-        <button
-          [class.active]="activeTab === 'Mách nhỏ'"
-          (click)="setActiveTab('Mách nhỏ')"
-        >
-          Mách nhỏ
-        </button>
-      </div>
-
-      <div class="tab-content">
-        <!-- Nguyên liệu -->
-        <div *ngIf="activeTab === 'Nguyên liệu'" class="ingredients-list">
-          <h3>Nguyên liệu</h3>
-          <ul>
-            <li *ngFor="let ingredient of getCurrentIngredients()">
-              {{ ingredient.name }} - {{ ingredient.amount }}
-              {{ ingredient.unit }}
-            </li>
-          </ul>
-        </div>
-
-        <!-- Sơ chế -->
-        <div *ngIf="activeTab === 'Sơ chế'" class="preparation">
-          <h3>Sơ chế</h3>
-          <ul>
-            <li *ngFor="let step of recipe.preparation">{{ step }}</li>
-          </ul>
-        </div>
-
-        <!-- Thực hiện -->
-        <div *ngIf="activeTab === 'Thực hiện'" class="steps">
-          <h3>Các bước thực hiện</h3>
-          <ol>
-            <li *ngFor="let step of recipe.steps">{{ step }}</li>
-          </ol>
-        </div>
-
-        <!-- Cách dùng -->
-        <div *ngIf="activeTab === 'Cách dùng'" class="serving">
-          <h3>Cách dùng</h3>
-          <p>{{ recipe.servingSuggestion }}</p>
-        </div>
-
-        <!-- Mách nhỏ -->
-        <div *ngIf="activeTab === 'Mách nhỏ'" class="tips">
-          <h3>Mách nhỏ</h3>
-          <ul>
-            <li *ngFor="let tip of recipe.tips">{{ tip }}</li>
-          </ul>
-        </div>
-      </div>
     </div>
 
-    <div class="recipe-sidebar">
-      <div class="tags">
-        <h4>Tags</h4>
-        <div class="tag-list">
-          <span *ngFor="let tag of recipe.tags" class="tag">{{ tag }}</span>
-        </div>
-      </div>
+    <img
+      [src]="recipe.recipeImage"
+      [alt]="recipe.recipeName"
+      class="recipe-image"
+    />
+    <div class="tab-content d-flex flex-row gap-2">
+      <button
+        class="button-trang"
+        [class.active]="isActiveSection('description')"
+        (click)="scrollToSection('description')"
+      >
+        Mô tả
+      </button>
+      <button
+        class="button-trang"
+        [class.active]="isActiveSection('ingredients')"
+        (click)="scrollToSection('ingredients')"
+      >
+        Nguyên liệu
+      </button>
+      <button
+        class="button-trang"
+        [class.active]="isActiveSection('preparation')"
+        (click)="scrollToSection('preparation')"
+      >
+        Sơ chế
+      </button>
+      <button
+        class="button-trang"
+        [class.active]="isActiveSection('steps')"
+        (click)="scrollToSection('steps')"
+      >
+        Thực hiện
+      </button>
+      <button
+        class="button-trang"
+        [class.active]="isActiveSection('serving')"
+        (click)="scrollToSection('serving')"
+      >
+        Cách dùng
+      </button>
+      <button
+        class="button-trang"
+        [class.active]="isActiveSection('tips')"
+        (click)="scrollToSection('tips')"
+      >
+        Mách nhỏ
+      </button>
+    </div>
 
-      <div class="related-recipes" *ngIf="recipe.relatedRecipes.length > 0">
-        <h4>Xem thêm thông tin hữu ích</h4>
+    <div id="description" class="recipe-section">
+      <p>{{ recipe.description }}</p>
+    </div>
+    <div class="recipe-sections">
+      <div class="recipe-note" *ngIf="recipe.notes">
+        <h3>Lưu ý</h3>
+        <p>
+          Công thức này cho khẩu phần
+          <span class="fw-bold"> {{ selectedServingSize }} người </span>
+        </p>
+      </div>
+      <section id="ingredients" class="recipe-section">
+        <div class="section-header">
+          <img
+            src="../../assets/chi-tiet-cong-thuc/nguyen-lieu.svg"
+            alt="Nguyên liệu"
+          />
+          <h3>Nguyên liệu</h3>
+        </div>
         <ul>
-          <li *ngFor="let relatedRecipe of recipe.relatedRecipes">
-            <a [routerLink]="['/cong-thuc', relatedRecipe]">{{
-              relatedRecipe
-            }}</a>
+          <li *ngFor="let ingredient of getCurrentIngredients()">
+            {{ ingredient.name }} - {{ ingredient.quantity }}
           </li>
         </ul>
+      </section>
+
+      <section id="preparation" class="recipe-section">
+        <div class="section-header">
+          <img src="../../assets/chi-tiet-cong-thuc/so-che.svg" alt="Sơ chế" />
+          <h3>Sơ chế</h3>
+        </div>
+        <ul>
+          <li *ngFor="let step of recipe.preparation">{{ step }}</li>
+        </ul>
+      </section>
+
+      <section id="steps" class="recipe-section">
+        <div class="section-header">
+          <img
+            src="../../assets/chi-tiet-cong-thuc/thuc-hien.svg"
+            alt="Thực hiện"
+          />
+          <h3>Thực hiện</h3>
+        </div>
+        <ul>
+          <li *ngFor="let step of recipe.steps">{{ step }}</li>
+        </ul>
+      </section>
+
+      <section id="serving" class="recipe-section">
+        <div class="section-header">
+          <img
+            src="../../assets/chi-tiet-cong-thuc/cach-dung.svg"
+            alt="Cách dùng"
+          />
+          <h3>Cách dùng</h3>
+        </div>
+        <p>{{ recipe.servingSuggestion }}</p>
+      </section>
+
+      <section id="tips" class="recipe-section">
+        <div class="section-header">
+          <img
+            src="../../assets/chi-tiet-cong-thuc/mach-nho.svg"
+            alt="Mách nhỏ"
+          />
+          <h3>Mách nhỏ</h3>
+        </div>
+        <p>{{ recipe.tips }}</p>
+      </section>
+    </div>
+
+    <div class="tags">
+      <h4>Tags</h4>
+      <div class="tag-list">
+        <span *ngFor="let tag of recipe.tags" class="tag">{{ tag }}</span>
       </div>
     </div>
+
+    <div class="related-info">
+      <h4>Xem thêm thông tin hữu ích</h4>
+      <ul>
+        <li *ngFor="let info of recipe.relatedInfo">
+          <a [href]="info.link">{{ info.title }}</a>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
-
-<div class="loading" *ngIf="isLoading">
-  <p>Đang tải công thức...</p>
-</div>
-
-<div
-  class="error"
-  *ngIf="errorMessage"
-  [class.not-found]="errorMessage.includes('Không tìm thấy')"
->
-  <div class="error-content">
-    <h2>{{ errorMessage }}</h2>
-    <p>Bạn có thể thử:</p>
-    <ul>
-      <li>Kiểm tra lại đường dẫn</li>
-      <li>Quay lại <a routerLink="/cong-thuc">danh sách công thức</a></li>
-      <li>Tìm kiếm công thức khác</li>
-    </ul>
+  <!-- right panel -->
+  <div class="col-md-3 right-panel">
+    <div class="recipe-meta">
+      <div class="meta-item">
+        <img
+          src="../../assets/chi-tiet-cong-thuc/khau-phan.svg"
+          alt="Khẩu phần"
+        />
+        <div>Khẩu phần:</div>
+        <div class="serving-selector">
+          <select (change)="onServingSizeChange($event)">
+            <option *ngFor="let size of getServingSizes()" [value]="size">
+              {{ size }} người
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="meta-item">
+        <img
+          src="../../assets/chi-tiet-cong-thuc/thoi-gian.svg"
+          alt="Thời gian"
+        />
+        <div>Thời gian:</div>
+        <span class="info">{{ recipe.time }}</span>
+      </div>
+      <div class="meta-item">
+        <img src="../../assets/chi-tiet-cong-thuc/do-kho.svg" alt="Độ khó" />
+        <div>Độ khó:</div>
+        <span class="info">{{ recipe.difficulty }}</span>
+      </div>
+    </div>
+    <button class="button-xam mt-3 w-100">
+      <img
+        class="px-2"
+        src="../../assets/chi-tiet-cong-thuc/dark-heart.svg"
+        alt=""
+      />Lưu công thức
+    </button>
+    <button class="button-cam mt-3 w-100" routerLink="/san-pham">
+      XEM GÓI NGUYÊN LIỆU
+    </button>
   </div>
 </div>

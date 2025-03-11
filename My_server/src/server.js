@@ -9,6 +9,7 @@ const hostname = process.env.HOST_NAME
 const db = require('./config/database')
 const recipeRoutes = require('./routes/recipe.routes');
 const menuRoutes = require('./routes/menu.routes');
+const ingredientRoutes = require('./routes/ingredient.routes');
 const cors = require('cors');
 
 // Kiểm tra JWT_SECRET
@@ -26,9 +27,22 @@ app.use('/api', accountRoutes);
 app.use('/api', blogRoutes);
 app.use('/api', recipeRoutes);
 app.use('/api', menuRoutes);
-
+app.use('/api', ingredientRoutes);
 // Connect to DB
-db.connect();
+db.connect().then(() => {
+    console.log('Connected to MongoDB successfully');
+}).catch(err => {
+    console.error('MongoDB connection error:', err);
+});
+
+// Thêm error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        status: 'error',
+        message: 'Có lỗi xảy ra: ' + err.message
+    });
+});
 
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);

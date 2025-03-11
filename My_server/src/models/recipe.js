@@ -1,54 +1,27 @@
 const mongoose = require('mongoose');
 
 const recipeSchema = new mongoose.Schema({
-    recipeName: {
-        type: String,
-        required: true
+    _id: {
+        type: String  // Định nghĩa _id là String
     },
-    recipeImage: {
-        type: String,
-        required: true
-    },
-    servingsOptions: {
-        type: Object
-    },
-    time: {
-        type: String,
-        required: true
-    },
-    difficulty: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
+    recipeName: String,
+    recipeImage: String,
+    servingsOptions: Object,
+    time: String,
+    difficulty: String,
+    description: String,
     notes: String,
-    preparation: [{
-        type: Object
-    }],
-    steps: [{
-        type: Object
-    }],
+    preparation: [Object],
+    steps: [Object],
     servingSuggestion: String,
     tips: String,
-    relatedRecipeIds: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'recipes'
-    }],
-    suggestedIngredientIds: [{
-        type: mongoose.Schema.Types.ObjectId
-    }],
     tags: [String],
-    likes: {
-        type: Number,
-        default: 0
-    },
+    likes: Number,
     region: String,
     category: String
-}, {
-    collection: 'recipes'
+}, { 
+    collection: 'recipes',
+    _id: false  // Tắt auto-generate _id
 });
 
-module.exports = mongoose.model('recipes', recipeSchema);
+module.exports = mongoose.model('Recipe', recipeSchema);
