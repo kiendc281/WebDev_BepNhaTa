@@ -23,7 +23,7 @@ const ingredientSchema = new mongoose.Schema({
         min: 0,
         max: 100
     },
-    pricePerPortion: {
+    pricePerPortion: [{
         price: {
             type: Number,
             required: true
@@ -32,7 +32,7 @@ const ingredientSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    },
+    }],
     description: {
         type: String,
         required: true
