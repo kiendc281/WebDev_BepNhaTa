@@ -71,8 +71,8 @@ export class DangNhapComponent {
       this.authService.login(emailOrPhone, password).subscribe({
         next: (response) => {
           console.log('Đăng nhập thành công:', response);
-          // Lưu thông tin đăng nhập
-          localStorage.setItem('token', response.token);
+          // Lưu thông tin đăng nhập với thời hạn 1 giờ
+          this.authService.saveToken(response.token);
           localStorage.setItem('user', JSON.stringify(response.account));
 
           // Đóng popup đăng nhập

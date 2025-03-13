@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-trang-chu',
   imports: [],
   templateUrl: './trang-chu.component.html',
-  styleUrl: './trang-chu.component.css'
+  styleUrl: './trang-chu.component.css',
 })
-export class TrangChuComponent {
-
-}
+export class TrangChuComponent {}
