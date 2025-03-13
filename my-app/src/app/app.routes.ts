@@ -17,6 +17,7 @@ import { QuenMatKhauComponent } from './quen-mat-khau/quen-mat-khau.component';
 import { DatlaiComponent } from './quen-mat-khau/datlai/datlai.component';
 import { NhapemailComponent } from './quen-mat-khau/nhapemail/nhapemail.component';
 import { NhapmaComponent } from './quen-mat-khau/nhapma/nhapma.component';
+import { TaiKhoanComponent } from './tai-khoan/tai-khoan.component';
 
 export const routes: Routes = [
   { path: 'trang-chu', component: TrangChuComponent },
@@ -38,6 +39,7 @@ export const routes: Routes = [
   { path: 'nhapemail', component: NhapemailComponent },
   { path: 'nhapma', component: NhapmaComponent },
   { path: 'datlai', component: DatlaiComponent },
+  { path: 'tai-khoan', component: TaiKhoanComponent },
   { path: '', component: TrangChuComponent },
   // { path: '', redirectTo: '/dang-nhap', pathMatch: 'full' },
 ];
