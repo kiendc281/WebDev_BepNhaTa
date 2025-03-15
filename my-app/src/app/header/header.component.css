@@ -160,19 +160,6 @@
   gap: 20px;
 }
 
-.nav-icons img {
-  cursor: pointer;
-}
-
-.nav-icons a {
-  display: flex;
-  align-items: center;
-}
-
-.nav-icons a.active img {
-  filter: brightness(0) saturate(100%) invert(55%) sepia(82%) saturate(1539%) hue-rotate(360deg) brightness(101%) contrast(106%);
-}
-
 .nav img[src*="mdi-cart-outline"],
 .nav img[src*="group"] {
   width: 40px;
@@ -400,27 +387,6 @@
   display: flex;
   gap: 20px;
   margin-top: 20px;
-}
-
-.mobile-nav-icons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 15px;
-}
-
-.mobile-nav-icons img {
-  cursor: pointer;
-}
-
-.mobile-nav-icons a {
-  display: flex;
-  align-items: center;
-}
-
-.mobile-nav-icons a.active img {
-  filter: brightness(0) saturate(100%) invert(55%) sepia(82%) saturate(1539%) hue-rotate(360deg) brightness(101%) contrast(106%);
 }
 
 .mobile-icons img {

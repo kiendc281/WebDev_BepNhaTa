@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     // Subscribe to router events to track the current route
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.url;
         // Handle query params
