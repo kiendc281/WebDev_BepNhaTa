@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DangNhapComponent } from '../dang-nhap/dang-nhap.component';
 import { DangKyComponent } from '../dang-ky/dang-ky.component';
@@ -18,14 +18,28 @@ import { NhapemailComponent } from '../quen-mat-khau/nhapemail/nhapemail.compone
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   showLoginPopup = false;
   currentForm = 'login'; // 'login', 'register', or 'forgot'
   mouseDownTarget: EventTarget | null = null;
   isMobileMenuOpen = false;
   activeDropdown: string | null = null;
+  currentRoute: string = '';
 
   constructor(private router: Router) {}
+
+  ngOnInit() {
+    // Subscribe to router events to track the current route
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.url;
+        // Handle query params
+        if (this.currentRoute.includes('?')) {
+          this.currentRoute = this.currentRoute.split('?')[0];
+        }
+      }
+    });
+  }
 
   toggleLoginPopup() {
     this.showLoginPopup = !this.showLoginPopup;
