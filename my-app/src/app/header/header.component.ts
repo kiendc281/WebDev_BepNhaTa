@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DangNhapComponent } from '../dang-nhap/dang-nhap.component';
 import { DangKyComponent } from '../dang-ky/dang-ky.component';
 import { NhapemailComponent } from '../quen-mat-khau/nhapemail/nhapemail.component';
-import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -19,28 +18,18 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   showLoginPopup = false;
   currentForm = 'login'; // 'login', 'register', or 'forgot'
   mouseDownTarget: EventTarget | null = null;
-  constructor(private router: Router, private authService: AuthService) {}
+  isMobileMenuOpen = false;
+  activeDropdown: string | null = null;
 
-  ngOnInit() {
-    // Xóa token cũ khi khởi động component
-    // Bỏ comment dòng này nếu bạn muốn luôn reset trạng thái đăng nhập khi tải lại trang
-    // localStorage.removeItem('token');
-  }
+  constructor(private router: Router) {}
 
   toggleLoginPopup() {
-    const isLoggedIn = this.authService.isLoggedIn();
-    console.log('Trạng thái đăng nhập:', isLoggedIn);
-    
-    if (isLoggedIn) {
-      this.router.navigate(['/tai-khoan']);
-    } else {
-      this.showLoginPopup = !this.showLoginPopup;
-      this.currentForm = 'login'; // Reset to login form when toggling
-    }
+    this.showLoginPopup = !this.showLoginPopup;
+    this.currentForm = 'login'; // Reset to login form when toggling
   }
 
   onMouseDown(event: MouseEvent) {
@@ -75,5 +64,32 @@ export class HeaderComponent implements OnInit {
 
   navigateToLogin() {
     this.router.navigate(['/dang-nhap']);
+  }
+
+  // Mobile menu methods
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    // Prevent scrolling when mobile menu is open
+    if (this.isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      this.activeDropdown = null;
+    }
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+    document.body.style.overflow = '';
+    this.activeDropdown = null;
+  }
+
+  toggleDropdown(dropdown: string, event: Event) {
+    event.preventDefault();
+    if (this.activeDropdown === dropdown) {
+      this.activeDropdown = null;
+    } else {
+      this.activeDropdown = dropdown;
+    }
   }
 }
