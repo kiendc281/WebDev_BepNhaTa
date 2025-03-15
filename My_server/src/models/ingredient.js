@@ -79,6 +79,15 @@ const ingredientSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    level: {
+        type: String,
+        enum: ['Dễ', 'Trung bình', 'Khó'],
+        // default: 'Trung bình'
+    },
+    time: {
+        type: String,
+        // default: '25 phút'
+    },
     quantity: {
         type: Number,
         required: true,

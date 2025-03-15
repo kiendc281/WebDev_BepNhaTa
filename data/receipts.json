@@ -1,0 +1,1167 @@
+[
+    {
+    "_id": "CT01",
+    "recipeName": "Phở bò",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741233430/phobohanoi_huh3fe.jpg",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Xương bò", "quantity": "500g"},
+                {"name": "Thịt bò (thăn hoặc nạm)", "quantity": "200g"},
+                {"name": "Bánh phở", "quantity": "400g"},
+                {"name": "Gừng", "quantity": "1 củ nhỏ"},
+                {"name": "Hành tây", "quantity": "1/2 củ"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Rau mùi", "quantity": "1 ít"},
+                {"name": "Quế", "quantity": "1 thanh nhỏ"},
+                {"name": "Hồi", "quantity": "2 hoa"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Muối", "quantity": "1 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1/2 muỗng cà phê"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Xương bò", "quantity": "1kg"},
+                {"name": "Thịt bò (thăn hoặc nạm)", "quantity": "400g"},
+                {"name": "Bánh phở", "quantity": "800g"},
+                {"name": "Gừng", "quantity": "1 củ vừa"},
+                {"name": "Hành tây", "quantity": "1 củ"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Rau mùi", "quantity": "1 ít"},
+                {"name": "Quế", "quantity": "2 thanh nhỏ"},
+                {"name": "Hồi", "quantity": "4 hoa"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Muối", "quantity": "2 muỗng cà phê"},
+                {"name": "Đường", "quantity": "2 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1 muỗng cà phê"}
+            ]
+        }
+    },
+    "time": "3 giờ",
+    "difficulty": "Trung bình",
+    "description": "Phở bò là món ăn truyền thống của Việt Nam, nổi tiếng với nước dùng thơm ngon và thịt bò mềm.",
+    "notes": "Nên hầm xương lâu để nước dùng ngọt tự nhiên.",
+    "preparation": [
+        "Rửa sạch xương bò bằng nước muối loãng, sau đó chần qua nước sôi khoảng 5 phút để loại bỏ bọt bẩn và mùi tanh.",
+        "Nướng gừng và hành tây trực tiếp trên lửa hoặc trong lò nướng cho đến khi cháy xém vỏ ngoài, sau đó cạo sạch vỏ cháy và rửa lại.",
+        "Thái mỏng thịt bò (thăn hoặc nạm) thành từng lát mỏng, để riêng trên đĩa sạch.",
+        "Rửa sạch hành lá và rau mùi, cắt nhỏ hành lá, để rau mùi nguyên cọng hoặc cắt khúc tùy ý.",
+        "Chuẩn bị bánh phở: Nếu dùng bánh phở khô thì ngâm nước ấm khoảng 20 phút rồi vớt ra để ráo, nếu dùng bánh phở tươi thì chỉ cần rửa qua nước ấm.",
+        "Rang nhẹ quế và hồi trên chảo nóng (không dầu) khoảng 1-2 phút cho dậy mùi thơm."
+    ],
+    "steps": [
+        "Cho xương bò vào nồi lớn, đổ 2 lít nước (cho 2 người) hoặc 4 lít nước (cho 4 người), đun sôi rồi hạ lửa nhỏ, hầm trong 2-3 giờ, thường xuyên vớt bọt để nước dùng trong.",
+        "Sau 1 giờ hầm, thêm gừng nướng, hành tây nướng, quế và hồi đã rang vào nồi, tiếp tục hầm để nước dùng thơm.",
+        "Nêm nước dùng với nước mắm, muối, đường và tiêu, điều chỉnh gia vị cho vừa miệng, đun thêm 10 phút để gia vị thấm đều.",
+        "Trụng bánh phở qua nước sôi khoảng 30 giây, sau đó cho vào tô.",
+        "Xếp thịt bò thái mỏng lên trên bánh phở, nếu thích thịt chín thì trụng sơ qua nước dùng trước khi xếp.",
+        "Đun sôi nước dùng một lần nữa, sau đó chan nóng trực tiếp vào tô phở sao cho ngập bánh phở và thịt bò, thịt sẽ chín tái nhờ nhiệt độ nước.",
+        "Rắc hành lá và rau mùi lên trên cùng, thêm một chút tiêu xay nếu thích."
+    ],
+    "servingSuggestion": "Dùng nóng ngay sau khi chế biến, kèm theo đĩa rau sống (húng quế, giá đỗ, rau thơm), chanh tươi, ớt tươi, tương đen và tương ớt để chấm hoặc thêm tùy khẩu vị.",
+    "tips": "Nên chọn thịt bò tươi và thái thật mỏng để thịt chín tái ngon hơn. Nếu nước dùng bị đục, có thể lọc qua vải mùng trước khi chan.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7d4", "65e8f2b9c4f3d2a1b5e9c7d5"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7e2", "65e8f2b9c4f3d2a1b5e9c7e3"],
+    "tags": ["phở", "món nước", "truyền thống", "bò"],
+    "likes": 0,
+    "region": "Bắc",
+    "category": "Nước"
+}
+,
+{
+    "_id": "CT02",
+    "recipeName": "Bún thang",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741233634/bunthang-3053_el3lbx.jpg",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Xương bọng gà", "quantity": "300g"},
+                {"name": "Thịt gà (ức hoặc đùi)", "quantity": "200g"},
+                {"name": "Bún tươi", "quantity": "400g"},
+                {"name": "Trứng gà", "quantity": "1 quả"},
+                {"name": "Trứng vịt muối", "quantity": "1 quả"},
+                {"name": "Chả lụa", "quantity": "100g"},
+                {"name": "Nấm hương khô", "quantity": "5 cái"},
+                {"name": "Tôm khô", "quantity": "20g"},
+                {"name": "Gừng", "quantity": "1 củ nhỏ"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Rau răm", "quantity": "1 ít"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Muối", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1/2 muỗng cà phê"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Xương bọng gà", "quantity": "600g"},
+                {"name": "Thịt gà (ức hoặc đùi)", "quantity": "400g"},
+                {"name": "Bún tươi", "quantity": "800g"},
+                {"name": "Trứng gà", "quantity": "2 quả"},
+                {"name": "Trứng vịt muối", "quantity": "2 quả"},
+                {"name": "Chả lụa", "quantity": "200g"},
+                {"name": "Nấm hương khô", "quantity": "10 cái"},
+                {"name": "Tôm khô", "quantity": "40g"},
+                {"name": "Gừng", "quantity": "1 củ vừa"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Rau răm", "quantity": "1 ít"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Muối", "quantity": "1 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1 muỗng cà phê"}
+            ]
+        }
+    },
+    "time": "1 giờ 30 phút",
+    "difficulty": "Trung bình",
+    "description": "Bún thang là món ăn tinh tế của Hà Nội, với nước dùng trong veo, ngọt thanh và sự kết hợp hài hòa của thịt gà, trứng, chả lụa và các loại rau thơm.",
+    "notes": "Có thể thêm một chút mắm tôm để tăng hương vị đặc trưng.",
+    "preparation": [
+        "Rửa sạch xương bọng gà, chần qua nước sôi khoảng 3-5 phút để loại bỏ bọt bẩn, sau đó vớt ra rửa lại bằng nước sạch.",
+        "Gà làm sạch, ướp với 1/2 muỗng cà phê muối, một ít tiêu và hành tím băm, để thấm gia vị trong 15 phút.",
+        "Nấm hương khô ngâm nước ấm 20 phút cho nở, rửa sạch, bỏ chân, để ráo.",
+        "Tôm khô ngâm nước ấm 15 phút, rửa sạch, để ráo.",
+        "Nướng gừng và hành tím trên bếp than hoặc lò nướng cho thơm, cạo sạch vỏ cháy, đập dập nhẹ.",
+        "Đánh tan trứng gà, tráng mỏng trên chảo chống dính, để nguội rồi thái sợi nhỏ.",
+        "Trứng vịt muối luộc chín, bóc vỏ, bổ đôi hoặc thái lát mỏng tùy ý.",
+        "Chả lụa thái sợi mỏng, dài khoảng 3-4 cm.",
+        "Rửa sạch hành lá và rau răm, cắt nhỏ hành lá, để rau răm nguyên lá hoặc cắt khúc tùy sở thích.",
+        "Chuẩn bị bún tươi, trụng qua nước sôi khoảng 30 giây, để ráo."
+    ],
+    "steps": [
+        "Cho xương bọng gà vào nồi, thêm 1,5 lít nước (cho 2 người) hoặc 3 lít nước (cho 4 người), đun sôi, vớt bọt kỹ, sau đó hạ lửa nhỏ hầm trong 1 giờ.",
+        "Thả gà đã ướp vào nồi nước dùng, luộc chín tới (khoảng 20 phút), vớt ra để nguội, xé sợi nhỏ, giữ lại xương gà tiếp tục hầm nước dùng.",
+        "Cho nấm hương, tôm khô, gừng nướng và hành tím nướng vào nồi, hầm thêm 20 phút để nước dùng thơm.",
+        "Nêm nước dùng với nước mắm, muối, đường và tiêu, điều chỉnh gia vị vừa ăn, lọc nước dùng qua rây để trong veo, giữ nóng.",
+        "Xếp bún vào tô, lần lượt đặt thịt gà xé sợi, trứng tráng thái sợi, trứng vịt muối, chả lụa lên trên.",
+        "Chan nước dùng nóng ngập bún và nguyên liệu, rắc hành lá, rau răm và một chút tiêu xay lên trên."
+    ],
+    "servingSuggestion": "Dùng nóng ngay khi vừa chế biến, kèm theo chén mắm tôm pha với chanh, ớt tươi và một ít đường để chấm hoặc thêm vào tô tùy khẩu vị. Có thể ăn cùng rau sống như rau muống chẻ, giá đỗ hoặc húng quế để tăng độ tươi mát.",
+    "tips": "Để nước dùng trong và ngọt, nên vớt bọt thường xuyên khi hầm. Có thể thêm một ít sá sùng khô (nếu có) để tăng hương vị đặc trưng.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7d7", "65e8f2b9c4f3d2a1b5e9c7d8"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7e4", "65e8f2b9c4f3d2a1b5e9c7e5"],
+    "tags": ["bún thang", "món nước", "truyền thống", "Hà Nội"],
+    "likes": 0,
+    "region": "Bắc",
+    "category": "Nước"
+},
+{
+    "_id": "CT03",
+    "recipeName": "Bún riêu cua",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741238537/189321515_1992632020_wi6njv.jpg",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Cua đồng xay", "quantity": "250g"},
+                {"name": "Bún tươi", "quantity": "400g"},
+                {"name": "Cà chua", "quantity": "2 trái"},
+                {"name": "Đậu hũ bi chiên", "quantity": "100g"},
+                {"name": "Huyết heo", "quantity": "100g"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Ngò gai", "quantity": "1 ít"},
+                {"name": "Dầu ăn", "quantity": "1 muỗng canh"},
+                {"name": "Gia vị nêm sẵn Aji-Quick® Bún Riêu Cua", "quantity": "1 gói"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Cua đồng xay", "quantity": "500g"},
+                {"name": "Bún tươi", "quantity": "800g"},
+                {"name": "Cà chua", "quantity": "4 trái"},
+                {"name": "Đậu hũ bi chiên", "quantity": "200g"},
+                {"name": "Huyết heo", "quantity": "200g"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Ngò gai", "quantity": "1 ít"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"},
+                {"name": "Gia vị nêm sẵn Aji-Quick® Bún Riêu Cua", "quantity": "2 gói"}
+            ]
+        }
+    },
+    "time": "45 phút",
+    "difficulty": "Dễ",
+    "description": "Bún riêu cua là món ăn dân dã quen thuộc, với nước dùng ngọt thanh từ cua đồng, kết hợp vị chua nhẹ của cà chua và hương thơm đặc trưng của ngò gai.",
+    "notes": "Có thể thêm mắm tôm để tăng hương vị tùy khẩu vị.",
+    "preparation": [
+        "Cua đồng xay lọc với 1 lít nước (cho 2 người) hoặc 2 lít nước (cho 4 người), khuấy đều để thịt cua tan ra, sau đó để lắng và gạn lấy nước, bỏ phần xác.",
+        "Cà chua rửa sạch, cắt múi cau, chia làm 2 phần: một phần để xào, một phần để cho vào nước dùng.",
+        "Huyết heo rửa sạch, cắt miếng vừa ăn (khoảng 3-4 cm), trụng sơ qua nước sôi để khử mùi, vớt ra để ráo.",
+        "Đậu hũ bi chiên để sẵn, nếu chưa chiên thì cắt miếng nhỏ, chiên vàng trong chảo với ít dầu ăn.",
+        "Hành tím bóc vỏ, băm nhỏ để phi thơm.",
+        "Ngò gai rửa sạch, cắt nhỏ để rắc lên món ăn khi hoàn thành.",
+        "Bún tươi trụng qua nước sôi khoảng 30 giây, vớt ra để ráo."
+    ],
+    "steps": [
+        "Đun sôi nước lọc cua trên lửa vừa, khi riêu cua nổi lên thành váng thì nhẹ nhàng vớt ra để riêng, giữ lại nước dùng.",
+        "Bắc chảo lên bếp, cho 1 muỗng canh dầu ăn (cho 2 người) hoặc 2 muỗng canh (cho 4 người), phi thơm hành tím băm.",
+        "Cho phần cà chua cắt múi cau (1 trái cho 2 người, 2 trái cho 4 người) vào xào khoảng 2 phút cho cà chua mềm và ra màu.",
+        "Đổ nước dùng cua (1,5 lít cho 2 người, 3 lít cho 4 người) vào chảo cà chua vừa xào, đun sôi.",
+        "Nêm 1 gói Gia vị nêm sẵn Aji-Quick® Bún Riêu Cua (cho 2 người) hoặc 2 gói (cho 4 người), khuấy đều cho gia vị tan.",
+        "Cho đậu hũ bi chiên, huyết heo và phần cà chua còn lại vào nồi, đun thêm 5 phút để các nguyên liệu thấm gia vị.",
+        "Cho bún đã trụng vào tô, xếp riêu cua lên trên, chan nước dùng nóng ngập bún, rắc ngò gai lên mặt."
+    ],
+    "servingSuggestion": "Dùng nóng kèm rau chuối bào, rau muống bào, kinh giới, giá đỗ và mắm tôm pha với chanh, ớt tùy khẩu vị. Có thể thêm chanh tươi hoặc ớt xay để tăng vị chua cay nếu thích.",
+    "tips": "Sử dụng cà chua chín đỏ để nước dùng có màu sắc đẹp hơn. Vớt riêu cua nhẹ tay để giữ nguyên váng cua không bị vỡ.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7da", "65e8f2b9c4f3d2a1b5e9c7db"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7e6", "65e8f2b9c4f3d2a1b5e9c7e7"],
+    "tags": ["bún riêu", "cua đồng", "món nước", "truyền thống"],
+    "likes": 0,
+    "region": "Bắc",
+    "category": "Nước"
+},
+{
+    "_id": "CT04",
+    "recipeName": "Nộm hoa chuối hải sản",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741238602/IMG_8383-nom-hoa-chuoi-hai-san.png_v9ifsw.webp",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Hoa chuối hột", "quantity": "1 bắp (khoảng 200g)"},
+                {"name": "Thịt ba chỉ", "quantity": "150g"},
+                {"name": "Tôm sú", "quantity": "150g"},
+                {"name": "Giá đỗ", "quantity": "100g"},
+                {"name": "Hành tây", "quantity": "1/2 củ"},
+                {"name": "Rau răm", "quantity": "1 ít"},
+                {"name": "Lá chanh", "quantity": "3 lá"},
+                {"name": "Ớt", "quantity": "1 trái"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Giấm gạo lên men LISA®", "quantity": "2 muỗng canh"},
+                {"name": "Đường", "quantity": "4 muỗng canh"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Muối", "quantity": "2/3 muỗng cà phê"},
+                {"name": "Bột ngọt AJI-NO-MOTO®", "quantity": "1/2 muỗng cà phê"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Hoa chuối hột", "quantity": "2 bắp (khoảng 400g)"},
+                {"name": "Thịt ba chỉ", "quantity": "300g"},
+                {"name": "Tôm sú", "quantity": "300g"},
+                {"name": "Giá đỗ", "quantity": "200g"},
+                {"name": "Hành tây", "quantity": "1 củ"},
+                {"name": "Rau răm", "quantity": "1 ít"},
+                {"name": "Lá chanh", "quantity": "6 lá"},
+                {"name": "Ớt", "quantity": "2 trái"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Giấm gạo lên men LISA®", "quantity": "4 muỗng canh"},
+                {"name": "Đường", "quantity": "8 muỗng canh"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Muối", "quantity": "1 muỗng cà phê"},
+                {"name": "Bột ngọt AJI-NO-MOTO®", "quantity": "1 muỗng cà phê"}
+            ]
+        }
+    },
+    "time": "30 phút",
+    "difficulty": "Dễ",
+    "description": "Nộm hoa chuối hải sản là món ăn dân dã, lạ miệng với vị giòn của hoa chuối, ngọt của tôm và thịt, hòa quyện cùng nước trộn chua ngọt hấp dẫn.",
+    "notes": "Chọn hoa chuối hột để đảm bảo độ trắng, giòn và ít chát. Có thể thêm lạc rang để tăng độ béo.",
+    "preparation": [
+        "Hoa chuối lột bỏ phần bẹ già, cắt lát mỏng, ngâm ngay vào nước đá có pha 1 muỗng canh nước cốt chanh trong 10 phút để trắng và giòn, sau đó vớt ra để ráo.",
+        "Thịt ba chỉ rửa sạch, cho vào nồi luộc từ nước lạnh với 2 củ hành tím, 1/2 muỗng cà phê muối và 1/2 muỗng cà phê bột ngọt AJI-NO-MOTO®, luộc chín thì vớt ra ngâm nước lạnh 5 phút, cắt sợi vừa ăn.",
+        "Tôm sú rửa sạch, luộc trong nước luộc thịt khoảng 3 phút cho chín, bóc vỏ, chừa đuôi, cắt đôi theo chiều dọc.",
+        "Giá đỗ rửa sạch, để ráo nước.",
+        "Hành tây bóc vỏ, cắt sợi mỏng, ngâm nước lạnh để giảm hăng.",
+        "Rau răm rửa sạch, cắt nhỏ khoảng 1 cm.",
+        "Lá chanh rửa sạch, thái chỉ mỏng.",
+        "Ớt rửa sạch, 1/3 băm nhỏ, 1/3 cắt sợi, 1/3 tỉa hoa để trang trí.",
+        "Hành tím và tỏi bóc vỏ, băm nhỏ để làm nước trộn."
+    ],
+    "steps": [
+        "Pha nước trộn: Trộn đều 2 muỗng canh giấm gạo LISA® (4 muỗng canh cho 4 người), 4 muỗng canh đường (8 muỗng canh cho 4 người), 2/3 muỗng cà phê muối (1 muỗng cà phê cho 4 người), 1 muỗng canh nước mắm (2 muỗng canh cho 4 người), 1/2 muỗng cà phê bột ngọt AJI-NO-MOTO® (1 muỗng cà phê cho 4 người), thêm tỏi và ớt băm, khuấy tan.",
+        "Trộn tôm và thịt với 1 muỗng canh nước trộn (2 muỗng canh cho 4 người), để thấm gia vị trong 5 phút.",
+        "Cho hoa chuối, giá đỗ, tôm, thịt, hành tây, rau răm, lá chanh thái chỉ và ớt cắt sợi vào tô lớn.",
+        "Rưới phần nước trộn còn lại lên hỗn hợp, trộn đều nhẹ tay để nguyên liệu thấm gia vị, nếm lại và điều chỉnh nếu cần.",
+        "Dọn nộm ra đĩa, trang trí bằng ớt tỉa hoa và thêm lạc rang (tùy chọn) lên trên nếu thích."
+    ],
+    "servingSuggestion": "Dùng ngay sau khi trộn để giữ độ giòn của hoa chuối và giá đỗ. Kèm theo bánh phồng tôm hoặc bánh tráng nướng để nhâm nhi. Có thể thêm chanh tươi hoặc ớt tươi tùy khẩu vị.",
+    "tips": "Ngâm hoa chuối trong nước đá lạnh pha chanh ngay sau khi cắt để tránh bị thâm. Luộc thịt từ nước lạnh giúp thịt mềm và ngọt hơn.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7dd", "65e8f2b9c4f3d2a1b5e9c7de"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7e8", "65e8f2b9c4f3d2a1b5e9c7e9"],
+    "tags": ["nộm", "hoa chuối", "hải sản", "món trộn", "dân dã"],
+    "likes": 0,
+    "region": "Bắc",
+    "category": "Trộn"
+},
+{
+    "_id": "CT05",
+    "recipeName": "Bún gạo xào thập cẩm",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741238676/IMG_0005-bun-gao-xao-thap-cam.png_go0gqy.webp",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Bún gạo khô", "quantity": "200g"},
+                {"name": "Thịt bò", "quantity": "150g"},
+                {"name": "Tôm sú", "quantity": "100g"},
+                {"name": "Cà rốt", "quantity": "1/2 củ"},
+                {"name": "Bắp cải", "quantity": "100g"},
+                {"name": "Hành tây", "quantity": "1/2 củ"},
+                {"name": "Nấm đông cô tươi", "quantity": "50g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Dầu hào MAGGI", "quantity": "1 muỗng canh"},
+                {"name": "Nước tương MAGGI", "quantity": "1 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"},
+                {"name": "Muối", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1/2 muỗng cà phê"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Bún gạo khô", "quantity": "400g"},
+                {"name": "Thịt bò", "quantity": "300g"},
+                {"name": "Tôm sú", "quantity": "200g"},
+                {"name": "Cà rốt", "quantity": "1 củ"},
+                {"name": "Bắp cải", "quantity": "200g"},
+                {"name": "Hành tây", "quantity": "1 củ"},
+                {"name": "Nấm đông cô tươi", "quantity": "100g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Dầu hào MAGGI", "quantity": "2 muỗng canh"},
+                {"name": "Nước tương MAGGI", "quantity": "2 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "4 muỗng canh"},
+                {"name": "Muối", "quantity": "1 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1 muỗng cà phê"}
+            ]
+        }
+    },
+    "time": "30 phút",
+    "difficulty": "Dễ",
+    "description": "Bún gạo xào thập cẩm là món ăn nhanh gọn, hấp dẫn với sự kết hợp của bún gạo dai mềm, thịt bò, tôm và rau củ tươi ngon, thấm đẫm gia vị đậm đà.",
+    "notes": "Có thể thay thịt bò bằng thịt heo hoặc gà tùy sở thích. Xào trên lửa lớn để rau củ giữ được độ giòn.",
+    "preparation": [
+        "Ngâm bún gạo khô trong nước ấm khoảng 15-20 phút cho mềm, sau đó vớt ra để ráo, nếu dùng bún gạo tươi thì trụng qua nước sôi 1 phút rồi để ráo.",
+        "Thịt bò rửa sạch, thái lát mỏng, ướp với 1/2 muỗng canh nước tương MAGGI, 1/2 muỗng cà phê đường, 1/2 muỗng cà phê tiêu trong 10 phút.",
+        "Tôm sú rửa sạch, bóc vỏ, bỏ chỉ lưng, ướp với 1/2 muỗng cà phê muối và 1 ít tiêu trong 10 phút.",
+        "Cà rốt gọt vỏ, rửa sạch, thái sợi dài khoảng 4-5 cm.",
+        "Bắp cải rửa sạch, cắt khúc vừa ăn (khoảng 3-4 cm).",
+        "Hành tây bóc vỏ, cắt múi cau mỏng.",
+        "Nấm đông cô tươi rửa sạch, cắt đôi hoặc để nguyên nếu nhỏ.",
+        "Hành lá rửa sạch, cắt khúc dài 3 cm, phần đầu hành để riêng để xào.",
+        "Tỏi bóc vỏ, băm nhuyễn."
+    ],
+    "steps": [
+        "Đun nóng 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người) trong chảo lớn, cho tỏi băm và phần đầu hành lá vào phi thơm.",
+        "Cho thịt bò vào xào nhanh trên lửa lớn khoảng 1-2 phút đến khi tái, trút ra đĩa để riêng.",
+        "Thêm 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người) vào chảo, cho tôm vào xào đến khi chín hồng (khoảng 2 phút), trút ra đĩa để riêng.",
+        "Tiếp tục cho cà rốt, bắp cải, hành tây và nấm đông cô vào chảo, xào trên lửa lớn khoảng 3 phút cho rau củ chín tới, giữ độ giòn.",
+        "Cho bún gạo đã để ráo vào chảo, thêm 1 muỗng canh dầu hào MAGGI (2 muỗng canh cho 4 người) và 1/2 muỗng canh nước tương MAGGI (1 muỗng canh cho 4 người), đảo đều 2-3 phút để bún thấm gia vị.",
+        "Cho thịt bò và tôm đã xào trở lại chảo, đảo đều thêm 1 phút, nêm thêm muối, đường, tiêu nếu cần, rắc hành lá lên trên, tắt bếp.",
+        "Dọn bún gạo xào ra đĩa, rắc thêm một ít tiêu xay nếu thích."
+    ],
+    "servingSuggestion": "Dùng nóng ngay sau khi xào để bún mềm và rau củ giòn ngon. Kèm theo nước tương MAGGI pha ớt tươi hoặc chén nước mắm ớt để chấm tùy khẩu vị. Có thể thêm rau thơm hoặc dưa leo thái sợi để ăn kèm cho tươi mát.",
+    "tips": "Xào từng loại nguyên liệu riêng để tránh ra nước, giữ độ ngon. Không ngâm bún gạo quá lâu để tránh bị nát khi xào.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7e0", "65e8f2b9c4f3d2a1b5e9c7e1"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7ea", "65e8f2b9c4f3d2a1b5e9c7eb"],
+    "tags": ["bún gạo", "xào", "thập cẩm", "món mặn"],
+    "likes": 0,
+    "region": "Nam",
+    "category": "Xào"
+},
+{
+    "_id": "CT06",
+    "recipeName": "Miến xào cua",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741238780/Mien-xao-cua-1.png_rqsiik.webp",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Miến dong", "quantity": "150g"},
+                {"name": "Thịt cua", "quantity": "150g"},
+                {"name": "Trứng gà", "quantity": "1 quả"},
+                {"name": "Nấm hương khô", "quantity": "5 cái"},
+                {"name": "Mộc nhĩ", "quantity": "20g"},
+                {"name": "Cà rốt", "quantity": "1/2 củ"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Dầu hào MAGGI", "quantity": "1 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"},
+                {"name": "Muối", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1/2 muỗng cà phê"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Miến dong", "quantity": "300g"},
+                {"name": "Thịt cua", "quantity": "300g"},
+                {"name": "Trứng gà", "quantity": "2 quả"},
+                {"name": "Nấm hương khô", "quantity": "10 cái"},
+                {"name": "Mộc nhĩ", "quantity": "40g"},
+                {"name": "Cà rốt", "quantity": "1 củ"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Dầu hào MAGGI", "quantity": "2 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "4 muỗng canh"},
+                {"name": "Muối", "quantity": "1 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1 muỗng cà phê"}
+            ]
+        }
+    },
+    "time": "30 phút",
+    "difficulty": "Dễ",
+    "description": "Miến xào cua là món ăn thơm ngon, đơn giản với miến dong dai mềm, thịt cua ngọt tự nhiên, kết hợp cùng nấm hương và rau củ tạo nên hương vị hài hòa.",
+    "notes": "Nên chọn thịt cua tươi để món ăn thơm ngon hơn. Có thể thêm giá đỗ hoặc rau cải nếu thích.",
+    "preparation": [
+        "Ngâm miến dong trong nước ấm khoảng 15-20 phút cho mềm, sau đó vớt ra để ráo, cắt ngắn nếu cần (khoảng 10-15 cm).",
+        "Thịt cua (đã gỡ sẵn) rửa nhẹ với nước muối loãng để khử tanh, để ráo, ướp với 1/2 muỗng cà phê muối, 1/2 muỗng cà phê tiêu trong 10 phút.",
+        "Trứng gà đánh tan, tráng mỏng trên chảo chống dính với ít dầu ăn, để nguội rồi thái sợi nhỏ.",
+        "Nấm hương khô ngâm nước ấm 20 phút cho nở, rửa sạch, bỏ chân, thái sợi hoặc để nguyên nếu nhỏ.",
+        "Mộc nhĩ ngâm nước ấm 15 phút cho nở, rửa sạch, cắt bỏ phần gốc cứng, thái sợi vừa ăn.",
+        "Cà rốt gọt vỏ, rửa sạch, thái sợi dài khoảng 4-5 cm.",
+        "Hành lá rửa sạch, cắt khúc 3 cm, phần đầu hành để riêng để phi thơm.",
+        "Tỏi và hành tím bóc vỏ, băm nhuyễn."
+    ],
+    "steps": [
+        "Đun nóng 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người) trong chảo lớn, phi thơm tỏi, hành tím băm và phần đầu hành lá.",
+        "Cho thịt cua vào xào nhanh trên lửa lớn khoảng 2 phút cho thơm, trút ra đĩa để riêng.",
+        "Thêm 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người) vào chảo, cho nấm hương, mộc nhĩ và cà rốt vào xào khoảng 3 phút cho chín tới.",
+        "Cho miến dong đã để ráo vào chảo, thêm 1 muỗng canh nước mắm (2 muỗng canh cho 4 người) và 1 muỗng canh dầu hào MAGGI (2 muỗng canh cho 4 người), đảo đều nhẹ tay khoảng 3-4 phút để miến thấm gia vị.",
+        "Cho thịt cua đã xào và trứng thái sợi vào chảo, đảo đều thêm 1-2 phút, nêm thêm đường, tiêu và muối nếu cần, rắc hành lá lên trên, tắt bếp.",
+        "Dọn miến xào ra đĩa, rắc thêm một ít tiêu xay để tăng hương vị."
+    ],
+    "servingSuggestion": "Dùng nóng ngay sau khi xào để miến giữ độ dai và thịt cua thơm ngon. Kèm theo chén nước mắm pha chua ngọt (nước mắm, đường, chanh, tỏi, ớt) để chấm hoặc rưới lên tùy thích. Có thể ăn cùng rau sống như xà lách, húng quế để tăng độ tươi mát.",
+    "tips": "Không ngâm miến quá lâu để tránh bị nhũn khi xào. Xào thịt cua riêng trước để giữ nguyên vị ngọt tự nhiên.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7e3", "65e8f2b9c4f3d2a1b5e9c7e4"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7ec", "65e8f2b9c4f3d2a1b5e9c7ed"],
+    "tags": ["miến xào", "cua", "món xào", "thập cẩm"],
+    "likes": 0,
+    "region": "Bắc",
+    "category": "Xào"
+},
+{
+    "_id": "CT07",
+    "recipeName": "Canh chua cá lóc",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741239429/Canh-chua-ca-loc-540-360.jpg_qj06ds.webp",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Cá lóc", "quantity": "300g"},
+                {"name": "Cà chua", "quantity": "1 trái"},
+                {"name": "Dọc mùng", "quantity": "100g"},
+                {"name": "Dứa (thơm)", "quantity": "1/4 trái"},
+                {"name": "Giá đỗ", "quantity": "50g"},
+                {"name": "Me chua", "quantity": "1 muỗng canh (hoặc 1 quả me tươi)"},
+                {"name": "Ngò om", "quantity": "1 ít"},
+                {"name": "Rau muống", "quantity": "50g"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Ớt", "quantity": "1 trái"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Muối", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1 muỗng cà phê"},
+                {"name": "Dầu ăn", "quantity": "1 muỗng canh"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Cá lóc", "quantity": "600g"},
+                {"name": "Cà chua", "quantity": "2 trái"},
+                {"name": "Dọc mùng", "quantity": "200g"},
+                {"name": "Dứa (thơm)", "quantity": "1/2 trái"},
+                {"name": "Giá đỗ", "quantity": "100g"},
+                {"name": "Me chua", "quantity": "2 muỗng canh (hoặc 2 quả me tươi)"},
+                {"name": "Ngò om", "quantity": "1 ít"},
+                {"name": "Rau muống", "quantity": "100g"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Ớt", "quantity": "2 trái"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Muối", "quantity": "1 muỗng cà phê"},
+                {"name": "Đường", "quantity": "2 muỗng cà phê"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"}
+            ]
+        }
+    },
+    "time": "40 phút",
+    "difficulty": "Dễ",
+    "description": "Canh chua cá lóc là món ăn đặc trưng miền Nam, với vị chua thanh từ me và dứa, kết hợp cá lóc ngọt thịt cùng các loại rau tươi mát.",
+    "notes": "Chọn cá lóc tươi sống để thịt chắc và ngon hơn. Có thể thay me bằng sấu hoặc chanh tùy sở thích.",
+    "preparation": [
+        "Cá lóc làm sạch, bỏ ruột, mang và vảy, rửa sạch với nước muối loãng, cắt khúc vừa ăn (khoảng 3-4 cm), để ráo.",
+        "Cà chua rửa sạch, cắt múi cau.",
+        "Dọc mùng tước vỏ, cắt xéo khúc 4-5 cm, ngâm nước muối loãng 10 phút để bớt nhớt, rửa lại và để ráo.",
+        "Dứa gọt vỏ, bỏ mắt, cắt lát mỏng hoặc thái sợi tùy ý.",
+        "Giá đỗ rửa sạch, để ráo.",
+        "Rau muống nhặt lấy phần ngọn và lá, rửa sạch, để ráo.",
+        "Me chua (nếu dùng me tươi) ngâm nước ấm 10 phút, dầm lấy nước cốt, bỏ hạt; nếu dùng me đóng gói thì để sẵn.",
+        "Ngò om rửa sạch, cắt khúc 2-3 cm.",
+        "Tỏi và hành tím bóc vỏ, băm nhuyễn.",
+        "Ớt rửa sạch, 1/2 băm nhỏ, 1/2 để nguyên hoặc cắt lát trang trí."
+    ],
+    "steps": [
+        "Đun nóng 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người) trong nồi, phi thơm tỏi và hành tím băm.",
+        "Cho cà chua vào xào khoảng 2 phút cho mềm và ra màu, thêm 1 lít nước (2 lít cho 4 người), đun sôi.",
+        "Thêm nước cốt me (1 muỗng canh cho 2 người, 2 muỗng canh cho 4 người) vào nồi, khuấy đều, đun sôi lại.",
+        "Cho cá lóc vào nồi, nấu lửa vừa khoảng 5-7 phút cho cá chín, vớt bọt nếu có.",
+        "Nêm 1 muỗng canh nước mắm (2 muỗng canh cho 4 người), 1/2 muỗng cà phê muối (1 muỗng cà phê cho 4 người), 1 muỗng cà phê đường (2 muỗng cà phê cho 4 người), thêm ớt băm, khuấy nhẹ, nếm lại gia vị cho vừa ăn.",
+        "Cho dứa, dọc mùng, rau muống và giá đỗ vào nồi, nấu thêm 3-5 phút cho rau chín mềm nhưng vẫn giòn, tắt bếp.",
+        "Rắc ngò om và ớt cắt lát lên trên, dọn canh ra tô lớn."
+    ],
+    "servingSuggestion": "Dùng nóng với cơm trắng hoặc bún tươi, kèm chén nước mắm nguyên chất pha ớt để chấm cá. Có thể thêm đĩa rau sống (rau muống, cải xanh) hoặc dưa muối để ăn kèm cho trọn vị.",
+    "tips": "Không nấu cá quá lâu để tránh thịt bị bở. Thêm dứa và me vừa đủ để vị chua thanh, không quá gắt.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7e6", "65e8f2b9c4f3d2a1b5e9c7e7"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7ee", "65e8f2b9c4f3d2a1b5e9c7ef"],
+    "tags": ["canh chua", "cá lóc", "món nước", "miền Nam"],
+    "likes": 0,
+    "region": "Nam",
+    "category": "Nước"
+},
+{
+    "_id": "CT08",
+    "recipeName": "Bánh canh cá lóc",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741239434/banh-canh-ca-loc-540.jpg_ylx3dr.webp",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Cá lóc", "quantity": "300g"},
+                {"name": "Bánh canh bột gạo", "quantity": "300g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Ngò rí", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Muối", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Dầu ăn", "quantity": "1 muỗng canh"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Cá lóc", "quantity": "600g"},
+                {"name": "Bánh canh bột gạo", "quantity": "600g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Ngò rí", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Muối", "quantity": "1 muỗng cà phê"},
+                {"name": "Đường", "quantity": "2 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1 muỗng cà phê"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"}
+            ]
+        }
+    },
+    "time": "45 phút",
+    "difficulty": "Trung bình",
+    "description": "Bánh canh cá lóc là món ăn dân dã miền Nam, với nước dùng ngọt từ cá lóc tươi, sợi bánh canh dai mềm và hương thơm từ hành ngò.",
+    "notes": "Chọn cá lóc đồng để thịt ngọt và chắc hơn.",
+    "preparation": [
+        "Cá lóc làm sạch, bỏ ruột, mang và vảy, rửa sạch với nước muối loãng, để ráo, cắt khúc hoặc lọc lấy thịt tùy ý (nếu lọc thì giữ xương để nấu nước dùng).",
+        "Bánh canh bột gạo (nếu khô) ngâm nước ấm 10 phút cho mềm, nếu tươi thì trụng qua nước sôi 1 phút, để ráo.",
+        "Hành lá và ngò rí rửa sạch, cắt nhỏ (hành lá phần đầu để riêng để phi).",
+        "Tỏi và hành tím bóc vỏ, băm nhuyễn."
+    ],
+    "steps": [
+        "Luộc cá lóc trong 1 lít nước (2 lít cho 4 người) khoảng 5-7 phút cho chín, vớt ra để nguội, gỡ lấy thịt, giữ lại nước luộc và xương (nếu có).",
+        "Đun nóng 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người) trong chảo, phi thơm tỏi, hành tím và phần đầu hành lá.",
+        "Cho nước luộc cá vào nồi, thêm xương (nếu có), đun sôi, vớt bọt, nấu lửa nhỏ 15 phút để nước dùng ngọt.",
+        "Nêm 1 muỗng canh nước mắm (2 muỗng canh cho 4 người), 1/2 muỗng cà phê muối (1 muỗng cà phê cho 4 người), 1 muỗng cà phê đường (2 muỗng cà phê cho 4 người), 1/2 muỗng cà phê tiêu (1 muỗng cà phê cho 4 người), khuấy đều, nếm lại gia vị.",
+        "Cho bánh canh vào nồi nước dùng, nấu khoảng 3-5 phút cho sợi bánh chín mềm, thêm thịt cá lóc vào, đun thêm 1 phút, tắt bếp.",
+        "Múc bánh canh ra tô, rắc hành lá, ngò rí và một ít tiêu xay lên trên."
+    ],
+    "servingSuggestion": "Dùng nóng kèm chén nước mắm ớt nguyên chất để chấm thịt cá. Có thể thêm rau muống luộc hoặc giá đỗ để ăn kèm cho tươi mát.",
+    "tips": "Nấu nước dùng từ xương cá để tăng độ ngọt tự nhiên. Không nấu bánh canh quá lâu để tránh bị nát.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7e9", "65e8f2b9c4f3d2a1b5e9c7ea"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7f0", "65e8f2b9c4f3d2a1b5e9c7f1"],
+    "tags": ["bánh canh", "cá lóc", "món nước", "miền Nam"],
+    "likes": 0,
+    "region": "Nam",
+    "category": "Nước"
+},
+{
+    "_id": "CT09",
+    "recipeName": "Thịt bò xào lá lốt",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741239422/1-ThitBoXaoLaLot_CQC2315.png_yfvcs9.webp",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Thịt bò", "quantity": "200g"},
+                {"name": "Lá lốt", "quantity": "100g"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Dầu hào MAGGI", "quantity": "1 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"},
+                {"name": "Đường", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1/2 muỗng cà phê"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Thịt bò", "quantity": "400g"},
+                {"name": "Lá lốt", "quantity": "200g"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Dầu hào MAGGI", "quantity": "2 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "4 muỗng canh"},
+                {"name": "Đường", "quantity": "1 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1 muỗng cà phê"}
+            ]
+        }
+    },
+    "time": "20 phút",
+    "difficulty": "Dễ",
+    "description": "Thịt bò xào lá lốt là món ăn nhanh, thơm ngon với thịt bò mềm ngọt và hương thơm đặc trưng của lá lốt.",
+    "notes": "Chọn thịt bò thăn để mềm và dễ xào. Xào nhanh trên lửa lớn để giữ độ tươi ngon.",
+    "preparation": [
+        "Thịt bò rửa sạch, thái lát mỏng, ướp với 1/2 muỗng canh nước mắm, 1/2 muỗng canh dầu hào, 1/2 muỗng cà phê đường, 1/2 muỗng cà phê tiêu trong 10 phút.",
+        "Lá lốt rửa sạch, để ráo, cắt đôi hoặc để nguyên tùy kích thước lá.",
+        "Tỏi và hành tím bóc vỏ, băm nhuyễn."
+    ],
+    "steps": [
+        "Đun nóng 2 muỗng canh dầu ăn (4 muỗng canh cho 4 người) trong chảo, phi thơm tỏi và hành tím.",
+        "Cho thịt bò vào xào nhanh trên lửa lớn khoảng 1-2 phút cho tái, trút ra đĩa để riêng.",
+        "Cho lá lốt vào chảo, thêm 1/2 muỗng canh nước mắm (1 muỗng canh cho 4 người), 1/2 muỗng canh dầu hào (1 muỗng canh cho 4 người), xào khoảng 1 phút cho lá thấm gia vị.",
+        "Trả thịt bò vào chảo, đảo đều thêm 1 phút để thịt chín hẳn và quyện với lá lốt, tắt bếp.",
+        "Dọn ra đĩa, rắc thêm ít tiêu xay nếu thích."
+    ],
+    "servingSuggestion": "Dùng nóng với cơm trắng hoặc bánh mì. Kèm chén nước mắm ớt để chấm nếu muốn đậm vị hơn.",
+    "tips": "Không xào lá lốt quá lâu để tránh bị đắng. Chọn lá lốt tươi để hương thơm đậm đà.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7ec", "65e8f2b9c4f3d2a1b5e9c7ed"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7f2", "65e8f2b9c4f3d2a1b5e9c7f3"],
+    "tags": ["thịt bò", "lá lốt", "món xào", "nhanh gọn"],
+    "likes": 0,
+    "region": "Nam",
+    "category": "Xào"
+},
+{
+    "_id": "CT10",
+    "recipeName": "Mì Quảng",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741239426/201506251048520000001_monngonmoingay.com-miquang-1.png_smefqs.webp",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Mì Quảng", "quantity": "300g"},
+                {"name": "Thịt heo", "quantity": "150g"},
+                {"name": "Tôm", "quantity": "100g"},
+                {"name": "Trứng gà luộc", "quantity": "1 quả"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Rau mùi", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "1 muỗng canh"},
+                {"name": "Muối", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1 muỗng cà phê"},
+                {"name": "Bột nghệ", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Đậu phộng rang", "quantity": "1 ít"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Mì Quảng", "quantity": "600g"},
+                {"name": "Thịt heo", "quantity": "300g"},
+                {"name": "Tôm", "quantity": "200g"},
+                {"name": "Trứng gà luộc", "quantity": "2 quả"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Rau mùi", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"},
+                {"name": "Muối", "quantity": "1 muỗng cà phê"},
+                {"name": "Đường", "quantity": "2 muỗng cà phê"},
+                {"name": "Bột nghệ", "quantity": "1 muỗng cà phê"},
+                {"name": "Đậu phộng rang", "quantity": "1 ít"}
+            ]
+        }
+    },
+    "time": "1 giờ",
+    "difficulty": "Trung bình",
+    "description": "Mì Quảng là đặc sản miền Trung, với sợi mì dai, nước dùng đậm đà từ thịt heo và tôm, điểm nhấn là đậu phộng rang và rau sống.",
+    "notes": "Nước dùng không quá nhiều, chỉ chan xâm xấp mì là đúng kiểu Mì Quảng.",
+    "preparation": [
+        "Mì Quảng (nếu khô) ngâm nước ấm 10 phút, nếu tươi thì trụng nước sôi 1 phút, để ráo.",
+        "Thịt heo rửa sạch, thái lát mỏng, ướp với 1/2 muỗng canh nước mắm, 1/2 muỗng cà phê đường, 1/2 muỗng cà phê bột nghệ trong 15 phút.",
+        "Tôm rửa sạch, bóc vỏ, bỏ chỉ lưng, ướp với 1/2 muỗng cà phê muối, 1 ít tiêu trong 10 phút.",
+        "Trứng gà luộc chín, bóc vỏ, cắt đôi.",
+        "Hành lá và rau mùi rửa sạch, cắt nhỏ.",
+        "Tỏi và hành tím bóc vỏ, băm nhuyễn."
+    ],
+    "steps": [
+        "Đun nóng 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người), phi thơm tỏi và hành tím.",
+        "Cho thịt heo vào xào chín, thêm tôm, xào đến khi tôm hồng, trút ra đĩa.",
+        "Cho 500ml nước (1 lít cho 4 người) vào nồi, đun sôi, thêm 1/2 muỗng canh nước mắm (1 muỗng canh cho 4 người), 1 muỗng cà phê đường (2 muỗng cà phê cho 4 người), 1/2 muỗng cà phê bột nghệ (1 muỗng cà phê cho 4 người), khuấy đều.",
+        "Cho thịt heo và tôm đã xào vào nồi, đun nhỏ lửa 10 phút cho thấm gia vị, nêm lại nếu cần.",
+        "Xếp mì vào tô, chan nước dùng xâm xấp, thêm thịt heo, tôm, trứng luộc, rắc hành lá, rau mùi và đậu phộng rang lên trên."
+    ],
+    "servingSuggestion": "Dùng nóng với rau sống (xà lách, húng quế, cải con), bánh tráng nướng và chén nước mắm ớt để chấm hoặc rưới thêm tùy khẩu vị.",
+    "tips": "Thêm chút dầu điều khi xào để nước dùng có màu đẹp. Đừng chan quá nhiều nước để giữ đúng phong cách Mì Quảng.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7ef", "65e8f2b9c4f3d2a1b5e9c7f0"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7f4", "65e8f2b9c4f3d2a1b5e9c7f5"],
+    "tags": ["mì quảng", "món nước", "miền Trung", "truyền thống"],
+    "likes": 0,
+    "region": "Trung",
+    "category": "Nước"
+},
+{
+    "_id": "CT11",
+    "recipeName": "Bánh xèo",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741239429/3.BAnh-xeo-2.png_qbpq6s.webp",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Bột gạo", "quantity": "150g"},
+                {"name": "Bột nghệ", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Nước cốt dừa", "quantity": "100ml"},
+                {"name": "Thịt heo", "quantity": "100g"},
+                {"name": "Tôm", "quantity": "100g"},
+                {"name": "Giá đỗ", "quantity": "100g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Đường", "quantity": "1 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "3 muỗng canh"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Bột gạo", "quantity": "300g"},
+                {"name": "Bột nghệ", "quantity": "1 muỗng cà phê"},
+                {"name": "Nước cốt dừa", "quantity": "200ml"},
+                {"name": "Thịt heo", "quantity": "200g"},
+                {"name": "Tôm", "quantity": "200g"},
+                {"name": "Giá đỗ", "quantity": "200g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Nước mắm", "quantity": "4 muỗng canh"},
+                {"name": "Đường", "quantity": "2 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "6 muỗng canh"}
+            ]
+        }
+    },
+    "time": "45 phút",
+    "difficulty": "Trung bình",
+    "description": "Bánh xèo là món ăn truyền thống miền Nam, với vỏ bánh giòn rụm, nhân tôm thịt đậm đà và rau sống tươi mát.",
+    "notes": "Dùng chảo chống dính để bánh dễ lật và giòn hơn.",
+    "preparation": [
+        "Trộn bột gạo, bột nghệ, nước cốt dừa và 200ml nước (400ml cho 4 người), khuấy đều, để nghỉ 20 phút.",
+        "Thịt heo rửa sạch, thái lát mỏng, ướp với 1/2 muỗng canh nước mắm, 1 ít tiêu trong 10 phút.",
+        "Tôm rửa sạch, bóc vỏ, bỏ chỉ lưng, ướp với 1 ít muối và tiêu.",
+        "Giá đỗ rửa sạch, để ráo.",
+        "Hành lá rửa sạch, cắt nhỏ, phi với 1 muỗng canh dầu ăn để làm mỡ hành.",
+        "Tỏi bóc vỏ, băm nhuyễn.",
+        "Pha nước chấm: Trộn 2 muỗng canh nước mắm (4 muỗng canh cho 4 người), 1 muỗng canh đường (2 muỗng canh cho 4 người), 1 muỗng canh nước, tỏi băm, ớt băm."
+    ],
+    "steps": [
+        "Đun nóng chảo, cho 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người), xào thịt heo và tôm với tỏi băm cho chín, trút ra đĩa.",
+        "Làm nóng chảo với 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người), đổ 1 muôi bột vào, nghiêng chảo để bột tráng đều.",
+        "Cho tôm, thịt heo và giá đỗ lên một nửa bánh, rắc hành lá, đậy nắp 1-2 phút cho bánh giòn.",
+        "Gấp đôi bánh, chiên thêm 1 phút cho vàng đều, lấy ra đĩa.",
+        "Lặp lại cho đến khi hết bột và nhân."
+    ],
+    "servingSuggestion": "Dùng nóng, cuốn với bánh tráng hoặc rau sống (xà lách, húng quế, diếp cá), chấm nước mắm chua ngọt. Có thể thêm dưa chua để tăng vị.",
+    "tips": "Đổ bột mỏng để bánh giòn. Dùng lửa vừa để tránh cháy.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7f2", "65e8f2b9c4f3d2a1b5e9c7f3"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7f6", "65e8f2b9c4f3d2a1b5e9c7f7"],
+    "tags": ["bánh xèo", "món chiên", "miền Nam", "truyền thống"],
+    "likes": 0,
+    "region": "Nam",
+    "category": "Món mặn"
+},
+{
+    "_id": "CT12",
+    "recipeName": "Bún mắm",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741239429/cach-nau-bun-mam-mien-tay-chuan-thom-ngon-don-gian-tai-nha-202112211640380018_vcbx0p.jpg",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Bún tươi", "quantity": "400g"},
+                {"name": "Mắm cá linh", "quantity": "100g"},
+                {"name": "Thịt heo quay", "quantity": "100g"},
+                {"name": "Tôm", "quantity": "100g"},
+                {"name": "Mực", "quantity": "100g"},
+                {"name": "Sả", "quantity": "1 cây"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Rau đắng", "quantity": "50g"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Đường", "quantity": "1 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "1 muỗng canh"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Bún tươi", "quantity": "800g"},
+                {"name": "Mắm cá linh", "quantity": "200g"},
+                {"name": "Thịt heo quay", "quantity": "200g"},
+                {"name": "Tôm", "quantity": "200g"},
+                {"name": "Mực", "quantity": "200g"},
+                {"name": "Sả", "quantity": "2 cây"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Rau đắng", "quantity": "100g"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Đường", "quantity": "2 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"}
+            ]
+        }
+    },
+    "time": "1 giờ",
+    "difficulty": "Trung bình",
+    "description": "Bún mắm là món đặc sản miền Tây, với nước dùng đậm đà từ mắm cá linh, kết hợp tôm, mực và thịt heo quay thơm ngon.",
+    "notes": "Mắm cá linh nên nấu sôi kỹ để khử mùi tanh. Có thể thêm bắp chuối bào để tăng độ ngon.",
+    "preparation": [
+        "Bún tươi trụng qua nước sôi 30 giây, để ráo.",
+        "Mắm cá linh pha với 1 lít nước (2 lít cho 4 người), khuấy đều, để lắng, gạn lấy nước, bỏ cặn.",
+        "Thịt heo quay cắt miếng vừa ăn.",
+        "Tôm rửa sạch, bóc vỏ, bỏ chỉ lưng; mực làm sạch, cắt khoanh hoặc khía vảy rồng.",
+        "Sả đập dập, băm nhỏ.",
+        "Hành lá rửa sạch, cắt khúc 2-3 cm.",
+        "Rau đắng nhặt rửa sạch, để ráo.",
+        "Tỏi bóc vỏ, băm nhuyễn."
+    ],
+    "steps": [
+        "Đun nóng 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người), phi thơm tỏi và sả băm.",
+        "Cho nước mắm cá linh đã gạn vào nồi, đun sôi, vớt bọt, nấu nhỏ lửa 15 phút để mắm chín và thơm.",
+        "Nêm 1 muỗng canh nước mắm (2 muỗng canh cho 4 người), 1 muỗng canh đường (2 muỗng canh cho 4 người), khuấy đều, nếm lại gia vị.",
+        "Cho tôm và mực vào nồi, nấu 3-5 phút cho chín, thêm thịt heo quay, đun thêm 1 phút, tắt bếp.",
+        "Xếp bún vào tô, chan nước dùng cùng tôm, mực, thịt heo quay, rắc hành lá và rau đắng lên trên."
+    ],
+    "servingSuggestion": "Dùng nóng với rau sống (bắp chuối bào, rau muống, húng cây), chén mắm ớt để chấm thêm. Có thể thêm ớt tươi hoặc chanh để tăng vị.",
+    "tips": "Nấu mắm trên lửa nhỏ để tránh mùi tanh gắt. Chọn mắm cá linh nguyên chất để nước dùng đậm đà.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7f5", "65e8f2b9c4f3d2a1b5e9c7f6"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7f8", "65e8f2b9c4f3d2a1b5e9c7f9"],
+    "tags": ["bún mắm", "món nước", "miền Tây", "truyền thống"],
+    "likes": 0,
+    "region": "Nam",
+    "category": "Nước"
+},
+{
+    "_id": "CT13",
+    "recipeName": "Cá rô kho tộ",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741239424/Ca-ro-kho-to-2_vfrubc.png",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Cá rô đồng", "quantity": "300g"},
+                {"name": "Thịt ba chỉ", "quantity": "100g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Ớt", "quantity": "1 trái"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Đường", "quantity": "1 muỗng canh"},
+                {"name": "Nước màu (nước hàng)", "quantity": "1 muỗng cà phê"},
+                {"name": "Dầu ăn", "quantity": "1 muỗng canh"},
+                {"name": "Tiêu", "quantity": "1/2 muỗng cà phê"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Cá rô đồng", "quantity": "600g"},
+                {"name": "Thịt ba chỉ", "quantity": "200g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Ớt", "quantity": "2 trái"},
+                {"name": "Nước mắm", "quantity": "4 muỗng canh"},
+                {"name": "Đường", "quantity": "2 muỗng canh"},
+                {"name": "Nước màu (nước hàng)", "quantity": "2 muỗng cà phê"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"},
+                {"name": "Tiêu", "quantity": "1 muỗng cà phê"}
+            ]
+        }
+    },
+    "time": "1 giờ",
+    "difficulty": "Trung bình",
+    "description": "Cá rô kho tộ là món ăn dân dã miền Nam, với cá rô đồng béo ngọt, thịt ba chỉ mềm thơm, thấm đẫm gia vị đậm đà trong nước kho sệt.",
+    "notes": "Dùng nồi đất để kho sẽ thơm và giữ nhiệt tốt hơn.",
+    "preparation": [
+        "Cá rô đồng làm sạch, bỏ ruột, mang, cạo vảy, rửa sạch với nước muối loãng, để ráo, khứa vài đường trên thân cá để thấm gia vị.",
+        "Thịt ba chỉ rửa sạch, cắt miếng vừa ăn (khoảng 2-3 cm).",
+        "Hành lá rửa sạch, cắt khúc 2-3 cm, phần đầu hành để riêng.",
+        "Tỏi và hành tím bóc vỏ, băm nhuyễn.",
+        "Ớt rửa sạch, cắt lát hoặc để nguyên tùy khẩu vị."
+    ],
+    "steps": [
+        "Ướp cá và thịt với 1 muỗng canh nước mắm (2 muỗng canh cho 4 người), 1/2 muỗng canh đường (1 muỗng canh cho 4 người), 1 muỗng cà phê nước màu (2 muỗng cà phê cho 4 người), 1/2 muỗng cà phê tiêu (1 muỗng cà phê cho 4 người), 1/2 tỏi và hành tím băm, để thấm 15 phút.",
+        "Đun nóng 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người) trong nồi đất, phi thơm phần tỏi và hành tím còn lại cùng đầu hành lá.",
+        "Xếp cá và thịt ba chỉ vào nồi, thêm 100ml nước (200ml cho 4 người), đun sôi.",
+        "Nêm thêm 1 muỗng canh nước mắm (2 muỗng canh cho 4 người), 1/2 muỗng canh đường (1 muỗng canh cho 4 người), đậy nắp, kho lửa nhỏ 40 phút cho cá và thịt thấm gia vị, nước kho sệt lại.",
+        "Mở nắp, thêm ớt, rắc hành lá, kho thêm 5 phút, tắt bếp."
+    ],
+    "servingSuggestion": "Dùng nóng với cơm trắng, kèm dưa chua hoặc rau luộc để cân bằng vị đậm đà. Có thể thêm chén nước mắm ớt để chấm nếu thích.",
+    "tips": "Kho lửa nhỏ để cá không bị nát và thấm đều gia vị. Thêm chút nước dừa tươi để tăng độ béo nếu muốn.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7f8", "65e8f2b9c4f3d2a1b5e9c7f9"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7fa", "65e8f2b9c4f3d2a1b5e9c7fb"],
+    "tags": ["cá rô", "kho tộ", "món mặn", "miền Nam"],
+    "likes": 0,
+    "region": "Nam",
+    "category": "Món mặn"
+},
+{
+    "_id": "CT14",
+    "recipeName": "Bún bò Huế",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741239425/mon-ngon-moi-ngay-cach-nau-bun-bo-hue-chuan-vi-cuc-thom-ngon-tai-nha-772-7019372_a2dwps.jpg",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Bún tươi (loại to)", "quantity": "400g"},
+                {"name": "Xương bò", "quantity": "300g"},
+                {"name": "Thịt bò bắp", "quantity": "200g"},
+                {"name": "Chả Huế", "quantity": "100g"},
+                {"name": "Sả", "quantity": "1 cây"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Rau thơm", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Mắm ruốc", "quantity": "1 muỗng canh"},
+                {"name": "Dầu điều", "quantity": "1 muỗng canh"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Muối", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1 muỗng cà phê"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Bún tươi (loại to)", "quantity": "800g"},
+                {"name": "Xương bò", "quantity": "600g"},
+                {"name": "Thịt bò bắp", "quantity": "400g"},
+                {"name": "Chả Huế", "quantity": "200g"},
+                {"name": "Sả", "quantity": "2 cây"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Rau thơm", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Mắm ruốc", "quantity": "2 muỗng canh"},
+                {"name": "Dầu điều", "quantity": "2 muỗng canh"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Muối", "quantity": "1 muỗng cà phê"},
+                {"name": "Đường", "quantity": "2 muỗng cà phê"}
+            ]
+        }
+    },
+    "time": "2 giờ",
+    "difficulty": "Trung bình",
+    "description": "Bún bò Huế là đặc sản miền Trung, nổi tiếng với nước dùng cay nồng, thơm từ sả và mắm ruốc, kết hợp thịt bò mềm và chả Huế đặc trưng.",
+    "notes": "Thêm ít ớt bột hoặc sa tế để tăng vị cay nếu thích.",
+    "preparation": [
+        "Bún tươi trụng qua nước sôi 30 giây, để ráo.",
+        "Xương bò rửa sạch, chần nước sôi 5 phút để loại bọt bẩn, rửa lại.",
+        "Thịt bò bắp rửa sạch, để nguyên miếng.",
+        "Chả Huế cắt lát mỏng.",
+        "Sả đập dập, cắt khúc 5 cm.",
+        "Hành lá và rau thơm rửa sạch, cắt nhỏ.",
+        "Tỏi và hành tím bóc vỏ, băm nhuyễn.",
+        "Pha mắm ruốc với 2 muỗng canh nước ấm (4 muỗng canh cho 4 người), khuấy đều, để lắng, gạn lấy phần nước trong."
+    ],
+    "steps": [
+        "Cho xương bò và thịt bò bắp vào nồi, thêm 1,5 lít nước (3 lít cho 4 người), đun sôi, vớt bọt, thêm sả, nấu lửa nhỏ 1 giờ.",
+        "Vớt thịt bò bắp ra, ngâm nước lạnh 5 phút, thái lát mỏng, giữ nước dùng.",
+        "Đun nóng 1 muỗng canh dầu điều (2 muỗng canh cho 4 người), phi thơm tỏi và hành tím, cho vào nồi nước dùng.",
+        "Thêm mắm ruốc đã gạn, 1 muỗng canh nước mắm (2 muỗng canh cho 4 người), 1/2 muỗng cà phê muối (1 muỗng cà phê cho 4 người), 1 muỗng cà phê đường (2 muỗng cà phê cho 4 người), đun 15 phút, nêm lại gia vị.",
+        "Xếp bún vào tô, thêm thịt bò, chả Huế, chan nước dùng nóng, rắc hành lá và rau thơm lên trên."
+    ],
+    "servingSuggestion": "Dùng nóng với rau sống (bắp chuối bào, rau muống, húng quế), chén mắm ớt hoặc sa tế để thêm cay. Có thể kèm bánh tráng nướng.",
+    "tips": "Hầm xương lâu để nước dùng ngọt tự nhiên. Mắm ruốc cần gạn kỹ để tránh cặn đục nước.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7fb", "65e8f2b9c4f3d2a1b5e9c7fc"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c7fd", "65e8f2b9c4f3d2a1b5e9c7fe"],
+    "tags": ["bún bò Huế", "món nước", "miền Trung", "truyền thống"],
+    "likes": 0,
+    "region": "Trung",
+    "category": "Nước"
+},
+
+{
+    "_id": "CT15",
+    "recipeName": "Ốc hương xào củ hũ dừa",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741239906/images_1_ic2kut.jpg",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Ốc hương", "quantity": "300g"},
+                {"name": "Củ hũ dừa", "quantity": "150g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Ớt", "quantity": "1 trái"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Dầu hào MAGGI", "quantity": "1 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"},
+                {"name": "Đường", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1/2 muỗng cà phê"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Ốc hương", "quantity": "600g"},
+                {"name": "Củ hũ dừa", "quantity": "300g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Ớt", "quantity": "2 trái"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Dầu hào MAGGI", "quantity": "2 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "4 muỗng canh"},
+                {"name": "Đường", "quantity": "1 muỗng cà phê"},
+                {"name": "Tiêu", "quantity": "1 muỗng cà phê"}
+            ]
+        }
+    },
+    "time": "30 phút",
+    "difficulty": "Dễ",
+    "description": "Ốc hương xào củ hũ dừa là món ăn thơm ngon, lạ miệng với ốc hương dai giòn, củ hũ dừa ngọt mát, thấm vị đậm đà.",
+    "notes": "Chọn ốc hương tươi để giữ độ ngon và thơm.",
+    "preparation": [
+        "Ốc hương ngâm nước muối loãng hoặc nước gạo 1-2 giờ cho nhả bùn, rửa sạch, luộc sơ 3 phút, vớt ra để ráo.",
+        "Củ hũ dừa rửa sạch, thái sợi dài khoảng 4-5 cm, trụng qua nước sôi 1 phút, để ráo.",
+        "Hành lá rửa sạch, cắt khúc 3 cm, phần đầu hành để riêng.",
+        "Tỏi và hành tím bóc vỏ, băm nhuyễn.",
+        "Ớt rửa sạch, cắt lát."
+    ],
+    "steps": [
+        "Đun nóng 2 muỗng canh dầu ăn (4 muỗng canh cho 4 người) trong chảo, phi thơm tỏi, hành tím và đầu hành lá.",
+        "Cho ốc hương vào xào trên lửa lớn 2 phút cho thơm.",
+        "Thêm củ hũ dừa, 1 muỗng canh nước mắm (2 muỗng canh cho 4 người), 1 muỗng canh dầu hào (2 muỗng canh cho 4 người), 1/2 muỗng cà phê đường (1 muỗng cà phê cho 4 người), xào đều 3-4 phút.",
+        "Cho ớt cắt lát vào, đảo thêm 1 phút, rắc hành lá và 1/2 muỗng cà phê tiêu (1 muỗng cà phê cho 4 người), tắt bếp.",
+        "Dọn ra đĩa, rắc thêm ít tiêu nếu thích."
+    ],
+    "servingSuggestion": "Dùng nóng với cơm trắng hoặc làm món nhậu kèm bia. Kèm chén muối ớt chanh để chấm nếu muốn tăng vị.",
+    "tips": "Xào lửa lớn để ốc và củ hũ dừa giữ độ giòn. Không xào quá lâu để tránh củ hũ dừa bị mềm nhũn.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c7fe", "65e8f2b9c4f3d2a1b5e9c7ff"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c800", "65e8f2b9c4f3d2a1b5e9c801"],
+    "tags": ["ốc hương", "củ hũ dừa", "món xào", "nhanh gọn"],
+    "likes": 0,
+    "region": "Nam",
+    "category": "Xào"
+},
+{
+    "_id": "CT16",
+    "recipeName": "Canh tôm bơ ngọt",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741239422/canh-tom-la-ot-500.jpg_bo2f9g.webp",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Tôm sú", "quantity": "200g"},
+                {"name": "Bơ ngọt (bí đỏ)", "quantity": "200g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Ngò rí", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Nước mắm", "quantity": "1 muỗng canh"},
+                {"name": "Muối", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1/2 muỗng cà phê"},
+                {"name": "Dầu ăn", "quantity": "1 muỗng canh"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Tôm sú", "quantity": "400g"},
+                {"name": "Bơ ngọt (bí đỏ)", "quantity": "400g"},
+                {"name": "Hành lá", "quantity": "1 ít"},
+                {"name": "Ngò rí", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Muối", "quantity": "1 muỗng cà phê"},
+                {"name": "Đường", "quantity": "1 muỗng cà phê"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"}
+            ]
+        }
+    },
+    "time": "30 phút",
+    "difficulty": "Dễ",
+    "description": "Canh tôm bơ ngọt là món canh thanh mát, với tôm tươi ngọt và bơ ngọt bùi, phù hợp cho bữa cơm gia đình.",
+    "notes": "Chọn bơ ngọt chín vừa để có độ bùi và không bị nát.",
+    "preparation": [
+        "Tôm sú rửa sạch, bóc vỏ, bỏ chỉ lưng, giữ nguyên đầu và đuôi nếu muốn đẹp mắt, ướp với 1/2 muỗng cà phê muối trong 10 phút.",
+        "Bơ ngọt gọt vỏ, bỏ hạt, rửa sạch, cắt miếng vừa ăn (khoảng 2-3 cm).",
+        "Hành lá và ngò rí rửa sạch, cắt nhỏ.",
+        "Tỏi bóc vỏ, băm nhuyễn."
+    ],
+    "steps": [
+        "Đun nóng 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người) trong nồi, phi thơm tỏi băm.",
+        "Cho tôm vào xào nhanh 1-2 phút đến khi tôm chuyển màu hồng, trút ra đĩa.",
+        "Cho 1 lít nước (2 lít cho 4 người) vào nồi, đun sôi, thả bơ ngọt vào nấu 10 phút cho mềm.",
+        "Nêm 1 muỗng canh nước mắm (2 muỗng canh cho 4 người), 1/2 muỗng cà phê muối (1 muỗng cà phê cho 4 người), 1/2 muỗng cà phê đường (1 muỗng cà phê cho 4 người), khuấy đều.",
+        "Cho tôm đã xào vào nồi, nấu thêm 2-3 phút, rắc hành lá và ngò rí, tắt bếp.",
+        "Múc canh ra tô, rắc thêm ít tiêu nếu thích."
+    ],
+    "servingSuggestion": "Dùng nóng với cơm trắng, kèm món mặn như thịt kho hoặc cá chiên để bữa ăn cân bằng. Có thể thêm ớt tươi nếu thích vị cay nhẹ.",
+    "tips": "Xào tôm trước để giữ độ ngọt và không bị tanh. Không nấu bơ quá lâu để tránh bị nhũn.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c801", "65e8f2b9c4f3d2a1b5e9c802"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c803", "65e8f2b9c4f3d2a1b5e9c804"],
+    "tags": ["canh tôm", "bơ ngọt", "món nước", "gia đình"],
+    "likes": 0,
+    "region": "Nam",
+    "category": "Nước"
+},
+{
+    "_id": "CT17",
+    "recipeName": "Cơm hến trộn",
+    "recipeImage": "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741239425/2705_CQC3696_ComHenTron-540-360.jpg_pbwwtj.webp",
+    "servingsOptions": {
+        "2": {
+            "ingredients": [
+                {"name": "Hến", "quantity": "200g"},
+                {"name": "Cơm nguội", "quantity": "300g"},
+                {"name": "Da heo chiên giòn", "quantity": "50g"},
+                {"name": "Đậu phộng rang", "quantity": "1 ít"},
+                {"name": "Hành phi", "quantity": "1 ít"},
+                {"name": "Rau răm", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "2 tép"},
+                {"name": "Hành tím", "quantity": "2 củ"},
+                {"name": "Ớt", "quantity": "1 trái"},
+                {"name": "Nước mắm", "quantity": "2 muỗng canh"},
+                {"name": "Đường", "quantity": "1 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "1 muỗng canh"}
+            ]
+        },
+        "4": {
+            "ingredients": [
+                {"name": "Hến", "quantity": "400g"},
+                {"name": "Cơm nguội", "quantity": "600g"},
+                {"name": "Da heo chiên giòn", "quantity": "100g"},
+                {"name": "Đậu phộng rang", "quantity": "1 ít"},
+                {"name": "Hành phi", "quantity": "1 ít"},
+                {"name": "Rau răm", "quantity": "1 ít"},
+                {"name": "Tỏi", "quantity": "4 tép"},
+                {"name": "Hành tím", "quantity": "4 củ"},
+                {"name": "Ớt", "quantity": "2 trái"},
+                {"name": "Nước mắm", "quantity": "4 muỗng canh"},
+                {"name": "Đường", "quantity": "2 muỗng canh"},
+                {"name": "Dầu ăn", "quantity": "2 muỗng canh"}
+            ]
+        }
+    },
+    "time": "30 phút",
+    "difficulty": "Dễ",
+    "description": "Cơm hến trộn là món ăn đặc sản Huế, với hến ngọt, cơm nguội trộn cùng topping giòn tan và nước mắm chua ngọt đậm đà.",
+    "notes": "Dùng cơm nguội để hạt cơm rời và ngon hơn.",
+    "preparation": [
+        "Hến ngâm nước gạo hoặc nước muối loãng 1-2 giờ cho nhả bùn, rửa sạch, luộc với 500ml nước (1 lít cho 4 người) 5 phút, vớt hến ra, giữ lại nước luộc, gạn trong.",
+        "Cơm nguội đánh tơi nếu cần.",
+        "Da heo chiên giòn cắt nhỏ vừa ăn.",
+        "Rau răm rửa sạch, cắt nhỏ.",
+        "Tỏi và hành tím bóc vỏ, băm nhuyễn.",
+        "Ớt rửa sạch, băm nhỏ.",
+        "Pha nước mắm: Trộn 2 muỗng canh nước mắm (4 muỗng canh cho 4 người), 1 muỗng canh đường (2 muỗng canh cho 4 người), 1 muỗng canh nước luộc hến, tỏi và ớt băm."
+    ],
+    "steps": [
+        "Đun nóng 1 muỗng canh dầu ăn (2 muỗng canh cho 4 người), phi thơm tỏi và hành tím.",
+        "Cho hến vào xào nhanh 2 phút, thêm 1/2 muỗng canh nước mắm (1 muỗng canh cho 4 người), đảo đều, trút ra đĩa.",
+        "Xếp cơm nguội vào tô, thêm hến xào, da heo chiên giòn, đậu phộng rang, hành phi và rau răm lên trên.",
+        "Rưới nước mắm pha đều lên cơm, trộn đều trước khi ăn."
+    ],
+    "servingSuggestion": "Dùng ngay sau khi trộn để giữ độ giòn của da heo và đậu phộng. Kèm rau sống (bắp chuối, khế chua) và chén nước luộc hến nóng để chan thêm nếu thích.",
+    "tips": "Xào hến nhanh để giữ độ ngọt. Có thể thêm tóp mỡ chiên để tăng độ béo.",
+    "relatedRecipeIds": ["65e8f2b9c4f3d2a1b5e9c804", "65e8f2b9c4f3d2a1b5e9c805"],
+    "suggestedIngredientIds": ["65e8f2b9c4f3d2a1b5e9c806", "65e8f2b9c4f3d2a1b5e9c807"],
+    "tags": ["cơm hến", "món trộn", "Huế", "truyền thống"],
+    "likes": 0,
+    "region": "Trung",
+    "category": "Trộn"
+}
+]
