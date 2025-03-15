@@ -1,81 +1,227 @@
 <div class="maincontainer">
   <div class="headerbar">
-    <div class="slogan text-white">
-      <img src="../../assets/header/ri-bowl-line.svg" alt="" />Bếp Nhà Ta - Chọn
-      nguyên liệu chuẩn, nấu bữa cơm ngon!
-    </div>
-    <div class="info">
-      <div class="info-item">
-        <span class="number text-white">122</span>
-        <span class="text text-white">Công thức</span>
-      </div>
-      <div class="info-item">
-        <div class="number text-white">98</div>
-        <div class="text text-white">Nguyên liệu</div>
-      </div>
-      <div class="info-item">
-        <span class="number text-white">1,988</span>
-        <span class="text text-white">Thành viên</span>
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="slogan text-white">
+            <img src="../../assets/header/ri-bowl-line.svg" alt="" />Bếp Nhà Ta
+            - Chọn nguyên liệu chuẩn, nấu bữa cơm ngon!
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div
+            class="info d-flex justify-content-md-end justify-content-center"
+          >
+            <div class="info-item">
+              <span class="number text-white">122</span>
+              <span class="text text-white">Công thức</span>
+            </div>
+            <div class="info-item">
+              <div class="number text-white">98</div>
+              <div class="text text-white">Nguyên liệu</div>
+            </div>
+            <div class="info-item">
+              <span class="number text-white">1,988</span>
+              <span class="text text-white">Thành viên</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <div class="nav">
-    <div class="logo"><img src="../../assets/logo.png" alt="logo" /></div>
-    <div class="nav-links">
-      <a routerLink="/trang-chu">Trang chủ</a>
-      <div class="dropdown">
-        <a routerLink="/cong-thuc" class="dropdown-toggle">Công thức</a>
-        <div class="dropdown-content">
-          <a [routerLink]="['/cong-thuc']" [queryParams]="{ region: null }"
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-6 col-md-auto">
+          <div class="logo"><img src="../../assets/logo.png" alt="logo" /></div>
+        </div>
+
+        <!-- Hamburger button for mobile -->
+        <div class="col-6 d-md-none text-end">
+          <button class="hamburger-btn" (click)="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+
+        <!-- Desktop menu -->
+        <div class="col-md d-none d-md-block">
+          <div class="nav-links">
+            <a routerLink="/trang-chu">Trang chủ</a>
+            <div class="dropdown">
+              <a routerLink="/cong-thuc" class="dropdown-toggle">Công thức</a>
+              <div class="dropdown-content">
+                <a
+                  [routerLink]="['/cong-thuc']"
+                  [queryParams]="{ region: null }"
+                  >Tất cả</a
+                >
+                <a
+                  [routerLink]="['/cong-thuc']"
+                  [queryParams]="{ region: 'bac' }"
+                  >Miền Bắc</a
+                >
+                <a
+                  [routerLink]="['/cong-thuc']"
+                  [queryParams]="{ region: 'trung' }"
+                  >Miền Trung</a
+                >
+                <a
+                  [routerLink]="['/cong-thuc']"
+                  [queryParams]="{ region: 'nam' }"
+                  >Miền Nam</a
+                >
+              </div>
+            </div>
+            <div class="dropdown">
+              <a routerLink="/san-pham" class="dropdown-toggle">Sản phẩm</a>
+              <div class="dropdown-content">
+                <a routerLink="/san-pham">Tất cả</a>
+                <a routerLink="/san-pham/mien-bac">Miền Bắc</a>
+                <a routerLink="/san-pham/mien-trung">Miền Trung</a>
+                <a routerLink="/san-pham/mien-nam">Miền Nam</a>
+              </div>
+            </div>
+            <a routerLink="/len-thuc-don">Lên thực đơn</a>
+            <a routerLink="/blog">Blog</a>
+            <a routerLink="/cong-cu">Công cụ</a>
+            <div class="dropdown">
+              <a routerLink="/about-us" class="dropdown-toggle">Giới thiệu</a>
+              <div class="dropdown-content">
+                <a routerLink="/about-us">Về chúng tôi</a>
+                <a routerLink="/chinh-sach">Chính sách</a>
+                <a routerLink="/faq">Câu hỏi thường gặp</a>
+                <a routerLink="/lien-he">Liên hệ</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-auto d-none d-md-block">
+          <div class="nav-icons">
+            <div class="search-container">
+              <input type="text" placeholder="Tìm kiếm" />
+            </div>
+            <img src="../../assets/header/mdi-cart-outline.svg" alt="" />
+            <img
+              src="../../assets/header/group.svg"
+              alt=""
+              (click)="toggleLoginPopup()"
+              style="cursor: pointer"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="hr-decor" />
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" [class.active]="isMobileMenuOpen">
+    <div class="mobile-nav-links">
+      <a routerLink="/trang-chu" (click)="closeMobileMenu()">Trang chủ</a>
+      <div
+        class="mobile-dropdown"
+        [class.active]="activeDropdown === 'congthuc'"
+      >
+        <div
+          class="mobile-dropdown-toggle"
+          (click)="toggleDropdown('congthuc', $event)"
+        >
+          Công thức <i class="dropdown-icon"></i>
+        </div>
+        <div class="mobile-dropdown-content">
+          <a
+            [routerLink]="['/cong-thuc']"
+            [queryParams]="{ region: null }"
+            (click)="closeMobileMenu()"
             >Tất cả</a
           >
-          <a [routerLink]="['/cong-thuc']" [queryParams]="{ region: 'bac' }"
+          <a
+            [routerLink]="['/cong-thuc']"
+            [queryParams]="{ region: 'bac' }"
+            (click)="closeMobileMenu()"
             >Miền Bắc</a
           >
-          <a [routerLink]="['/cong-thuc']" [queryParams]="{ region: 'trung' }"
+          <a
+            [routerLink]="['/cong-thuc']"
+            [queryParams]="{ region: 'trung' }"
+            (click)="closeMobileMenu()"
             >Miền Trung</a
           >
-          <a [routerLink]="['/cong-thuc']" [queryParams]="{ region: 'nam' }"
+          <a
+            [routerLink]="['/cong-thuc']"
+            [queryParams]="{ region: 'nam' }"
+            (click)="closeMobileMenu()"
             >Miền Nam</a
           >
         </div>
       </div>
-      <div class="dropdown">
-        <a routerLink="/san-pham" class="dropdown-toggle">Sản phẩm</a>
-        <div class="dropdown-content">
-          <a routerLink="/san-pham">Tất cả</a>
-          <a routerLink="/san-pham/mien-bac">Miền Bắc</a>
-          <a routerLink="/san-pham/mien-trung">Miền Trung</a>
-          <a routerLink="/san-pham/mien-nam">Miền Nam</a>
+      <div
+        class="mobile-dropdown"
+        [class.active]="activeDropdown === 'sanpham'"
+      >
+        <div
+          class="mobile-dropdown-toggle"
+          (click)="toggleDropdown('sanpham', $event)"
+        >
+          Sản phẩm <i class="dropdown-icon"></i>
+        </div>
+        <div class="mobile-dropdown-content">
+          <a routerLink="/san-pham" (click)="closeMobileMenu()">Tất cả</a>
+          <a routerLink="/san-pham/mien-bac" (click)="closeMobileMenu()"
+            >Miền Bắc</a
+          >
+          <a routerLink="/san-pham/mien-trung" (click)="closeMobileMenu()"
+            >Miền Trung</a
+          >
+          <a routerLink="/san-pham/mien-nam" (click)="closeMobileMenu()"
+            >Miền Nam</a
+          >
         </div>
       </div>
-      <a routerLink="/len-thuc-don">Lên thực đơn</a>
-      <a routerLink="/blog">Blog</a>
-      <a routerLink="/cong-cu">Công cụ</a>
-      <div class="dropdown">
-        <a routerLink="/about-us" class="dropdown-toggle">Giới thiệu</a>
-        <div class="dropdown-content">
-          <a routerLink="/about-us">Về chúng tôi</a>
-          <a routerLink="/chinh-sach">Chính sách</a>
-          <a routerLink="/faq">Câu hỏi thường gặp</a>
-          <a routerLink="/lien-he">Liên hệ</a>
+      <a routerLink="/len-thuc-don" (click)="closeMobileMenu()">Lên thực đơn</a>
+      <a routerLink="/blog" (click)="closeMobileMenu()">Blog</a>
+      <a routerLink="/cong-cu" (click)="closeMobileMenu()">Công cụ</a>
+      <div
+        class="mobile-dropdown"
+        [class.active]="activeDropdown === 'gioithieu'"
+      >
+        <div
+          class="mobile-dropdown-toggle"
+          (click)="toggleDropdown('gioithieu', $event)"
+        >
+          Giới thiệu <i class="dropdown-icon"></i>
+        </div>
+        <div class="mobile-dropdown-content">
+          <a routerLink="/about-us" (click)="closeMobileMenu()">Về chúng tôi</a>
+          <a routerLink="/chinh-sach" (click)="closeMobileMenu()">Chính sách</a>
+          <a routerLink="/faq" (click)="closeMobileMenu()"
+            >Câu hỏi thường gặp</a
+          >
+          <a routerLink="/lien-he" (click)="closeMobileMenu()">Liên hệ</a>
         </div>
       </div>
-    </div>
-    <div class="nav-icons">
-      <div class="search-container">
+      <div class="mobile-search">
         <input type="text" placeholder="Tìm kiếm" />
       </div>
-      <img src="../../assets/header/mdi-cart-outline.svg" alt="" />
-      <img
-        src="../../assets/header/group.svg"
-        alt=""
-        (click)="toggleLoginPopup()"
-        style="cursor: pointer"
-      />
+      <div class="mobile-icons">
+        <img src="../../assets/header/mdi-cart-outline.svg" alt="" />
+        <img
+          src="../../assets/header/group.svg"
+          alt=""
+          (click)="toggleLoginPopup(); closeMobileMenu()"
+        />
+      </div>
     </div>
   </div>
-  <hr class="hr-decor" />
+
+  <!-- Mobile Menu Overlay -->
+  <div
+    class="mobile-menu-overlay"
+    *ngIf="isMobileMenuOpen"
+    (click)="closeMobileMenu()"
+  ></div>
 </div>
 
 <!-- Login Popup -->
