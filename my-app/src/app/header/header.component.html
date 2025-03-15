@@ -102,7 +102,9 @@
             <div class="search-container">
               <input type="text" placeholder="Tìm kiếm" />
             </div>
-            <img src="../../assets/header/mdi-cart-outline.svg" alt="" />
+            <a routerLink="/gio-hang" [class.active]="currentRoute === '/gio-hang'">
+              <img src="../../assets/header/mdi-cart-outline.svg" alt="Giỏ hàng" />
+            </a>
             <img
               src="../../assets/header/group.svg"
               alt=""
@@ -205,11 +207,13 @@
           <a routerLink="/lien-he" (click)="closeMobileMenu()">Liên hệ</a>
         </div>
       </div>
-      <div class="mobile-search">
-        <input type="text" placeholder="Tìm kiếm" />
-      </div>
-      <div class="mobile-icons">
-        <img src="../../assets/header/mdi-cart-outline.svg" alt="" />
+      <div class="mobile-nav-icons">
+        <div class="search-container">
+          <input type="text" placeholder="Tìm kiếm" />
+        </div>
+        <a routerLink="/gio-hang" [class.active]="currentRoute === '/gio-hang'" (click)="closeMobileMenu()">
+          <img src="../../assets/header/mdi-cart-outline.svg" alt="Giỏ hàng" />
+        </a>
         <img
           src="../../assets/header/group.svg"
           alt=""

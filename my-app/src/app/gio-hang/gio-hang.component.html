@@ -1,1 +1,142 @@
-<p>gio-hang works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="checkout-info">
+        <h2 class="section-title">Thông tin thanh toán</h2>
+
+        <div class="form-group">
+          <label for="fullname">Họ và tên</label>
+          <input type="text" id="fullname" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Số điện thoại</label>
+          <input type="text" id="phone" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label for="address">Địa chỉ</label>
+          <input type="text" id="address" class="form-control" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <select class="form-control">
+              <option selected disabled>Tỉnh/Thành phố</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <select class="form-control">
+              <option selected disabled>Quận/huyện</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <select class="form-control">
+              <option selected disabled>Xã/phường</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="note">Ghi chú</label>
+          <input
+            type="text"
+            id="note"
+            class="form-control"
+            placeholder="Ghi chú thêm (Ví dụ: giao giờ hành chính)"
+          />
+        </div>
+
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="saveAddress" />
+          <label class="form-check-label" for="saveAddress"
+            >Lưu vào sổ địa chỉ để dùng cho lần mua hàng tiếp theo</label
+          >
+        </div>
+
+        <h2 class="section-title mt-4">Hình thức thanh toán</h2>
+
+        <div class="payment-methods">
+          <div class="payment-method">
+            <input type="radio" id="cod" name="paymentMethod" checked />
+            <label for="cod" class="payment-label">
+              <div class="payment-icon cod-icon"></div>
+              <span>COD</span>
+            </label>
+          </div>
+
+          <div class="payment-method">
+            <input type="radio" id="bank" name="paymentMethod" />
+            <label for="bank" class="payment-label">
+              <div class="payment-icon bank-icon"></div>
+              <span>Chuyển khoản ngân hàng</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="cart-summary">
+        <h2 class="section-title">Giỏ hàng</h2>
+
+        <div class="empty-cart-message">
+          <p>Giỏ hàng của bạn đang trống.</p>
+          <p>Hãy mua sắm ngay nhé!</p>
+        </div>
+
+        <div class="cart-totals">
+          <div class="total-row">
+            <span>Tạm tính</span>
+            <span class="price">0 đ</span>
+          </div>
+          <div class="total-row">
+            <span>Giảm giá</span>
+            <span class="price">0 đ</span>
+          </div>
+          <div class="total-row">
+            <span>Phí giao hàng</span>
+            <span class="price">Miễn phí</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>Tổng</span>
+            <span class="price">0 đ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="checkout-footer">
+    <div class="delivery-info">
+      <span
+        ><img
+          src="../../assets/gio-hang/car.svg"
+          alt=""
+          class="payment-icon"
+        /><strong>COD</strong> thanh toán khi nhận hàng</span
+      >
+    </div>
+    <div class="voucher-info">
+      <strong>Chưa dùng Voucher</strong>
+    </div>
+    <button class="button-cam">THANH TOÁN</button>
+  </div>
+</div>
+
+<!-- Fixed bottom footer for mobile -->
+<div class="mobile-checkout-bar">
+  <div class="delivery-info">
+    <div class="delivery-icon"></div>
+    <span>COD thanh toán khi nhận hàng</span>
+  </div>
+  <div class="voucher-info">
+    <span>Chưa dùng Voucher</span>
+  </div>
+  <button class="button-cam">THANH TOÁN</button>
+</div>
