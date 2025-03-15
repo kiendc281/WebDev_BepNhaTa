@@ -32,14 +32,63 @@
       </div>
       <div class="thacmac">
         <h2>Gửi thắc mắc</h2>
-        <input type="text" name="" id="" placeholder="Họ và tên" />
-        <input type="text" name="" id="" placeholder="Email" />
-        <input type="text" name="" id="" placeholder="Số điện thoại" />
-        <textarea
-          placeholder="Nội dung gửi đến chúng tôi"
-          style="height: 100px; padding-top: 10px; resize: none"
-        ></textarea>
-        <button class="button-cam">GỬI NGAY</button>
+        
+        <div *ngIf="success" class="alert alert-success">
+          Cảm ơn bạn đã gửi phản hồi! Chúng tôi sẽ liên hệ lại với bạn sớm nhất có thể.
+        </div>
+        
+        <div *ngIf="error" class="alert alert-danger">
+          Có lỗi xảy ra khi gửi phản hồi. Vui lòng thử lại sau hoặc liên hệ với chúng tôi qua số điện thoại.
+        </div>
+        
+        <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()" novalidate>
+          <input 
+            type="text" 
+            formControlName="name" 
+            placeholder="Họ và tên"
+            [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+          >
+          <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+            <div *ngIf="f['name'].errors['required']">Vui lòng nhập họ tên</div>
+          </div>
+          
+          <input 
+            type="email" 
+            formControlName="email" 
+            placeholder="Email"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          >
+          <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+            <div *ngIf="f['email'].errors['required']">Vui lòng nhập email</div>
+            <div *ngIf="f['email'].errors['email']">Email không hợp lệ</div>
+          </div>
+          
+          <input 
+            type="tel" 
+            formControlName="phone" 
+            placeholder="Số điện thoại"
+            [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
+          >
+          <div *ngIf="submitted && f['phone'].errors" class="invalid-feedback">
+            <div *ngIf="f['phone'].errors['required']">Vui lòng nhập số điện thoại</div>
+            <div *ngIf="f['phone'].errors['pattern']">Số điện thoại không hợp lệ</div>
+          </div>
+          
+          <textarea 
+            formControlName="message" 
+            placeholder="Nội dung gửi đến chúng tôi"
+            style="height: 100px; padding-top: 10px; resize: none"
+            [ngClass]="{ 'is-invalid': submitted && f['message'].errors }"
+          ></textarea>
+          <div *ngIf="submitted && f['message'].errors" class="invalid-feedback">
+            <div *ngIf="f['message'].errors['required']">Vui lòng nhập nội dung</div>
+          </div>
+          
+          <button type="submit" class="button-cam" [disabled]="loading">
+            <span *ngIf="!loading">GỬI NGAY</span>
+            <span *ngIf="loading">ĐANG GỬI...</span>
+          </button>
+        </form>
       </div>
     </div>
   </div>
