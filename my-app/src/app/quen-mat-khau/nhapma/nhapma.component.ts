@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  Input,
   Output,
   OnInit,
   OnDestroy,
@@ -12,20 +13,27 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { PasswordResetService } from '../../services/password-reset.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-nhapma',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  providers: [PasswordResetService],
   templateUrl: './nhapma.component.html',
   styleUrls: ['./nhapma.component.css'],
 })
 export class NhapmaComponent implements OnInit, OnDestroy {
+  @Input() emailOrPhone: string = '';
   @Output() closePopup = new EventEmitter<void>();
-  @Output() backToReset = new EventEmitter<void>();
+  @Output() backToLogin = new EventEmitter<void>();
+  @Output() nextStep = new EventEmitter<string>();
 
   verifyForm: FormGroup;
   submitted = false;
+  loading = false;
+  errorMessage = '';
 
   // Timer properties
   minutes: number = 0;
@@ -33,9 +41,12 @@ export class NhapmaComponent implements OnInit, OnDestroy {
   timerInterval: any;
   canResend: boolean = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private passwordResetService: PasswordResetService
+  ) {
     this.verifyForm = this.fb.group({
-      verificationCode: ['', [Validators.required]],
+      otp: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
     });
   }
 
@@ -50,7 +61,7 @@ export class NhapmaComponent implements OnInit, OnDestroy {
   }
 
   startTimer() {
-    this.minutes = 0;
+    this.minutes = 4;
     this.seconds = 59;
     this.canResend = false;
 
@@ -78,18 +89,44 @@ export class NhapmaComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.submitted = true;
+    this.errorMessage = '';
 
     if (this.verifyForm.valid) {
-      console.log('Verification code submitted:', this.verifyForm.value);
-      // Add verification logic here
+      this.loading = true;
+      const otp = this.verifyForm.value.otp;
+
+      this.passwordResetService.verifyOTP(this.emailOrPhone, otp).subscribe({
+        next: (response) => {
+          console.log('OTP verified successfully:', response);
+          this.loading = false;
+          this.nextStep.emit(response.resetToken);
+        },
+        error: (error) => {
+          console.error('Error verifying OTP:', error);
+          this.loading = false;
+          this.errorMessage = error.error?.message || 'Không thể xác thực mã OTP. Vui lòng thử lại.';
+        }
+      });
     }
   }
 
   resendCode() {
     if (this.canResend) {
-      // Add resend code logic here
-      this.startTimer();
-      console.log('Resending verification code...');
+      this.loading = true;
+      this.errorMessage = '';
+      
+      this.passwordResetService.sendOTP(this.emailOrPhone).subscribe({
+        next: (response) => {
+          console.log('OTP resent successfully:', response);
+          this.loading = false;
+          this.startTimer();
+        },
+        error: (error) => {
+          console.error('Error resending OTP:', error);
+          this.loading = false;
+          this.errorMessage = error.error?.message || 'Không thể gửi lại mã OTP. Vui lòng thử lại sau.';
+        }
+      });
     }
   }
 
@@ -98,6 +135,6 @@ export class NhapmaComponent implements OnInit, OnDestroy {
   }
 
   onBack() {
-    this.backToReset.emit();
+    this.backToLogin.emit();
   }
 }

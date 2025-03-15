@@ -134,3 +134,71 @@ input[type="password"]::-webkit-password-toggle {
   font-size: 14px;
   margin-top: 5px;
 }
+
+.success-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #28A745;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 16px 0;
+  padding: 12px;
+  background-color: #D4EDDA;
+  border-radius: 8px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.success-message svg {
+  margin-right: 8px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.button-cam:disabled {
+  background: #CCCCCC;
+  cursor: not-allowed;
+}
+
+.button-cam.loading {
+  background: #F15A24;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: not-allowed;
+  transition: background-color 0.3s;
+}
+
+.button-cam.loading::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+  border-top-color: #F15A24;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

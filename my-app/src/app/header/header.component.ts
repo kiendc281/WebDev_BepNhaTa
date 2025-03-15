@@ -3,7 +3,8 @@ import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DangNhapComponent } from '../dang-nhap/dang-nhap.component';
 import { DangKyComponent } from '../dang-ky/dang-ky.component';
-import { NhapemailComponent } from '../quen-mat-khau/nhapemail/nhapemail.component';
+import { QuenMatKhauComponent } from '../quen-mat-khau/quen-mat-khau.component';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -13,8 +14,9 @@ import { NhapemailComponent } from '../quen-mat-khau/nhapemail/nhapemail.compone
     CommonModule,
     DangNhapComponent,
     DangKyComponent,
-    NhapemailComponent,
+    QuenMatKhauComponent,
   ],
+  providers: [AuthService],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
@@ -25,11 +27,18 @@ export class HeaderComponent {
   isMobileMenuOpen = false;
   activeDropdown: string | null = null;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   toggleLoginPopup() {
-    this.showLoginPopup = !this.showLoginPopup;
-    this.currentForm = 'login'; // Reset to login form when toggling
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/tai-khoan']);
+    } else {
+      this.showLoginPopup = !this.showLoginPopup;
+      this.currentForm = 'login'; // Reset to login form when toggling
+    }
   }
 
   onMouseDown(event: MouseEvent) {
