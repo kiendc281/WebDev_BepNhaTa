@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import emailjs from '@emailjs/browser';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-lien-he',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './lien-he.component.html',
   styleUrls: ['./lien-he.component.css']
 })
@@ -16,13 +17,9 @@ export class LienHeComponent implements OnInit {
   success = false;
   error = false;
   loading = false;
+  private apiUrl = environment.apiUrl || 'http://localhost:3000/api';
 
-  constructor(private fb: FormBuilder) {
-    // Khởi tạo EmailJS với Public Key theo đúng cú pháp mới
-    emailjs.init({
-      publicKey: "y_SLL-hB216mj0QaB"
-    });
-  }
+  constructor(private fb: FormBuilder, private http: HttpClient) {}
 
   ngOnInit(): void {
     // Khởi tạo form
@@ -50,30 +47,29 @@ export class LienHeComponent implements OnInit {
 
     this.loading = true;
 
-    // Thông tin dịch vụ và template EmailJS
-    const serviceID = 'Service_BepNhaTa';
-    const templateID = 'template_contactus';
-
-    // Chuẩn bị tham số để gửi email
-    const templateParams = {
-      from_name: this.feedbackForm.value.name,
-      from_email: this.feedbackForm.value.email,
-      from_phone: this.feedbackForm.value.phone,
+    // Chuẩn bị dữ liệu để gửi đến API
+    const contactData = {
+      name: this.feedbackForm.value.name,
+      email: this.feedbackForm.value.email,
+      phone: this.feedbackForm.value.phone,
       message: this.feedbackForm.value.message
     };
 
-    // Gửi email sử dụng EmailJS - không cần truyền publicKey vì đã init từ trước
-    emailjs.send(serviceID, templateID, templateParams)
-      .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
-        this.success = true;
-        this.loading = false;
-        this.feedbackForm.reset();
-        this.submitted = false;
-      }, (error) => {
-        console.log('FAILED...', error);
-        this.error = true;
-        this.loading = false;
+    // Gửi dữ liệu đến API backend
+    this.http.post(`${this.apiUrl}/send-contact`, contactData)
+      .subscribe({
+        next: (response: any) => {
+          console.log('Gửi thắc mắc thành công:', response);
+          this.success = true;
+          this.loading = false;
+          this.feedbackForm.reset();
+          this.submitted = false;
+        },
+        error: (error) => {
+          console.error('Lỗi khi gửi thắc mắc:', error);
+          this.error = true;
+          this.loading = false;
+        }
       });
   }
 
