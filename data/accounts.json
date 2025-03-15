@@ -1,0 +1,46 @@
+[{
+  "_id": "AC01",
+  "name": "ho tien dat",
+  "email": "Kien23@gmail.com",
+  "phone": "0349591877",
+  "password": "$2b$10$iSAnob1yuNLlKMt2xPwJ6OORDYjlm7BdichZ.v5ZrziBR.z7t0qTm",
+  "role": "customer",
+  "createdAt": {
+    "$date": "2025-03-08T03:33:21.775Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-08T03:33:21.775Z"
+  }
+},
+{
+  "_id": "AC02",
+  "name": "ho tien dat",
+  "email": "hotiendat117@gmail.com",
+  "phone": "0349591827",
+  "password": "$2b$10$B2mE7CF7Bgma.k8DcMIIuu8dFOjD2s85nCANRA5QlfDuxIAiyk742",
+  "role": "customer",
+  "createdAt": {
+    "$date": "2025-03-08T03:33:43.343Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-08T03:33:43.343Z"
+  }
+},
+{
+  "_id": "AC03",
+  "name": "Super Admin",
+  "email": "admin@bepnhata.com",
+  "phone": "0123456789",
+  "password": "$2b$10$QuCTzDQJC8l7EWYnlVoUGeCEjAD9A4hO8ckHdefACtvAIy4YtLrxe",
+  "birthOfDate": {
+    "$date": "1990-01-01T00:00:00.000Z"
+  },
+  "gender": "Nam",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2025-03-08T03:35:54.115Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-08T03:35:54.115Z"
+  }
+}]

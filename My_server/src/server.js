@@ -10,6 +10,7 @@ const ingredientRoutes = require('./routes/ingredient.routes');
 const accountRoutes = require('./routes/account.routes');
 const blogRoutes = require('./routes/blog.routes');
 const cartRoutes = require('./routes/cart.routes');
+const contactRoutes = require('./routes/contactRoutes');
 const cors = require('cors');
 
 // Kiểm tra JWT_SECRET
@@ -29,6 +30,7 @@ app.use('/api', recipeRoutes);
 app.use('/api', menuRoutes);
 app.use('/api', ingredientRoutes);
 app.use('/api', cartRoutes);
+app.use('/api', contactRoutes);
 
 // Connect to DB
 db.connect().then(() => {
