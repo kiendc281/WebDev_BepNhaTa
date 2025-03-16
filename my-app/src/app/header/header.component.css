@@ -60,6 +60,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: nowrap; /* Ensure items stay on one line */
 }
 
 .nav-links > a,
@@ -71,7 +72,15 @@
   position: relative;
   z-index: 1;
   white-space: normal;
-  max-width: 120px;
+  max-width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.2;
+  min-height: 50px;
+  overflow: hidden;
 }
 
 .nav-links > a::before,
@@ -83,7 +92,7 @@
   right: 0;
   bottom: 0;
   background-color: var(--color-camvua);
-  border-radius: 30px;
+  border-radius: 20px;
   opacity: 0;
   z-index: -1;
   transition: opacity 0.3s ease;
@@ -169,14 +178,23 @@
 }
 
 .dropdown-toggle {
+  position: relative;
+  padding-right: 15px !important;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   cursor: pointer;
+  flex-wrap: wrap;
+  text-align: center;
 }
 
 .dropdown-toggle::after {
   content: "";
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 0;
   height: 0;
   border-left: 5px solid transparent;
@@ -184,10 +202,13 @@
   border-top: 5px solid var(--color-camvua);
   transition: transform 0.3s ease;
   margin-left: 5px;
+  align-self: center;
+  flex-shrink: 0;
+  order: 2;
 }
 
 .dropdown:hover .dropdown-toggle::after {
-  transform: rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .dropdown-content {
@@ -467,29 +488,51 @@
 }
 
 /* Responsive styles */
-@media (max-width: 992px) {
+@media (max-width: 1150px) {
   .nav-links {
-    gap: 15px;
+    gap: 10px;
   }
 
   .nav-links > a,
   .nav-links > .dropdown > a {
-    font-size: 18px;
-    padding: 5px 8px;
+    font-size: 16px;
+    padding: 5px 6px;
+    max-width: 120px;
   }
 
   .search-container input {
-    width: 180px;
+    width: 140px;
   }
 
   .nav-icons {
-    gap: 15px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 992px) {
+  .nav-links {
+    gap: 8px;
+  }
+
+  .nav-links > a,
+  .nav-links > .dropdown > a {
+    font-size: 14px;
+    padding: 5px 4px;
+    max-width: 100px;
+  }
+
+  .search-container input {
+    width: 120px;
+  }
+
+  .nav-icons {
+    gap: 10px;
   }
 
   .nav img[src*="mdi-cart-outline"],
   .nav img[src*="group"] {
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
   }
 }
 
