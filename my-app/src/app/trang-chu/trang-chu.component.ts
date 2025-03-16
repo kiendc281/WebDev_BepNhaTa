@@ -1,9 +1,19 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-trang-chu',
-  imports: [],
   templateUrl: './trang-chu.component.html',
-  styleUrl: './trang-chu.component.css',
+  styleUrls: ['./trang-chu.component.css'],
 })
-export class TrangChuComponent {}
+export class TrangChuComponent {
+  constructor(private router: Router) {}
+
+  navigateToProducts() {
+    this.router.navigate(['/san-pham']);
+  }
+
+  navigateToBlog() {
+    this.router.navigate(['/blog']);
+  }
+}
