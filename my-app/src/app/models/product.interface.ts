@@ -1,13 +1,28 @@
 export interface Product {
-  id: number;
-  title: string;
-  price: number;
+  _id: string;
+  ingredientName: string;
+  mainImage: string;
+  subImage: string;
+  level: string;
+  time: string;
+  combo: string;
+  discount: number;
+  pricePerPortion: {
+    [key: string]: number;
+  };
   description: string;
+  notes: string;
+  components: string[];
+  storage: string;
+  expirationDate: string;
+  tags: string[];
+  relatedProductIds: string[];
+  suggestedRecipeIds: string[];
+  region: string;
   category: string;
-  image: string;
-  level?: string; // Độ khó (dễ, trung bình, khó)
-  time?: string; // Thời gian chế biến
-  rating: {
+  quantity: number;
+  status: string;
+  rating?: {
     rate: number;
     count: number;
   };

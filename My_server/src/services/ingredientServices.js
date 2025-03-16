@@ -31,14 +31,28 @@ class IngredientService {
                 .populate('relatedProductIds', 'ingredientName mainImage')
                 .populate('suggestedRecipeIds', 'recipeName recipeImage');
 
-            // Chuyển đổi components thành chuỗi
+            // Chuyển đổi ingredients để phù hợp với client
             ingredients = ingredients.map(ingredient => {
                 const doc = ingredient.toObject();
+                
+                // Chuyển đổi pricePerPortion từ mảng sang object
+                if (doc.pricePerPortion && Array.isArray(doc.pricePerPortion)) {
+                    const pricePerPortionObj = {};
+                    doc.pricePerPortion.forEach(item => {
+                        if (item.portion && item.price !== undefined) {
+                            pricePerPortionObj[item.portion] = item.price;
+                        }
+                    });
+                    doc.pricePerPortion = pricePerPortionObj;
+                }
+                
+                // Chuyển đổi components thành chuỗi
                 if (doc.components) {
                     doc.components = doc.components.map(comp => 
                         this.convertComponentToString(comp)
                     );
                 }
+                
                 return doc;
             });
 
@@ -59,8 +73,21 @@ class IngredientService {
                 throw new Error('Không tìm thấy nguyên liệu');
             }
 
-            // Chuyển đổi components thành chuỗi
+            // Chuyển đổi dữ liệu để phù hợp với client
             const doc = ingredient.toObject();
+            
+            // Chuyển đổi pricePerPortion từ mảng sang object
+            if (doc.pricePerPortion && Array.isArray(doc.pricePerPortion)) {
+                const pricePerPortionObj = {};
+                doc.pricePerPortion.forEach(item => {
+                    if (item.portion && item.price !== undefined) {
+                        pricePerPortionObj[item.portion] = item.price;
+                    }
+                });
+                doc.pricePerPortion = pricePerPortionObj;
+            }
+            
+            // Chuyển đổi components thành chuỗi
             if (doc.components) {
                 doc.components = doc.components.map(comp => 
                     this.convertComponentToString(comp)
@@ -85,6 +112,18 @@ class IngredientService {
                 throw new Error('Tên nguyên liệu đã tồn tại');
             }
 
+            // Nếu pricePerPortion là object, chuyển đổi sang mảng để lưu trong MongoDB
+            if (ingredientData.pricePerPortion && typeof ingredientData.pricePerPortion === 'object' && !Array.isArray(ingredientData.pricePerPortion)) {
+                const pricePerPortionArray = [];
+                Object.keys(ingredientData.pricePerPortion).forEach(portion => {
+                    pricePerPortionArray.push({
+                        portion: portion,
+                        price: ingredientData.pricePerPortion[portion]
+                    });
+                });
+                ingredientData.pricePerPortion = pricePerPortionArray;
+            }
+
             // Nếu components là mảng chuỗi, giữ nguyên
             // Nếu là mảng object ký tự, chuyển đổi thành chuỗi
             if (ingredientData.components) {
@@ -100,13 +139,36 @@ class IngredientService {
         }
     }
 
+    // Chuyển đổi component sang dạng chuỗi nếu nó là object
+    convertComponentToString(component) {
+        if (typeof component === 'string') {
+            return component;
+        }
+        
+        if (typeof component === 'object' && component !== null) {
+            let result = component.name || '';
+            if (component.quantity) {
+                result += ` - ${component.quantity}`;
+                if (component.unit) {
+                    result += ` ${component.unit}`;
+                }
+            }
+            if (component.notes) {
+                result += ` (${component.notes})`;
+            }
+            return result;
+        }
+        
+        return 'Unknown component';
+    }
+
     // Cập nhật ingredient
-    async updateIngredient(id, updateData) {
+    async updateIngredient(id, ingredientData) {
         try {
-            // Kiểm tra tên nguyên liệu đã tồn tại (nếu cập nhật tên)
-            if (updateData.ingredientName) {
+            // Kiểm tra tên nguyên liệu đã tồn tại
+            if (ingredientData.ingredientName) {
                 const existingIngredient = await Ingredient.findOne({
-                    ingredientName: updateData.ingredientName,
+                    ingredientName: ingredientData.ingredientName,
                     _id: { $ne: id }
                 });
                 
@@ -115,15 +177,31 @@ class IngredientService {
                 }
             }
 
+            // Nếu pricePerPortion là object, chuyển đổi sang mảng để lưu trong MongoDB
+            if (ingredientData.pricePerPortion && typeof ingredientData.pricePerPortion === 'object' && !Array.isArray(ingredientData.pricePerPortion)) {
+                const pricePerPortionArray = [];
+                Object.keys(ingredientData.pricePerPortion).forEach(portion => {
+                    pricePerPortionArray.push({
+                        portion: portion,
+                        price: ingredientData.pricePerPortion[portion]
+                    });
+                });
+                ingredientData.pricePerPortion = pricePerPortionArray;
+            }
+
+            // Nếu components được gửi lên, chuyển đổi thành chuỗi nếu cần
+            if (ingredientData.components) {
+                ingredientData.components = ingredientData.components.map(comp =>
+                    this.convertComponentToString(comp)
+                );
+            }
+
+            // Tìm và cập nhật nguyên liệu
             const ingredient = await Ingredient.findByIdAndUpdate(
                 id,
-                {
-                    ...updateData,
-                    updatedAt: Date.now()
-                },
-                { new: true }
-            ).populate('relatedProductIds', 'ingredientName mainImage')
-             .populate('suggestedRecipeIds', 'recipeName recipeImage');
+                ingredientData,
+                { new: true, runValidators: true }
+            );
 
             if (!ingredient) {
                 throw new Error('Không tìm thấy nguyên liệu');
@@ -131,24 +209,24 @@ class IngredientService {
 
             return ingredient;
         } catch (error) {
-            throw new Error('Cập nhật thất bại: ' + error.message);
+            throw new Error('Cập nhật nguyên liệu thất bại: ' + error.message);
         }
     }
 
     // Cập nhật số lượng
     async updateQuantity(id, quantity) {
         try {
-            const ingredient = await Ingredient.findById(id);
-            
+            const ingredient = await Ingredient.findByIdAndUpdate(
+                id,
+                { quantity: quantity },
+                { new: true, runValidators: true }
+            );
+
             if (!ingredient) {
                 throw new Error('Không tìm thấy nguyên liệu');
             }
 
-            ingredient.quantity = quantity;
-            ingredient.status = quantity > 0 ? 'Còn hàng' : 'Hết hàng';
-            ingredient.updatedAt = Date.now();
-
-            return await ingredient.save();
+            return ingredient;
         } catch (error) {
             throw new Error('Cập nhật số lượng thất bại: ' + error.message);
         }
@@ -158,31 +236,16 @@ class IngredientService {
     async deleteIngredient(id) {
         try {
             const ingredient = await Ingredient.findByIdAndDelete(id);
+            
             if (!ingredient) {
                 throw new Error('Không tìm thấy nguyên liệu');
             }
+            
             return ingredient;
         } catch (error) {
-            throw new Error('Xóa thất bại: ' + error.message);
+            throw new Error('Xóa nguyên liệu thất bại: ' + error.message);
         }
-    }
-
-    // Hàm chuyển đổi component từ object ký tự thành chuỗi
-    convertComponentToString(component) {
-        if (typeof component === 'string') return component;
-        
-        // Đếm số lượng ký tự (bỏ qua _id)
-        const charCount = Object.keys(component)
-            .filter(key => !isNaN(key))
-            .length;
-        
-        // Ghép các ký tự lại thành chuỗi
-        let result = '';
-        for (let i = 0; i < charCount; i++) {
-            result += component[i.toString()];
-        }
-        return result;
     }
 }
 
-module.exports = new IngredientService(); 
+module.exports = new IngredientService();

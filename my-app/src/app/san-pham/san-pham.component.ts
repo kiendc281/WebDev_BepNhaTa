@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { Product } from '../models/product.interface';
 
 @Component({
@@ -26,11 +26,24 @@ export class SanPhamComponent implements OnInit {
   ];
   selectedSort: string = 'default';
   showSortDropdown: boolean = false;
+  selectedCategory: string = 'all';
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
+    // Subscribe to query params changes
+    this.route.queryParams.subscribe((params) => {
+      const category = params['category'];
+      if (category) {
+        this.selectedCategory = category;
+        this.filterByCategory(category);
+      } else {
+        this.loadProducts();
+      }
+    });
   }
 
   loadProducts(): void {
@@ -93,12 +106,36 @@ export class SanPhamComponent implements OnInit {
   }
 
   // Filter methods
-  selectedRegion: string = 'all';
-
-  filterByRegion(region: string): void {
-    this.selectedRegion = region;
+  filterByCategory(category: string): void {
+    this.selectedCategory = category;
     this.currentPage = 1;
-    this.updateDisplayedPages();
+
+    if (category === 'all') {
+      this.loadProducts();
+    } else {
+      // Map category codes to API values
+      const categoryMap: { [key: string]: string } = {
+        'mon-man': 'Món mặn',
+        'mon-xao': 'Xào',
+        'mon-nuoc': 'Nước',
+        'mon-tron': 'Trộn',
+      };
+
+      this.productService
+        .getProductsByCategory(categoryMap[category])
+        .subscribe({
+          next: (data) => {
+            this.products = data;
+            this.totalPages = Math.ceil(
+              this.products.length / this.itemsPerPage
+            );
+            this.updateDisplayedPages();
+          },
+          error: (err) => {
+            console.error('Lỗi khi tải sản phẩm:', err);
+          },
+        });
+    }
   }
 
   getSelectedSortLabel(): string {
@@ -121,16 +158,24 @@ export class SanPhamComponent implements OnInit {
   sortProducts(): void {
     switch (this.selectedSort) {
       case 'price-asc':
-        this.products.sort((a, b) => a.price - b.price);
+        this.products.sort(
+          (a, b) => this.getDiscountedPrice(a) - this.getDiscountedPrice(b)
+        );
         break;
       case 'price-desc':
-        this.products.sort((a, b) => b.price - a.price);
+        this.products.sort(
+          (a, b) => this.getDiscountedPrice(b) - this.getDiscountedPrice(a)
+        );
         break;
       case 'name-asc':
-        this.products.sort((a, b) => a.title.localeCompare(b.title));
+        this.products.sort((a, b) =>
+          a.ingredientName.localeCompare(b.ingredientName)
+        );
         break;
       case 'name-desc':
-        this.products.sort((a, b) => b.title.localeCompare(a.title));
+        this.products.sort((a, b) =>
+          b.ingredientName.localeCompare(a.ingredientName)
+        );
         break;
       default:
         // Reset to original order
@@ -139,5 +184,37 @@ export class SanPhamComponent implements OnInit {
     }
     this.currentPage = 1;
     this.updateDisplayedPages();
+  }
+
+  // Kiểm tra xem sản phẩm có giảm giá không
+  hasDiscount(product: Product): boolean {
+    return product?.discount !== undefined && product.discount > 0;
+  }
+
+  // Lấy giá gốc của sản phẩm (mặc định là khẩu phần 2 người)
+  getOriginalPrice(product: Product): number {
+    if (!product?.pricePerPortion) return 0;
+    return product.pricePerPortion['2'] || 0;
+  }
+
+  // Lấy giá sau khi giảm giá
+  getDiscountedPrice(product: Product): number {
+    const originalPrice = this.getOriginalPrice(product);
+    if (!product?.discount || product.discount <= 0) {
+      return originalPrice;
+    }
+    return Math.round(originalPrice * (1 - product.discount / 100));
+  }
+
+  sortByName(order: 'asc' | 'desc'): void {
+    if (order === 'asc') {
+      this.products.sort((a, b) =>
+        a.ingredientName.localeCompare(b.ingredientName)
+      );
+    } else {
+      this.products.sort((a, b) =>
+        b.ingredientName.localeCompare(a.ingredientName)
+      );
+    }
   }
 }

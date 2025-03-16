@@ -1,92 +1,123 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Product } from '../models/product.interface'; // Import interface
+import { Observable, map } from 'rxjs';
+import { Product } from '../models/product.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:3000/api/ingredients'; // Chuyển về API đúng
+  private apiUrl = 'http://localhost:3000/api/ingredients';
 
   constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Product[]> {
     return this.http.get<any[]>(this.apiUrl).pipe(
-      map((data: any[]) => {
-        console.log('Raw data from API:', data); // Ghi log dữ liệu thô
-        return data.map((item) => {
-          const mappedItem = {
-            id: item._id || item.id,
-            title: item.ingredientName || item.title,
-            price: this.getPrice(item),
+      map((response) => {
+        console.log('Raw API response:', response);
+        if (!Array.isArray(response)) {
+          console.warn('Response không phải là mảng:', response);
+          return [];
+        }
+
+        return response.map((item: any) => {
+          // Log để kiểm tra dữ liệu gốc
+          console.log('Raw components:', item.components);
+
+          // Đảm bảo components là một mảng
+          const components = Array.isArray(item.components)
+            ? item.components
+            : typeof item.components === 'object' && item.components !== null
+            ? Object.values(item.components).map((c) => String(c))
+            : [];
+
+          // Log sau khi xử lý
+          console.log('Processed components:', components);
+
+          return {
+            _id: item._id,
+            ingredientName: item.ingredientName,
+            mainImage: item.mainImage,
+            subImage: item.subImage,
+            level: item.level,
+            time: item.time,
+            combo: item.combo,
+            discount: item.discount || 0,
+            pricePerPortion: item.pricePerPortion || {},
             description: item.description,
-            category: item.category || item.region,
-            image: item.mainImage || item.image,
-            level: item.level , // Mặc định là 'Trung bình'
-            time: item.time , // Mặc định là '25 phút'
+            notes: item.notes,
+            components: components,
+            storage: item.storage,
+            expirationDate: item.expirationDate,
+            tags: Array.isArray(item.tags) ? item.tags : [],
+            relatedProductIds: Array.isArray(item.relatedProductIds)
+              ? item.relatedProductIds
+              : [],
+            suggestedRecipeIds: Array.isArray(item.suggestedRecipeIds)
+              ? item.suggestedRecipeIds
+              : [],
+            region: item.region,
+            category: item.category,
+            quantity: item.quantity || 0,
+            status: item.status || 'Còn hàng',
             rating: item.rating || { rate: 4.5, count: 10 },
           };
-          console.log('Mapped item:', mappedItem); // Ghi log item sau khi chuyển đổi
-          return mappedItem;
         });
       })
     );
   }
 
-  // Hàm phụ trợ lấy giá từ cấu trúc pricePerPortion - cải tiến
-  private getPrice(item: any): number {
-    // Kiểm tra và ghi log để debug
-    console.log('Getting price for item:', item);
-    
-    // Nếu đã có trường price
-    if (item.price && typeof item.price === 'number') {
-      return item.price;
-    }
-    
-    // Kiểm tra pricePerPortion là mảng và có phần tử
-    if (item.pricePerPortion && Array.isArray(item.pricePerPortion) && item.pricePerPortion.length > 0) {
-      // Nếu phần tử đầu tiên có trường price
-      if (item.pricePerPortion[0].price && typeof item.pricePerPortion[0].price === 'number') {
-        return item.pricePerPortion[0].price;
-      }
-    }
-    
-    // Giá mặc định nếu không tìm thấy
-    return 99000; // Giá mặc định để hiển thị
-  }
-
-  // Thêm method để lấy sản phẩm theo category
   getProductsByCategory(category: string): Observable<Product[]> {
-    return this.http.get<any[]>(`${this.apiUrl}?category=${category}`).pipe(
-      map((data: any[]) =>
-        data.map((item) => ({
-          id: item._id || item.id,
-          title: item.ingredientName || item.title,
-          price: this.getPrice(item),
-          description: item.description,
-          category: item.category || item.region,
-          image: item.mainImage || item.image,
-          level: item.level || 'Trung bình', // Mặc định là 'Trung bình'
-          time: item.time || '25 phút', // Mặc định là '25 phút'
-          rating: item.rating || { rate: 4.5, count: 10 },
-        }))
+    return this.getProducts().pipe(
+      map((products) =>
+        products.filter((product) => product.category === category)
       )
     );
   }
 
-  // Thêm method để lấy sản phẩm liên quan (cùng category, trừ sản phẩm hiện tại)
   getRelatedProducts(
     category: string,
-    currentProductId: number
+    currentProductId: string
   ): Observable<Product[]> {
-    return this.getProductsByCategory(category).pipe(
+    return this.getProducts().pipe(
       map((products) =>
         products
-          .filter((product) => product.id !== currentProductId)
+          .filter(
+            (product) =>
+              product._id !== currentProductId && product.category === category
+          )
           .slice(0, 4)
       )
     );
+  }
+
+  calculateDiscountedPrice(product: Product, portion: string = '2'): number {
+    const originalPrice = this.getPortionPrice(product, portion);
+    if (!product.discount || product.discount <= 0) {
+      return originalPrice;
+    }
+    return originalPrice * (1 - product.discount / 100);
+  }
+
+  getPortionPrice(product: Product, portion: string = '2'): number {
+    if (!product || !product.pricePerPortion) {
+      console.warn('Không tìm thấy thông tin giá cho sản phẩm:', product);
+      return 0;
+    }
+
+    const price = product.pricePerPortion[portion];
+    if (price === undefined) {
+      console.warn(
+        `Không tìm thấy giá cho khẩu phần ${portion} người:`,
+        product.pricePerPortion
+      );
+      // Nếu không có giá cho khẩu phần 4 người, tính dựa trên giá 2 người
+      if (portion === '4' && product.pricePerPortion['2']) {
+        return Math.round(product.pricePerPortion['2'] * 1.8);
+      }
+      return 0;
+    }
+
+    return price;
   }
 }

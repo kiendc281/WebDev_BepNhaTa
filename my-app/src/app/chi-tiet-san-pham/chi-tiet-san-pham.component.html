@@ -1,14 +1,24 @@
-<div class="product-detail-container" *ngIf="product">
+<!-- Loading indicator -->
+<div class="loading" *ngIf="loading">
+  <div class="spinner"></div>
+  <p>Đang tải thông tin sản phẩm...</p>
+</div>
+
+<!-- Error message -->
+<div class="error-message" *ngIf="error && !loading">
+  <p>{{ error }}</p>
+  <button class="button-cam" routerLink="/san-pham">
+    Quay lại trang sản phẩm
+  </button>
+</div>
+
+<!-- Product detail content -->
+<div class="product-detail-container" *ngIf="product && !loading && !error">
   <!-- Left column -->
   <div class="product-main">
-    <div class="product-gallery">
-      <div class="thumbnail-list">
-        <div class="thumbnail">
-          <img [src]="product.image" [alt]="product.title" />
-        </div>
-      </div>
+    <div class="product-gallery m-auto">
       <div class="main-image">
-        <img [src]="product.image" [alt]="product.title" />
+        <img [src]="product.mainImage" [alt]="product.ingredientName" />
       </div>
     </div>
 
@@ -18,31 +28,40 @@
       <div class="note-section">
         <h3>Lưu ý</h3>
         <p>
-          Gói nguyên liệu {{ product.title }} dùng để nấu cho khẩu phần
-          {{ selectedServing }} người
+          Gói nguyên liệu <b>{{ product.ingredientName }}</b> dùng để nấu cho
+          khẩu phần
+          <b>{{ selectedServing }} người</b>
         </p>
       </div>
 
       <div class="product-details">
-        <h3>THÔNG TIN SẢN PHẨM</h3>
+        <div class="d-flex align-items-center mb-2">
+          <img src="../../assets/chi-tiet-san-pham/nguyen-lieu.svg" alt="" />
+          <span><h3 class="m-0">THÔNG TIN SẢN PHẨM</h3></span>
+        </div>
         <div class="details-grid">
           <div class="detail-item">
             <h4>Thành phần nguyên liệu</h4>
-            <ul>
-              <li>{{ product.category }}</li>
-              <li>Chất lượng cao cấp</li>
-              <li>Đóng gói cẩn thận</li>
+            <div *ngIf="!product?.components">Không có dữ liệu components</div>
+            <div *ngIf="product?.components && product.components.length === 0">
+              Danh sách components rỗng
+            </div>
+            <ul
+              class="components-list"
+              *ngIf="product?.components && product.components.length > 0"
+            >
+              <li *ngFor="let component of product.components">
+                {{ component }}
+              </li>
             </ul>
           </div>
           <div class="detail-item">
             <h4>Bảo quản</h4>
-            <p>Bảo quản nơi khô ráo và thoáng mát</p>
+            <p>{{ product.storage }}</p>
           </div>
           <div class="detail-item">
             <h4>Hạn sử dụng</h4>
-            <p>
-              Dùng ngon nhất trong vòng 7 ngày và tối đa 1 tháng khi để tủ đông
-            </p>
+            <p>{{ product.notes }}</p>
           </div>
           <div class="detail-item">
             <h4>Độ khó</h4>
@@ -58,7 +77,7 @@
       <div class="tags">
         <h3>TAGS</h3>
         <div class="tag-list">
-          <span class="tag">{{ product.category }}</span>
+          <span class="tag" *ngFor="let tag of product.tags">{{ tag }}</span>
         </div>
       </div>
 
@@ -84,35 +103,38 @@
   <!-- Right column - Sticky sidebar -->
   <div class="product-sidebar">
     <div class="sidebar-content">
-      <h5 class="product-title">{{ product.title }}</h5>
+      <h5 class="product-title">{{ product.ingredientName }}</h5>
 
-      <div class="rating">
+      <div class="rating" *ngIf="product.rating">
         <span class="stars">
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
         </span>
-        <span class="rating-score">{{ product.rating?.rate || 5.0 }}</span>
-        <span class="review-count"
-          >{{ product.rating?.count || 0 }} đánh giá</span
-        >
+        <span class="rating-score">{{ product.rating.rate }}</span>
+        <span>|</span>
+        <span class="review-count">{{ product.rating.count }} đánh giá</span>
       </div>
 
       <div class="price-section">
-        <div class="price">
-          <span class="original-price"
-            >{{ product.price | number : "1.0-0" }}đ</span
-          >
-          <span class="discounted-price"
-            >{{ product.price * 0.8 | number : "1.0-0" }}đ</span
-          >
-          <span class="discount-tag">-20%</span>
+        <div class="original-price" *ngIf="hasDiscount()">
+          {{ getOriginalPrice() | number : "1.0-0" }}đ
         </div>
-        <div class="price-note">
-          <div>Mã giảm giá <span class="discount-code">Giảm 20%</span></div>
-          <div>Khấu phần <span class="portion">Giảm 10%</span></div>
+        <div class="price">
+          <span class="discounted-price"
+            >{{ getDiscountedPrice() | number : "1.0-0" }}đ</span
+          >
+          <span class="discount-tag" *ngIf="hasDiscount()"
+            >-{{ product.discount }}%</span
+          >
+        </div>
+        <div class="price-note" *ngIf="hasDiscount()">
+          <div>
+            Sản phẩm đang được giảm giá
+            <span class="fw-bold text-danger"> {{ product.discount }}%</span>
+          </div>
         </div>
       </div>
 
@@ -132,26 +154,37 @@
       </div>
 
       <div class="quantity-section">
-        <label>Số lượng:</label>
-        <div class="quantity-control">
-          <button (click)="decreaseQuantity()">-</button>
-          <input type="number" [(ngModel)]="quantity" min="1" />
-          <button (click)="increaseQuantity()">+</button>
+        <div class="d-flex align-items-center gap-2">
+          <div>Số lượng:</div>
+          <div class="quantity-control">
+            <button (click)="decreaseQuantity()">-</button>
+            <input type="number" [(ngModel)]="quantity" min="1" />
+            <button (click)="increaseQuantity()">+</button>
+          </div>
         </div>
-        <button class="add-to-wishlist button-trang" (click)="addToCart()">
-          Thêm vào giỏ hàng
-        </button>
-        <button class="save button-xam" (click)="addToWishlist()">Lưu</button>
+        <div class="twobutton">
+          <button class="add-to-wishlist button-trang" (click)="addToCart()">
+            Thêm vào giỏ hàng
+          </button>
+          <button class="button-xam" (click)="addToWishlist()">Lưu</button>
+        </div>
       </div>
-
-      <button class="buy-now" (click)="buyNow()">MUA NGAY</button>
+      <div class="buttonmua">
+        <button class="button-cam align-self-stretch" (click)="buyNow()">
+          MUA NGAY
+        </button>
+      </div>
 
       <div class="special-offer">
         <i class="fas fa-gift"></i> ƯU ĐÃI ĐẶC BIỆT
       </div>
       <div class="promotion">Khuyến mãi giảm giá khi mua kèm</div>
 
-      <!-- <div class="related-products">
+      <!-- Sản phẩm liên quan -->
+      <div
+        class="related-products"
+        *ngIf="relatedProducts && relatedProducts.length > 0"
+      >
         <h3>SẢN PHẨM LIÊN QUAN</h3>
         <div class="product-grid">
           <div
@@ -160,31 +193,38 @@
           >
             <a
               class="product-link"
-              (click)="navigateToProduct(relatedProduct.id)"
+              (click)="navigateToProduct(relatedProduct._id)"
               style="cursor: pointer"
             >
               <img
-                [src]="relatedProduct.image"
-                [alt]="relatedProduct.title"
+                [src]="relatedProduct.mainImage"
+                [alt]="relatedProduct.ingredientName"
                 class="product-image"
               />
               <div class="product-info">
-                <h4 class="product-title">{{ relatedProduct.title }}</h4>
+                <h4 class="product-title">
+                  {{ relatedProduct.ingredientName }}
+                </h4>
                 <div class="product-price">
-                  <span class="original-price"
-                    >{{ relatedProduct.price | number : "1.0-0" }}đ</span
+                  <span
+                    class="original-price"
+                    *ngIf="relatedProductHasDiscount(relatedProduct)"
+                    >{{
+                      getRelatedProductPrice(relatedProduct) | number : "1.0-0"
+                    }}đ</span
                   >
                   <span class="discounted-price"
-                    >{{ relatedProduct.price * 0.8 | number : "1.0-0" }}đ</span
+                    >{{
+                      getRelatedProductDiscountedPrice(relatedProduct)
+                        | number : "1.0-0"
+                    }}đ</span
                   >
                 </div>
               </div>
             </a>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </div>
-
-<div class="loading" *ngIf="!product">Đang tải thông tin sản phẩm...</div>

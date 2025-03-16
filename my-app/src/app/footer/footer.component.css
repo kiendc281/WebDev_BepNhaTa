@@ -6,16 +6,22 @@
 .footer {
   padding: 40px 0 0;
   background-color: #ff7f3f;
+  width: 100%;
+  box-sizing: border-box;
 }
 .footer-content {
   display: flex;
   justify-content: space-between;
   max-width: 1361px;
   margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
 .company-info {
   width: 233px;
+  margin-bottom: 20px;
 }
 
 .logo {
@@ -32,6 +38,7 @@
 
 .info-section {
   width: 268px;
+  margin-bottom: 20px;
 }
 
 .section-title {
@@ -45,9 +52,19 @@
 .contact-info {
   font-weight: 600;
   margin-top: 10px;
+  display: flex;
+  align-items: flex-start;
+  line-height: 1.5;
 }
+
+.company-address img,
+.contact-info img {
+  margin-top: 3px;
+}
+
 .policy-section {
   width: 141px;
+  margin-bottom: 20px;
 }
 
 .policy-links {
@@ -58,12 +75,14 @@
 .policy-links a {
   font-weight: 600;
   text-decoration: none;
+  transition: all 0.3s ease;
 }
 .policy-links a:hover {
   text-decoration: underline;
 }
 .social-section {
   width: 221px;
+  margin-bottom: 20px;
 }
 
 .social-icons {
@@ -72,17 +91,34 @@
   margin: 15px 0 15px;
 }
 
+.social-icons a {
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.social-icons a:hover {
+  transform: scale(1.1);
+}
+
 .payment-methods {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
+}
+
+.payment-methods img {
+  height: 30px;
+  width: auto;
 }
 
 .newsletter-section {
   width: 218px;
+  margin-bottom: 20px;
 }
 
 .newsletter-description {
   margin: 14px 0;
+  line-height: 1.5;
 }
 .email-input-container {
   display: flex;
@@ -112,10 +148,17 @@
   justify-content: center;
   cursor: pointer;
   background-color: #ea5c2b;
+  transition: background-color 0.3s ease;
 }
+
+.submit-button:hover {
+  background-color: #d04d20;
+}
+
 .certification {
   width: 194px;
   height: 73px;
+  max-width: 100%;
 }
 
 .copyright {
@@ -123,69 +166,176 @@
   margin-top: 18px;
   padding: 10px 0;
   background-color: #ea5c2b;
+  font-weight: 600;
 }
-@media (max-width: 640px) {
-  .email-input-container {
-    max-width: 300px;
-    margin: 14px auto;
-  }
-  .footer-content {
-    flex-direction: column;
-    gap: 30px;
-  }
-  .company-info {
-    width: 100%;
-  }
-  .company-description {
-    text-align: center;
-  }
-  .logo {
-    margin: 0 auto 20px;
-  }
-  .info-section {
-    width: 100%;
-  }
-  .policy-section {
-    width: 100%;
-  }
-  .social-section {
-    width: 100%;
-  }
-  .certification {
-    display: block;
-    margin: 0 auto;
-  }
-  .newsletter-section {
-    width: 100%;
-  }
-  .payment-methods {
-    justify-content: center;
-  }
-  .section-title {
-    text-align: center;
-  }
-  .social-icons {
-    justify-content: center;
-  }
-}
+
+/* Medium screens (tablets, 768px - 991px) */
 @media (max-width: 991px) {
   .footer-content {
     flex-wrap: wrap;
     gap: 30px;
+    padding: 0 30px;
   }
-  .company-info {
-    width: calc(50% - 15px);
-  }
-  .info-section {
-    width: calc(50% - 15px);
-  }
-  .policy-section {
-    width: calc(50% - 15px);
-  }
-  .social-section {
-    width: calc(50% - 15px);
-  }
+  
+  .company-info,
+  .info-section,
+  .policy-section,
+  .social-section,
   .newsletter-section {
     width: calc(50% - 15px);
+    margin-bottom: 30px;
+  }
+  
+  .payment-methods {
+    justify-content: flex-start;
+  }
+}
+
+/* Small tablets (600px - 767px) */
+@media (max-width: 767px) {
+  .footer-content {
+    padding: 0 20px;
+  }
+  
+  .company-info,
+  .info-section {
+    width: 100%;
+  }
+  
+  .policy-section,
+  .social-section,
+  .newsletter-section {
+    width: calc(33.33% - 15px);
+  }
+  
+  .company-description {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .section-title {
+    font-size: 16px;
+  }
+}
+
+/* Mobile devices (less than 600px) */
+@media (max-width: 640px) {
+  .footer {
+    padding: 30px 0 0;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    gap: 25px;
+    padding: 0 15px;
+  }
+  
+  .company-info,
+  .info-section,
+  .policy-section,
+  .social-section,
+  .newsletter-section {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .company-description {
+    text-align: center;
+    max-width: 100%;
+  }
+  
+  .logo {
+    margin: 0 auto 15px;
+  }
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .company-name, 
+  .company-address, 
+  .contact-info {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .company-address div,
+  .contact-info div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .company-address img,
+  .contact-info img {
+    margin-bottom: 5px;
+  }
+  
+  .policy-links {
+    align-items: center;
+  }
+  
+  .social-icons,
+  .payment-methods {
+    justify-content: center;
+  }
+  
+  .newsletter-description {
+    text-align: center;
+  }
+  
+  .email-input-container {
+    max-width: 300px;
+    margin: 14px auto;
+  }
+  
+  .certification {
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .copyright {
+    font-size: 12px;
+    padding: 15px;
+  }
+}
+
+/* Very small devices (less than 400px) */
+@media (max-width: 400px) {
+  .footer {
+    padding: 20px 0 0;
+  }
+  
+  .footer-content {
+    gap: 20px;
+    padding: 0 10px;
+  }
+  
+  .section-title {
+    font-size: 15px;
+  }
+  
+  * {
+    font-size: 13px;
+  }
+  
+  .logo {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .payment-methods {
+    gap: 10px;
+  }
+  
+  .payment-methods img {
+    height: 25px;
+  }
+  
+  .social-icons {
+    gap: 15px;
   }
 }
