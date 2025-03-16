@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 const cartSchema = new mongoose.Schema({
     accountId: {
         type: String,
-        ref: 'accounts',
+        ref: 'Account',
         required: true
     },
     listCart: [{
         ingredientId: {
             type: String,
-            ref: 'ingredients',
+            ref: 'Ingredient',
             required: true
         },
         quantity: {

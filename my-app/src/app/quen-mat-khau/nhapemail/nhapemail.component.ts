@@ -6,11 +6,13 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { PasswordResetService } from '../../services/password-reset.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-nhapemail',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './nhapemail.component.html',
   styleUrls: ['./nhapemail.component.css'],
 })
@@ -21,8 +23,13 @@ export class NhapemailComponent {
 
   resetForm: FormGroup;
   submitted = false;
+  loading = false;
+  errorMessage = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private passwordResetService: PasswordResetService
+  ) {
     this.resetForm = this.fb.group({
       emailOrPhone: ['', [Validators.required, this.emailOrPhoneValidator]],
     });
@@ -52,10 +59,24 @@ export class NhapemailComponent {
 
   onSubmit() {
     this.submitted = true;
+    this.errorMessage = '';
 
     if (this.resetForm.valid) {
-      console.log('Reset password request submitted:', this.resetForm.value);
-      this.nextStep.emit(this.resetForm.value.emailOrPhone);
+      this.loading = true;
+      const emailOrPhone = this.resetForm.value.emailOrPhone;
+      
+      this.passwordResetService.sendOTP(emailOrPhone).subscribe({
+        next: (response) => {
+          console.log('OTP đã được gửi:', response);
+          this.loading = false;
+          this.nextStep.emit(emailOrPhone);
+        },
+        error: (error) => {
+          console.error('Lỗi khi gửi OTP:', error);
+          this.loading = false;
+          this.errorMessage = error.error?.message || 'Không thể gửi mã xác nhận. Vui lòng thử lại sau.';
+        }
+      });
     }
   }
 

@@ -1,6 +1,12 @@
 <div class="maincontainer">
   <div class="banner">
-    <img src="../../assets/trang-chu/banner.png" alt="" />
+    <img [src]="currentBannerImage" alt="Banner">
+    
+    <div class="banner-dots">
+      <div class="banner-dot" [class.active]="currentBannerSlide === 0" (click)="setCurrentBannerSlide(0)"></div>
+      <div class="banner-dot" [class.active]="currentBannerSlide === 1" (click)="setCurrentBannerSlide(1)"></div>
+      <div class="banner-dot" [class.active]="currentBannerSlide === 2" (click)="setCurrentBannerSlide(2)"></div>
+    </div>
   </div>
 </div>
 
