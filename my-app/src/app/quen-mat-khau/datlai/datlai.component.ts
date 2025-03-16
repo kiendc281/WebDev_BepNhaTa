@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -6,25 +6,38 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { PasswordResetService } from '../../services/password-reset.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-datlai',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  providers: [PasswordResetService],
   templateUrl: './datlai.component.html',
   styleUrls: ['./datlai.component.css'],
 })
 export class DatlaiComponent {
+  @Input() emailOrPhone: string = '';
+  @Input() resetToken: string = '';
   @Output() closePopup = new EventEmitter<void>();
+  @Output() backToLogin = new EventEmitter<void>();
+  @Output() resetSuccess = new EventEmitter<void>();
 
   resetForm: FormGroup;
   submitted = false;
+  loading = false;
+  errorMessage = '';
+  successMessage = '';
   showPassword = false;
   showConfirmPassword = false;
   passwordIcon = '../../../assets/sign in up/clarity-eye-hide-line.svg';
   confirmPasswordIcon = '../../../assets/sign in up/clarity-eye-hide-line.svg';
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private passwordResetService: PasswordResetService
+  ) {
     this.resetForm = this.fb.group(
       {
         password: [
@@ -59,10 +72,29 @@ export class DatlaiComponent {
 
   onSubmit() {
     this.submitted = true;
+    this.errorMessage = '';
+    this.successMessage = '';
 
     if (this.resetForm.valid) {
-      console.log('Password reset submitted:', this.resetForm.value);
-      // Add password reset logic here
+      this.loading = true;
+      const newPassword = this.resetForm.value.password;
+
+      this.passwordResetService.resetPassword(this.emailOrPhone, this.resetToken, newPassword).subscribe({
+        next: (response) => {
+          console.log('Password reset successfully');
+          this.loading = false;
+          this.successMessage = 'Đặt lại mật khẩu thành công!';
+          setTimeout(() => {
+            this.resetSuccess.emit();
+            this.backToLogin.emit();
+          }, 1500);
+        },
+        error: (error) => {
+          console.error('Error resetting password:', error);
+          this.loading = false;
+          this.errorMessage = error.error?.message || 'Không thể đặt lại mật khẩu. Vui lòng thử lại.';
+        }
+      });
     }
   }
 
@@ -82,5 +114,9 @@ export class DatlaiComponent {
 
   onClose() {
     this.closePopup.emit();
+  }
+
+  onBack() {
+    this.backToLogin.emit();
   }
 }

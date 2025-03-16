@@ -13,10 +13,6 @@ import { LienHeComponent } from './lien-he/lien-he.component';
 import { FaqComponent } from './faq/faq.component';
 import { DangKyComponent } from './dang-ky/dang-ky.component';
 import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
-import { QuenMatKhauComponent } from './quen-mat-khau/quen-mat-khau.component';
-import { DatlaiComponent } from './quen-mat-khau/datlai/datlai.component';
-import { NhapemailComponent } from './quen-mat-khau/nhapemail/nhapemail.component';
-import { NhapmaComponent } from './quen-mat-khau/nhapma/nhapma.component';
 import { TaiKhoanComponent } from './tai-khoan/tai-khoan.component';
 import { GioHangComponent } from './gio-hang/gio-hang.component';
 
@@ -36,10 +32,6 @@ export const routes: Routes = [
   { path: 'faq', component: FaqComponent },
   { path: 'dang-ky', component: DangKyComponent },
   { path: 'dang-nhap', component: DangNhapComponent },
-  { path: 'quen-mat-khau', component: QuenMatKhauComponent },
-  { path: 'nhapemail', component: NhapemailComponent },
-  { path: 'nhapma', component: NhapmaComponent },
-  { path: 'datlai', component: DatlaiComponent },
   { path: 'tai-khoan', component: TaiKhoanComponent },
   { path: '', component: TrangChuComponent },
   { path: 'gio-hang', component: GioHangComponent },

@@ -1,0 +1,24 @@
+.modal-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+:host ::ng-deep app-nhapemail,
+:host ::ng-deep app-nhapma,
+:host ::ng-deep app-datlai {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
