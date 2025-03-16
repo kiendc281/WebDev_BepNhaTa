@@ -10,9 +10,9 @@ export class TrangChuComponent implements OnInit, OnDestroy {
   currentBannerSlide = 0;
   currentBannerImage = '../../assets/trang-chu/banner.png';
   private bannerImages = [
-    '../../assets/trang-chu/banner.png',
-    '../../assets/trang-chu/banner1.jpg',
-    '../../assets/trang-chu/banner2.jpg'
+    '../../assets/trang-chu/banner1.png',
+    '../../assets/trang-chu/banner2.png',
+    '../../assets/trang-chu/banner3.jpg',
   ];
   private slideInterval: any;
   private readonly slideDelay = 5000; // 5 seconds
