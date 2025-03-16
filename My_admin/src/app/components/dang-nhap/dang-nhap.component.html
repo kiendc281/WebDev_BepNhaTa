@@ -1,0 +1,67 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h2>Đăng nhập Admin</h2>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="emailOrPhone">Tài khoản Admin</label>
+        <input
+          type="text"
+          id="emailOrPhone"
+          formControlName="emailOrPhone"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['emailOrPhone'].errors }"
+        />
+        <div *ngIf="submitted && f['emailOrPhone'].errors" class="error-message">
+          <div *ngIf="f['emailOrPhone'].errors['required']">
+            Vui lòng nhập email hoặc số điện thoại
+          </div>
+          <div *ngIf="f['emailOrPhone'].errors['invalidEmail']">
+            Email không hợp lệ
+          </div>
+          <div *ngIf="f['emailOrPhone'].errors['invalidPhone']">
+            Số điện thoại không hợp lệ
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mật khẩu</label>
+        <div class="password-input-container">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          />
+          <img
+            [src]="eyeIcon"
+            alt="Toggle password visibility"
+            class="eye-icon"
+            (click)="togglePassword()"
+          />
+        </div>
+        <div *ngIf="submitted && f['password'].errors" class="error-message">
+          <div *ngIf="f['password'].errors['required']">
+            Vui lòng nhập mật khẩu
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+        ĐĂNG NHẬP
+      </button>
+    </form>
+  </div>
+</div>

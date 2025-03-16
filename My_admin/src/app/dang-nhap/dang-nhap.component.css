@@ -1,0 +1,264 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--color-xamnhat);
+}
+
+.header {
+  background-color: var(--color-camdam);
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo-container span {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 550px;
+  width: 90%;
+  margin-top: 120px;
+  margin-bottom: 40px;
+  border: 2px solid var(--color-camdam);
+  min-height: 400px;
+}
+
+h2 {
+  color: var(--color-camdam);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 25px;
+  width: 80%;
+  position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-xamdam);
+  font-weight: 500;
+}
+
+.form-control,
+.btn-primary {
+  width: 100%;
+  padding: 15px 20px;
+  background-color: var(--color-xamnhat);
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  height: 55px;
+  margin: 5px 0;
+}
+
+.form-control:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(var(--color-camdam-rgb), 0.5);
+}
+
+.form-control.is-invalid {
+  border: 1px solid #dc3545;
+  background-image: none !important;
+  position: relative;
+}
+
+.validation-message {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  position: absolute;
+  left: 0;
+  bottom: -25px;
+  text-align: left;
+  display: block;
+}
+
+.password-field {
+  position: relative;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.form-control[type="password"] {
+  width: 100%;
+  padding: 15px 20px;
+  background-color: var(--color-xamnhat);
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  height: 55px;
+  margin: 5px 0;
+}
+
+.btn-primary {
+  width: 80%;
+  background-color: var(--color-camdam);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+  height: 55px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-camvua);
+}
+
+.btn-primary:disabled {
+  background-color: var(--color-camnhat);
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.95rem;
+  text-align: center;
+  width: 80%;
+  margin-top: 15px;
+  padding: 8px;
+  background-color: rgba(220, 53, 69, 0.1);
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #198754;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .logo-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .logo-container span {
+    font-size: 1.2rem;
+  }
+
+  .form-container {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 15px;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .form-container {
+    padding: 20px;
+  }
+
+  .btn-primary {
+    padding: 10px;
+    font-size: 1rem;
+  }
+}
+
+/* CSS để ghi đè lên style mặc định của trình duyệt khi có lỗi validation */
+input::-ms-reveal,
+input::-ms-clear {
+  display: block !important;
+}
+
+/* Đảm bảo nút hiện/ẩn mật khẩu không bị ẩn khi form có lỗi */
+input[type="password"]::-webkit-contacts-auto-fill-button,
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-inner-spin-button,
+input[type="password"]::-webkit-outer-spin-button,
+input[type="password"]::-webkit-search-cancel-button,
+input[type="password"]::-webkit-search-decoration,
+input[type="password"]::-webkit-search-results-button,
+input[type="password"]::-webkit-search-results-decoration,
+input[type="password"]::-webkit-textfield-decoration-container {
+  visibility: visible !important;
+  display: block !important;
+  pointer-events: auto !important;
+}
