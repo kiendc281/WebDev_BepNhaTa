@@ -268,36 +268,14 @@
           <a routerLink="/lien-he" (click)="closeMobileMenu()">Liên hệ</a>
         </div>
       </div>
-      <div class="mobile-search">
-        <input type="text" placeholder="Tìm kiếm" />
-      </div>
-      <div class="mobile-icons">
-        <a routerLink="/gio-hang" (click)="closeMobileMenu()">
-          <img src="../../assets/header/mdi-cart-outline.svg" alt="Giỏ hàng" />
-        </a>
-        <img
-          src="../../assets/header/group.svg"
-          alt=""
-          (click)="toggleLoginPopup(); closeMobileMenu()"
-        />
-      </div>
     </div>
   </div>
 
   <!-- Mobile Menu Overlay -->
   <div
     class="mobile-menu-overlay"
-    *ngIf="isMobileMenuOpen"
+    [class.active]="isMobileMenuOpen"
     (click)="closeMobileMenu()"
-    style="
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1;
-    "
   ></div>
 </div>
 
