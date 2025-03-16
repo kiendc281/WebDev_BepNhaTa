@@ -254,8 +254,8 @@
 
 .cart-icon img,
 .user-icon {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
 }
 
@@ -535,8 +535,8 @@
 
   .cart-icon img,
   .user-icon {
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
   }
 
   /* Make sure mobile menu is properly styled */
@@ -702,5 +702,33 @@
 @media (max-width: 480px) {
   .search-container input {
     width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-right {
+    gap: 15px;
+  }
+  
+  .stat-number {
+    font-size: 18px;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+  }
+  
+  .slogan {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .header-right {
+    gap: 10px;
+  }
+  
+  .slogan {
+    max-width: 200px;
   }
 }
