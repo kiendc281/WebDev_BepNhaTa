@@ -1,1 +1,26 @@
-<p>quen-mat-khau works!</p>
+<div class="modal-content">
+  <ng-container [ngSwitch]="currentStep">
+    <app-nhapemail 
+      *ngSwitchCase="1"
+      (closePopup)="onClose()"
+      (backToLogin)="onBack()"
+      (nextStep)="onEmailSubmitted($event)">
+    </app-nhapemail>
+
+    <app-nhapma 
+      *ngSwitchCase="2"
+      [emailOrPhone]="emailOrPhone"
+      (closePopup)="onClose()"
+      (backToLogin)="onBackToEmail()"
+      (nextStep)="onOTPVerified($event)">
+    </app-nhapma>
+
+    <app-datlai 
+      *ngSwitchCase="3"
+      [emailOrPhone]="emailOrPhone"
+      [resetToken]="resetToken"
+      (closePopup)="onClose()"
+      (backToLogin)="onBack()">
+    </app-datlai>
+  </ng-container>
+</div>

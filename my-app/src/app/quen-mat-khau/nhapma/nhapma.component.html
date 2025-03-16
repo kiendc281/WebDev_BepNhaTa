@@ -1,18 +1,21 @@
 <div class="container">
   <button class="close-button" (click)="onClose()">
-    <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="" />
+    <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="Đóng" />
   </button>
+
   <div class="title">Nhập mã xác thực</div>
-  <p>Một mã xác thực đã được gửi đến số điện thoại/ Email mà bạn đã đăng ký</p>
+  <p>Một mã xác thực đã được gửi đến {{ emailOrPhone }}</p>
 
   <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <div class="input-container">
         <input
           type="text"
-          formControlName="verificationCode"
-          placeholder="Nhập mã"
-          [class.submitted]="submitted && f['verificationCode'].errors"
+          formControlName="otp"
+          placeholder="Nhập mã 6 số"
+          [class.submitted]="submitted && f['otp'].errors"
+          maxlength="6"
+          autocomplete="off"
         />
         <div class="timer-resend">
           <span class="timer"
@@ -21,7 +24,7 @@
           <button
             type="button"
             class="resend-button"
-            [disabled]="!canResend"
+            [disabled]="!canResend || loading"
             (click)="resendCode()"
           >
             Gửi lại
@@ -30,16 +33,23 @@
       </div>
       <div
         class="error-message"
-        *ngIf="submitted && f['verificationCode'].errors?.['required']"
+        *ngIf="submitted && f['otp'].errors"
       >
-        (*) Vui lòng nhập mã xác thực
+        <span *ngIf="f['otp'].errors?.['required']">(*) Vui lòng nhập mã xác thực</span>
+        <span *ngIf="f['otp'].errors?.['minlength'] || f['otp'].errors?.['maxlength']">(*) Mã xác thực phải có 6 số</span>
+      </div>
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
       </div>
     </div>
 
-    <button class="button-cam" type="submit">XÁC NHẬN</button>
+    <button class="button-cam" type="submit" [disabled]="loading">
+      <span *ngIf="!loading">XÁC NHẬN</span>
+      <span *ngIf="loading">ĐANG XỬ LÝ...</span>
+    </button>
   </form>
 
   <div class="back-link">
-    <a (click)="onBack()">Quay lại</a>
+    <a (click)="onBack()">Quay lại đăng nhập</a>
   </div>
 </div>

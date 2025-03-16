@@ -1,6 +1,6 @@
 <div class="container">
   <button class="close-button" (click)="onClose()">
-    <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="" />
+    <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="Đóng" />
   </button>
   <div class="title">Thay đổi mật khẩu mới</div>
 
@@ -11,10 +11,11 @@
         formControlName="password"
         placeholder="Mật khẩu mới"
         [class.submitted]="submitted && f['password'].errors"
+        autocomplete="new-password"
       />
       <img
         [src]="passwordIcon"
-        alt=""
+        alt="Hiện/ẩn mật khẩu"
         class="toggle-password"
         (click)="togglePassword()"
       />
@@ -28,7 +29,7 @@
         class="error-message"
         *ngIf="submitted && (f['password'].errors?.['minlength'] || f['password'].errors?.['pattern'])"
       >
-        Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ in hoa, số và ký tự đặc
+        (*) Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ in hoa, số và ký tự đặc
         biệt
       </div>
     </div>
@@ -39,10 +40,11 @@
         formControlName="confirmPassword"
         placeholder="Nhập lại mật khẩu mới"
         [class.submitted]="submitted && (f['confirmPassword'].errors || resetForm.errors?.['mismatch'])"
+        autocomplete="new-password"
       />
       <img
         [src]="confirmPasswordIcon"
-        alt=""
+        alt="Hiện/ẩn mật khẩu"
         class="toggle-password"
         (click)="toggleConfirmPassword()"
       />
@@ -56,10 +58,29 @@
         class="error-message"
         *ngIf="submitted && resetForm.errors?.['mismatch']"
       >
-        Mật khẩu xác nhận không khớp
+        (*) Mật khẩu xác nhận không khớp
       </div>
     </div>
 
-    <button class="button-cam" type="submit">LƯU THAY ĐỔI</button>
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="success-message" *ngIf="successMessage">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="11" stroke="#28A745" stroke-width="2"/>
+        <path d="M7 12L10.5 15.5L17 9" stroke="#28A745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      {{ successMessage }}
+    </div>
+
+    <button class="button-cam" type="submit" [disabled]="loading">
+      <span *ngIf="!loading">LƯU THAY ĐỔI</span>
+      <span *ngIf="loading">ĐANG XỬ LÝ...</span>
+    </button>
   </form>
+
+  <div class="back-link">
+    <a (click)="onBack()">Quay lại đăng nhập</a>
+  </div>
 </div>

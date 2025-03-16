@@ -1,6 +1,6 @@
 <div class="container">
   <button class="close-button" (click)="onClose()">
-    <img src="../../assets/sign in up/zondicons-close-outline.svg" alt="" />
+    <img src="../../assets/sign in up/zondicons-close-outline.svg" alt="Đóng" />
   </button>
   <div class="title">Đăng nhập</div>
   <p>Cùng Bếp Nhà Ta khám phá 200+ món ăn và công thức hấp dẫn!</p>
@@ -10,26 +10,26 @@
       <input
         type="text"
         formControlName="emailOrPhone"
-        placeholder="Email/SĐT của bạn"
+        placeholder="Email hoặc số điện thoại"
         [class.submitted]="submitted && f['emailOrPhone'].errors"
       />
       <div
         class="error-message"
         *ngIf="submitted && f['emailOrPhone'].errors?.['required']"
       >
-        (*) Vui lòng nhập Email hoặc SĐT của bạn
+        (*) Vui lòng nhập email hoặc số điện thoại
       </div>
       <div
         class="error-message"
         *ngIf="submitted && f['emailOrPhone'].errors?.['invalidEmail']"
       >
-        Email không hợp lệ
+        (*) Email không hợp lệ
       </div>
       <div
         class="error-message"
         *ngIf="submitted && f['emailOrPhone'].errors?.['invalidPhone']"
       >
-        Số điện thoại không hợp lệ
+        (*) Số điện thoại không hợp lệ
       </div>
     </div>
 
@@ -42,7 +42,7 @@
       />
       <img
         [src]="eyeIcon"
-        alt=""
+        alt="Hiện/ẩn mật khẩu"
         class="toggle-password"
         (click)="togglePassword()"
       />
@@ -58,11 +58,22 @@
       {{ errorMessage }}
     </div>
 
-    <button class="button-cam" type="submit">ĐĂNG NHẬP</button>
+    <div class="success-message" *ngIf="successMessage">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="11" stroke="#28A745" stroke-width="2"/>
+        <path d="M7 12L10.5 15.5L17 9" stroke="#28A745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      {{ successMessage }}
+    </div>
+
+    <button class="button-cam" type="submit" [disabled]="loading">
+      <span *ngIf="!loading">ĐĂNG NHẬP</span>
+      <span *ngIf="loading">ĐANG XỬ LÝ...</span>
+    </button>
   </form>
 
   <div class="forgot-password">
-    <a (click)="navigateToForgotPass()">Quên mật khẩu</a>
+    <a (click)="navigateToForgotPass()">Quên mật khẩu?</a>
   </div>
 
   <div class="login-link">

@@ -1,6 +1,6 @@
 <div class="container">
   <button class="close-button" (click)="onClose()">
-    <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="" />
+    <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="Đóng" />
   </button>
   <div class="title">Đặt lại mật khẩu</div>
   <p>
@@ -15,6 +15,7 @@
         formControlName="emailOrPhone"
         placeholder="Email/SĐT của bạn"
         [class.submitted]="submitted && f['emailOrPhone'].errors"
+        autocomplete="email"
       />
       <div
         class="error-message"
@@ -34,12 +35,18 @@
       >
         (*) Định dạng SĐT chưa đúng
       </div>
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
     </div>
 
-    <button class="button-cam" type="submit">TIẾP TỤC</button>
+    <button class="button-cam" type="submit" [disabled]="loading">
+      <span *ngIf="!loading">TIẾP TỤC</span>
+      <span *ngIf="loading">ĐANG XỬ LÝ...</span>
+    </button>
   </form>
 
   <div class="back-link">
-    <a (click)="onBack()">Quay lại</a>
+    <a (click)="onBack()">Quay lại đăng nhập</a>
   </div>
 </div>
