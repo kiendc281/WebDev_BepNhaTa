@@ -30,6 +30,9 @@ import { NhapemailComponent } from './quen-mat-khau/nhapemail/nhapemail.componen
 import { TaiKhoanComponent } from './tai-khoan/tai-khoan.component';
 import { ChiTietCongThucComponent } from './chi-tiet-cong-thuc/chi-tiet-cong-thuc.component';
 import { GioHangComponent } from './gio-hang/gio-hang.component';
+import { ChiTietBlogComponent } from './chi-tiet-blog/chi-tiet-blog.component';
+import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
+import { BlogComponent } from './blog/blog.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -58,6 +61,9 @@ import { GioHangComponent } from './gio-hang/gio-hang.component';
     TaiKhoanComponent,
     ChiTietCongThucComponent,
     GioHangComponent,
+    ChiTietBlogComponent,
+    ChiTietSanPhamComponent,
+    BlogComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
