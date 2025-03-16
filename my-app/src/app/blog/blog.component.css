@@ -1,0 +1,284 @@
+a{
+  text-decoration: none;
+}
+
+/* Blog Header Styles */
+.blog-header {
+  margin-bottom: 30px;
+}
+
+.blog-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #ff6f00;
+  padding: 20px 0;
+}
+
+.banner-image {
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.banner-image img {
+  object-fit: cover;
+  width: 100%;
+}
+
+/* Blog Title Section Styles */
+.blog-title-section {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.title-heading {
+  background-color: #fff;
+  color: var(--color-camdam);
+  display: inline-block;
+  font-size: 24px;
+  font-weight: 600;
+  padding: 8px 15px 8px 0;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0px;
+}
+
+.title-underline {
+  background-color: var(--color-camdam);
+  height: 3px;
+  margin-top: 0px;
+  position: relative;
+  width: 100%;
+}
+
+/* Blog Posts Styles */
+.blog-posts {
+  margin-bottom: 40px;
+}
+
+.blog-post-item {
+  border-bottom: 2px solid var(--color-camdam);
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+}
+
+.blog-post-item:last-child {
+  border-bottom: none;
+}
+
+.post-image {
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 15px;
+
+}
+
+.post-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.post-image img:hover {
+  transform: scale(1.05);
+}
+
+.post-content {
+  padding: 0 15px;
+}
+
+.post-category {
+  margin-bottom: 10px;
+}
+
+.category-tag {
+  background-color: var(--color-camdam);
+  border-radius: 3px;
+  color: #fff;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 3px 10px;
+}
+
+.post-title {
+  color: black !important;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.post-meta {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.post-meta span {
+  margin-right: 15px;
+}
+
+.author-name {
+  color: #ff6f00;
+}
+
+.post-excerpt {
+  color: #666;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.post-actions .btn-orange {
+  background-color: #ff6f00;
+  border-color: #ff6f00;
+  color: #fff;
+}
+
+.post-actions .btn-orange:hover {
+  background-color: #e56400;
+  border-color: #e56400;
+}
+
+/* Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.page-number {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  color: #666;
+}
+
+.page-number.active {
+  background-color: #ff6f00;
+  color: white;
+  border-color: #ff6f00;
+}
+
+.page-number[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f5f5f5;
+}
+
+.page-number:not([disabled]):hover {
+  border-color: #ff6f00;
+  color: #ff6f00;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .post-title {
+    font-size: 18px;
+  }
+  
+  .post-excerpt {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .blog-header h1 {
+    font-size: 32px;
+  }
+  
+  .title-heading {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .blog-header h1 {
+    font-size: 28px;
+  }
+  
+  .post-content {
+    padding: 15px 0 0 0;
+  }
+  
+  .post-image img {
+    height: 160px;
+  }
+  .post-actions{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-self: stretch;
+  }
+  .button-xam{
+    display: flex;
+    align-self: stretch;
+  }
+}
+
+@media (max-width: 576px) {
+  .blog-header h1 {
+    font-size: 24px;
+    padding: 15px 0;
+  }
+  
+  .title-heading {
+    font-size: 20px;
+  }
+  
+  .post-image img {
+    height: 140px;
+  }
+  
+  .post-title {
+    font-size: 16px;
+  }
+  
+  .post-meta {
+    font-size: 12px;
+  }
+  
+  .post-excerpt {
+    font-size: 13px;
+  }
+  
+  .post-meta span {
+    margin-right: 8px;
+  }
+  
+}
+
+@media (max-width: 400px) {
+  .blog-posts {
+    padding: 20px 15px;
+  }
+  
+  .filter-button-container {
+    justify-content: center;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+  }
+  
+  .pagination {
+    gap: 5px;
+  }
+  
+  .page-number {
+    width: 35px;
+    height: 35px;
+  }
+}
