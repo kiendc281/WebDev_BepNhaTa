@@ -49,13 +49,19 @@
       <div class="form-group">
         <div class="password-field">
           <input
-            type="password"
+            [type]="showPassword ? 'text' : 'password'"
             id="password"
             formControlName="password"
             class="form-control"
             placeholder="Mật khẩu"
             autocomplete="current-password"
             [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          />
+          <img
+            [src]="eyeIcon"
+            alt="Hiện/ẩn mật khẩu"
+            class="toggle-password"
+            (click)="togglePassword()"
           />
         </div>
         <div

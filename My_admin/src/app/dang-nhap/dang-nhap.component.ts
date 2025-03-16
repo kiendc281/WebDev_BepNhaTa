@@ -20,6 +20,8 @@ export class DangNhapComponent {
   loginForm: FormGroup;
   submitted = false;
   loading = false;
+  showPassword = false;
+  eyeIcon = '../../../assets/images/clarity-eye-hide-line.svg';
   errorMessage: string = '';
   successMessage: string = '';
 
@@ -101,5 +103,12 @@ export class DangNhapComponent {
         },
       });
     }
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+    this.eyeIcon = this.showPassword
+      ? '../../../assets/images/unhide.svg'
+      : '../../../assets/images/clarity-eye-hide-line.svg';
   }
 }
