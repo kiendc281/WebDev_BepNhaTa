@@ -70,6 +70,8 @@
   padding: 5px 10px;
   position: relative;
   z-index: 1;
+  white-space: normal;
+  max-width: 120px;
 }
 
 .nav-links > a::before,
@@ -135,7 +137,7 @@
 }
 
 .search-container input {
-  width: 200px;
+  width: 160px;
   height: 40px;
   background-color: #ffd2bc !important;
   border: none;
@@ -152,7 +154,7 @@
 .nav-icons {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .nav img[src*="mdi-cart-outline"],
