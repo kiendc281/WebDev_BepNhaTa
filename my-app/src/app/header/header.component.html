@@ -136,8 +136,17 @@
             />
           </a>
           <img
+            *ngIf="!authService.isLoggedIn()"
             src="../../assets/header/group.svg"
-            alt=""
+            alt="Đăng nhập"
+            (click)="toggleLoginPopup()"
+            class="user-icon"
+            style="cursor: pointer"
+          />
+          <img
+            *ngIf="authService.isLoggedIn()"
+            src="../../assets/header/account.svg"
+            alt="Tài khoản"
             (click)="toggleLoginPopup()"
             class="user-icon"
             style="cursor: pointer"
@@ -264,6 +273,24 @@
           <a routerLink="/lien-he" (click)="closeMobileMenu()">Liên hệ</a>
         </div>
       </div>
+      <a
+        *ngIf="!authService.isLoggedIn()"
+        href="javascript:void(0)"
+        (click)="closeMobileMenu(); toggleLoginPopup()"
+        class="mobile-login-link"
+      >
+        <img src="../../assets/header/group.svg" alt="Đăng nhập" class="mobile-login-icon" />
+        Đăng nhập
+      </a>
+      <a
+        *ngIf="authService.isLoggedIn()"
+        routerLink="/tai-khoan"
+        (click)="closeMobileMenu()"
+        class="mobile-login-link"
+      >
+        <img src="../../assets/header/account.svg" alt="Tài khoản" class="mobile-login-icon" />
+        Tài khoản
+      </a>
     </div>
   </div>
 

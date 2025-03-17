@@ -6,7 +6,7 @@ export interface BlogPost {
     name: string;
     slug: string;
   };
-  author: string;
+  author: Author | null;
   views: number;
   likes: number;
   likedBy: string[];
@@ -20,6 +20,12 @@ export interface BlogPost {
   saved?: boolean; // Client-side property
 }
 
+export interface Author {
+  _id: string;
+  name: string;
+  email: string;
+}
+
 export interface BlogSection {
   order: number;
   _id?: string;
@@ -27,9 +33,12 @@ export interface BlogSection {
 }
 
 export interface BlogSectionContent {
-  type?: string; // 'text', 'image', etc.
-  text?: string; // For text content (HTML)
-  url?: string; // For image or media URLs
-  caption?: string; // For image captions
-  [key: string]: any; // Allow for other properties
+  title?: string;
+  text?: string[] | string;
+  imageUrl?: string;
+  imageCaption?: string;
+  type?: string;
+  url?: string;
+  caption?: string;
+  [key: string]: any;
 }
