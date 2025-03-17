@@ -42,18 +42,16 @@
         <div class="details-grid">
           <div class="detail-item">
             <h4>Thành phần nguyên liệu</h4>
-            <div *ngIf="!product?.components" class="alert alert-warning">
-              <i class="bi bi-exclamation-triangle-fill me-2"></i> Không có dữ liệu thành phần nguyên liệu
-            </div>
-            <div *ngIf="product?.components && product.components.length === 0" class="alert alert-info">
-              <i class="bi bi-info-circle-fill me-2"></i> Chưa cập nhật thành phần nguyên liệu
+            <div *ngIf="!product?.components">Không có dữ liệu components</div>
+            <div *ngIf="product?.components && product.components.length === 0">
+              Danh sách components rỗng
             </div>
             <ul
-              class="ingredients-list"
+              class="components-list"
               *ngIf="product?.components && product.components.length > 0"
             >
-              <li *ngFor="let component of product.components">
-                {{ component }}
+              <li *ngFor="let component of product.components; let i = index">
+                {{ i + 1 }}. {{ component }}
               </li>
             </ul>
           </div>
@@ -88,11 +86,15 @@
         <div class="faq-item" *ngFor="let faq of faqs">
           <div class="faq-question" (click)="toggleFaq(faq)">
             {{ faq.question }}
-            <i
-              class="fas"
-              [class.fa-chevron-down]="!faq.isOpen"
-              [class.fa-chevron-up]="faq.isOpen"
-            ></i>
+            <img
+              [src]="
+                faq.isOpen
+                  ? '../../assets/faq/icon-down.svg'
+                  : '../../assets/faq/icon-right.svg'
+              "
+              [alt]="faq.isOpen ? 'Mũi tên xuống' : 'Mũi tên phải'"
+              class="faq-icon"
+            />
           </div>
           <div class="faq-answer" *ngIf="faq.isOpen">
             {{ faq.answer }}
@@ -121,29 +123,23 @@
       </div>
 
       <div class="price-section">
-        <div *ngIf="!getOriginalPrice() && !getDiscountedPrice()" class="alert alert-warning">
-          <i class="bi bi-exclamation-triangle-fill me-2"></i> Không có thông tin giá cho sản phẩm này
+        <div class="price">
+          <span class="original-price" *ngIf="hasDiscount()"
+            >{{ getOriginalPrice() | number : "1.0-0" }}đ</span
+          >
+          <span class="discounted-price"
+            >{{ getDiscountedPrice() | number : "1.0-0" }}đ</span
+          >
+          <span class="discount-tag" *ngIf="hasDiscount()"
+            >-{{ product.discount }}%</span
+          >
         </div>
-        
-        <ng-container *ngIf="getOriginalPrice() || getDiscountedPrice()">
-          <div class="original-price" *ngIf="hasDiscount()">
-            {{ getOriginalPrice() | number : "1.0-0" }}đ
+        <div class="price-note" *ngIf="hasDiscount()">
+          <div>
+            Sản phẩm đang được giảm giá
+            <span class="fw-bold text-danger"> {{ product.discount }}%</span>
           </div>
-          <div class="price">
-            <span class="discounted-price"
-              >{{ getDiscountedPrice() | number : "1.0-0" }}đ</span
-            >
-            <span class="discount-tag" *ngIf="hasDiscount()"
-              >-{{ product.discount }}%</span
-            >
-          </div>
-          <div class="price-note" *ngIf="hasDiscount()">
-            <div>
-              Sản phẩm đang được giảm giá
-              <span class="fw-bold text-danger"> {{ product.discount }}%</span>
-            </div>
-          </div>
-        </ng-container>
+        </div>
       </div>
 
       <div class="serving-options">

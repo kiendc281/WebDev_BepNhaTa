@@ -374,12 +374,13 @@
 }
 
 .tag {
-  background-color: var(--color-xamnhat);
   color: var(--color-camdam);
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--color-camdam);
   display: inline-block;
-  font-size: 0.9rem;
+  font-size: 0.9rem; 
+  font-weight: 600;
 }
 
 .faq {
