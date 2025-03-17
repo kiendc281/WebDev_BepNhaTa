@@ -47,19 +47,35 @@
 
     <div class="food-categories">
       <div class="categories-slider">
-        <div class="category-card" data-category="mon-tron">
+        <div
+          class="category-card"
+          data-category="mon-tron"
+          (click)="navigateToCategory('mon-tron')"
+        >
           <img src="../../assets/trang-chu/mon-tron.png" alt="Món trộn" />
           <div class="category-name">Món trộn</div>
         </div>
-        <div class="category-card" data-category="mon-chay">
-          <img src="../../assets/trang-chu/mon-chay.png" alt="Món chay" />
-          <div class="category-name">Món chay</div>
+        <div
+          class="category-card"
+          data-category="mon-man"
+          (click)="navigateToCategory('mon-man')"
+        >
+          <img src="../../assets/trang-chu/mon-man.png" alt="Món mặn" />
+          <div class="category-name">Món mặn</div>
         </div>
-        <div class="category-card" data-category="mon-xao">
+        <div
+          class="category-card"
+          data-category="mon-xao"
+          (click)="navigateToCategory('mon-xao')"
+        >
           <img src="../../assets/trang-chu/mon-xao.png" alt="Món xào" />
           <div class="category-name">Món xào</div>
         </div>
-        <div class="category-card" data-category="mon-nuoc">
+        <div
+          class="category-card"
+          data-category="mon-nuoc"
+          (click)="navigateToCategory('mon-nuoc')"
+        >
           <img src="../../assets/trang-chu/mon-nuoc.png" alt="Món nước" />
           <div class="category-name">Món nước</div>
         </div>

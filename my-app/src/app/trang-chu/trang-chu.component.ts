@@ -87,6 +87,12 @@ export class TrangChuComponent implements OnInit, OnDestroy {
     }, 800); // Match transition duration
   }
 
+  navigateToCategory(category: string) {
+    this.router.navigate(['/san-pham'], {
+      queryParams: { category: category },
+    });
+  }
+
   navigateToProducts() {
     this.router.navigate(['/san-pham']);
   }

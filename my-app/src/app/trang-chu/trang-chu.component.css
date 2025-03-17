@@ -162,6 +162,12 @@
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
 }
 
 .category-card img {
@@ -192,9 +198,9 @@
   background-image: url("../../assets/trang-chu/mon-tron2.png");
 }
 
-/* Món chay hover */
-.category-card[data-category="mon-chay"]::before {
-  background-image: url("../../assets/trang-chu/mon-chay2.png");
+/* Món mặn hover */
+.category-card[data-category="mon-man"]::before {
+  background-image: url("../../assets/trang-chu/mon-man2.png");
 }
 
 /* Món xào hover */
