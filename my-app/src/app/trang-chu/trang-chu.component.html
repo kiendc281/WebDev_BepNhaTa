@@ -1,11 +1,30 @@
 <div class="maincontainer">
   <div class="banner">
-    <img [src]="currentBannerImage" alt="Banner">
-    
+    <div class="banner-container">
+      <div
+        class="banner-slider"
+        [style.transform]="'translateX(-' + currentBannerSlide * 100 + '%)'"
+      >
+        <div class="banner-slide" *ngFor="let image of bannerImages">
+          <img [src]="image" alt="Banner" />
+        </div>
+      </div>
+    </div>
+
+    <button class="banner-nav prev" (click)="prevBannerSlide()">
+      <img src="assets/trang-chu/slider.svg" alt="Previous" />
+    </button>
+    <button class="banner-nav next" (click)="nextBannerSlide()">
+      <img src="assets/trang-chu/slider.svg" alt="Next" />
+    </button>
+
     <div class="banner-dots">
-      <div class="banner-dot" [class.active]="currentBannerSlide === 0" (click)="setCurrentBannerSlide(0)"></div>
-      <div class="banner-dot" [class.active]="currentBannerSlide === 1" (click)="setCurrentBannerSlide(1)"></div>
-      <div class="banner-dot" [class.active]="currentBannerSlide === 2" (click)="setCurrentBannerSlide(2)"></div>
+      <div
+        class="banner-dot"
+        *ngFor="let image of bannerImages; let i = index"
+        [class.active]="currentBannerSlide === i"
+        (click)="setCurrentBannerSlide(i)"
+      ></div>
     </div>
   </div>
 </div>

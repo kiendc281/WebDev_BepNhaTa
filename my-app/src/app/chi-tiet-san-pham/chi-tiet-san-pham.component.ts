@@ -90,29 +90,12 @@ export class ChiTietSanPhamComponent implements OnInit {
   }
 
   loadProduct(id: string): void {
-    this.loading = true;
     this.productService.getProducts().subscribe({
       next: (products) => {
-        console.log('All products:', products);
         this.product = products.find((p) => p._id === id) || null;
 
         if (this.product) {
-          console.log('Found product:', this.product);
-          
-          // Kiểm tra và log thành phần nguyên liệu
-          if (this.product.components && this.product.components.length > 0) {
-            console.log('Thành phần nguyên liệu:', this.product.components);
-          } else {
-            console.warn('Không tìm thấy thành phần nguyên liệu cho sản phẩm:', id);
-          }
-          
-          // Kiểm tra và log thông tin giá
-          if (this.product.pricePerPortion) {
-            console.log('Thông tin giá theo khẩu phần:', this.product.pricePerPortion);
-          } else {
-            console.warn('Không tìm thấy thông tin giá cho sản phẩm:', id);
-          }
-
+          console.log('Loaded product:', this.product);
           this.loadRelatedProducts();
           this.updatePrices();
         } else {
@@ -165,22 +148,6 @@ export class ChiTietSanPhamComponent implements OnInit {
     if (!this.product) return;
 
     console.log('Dữ liệu sản phẩm trước khi tính giá:', this.product);
-    
-    if (!this.product.pricePerPortion || Object.keys(this.product.pricePerPortion).length === 0) {
-      console.error('Không tìm thấy thông tin giá theo khẩu phần cho sản phẩm:', this.product.ingredientName);
-      this._currentOriginalPrice = 0;
-      this._currentDiscountedPrice = 0;
-      return;
-    }
-    
-    // Nếu không có khẩu phần đã chọn, sử dụng mặc định '2'
-    if (!this.selectedServing || !this.product.pricePerPortion[this.selectedServing]) {
-      console.warn(`Không tìm thấy giá cho khẩu phần ${this.selectedServing}, sử dụng khẩu phần mặc định`);
-      const availablePortions = Object.keys(this.product.pricePerPortion);
-      if (availablePortions.length > 0) {
-        this.selectedServing = availablePortions[0];
-      }
-    }
 
     // Cập nhật cả giá gốc và giá sau giảm giá
     this._currentOriginalPrice = this.productService.getPortionPrice(
@@ -280,15 +247,5 @@ export class ChiTietSanPhamComponent implements OnInit {
   // Kiểm tra xem sản phẩm liên quan có giảm giá không
   relatedProductHasDiscount(product: Product): boolean {
     return product?.discount !== undefined && product.discount > 0;
-  }
-  // FAQ
-  visibleAnswers: { [key: string]: boolean } = {};
-
-  toggleAnswer(questionId: string): void {
-    this.visibleAnswers[questionId] = !this.visibleAnswers[questionId];
-  }
-
-  isAnswerVisible(questionId: string): boolean {
-    return this.visibleAnswers[questionId] || false;
   }
 }

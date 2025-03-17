@@ -41,7 +41,7 @@
       <div class="loading" *ngIf="isLoading">Đang tải công thức...</div>
       <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
     </div>
-
+    <!-- Main content -->
     <div class="products-grid">
       <div class="product-card" *ngFor="let recipe of paginatedRecipes">
         <div class="save-button">
