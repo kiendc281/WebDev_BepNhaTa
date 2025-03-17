@@ -1,13 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ProductService } from '../services/product.service';
+import { Product } from '../models/product.interface';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-trang-chu',
   templateUrl: './trang-chu.component.html',
   styleUrls: ['./trang-chu.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
 })
 export class TrangChuComponent implements OnInit, OnDestroy {
   bannerImages = [
@@ -20,10 +23,17 @@ export class TrangChuComponent implements OnInit, OnDestroy {
   private readonly slideDelay = 5000; // 5 seconds
   private isAnimating = false;
 
-  constructor(private router: Router) {}
+  // Hot Products
+  hotProducts: Product[] = [];
+  currentHotProductPage = 0;
+  productsPerPage = 3;
+  loading = true;
+
+  constructor(private router: Router, private productService: ProductService) {}
 
   ngOnInit() {
     this.startSlideTimer();
+    this.loadHotProducts();
   }
 
   ngOnDestroy() {
@@ -99,5 +109,66 @@ export class TrangChuComponent implements OnInit, OnDestroy {
 
   navigateToBlog() {
     this.router.navigate(['/blog']);
+  }
+
+  loadHotProducts() {
+    this.loading = true;
+    this.productService.getHotProducts().subscribe({
+      next: (products) => {
+        this.hotProducts = products;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading hot products:', err);
+        this.loading = false;
+      },
+    });
+  }
+
+  get currentHotProducts(): Product[] {
+    const start = this.currentHotProductPage * this.productsPerPage;
+    return this.hotProducts.slice(start, start + this.productsPerPage);
+  }
+
+  nextHotProductsPage() {
+    if (
+      (this.currentHotProductPage + 1) * this.productsPerPage <
+      this.hotProducts.length
+    ) {
+      this.currentHotProductPage++;
+    }
+  }
+
+  previousHotProductsPage() {
+    if (this.currentHotProductPage > 0) {
+      this.currentHotProductPage--;
+    }
+  }
+
+  goToHotProductPage(index: number) {
+    if (index >= 0 && index * this.productsPerPage < this.hotProducts.length) {
+      this.currentHotProductPage = index;
+    }
+  }
+
+  hasDiscount(product: Product): boolean {
+    return product?.discount !== undefined && product.discount > 0;
+  }
+
+  getOriginalPrice(product: Product): number {
+    if (!product?.pricePerPortion) return 0;
+    return product.pricePerPortion['2'] || 0;
+  }
+
+  getDiscountedPrice(product: Product): number {
+    const originalPrice = this.getOriginalPrice(product);
+    if (!product?.discount || product.discount <= 0) {
+      return originalPrice;
+    }
+    return Math.round(originalPrice * (1 - product.discount / 100));
+  }
+
+  navigateToProductDetail(productId: string) {
+    this.router.navigate(['/chi-tiet-san-pham', productId]);
   }
 }

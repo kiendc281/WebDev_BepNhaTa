@@ -274,7 +274,7 @@
   position: absolute;
   top: -8px;
   right: -8px;
-  background-color: #FF6F01;
+  background-color: var(--color-camdam);
   color: white;
   border-radius: 50%;
   width: 20px;

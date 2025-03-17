@@ -26,7 +26,7 @@ export class ProductService {
 
           // Cải thiện xử lý components
           let components: string[] = [];
-          
+
           if (Array.isArray(item.components)) {
             // Xử lý trường hợp mảng các object hoặc mảng các string
             components = item.components.map((comp: any) => {
@@ -64,7 +64,10 @@ export class ProductService {
               // Nếu không thể parse, xử lý như một chuỗi đơn
               components = [item.components];
             }
-          } else if (typeof item.components === 'object' && item.components !== null) {
+          } else if (
+            typeof item.components === 'object' &&
+            item.components !== null
+          ) {
             components = Object.values(item.components).map((c: any) => {
               if (typeof c === 'string') {
                 return c;
@@ -145,13 +148,22 @@ export class ProductService {
 
   getPortionPrice(product: Product, portion: string = '2'): number {
     if (!product || !product.pricePerPortion) {
-      console.warn('Không tìm thấy thông tin giá cho sản phẩm:', product?.ingredientName || 'unknown');
+      console.warn(
+        'Không tìm thấy thông tin giá cho sản phẩm:',
+        product?.ingredientName || 'unknown'
+      );
       return 0;
     }
 
     // Kiểm tra xem pricePerPortion có phải là object không
-    if (typeof product.pricePerPortion !== 'object' || product.pricePerPortion === null) {
-      console.error('pricePerPortion không phải là object:', product.pricePerPortion);
+    if (
+      typeof product.pricePerPortion !== 'object' ||
+      product.pricePerPortion === null
+    ) {
+      console.error(
+        'pricePerPortion không phải là object:',
+        product.pricePerPortion
+      );
       return 0;
     }
 
@@ -161,24 +173,41 @@ export class ProductService {
         `Không tìm thấy giá cho khẩu phần ${portion} người:`,
         product.pricePerPortion
       );
-      
+
       // Nếu không có giá cho khẩu phần yêu cầu, tìm khẩu phần đầu tiên có sẵn
       const availablePortions = Object.keys(product.pricePerPortion);
       if (availablePortions.length > 0) {
         const firstAvailablePortion = availablePortions[0];
-        console.log(`Sử dụng giá của khẩu phần ${firstAvailablePortion} thay thế:`, 
-                   product.pricePerPortion[firstAvailablePortion]);
+        console.log(
+          `Sử dụng giá của khẩu phần ${firstAvailablePortion} thay thế:`,
+          product.pricePerPortion[firstAvailablePortion]
+        );
         return product.pricePerPortion[firstAvailablePortion];
       }
-      
+
       // Nếu không có khẩu phần nào, tính dựa trên giá 2 người (nếu có)
       if (portion === '4' && product.pricePerPortion['2']) {
         return Math.round(product.pricePerPortion['2'] * 1.8);
       }
-      
+
       return 0;
     }
 
     return price;
+  }
+
+  getHotProducts(): Observable<Product[]> {
+    return this.getProducts().pipe(
+      map((products) => {
+        // Sort products by rating (rate * count) to get the most popular ones
+        return products
+          .sort((a, b) => {
+            const aScore = (a.rating?.rate || 0) * (a.rating?.count || 0);
+            const bScore = (b.rating?.rate || 0) * (b.rating?.count || 0);
+            return bScore - aScore;
+          })
+          .slice(0, 9); // Get top 9 products
+      })
+    );
   }
 }
