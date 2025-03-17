@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { CartService } from '../services/cart.service';
 import { DangNhapComponent } from '../dang-nhap/dang-nhap.component';
 import { DangKyComponent } from '../dang-ky/dang-ky.component';
 import { QuenMatKhauComponent } from '../quen-mat-khau/quen-mat-khau.component';
-import { AuthService } from '../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -20,17 +22,20 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   showLoginPopup = false;
   currentForm = 'login'; // 'login', 'register', or 'forgot'
   mouseDownTarget: EventTarget | null = null;
   isMobileMenuOpen = false;
   activeDropdown: string | null = null;
   currentRoute: string = '';
+  cartItemCount: number = 0;
+  private cartSubscription: Subscription | null = null;
 
   constructor(
     private router: Router,
-    public authService: AuthService
+    public authService: AuthService,
+    private cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -44,6 +49,17 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
+
+    // Subscribe to cart changes
+    this.cartSubscription = this.cartService.getCartItems().subscribe((items) => {
+      this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
+    }
   }
 
   toggleLoginPopup() {

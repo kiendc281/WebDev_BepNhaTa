@@ -129,11 +129,12 @@
           <div class="search-container">
             <input type="text" placeholder="Tìm kiếm" />
           </div>
-          <a routerLink="/gio-hang" class="cart-icon">
+          <a routerLink="/gio-hang" class="cart-icon position-relative">
             <img
               src="../../assets/header/mdi-cart-outline.svg"
               alt="Giỏ hàng"
             />
+            <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
           </a>
           <img
             *ngIf="!authService.isLoggedIn()"

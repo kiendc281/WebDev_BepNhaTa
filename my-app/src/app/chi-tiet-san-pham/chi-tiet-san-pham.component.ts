@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product.interface';
+import { CartService } from '../services/cart.service';
 
 interface FAQ {
   question: string;
@@ -53,7 +54,8 @@ export class ChiTietSanPhamComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -220,7 +222,8 @@ export class ChiTietSanPhamComponent implements OnInit {
         'Giá:',
         this.getDiscountedPrice()
       );
-      // Implement cart logic here
+      // Add to cart using CartService
+      this.cartService.addToCart(this.product, this.quantity, this.selectedServing, this.getDiscountedPrice());
     }
   }
 
