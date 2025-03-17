@@ -5,19 +5,39 @@
   <div class="products-container">
     <div class="filter-bar">
       <div class="filter-button-container">
-        <button class="button-cam" (click)="filterByCategory('all')">
+        <button
+          [class.button-cam]="selectedCategory === 'all'"
+          [class.button-trang]="selectedCategory !== 'all'"
+          (click)="filterByCategory('all')"
+        >
           Tất Cả Công Thức
         </button>
-        <button class="button-trang" (click)="filterByCategory('mon-man')">
+        <button
+          [class.button-cam]="selectedCategory === 'mon-man'"
+          [class.button-trang]="selectedCategory !== 'mon-man'"
+          (click)="filterByCategory('mon-man')"
+        >
           Món mặn
         </button>
-        <button class="button-trang" (click)="filterByCategory('mon-xao')">
+        <button
+          [class.button-cam]="selectedCategory === 'mon-xao'"
+          [class.button-trang]="selectedCategory !== 'mon-xao'"
+          (click)="filterByCategory('mon-xao')"
+        >
           Món xào
         </button>
-        <button class="button-trang" (click)="filterByCategory('mon-nuoc')">
+        <button
+          [class.button-cam]="selectedCategory === 'mon-nuoc'"
+          [class.button-trang]="selectedCategory !== 'mon-nuoc'"
+          (click)="filterByCategory('mon-nuoc')"
+        >
           Món nước
         </button>
-        <button class="button-trang" (click)="filterByCategory('mon-tron')">
+        <button
+          [class.button-cam]="selectedCategory === 'mon-tron'"
+          [class.button-trang]="selectedCategory !== 'mon-tron'"
+          (click)="filterByCategory('mon-tron')"
+        >
           Món trộn
         </button>
       </div>
