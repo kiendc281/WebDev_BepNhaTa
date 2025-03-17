@@ -17,6 +17,11 @@
   flex-direction: column;
   gap: 15px;
   height: auto;
+  width: 300px;
+  position: sticky;
+  top: 160px;
+  height: fit-content;
+  align-self: flex-start;
 }
 
 .button-cam,
