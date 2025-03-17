@@ -46,14 +46,14 @@
             <div *ngIf="product?.components && product.components.length === 0">
               Danh sách components rỗng
             </div>
-            <ul
+            <ol
               class="components-list"
               *ngIf="product?.components && product.components.length > 0"
             >
-              <li *ngFor="let component of product.components; let i = index">
-                {{ i + 1 }}. {{ component }}
+              <li *ngFor="let component of product.components">
+                {{ component }}
               </li>
-            </ul>
+            </ol>
           </div>
           <div class="detail-item">
             <h4>Bảo quản</h4>
