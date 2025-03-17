@@ -20,11 +20,11 @@
 }
 
 .main-title h1 span {
-  color: #F67F53;
+  color: #f67f53;
 }
 
 .subtitle {
-  background-color: #EE6C4D;
+  background-color: #ee6c4d;
   color: white;
   display: inline-block;
   padding: 5px 15px;
@@ -60,7 +60,7 @@
   z-index: 100;
   position: relative;
   margin: 0 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .nav-button-left {
@@ -93,7 +93,7 @@
   padding: 15px 6px;
   border-radius: 5px;
   text-align: center;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   margin: 0;
   height: 100px;
   display: flex;
@@ -103,21 +103,21 @@
 
 /* Specific styles for each meal type with improved alignment */
 .meal-type-indicator[data-type="Sáng"] {
-  color: #FF6347; /* Tomato */
-  background-color: #FFF0F0;
-  border-left: 3px solid #FF6347;
+  color: #ff6347; /* Tomato */
+  background-color: #fff0f0;
+  border-left: 3px solid #ff6347;
 }
 
 .meal-type-indicator[data-type="Trưa"] {
-  color: #1E90FF; /* Blue */
-  background-color: #F0F8FF;
-  border-left: 3px solid #1E90FF;
+  color: #1e90ff; /* Blue */
+  background-color: #f0f8ff;
+  border-left: 3px solid #1e90ff;
 }
 
 .meal-type-indicator[data-type="Tối"] {
-  color: #9932CC; /* Purple */
-  background-color: #F8F0FF; 
-  border-left: 3px solid #9932CC;
+  color: #9932cc; /* Purple */
+  background-color: #f8f0ff;
+  border-left: 3px solid #9932cc;
 }
 
 /* Menu grid with more spacing */
@@ -142,14 +142,14 @@
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin: 0;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .menu-day:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 /* Update meal slots spacing to ensure consistent height with new expanded content */
@@ -173,7 +173,7 @@
 /* Style for the meal-time labels - matching the image */
 .meal-time-label {
   writing-mode: vertical-lr;
-  color: #FF4500;
+  color: #ff4500;
   font-weight: bold;
   font-size: 16px;
   background-color: transparent;
@@ -188,15 +188,15 @@
 
 /* Meal types - fixed colors for each type */
 [data-meal-type="Sáng"] .meal-time-label {
-  color: #FF6347;
+  color: #ff6347;
 }
 
 [data-meal-type="Trưa"] .meal-time-label {
-  color: #1E90FF;
+  color: #1e90ff;
 }
 
 [data-meal-type="Tối"] .meal-time-label {
-  color: #9932CC;
+  color: #9932cc;
 }
 
 /* Hide all category elements - both classes need to be hidden */
@@ -221,7 +221,7 @@
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 15px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .meal-product-title {
@@ -249,7 +249,7 @@
 }
 
 .button-buy {
-  background: #EE6C4D;
+  background: #ee6c4d;
   border: none;
   color: white;
   padding: 10px 15px;
@@ -266,7 +266,7 @@
 }
 
 .button-buy:hover {
-  background: #D65C40;
+  background: #d65c40;
 }
 
 .button-detail {
@@ -283,7 +283,7 @@
 /* Công thức gợi ý */
 .suggested-recipes-container {
   margin-top: 0px;
-  background-color: #EDEDED;
+  background-color: #ededed;
   padding: 5px 0;
   width: 100%;
 }
@@ -300,7 +300,8 @@
   margin-bottom: 20px;
 }
 
-.section-title h2, .section-title a {
+.section-title h2,
+.section-title a {
   font-size: 24px;
   margin-bottom: 0;
   font-weight: bold;
@@ -308,8 +309,9 @@
   color: #000 !important;
 }
 
-.section-title h2 span, .section-title a span {
-  color: #EE6C4D;
+.section-title h2 span,
+.section-title a span {
+  color: #ee6c4d;
 }
 
 .recipes-container {
@@ -412,7 +414,7 @@
   font-weight: bold;
 }
 
-.heart-icon {
+/* .heart-icon {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -424,13 +426,126 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 5;
 }
 
 .heart-icon i {
-  color: #EE6C4D;
+  color: #ee6c4d;
   font-size: 18px;
+} */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  height: 100%;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-camdam);
+}
+
+.product-card a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.save-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.product-card:hover .save-button {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.save-button:hover {
+  background-color: var(--color-camdam);
+}
+
+.product-content {
+  padding: 15px;
+}
+
+.product-title {
+  color: black !important;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* height: 2.8em; */
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  /* margin-bottom: 10px; */
+}
+
+.product-info {
+  display: flex;
+  gap: 5px;
+  /* margin-bottom: 15px; */
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: black;
+  /* font-size: 0.9em; */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: var(--color-xamnhat);
+}
+
+.info-item img {
+  width: 16px;
+  height: 16px;
+}
+
+.button-camnhat {
+  width: 100%;
+  text-align: center;
+}
+
+.product-card:hover .button-camnhat {
+  background-color: var(--color-camdam);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(var(--color-camdam-rgb), 0.2);
 }
 
 /* Badge for view count */
@@ -438,7 +553,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #FF6347;
+  background-color: #ff6347;
   color: white;
   padding: 4px 8px;
   border-radius: 4px;
@@ -455,8 +570,8 @@
 
 .xem-chi-tiet {
   display: none !important;
-  background-color: #F9D5C0;
-  color: #EE6C4D;
+  background-color: #f9d5c0;
+  color: #ee6c4d;
   padding: 8px 15px;
   border-radius: 5px;
   font-weight: bold;
@@ -472,13 +587,14 @@
 }
 
 .meal-product-info .xem-chi-tiet:hover {
-  background-color: #F8C1A3;
+  background-color: #f8c1a3;
 }
 
-.view-more-button, .xem-them {
-  background-color: #FFFFFF;
-  color: #EE6C4D;
-  border: 1px solid #EE6C4D;
+.view-more-button,
+.xem-them {
+  background-color: #ffffff;
+  color: #ee6c4d;
+  border: 1px solid #ee6c4d;
   padding: 8px 30px;
   border-radius: 10px;
   cursor: pointer;
@@ -489,13 +605,18 @@
   text-decoration: none;
 }
 
-.view-more-button:hover, .xem-them:hover {
-  background-color: #EE6C4D;
-  color: #FFFFFF;
+.view-more-button:hover,
+.xem-them:hover {
+  background-color: #ee6c4d;
+  color: #ffffff;
 }
 
 /* Loại bỏ gạch chân cho các tiêu đề món ăn */
-h1, h2, h3, h4, a {
+h1,
+h2,
+h3,
+h4,
+a {
   text-decoration: none;
 }
 
@@ -523,26 +644,26 @@ h1, h2, h3, h4, a {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
-  
+
   .recipes-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   /* Adjust meal type indicators for tablet */
   .meal-types-container {
     gap: 130px;
     margin-right: 15px;
   }
-  
+
   .meal-type-indicator {
     font-size: 14px;
     padding: 10px 4px;
   }
-  
+
   .recipes-navigation {
     padding: 0;
   }
-  
+
   .recipes-navigation .nav-button {
     width: 40px;
     height: 40px;
@@ -554,15 +675,20 @@ h1, h2, h3, h4, a {
     grid-template-columns: 1fr;
     gap: 15px;
   }
-  
+
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
   .recipes-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .nav-button {
     margin: 0 5px;
   }
-  
+
   /* Adjust for mobile - horizontal layout with proper spacing */
   .meal-types-container {
     flex-direction: row;
@@ -572,7 +698,7 @@ h1, h2, h3, h4, a {
     justify-content: center;
     width: 100%;
   }
-  
+
   .meal-type-indicator {
     writing-mode: horizontal-tb;
     transform: none;
@@ -581,23 +707,23 @@ h1, h2, h3, h4, a {
     height: auto;
     width: 80px; /* Set fixed width for mobile */
   }
-  
+
   /* Ensure meal slots maintain proper height on mobile */
   .meal-slot {
     min-height: 320px;
     padding: 20px 10px;
   }
-  
+
   /* Stack nav buttons and meal types on mobile */
   .menu-container {
     flex-wrap: wrap;
     justify-content: center;
   }
-  
+
   .recipes-navigation {
     padding: 0;
   }
-  
+
   .recipes-navigation .nav-button {
     width: 35px;
     height: 35px;
@@ -605,7 +731,7 @@ h1, h2, h3, h4, a {
 }
 
 .recipes-section {
-  background-color: #EDEDED;
+  background-color: #ededed;
   padding: 20px 0;
   margin: 0;
   border-radius: 10px;
@@ -627,7 +753,7 @@ h1, h2, h3, h4, a {
 
 .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .product-image {
@@ -659,7 +785,7 @@ h1, h2, h3, h4, a {
 
 .product-info {
   display: flex;
-  gap: 20px;
+  /* gap: 20px; */
   margin-bottom: 15px;
   width: 100%;
 }
@@ -685,21 +811,21 @@ h1, h2, h3, h4, a {
   .recipes-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .products-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 30px;
     padding: 25px;
   }
-  
+
   .recipes-navigation {
     width: 90%;
   }
-  
+
   .recipes-navigation .nav-button-left {
     left: -22px;
   }
-  
+
   .recipes-navigation .nav-button-right {
     right: -22px;
   }
@@ -709,21 +835,21 @@ h1, h2, h3, h4, a {
   .recipes-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .products-grid {
     grid-template-columns: 1fr;
     gap: 20px;
     padding: 20px;
   }
-  
+
   .recipes-navigation {
     width: 85%;
   }
-  
+
   .recipes-navigation .nav-button-left {
     left: -22px;
   }
-  
+
   .recipes-navigation .nav-button-right {
     right: -22px;
   }
@@ -743,7 +869,7 @@ h1, h2, h3, h4, a {
 }
 
 .menu-day-header {
-  background-color: #F4F1EE;
+  background-color: #f4f1ee;
   text-align: center;
   padding: 8px;
   border-bottom: 1px solid #e0e0e0;
@@ -821,7 +947,7 @@ h1, h2, h3, h4, a {
 
 .recipes-navigation .nav-button:hover {
   background-color: #f5f5f5;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transform: translateY(-50%) scale(1.05);
 }
 
@@ -900,15 +1026,15 @@ h1, h2, h3, h4, a {
     justify-content: center;
     gap: 5px;
   }
-  
+
   .meal-info-pill {
     margin: 2px 3px;
   }
 }
 
 /* Reset the specific modifiers */
-.meal-info-people, 
-.meal-info-difficulty, 
+.meal-info-people,
+.meal-info-difficulty,
 .meal-info-time {
   display: none !important;
   flex: 0 0 auto;
@@ -928,8 +1054,8 @@ h1, h2, h3, h4, a {
 /* Style for the XEM CHI TIẾT button in meal cards */
 .meal-view-details {
   display: none !important;
-  background-color: #F9D5C0;
-  color: #EE6C4D;
+  background-color: #f9d5c0;
+  color: #ee6c4d;
   padding: 8px 20px;
   border-radius: 5px;
   font-weight: bold;
@@ -945,7 +1071,7 @@ h1, h2, h3, h4, a {
 }
 
 .meal-view-details:hover {
-  background-color: #F8C1A3;
+  background-color: #f8c1a3;
 }
 
 .products-grid {
@@ -968,8 +1094,8 @@ h1, h2, h3, h4, a {
 .suggested-recipes-container .xem-chi-tiet,
 .recipe-card .xem-chi-tiet {
   display: inline-block !important;
-  background-color: #F9D5C0;
-  color: #EE6C4D;
+  background-color: #f9d5c0;
+  color: #ee6c4d;
 }
 
 /* Show meal info in recipe cards */
@@ -1084,8 +1210,8 @@ h1, h2, h3, h4, a {
 
 .recipes-grid .xem-chi-tiet {
   display: inline-block !important;
-  background-color: #F9D5C0;
-  color: #EE6C4D;
+  background-color: #f9d5c0;
+  color: #ee6c4d;
   padding: 8px 15px;
   border-radius: 5px;
   font-weight: bold;
@@ -1113,8 +1239,8 @@ h1, h2, h3, h4, a {
 .recipe-card .xem-chi-tiet,
 .recipes-grid .xem-chi-tiet {
   display: inline-block !important;
-  background-color: #F9D5C0;
-  color: #EE6C4D;
+  background-color: #f9d5c0;
+  color: #ee6c4d;
   padding: 6px 20px;
   font-size: 13px;
   text-align: center;

@@ -232,3 +232,86 @@
     </div>
   </div>
 </div>
+
+<!-- Công thức gợi ý -->
+<div class="recipes-section">
+  <div class="suggested-recipes-container">
+    <div class="suggested-recipes">
+      <div class="section-title">
+        <h2>Công thức <span>Bạn có thể thích</span></h2>
+      </div>
+
+      <div class="recipes-navigation">
+        <!-- Nút điều hướng trái -->
+        <button
+          class="nav-button nav-button-left"
+          (click)="prevRecipePage()"
+          [disabled]="currentRecipePage === 0"
+        >
+          <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
+        </button>
+
+        <div class="products-grid">
+          <div class="product-card" *ngFor="let recipe of visibleRecipes">
+            <div class="save-button">
+              <img
+                src="../../assets/san-pham/favourite.svg"
+                alt="Lưu vào yêu thích"
+              />
+            </div>
+            <a [routerLink]="['/cong-thuc', recipe._id]">
+              <img
+                [src]="recipe.recipeImage"
+                [alt]="recipe.recipeName"
+                class="product-image"
+              />
+              <div class="product-content">
+                <h5 class="product-title">{{ recipe.recipeName }}</h5>
+                <div class="product-info">
+                  <div class="info-item">
+                    <img
+                      src="../../assets/san-pham/khauphan.svg"
+                      alt="category"
+                    />
+                    <span>4 Người</span>
+                  </div>
+                  <div class="info-item">
+                    <img
+                      src="../../assets/san-pham/dokho.svg"
+                      alt="difficulty"
+                    />
+                    <span>{{ recipe.difficulty }}</span>
+                  </div>
+                  <div class="info-item">
+                    <img
+                      src="../../assets/san-pham/ph-cooking-pot.svg"
+                      alt="time"
+                    />
+                    <span>{{ recipe.time }}</span>
+                  </div>
+                </div>
+                <div class="product-actions">
+                  <button class="button-camnhat">XEM CHI TIẾT</button>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Nút điều hướng phải -->
+        <button
+          class="nav-button nav-button-right"
+          (click)="nextRecipePage()"
+          [disabled]="
+            currentRecipePage >= suggestedRecipes.length / recipesPerPage - 1
+          "
+        >
+          <img src="../../assets/trang-chu/slider.svg" alt="Next" />
+        </button>
+      </div>
+    </div>
+    <div class="view-more">
+      <button class="view-more-button" routerLink="/cong-thuc">XEM THÊM</button>
+    </div>
+  </div>
+</div>

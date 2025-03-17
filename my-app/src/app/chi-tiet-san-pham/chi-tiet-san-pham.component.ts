@@ -5,6 +5,8 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product.interface';
 import { CartService } from '../services/cart.service';
+import { RecipeService } from '../services/recipe.service';
+import { Recipe } from '../models/recipe.interface';
 
 interface FAQ {
   question: string;
@@ -51,11 +53,18 @@ export class ChiTietSanPhamComponent implements OnInit {
     },
   ];
 
+  // Thêm các biến cho công thức gợi ý
+  suggestedRecipes: Recipe[] = [];
+  visibleRecipes: Recipe[] = [];
+  currentRecipePage = 0;
+  recipesPerPage = 3;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    private recipeService: RecipeService
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +84,8 @@ export class ChiTietSanPhamComponent implements OnInit {
     for (let i = 0; i < 5; i++) {
       this.thumbnails.push('../../assets/san-pham/thumbnail.jpg');
     }
+
+    this.loadSuggestedRecipes();
   }
 
   // Reset product data when loading a new product
@@ -190,7 +201,12 @@ export class ChiTietSanPhamComponent implements OnInit {
         this.getDiscountedPrice()
       );
       // Add to cart using CartService
-      this.cartService.addToCart(this.product, this.quantity, this.selectedServing, this.getDiscountedPrice());
+      this.cartService.addToCart(
+        this.product,
+        this.quantity,
+        this.selectedServing,
+        this.getDiscountedPrice()
+      );
     }
   }
 
@@ -247,5 +263,50 @@ export class ChiTietSanPhamComponent implements OnInit {
   // Kiểm tra xem sản phẩm liên quan có giảm giá không
   relatedProductHasDiscount(product: Product): boolean {
     return product?.discount !== undefined && product.discount > 0;
+  }
+
+  // Phương thức để tải công thức gợi ý
+  loadSuggestedRecipes(): void {
+    this.recipeService.getRecipes().subscribe({
+      next: (data) => {
+        this.suggestedRecipes = this.getRandomRecipes(data, 9); // Lấy 9 công thức ngẫu nhiên
+        this.updateVisibleRecipes();
+      },
+      error: (err) => {
+        console.error('Lỗi khi tải công thức gợi ý:', err);
+      },
+    });
+  }
+
+  // Phương thức để lấy công thức ngẫu nhiên
+  getRandomRecipes(recipes: Recipe[], count: number): Recipe[] {
+    if (!recipes || recipes.length === 0) return [];
+    const shuffled = [...recipes].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  }
+
+  // Phương thức để cập nhật công thức hiển thị
+  updateVisibleRecipes(): void {
+    const start = this.currentRecipePage * this.recipesPerPage;
+    const end = start + this.recipesPerPage;
+    this.visibleRecipes = this.suggestedRecipes.slice(start, end);
+  }
+
+  // Phương thức để điều hướng trang công thức
+  prevRecipePage(): void {
+    if (this.currentRecipePage > 0) {
+      this.currentRecipePage--;
+      this.updateVisibleRecipes();
+    }
+  }
+
+  nextRecipePage(): void {
+    if (
+      this.currentRecipePage <
+      Math.ceil(this.suggestedRecipes.length / this.recipesPerPage) - 1
+    ) {
+      this.currentRecipePage++;
+      this.updateVisibleRecipes();
+    }
   }
 }
