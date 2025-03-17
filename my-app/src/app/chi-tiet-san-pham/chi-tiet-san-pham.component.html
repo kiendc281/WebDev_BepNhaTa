@@ -63,14 +63,14 @@
             <h4>Hạn sử dụng</h4>
             <p>{{ product.notes }}</p>
           </div>
-          <div class="detail-item">
+          <!-- <div class="detail-item">
             <h4>Độ khó</h4>
             <p>{{ product.level }}</p>
           </div>
           <div class="detail-item">
             <h4>Thời gian chế biến</h4>
             <p>{{ product.time }}</p>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -177,57 +177,6 @@
         <button class="button-cam align-self-stretch" (click)="buyNow()">
           MUA NGAY
         </button>
-      </div>
-
-      <div class="special-offer">
-        <i class="fas fa-gift"></i> ƯU ĐÃI ĐẶC BIỆT
-      </div>
-      <div class="promotion">Khuyến mãi giảm giá khi mua kèm</div>
-
-      <!-- Sản phẩm liên quan -->
-      <div
-        class="related-products"
-        *ngIf="relatedProducts && relatedProducts.length > 0"
-      >
-        <h3>SẢN PHẨM LIÊN QUAN</h3>
-        <div class="product-grid">
-          <div
-            class="related-product-card"
-            *ngFor="let relatedProduct of relatedProducts"
-          >
-            <a
-              class="product-link"
-              (click)="navigateToProduct(relatedProduct._id)"
-              style="cursor: pointer"
-            >
-              <img
-                [src]="relatedProduct.mainImage"
-                [alt]="relatedProduct.ingredientName"
-                class="product-image"
-              />
-              <div class="product-info">
-                <h4 class="product-title">
-                  {{ relatedProduct.ingredientName }}
-                </h4>
-                <div class="product-price">
-                  <span
-                    class="original-price"
-                    *ngIf="relatedProductHasDiscount(relatedProduct)"
-                    >{{
-                      getRelatedProductPrice(relatedProduct) | number : "1.0-0"
-                    }}đ</span
-                  >
-                  <span class="discounted-price"
-                    >{{
-                      getRelatedProductDiscountedPrice(relatedProduct)
-                        | number : "1.0-0"
-                    }}đ</span
-                  >
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   </div>
