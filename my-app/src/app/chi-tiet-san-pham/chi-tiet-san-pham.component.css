@@ -387,21 +387,27 @@
 }
 
 .faq-item {
-  border-bottom: 1px solid #ddd;
+  /* border-bottom: 1px solid #ddd; */
+  border-radius: 10px;
+  border: 1px solid var(--color-camnhat);
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .faq-question {
-  padding: 1rem 0;
+  /* padding: 1rem 0; */
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: 500;
+  /* font-weight: 500; */
+  font-weight: bold;
 }
 
 .faq-answer {
-  padding: 1rem 0;
-  color: #666;
+  padding-top: 10px;
+  /* padding: 1rem 0; */
+  /* color: #666; */
   line-height: 1.5;
 }
 
