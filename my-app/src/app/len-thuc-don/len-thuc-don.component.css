@@ -513,7 +513,7 @@
 
 .product-info {
   display: flex;
-  gap: 5px;
+  gap: 20px;
   /* margin-bottom: 15px; */
   width: 100%;
   flex-wrap: wrap;
@@ -774,13 +774,13 @@ a {
 .product-title {
   font-size: 1.1em;
   color: #000 !important;
-  margin: 0 0 15px;
+  /* margin: 0 0 15px; */
   font-weight: bold;
   display: -webkit-box;
   /* -webkit-line-clamp: 2; */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  height: 2.8em;
+  height: 2em;
 }
 
 .product-info {
