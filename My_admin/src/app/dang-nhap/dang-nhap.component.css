@@ -84,6 +84,7 @@ label {
 
 .form-control,
 .btn-primary {
+  box-sizing: border-box;
   width: 100%;
   padding: 15px 20px;
   background-color: var(--color-xamnhat);
@@ -93,6 +94,11 @@ label {
   transition: all 0.3s;
   height: 55px;
   margin: 5px 0;
+}
+
+.form-control[type="text"], 
+.form-control[type="password"] {
+  padding-right: 45px;
 }
 
 .form-control:focus {
@@ -100,41 +106,25 @@ label {
   box-shadow: 0 0 5px rgba(var(--color-camdam-rgb), 0.5);
 }
 
-.form-control.is-invalid {
-  border: 1px solid #dc3545;
+.form-control.submitted {
+  border: 2px solid #dc3545 !important;
   background-image: none !important;
-  position: relative;
 }
 
-.validation-message {
-  color: #dc3545;
-  font-size: 0.9rem;
-  margin-top: 8px;
-  position: absolute;
-  left: 0;
-  bottom: -25px;
-  text-align: left;
-  display: block;
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
 }
 
-.password-field {
-  position: relative;
-  width: 100%;
-  margin-bottom: 0;
-}
-
-.form-control[type="password"],
-.form-control[type="text"] {
-  width: 100%;
-  padding: 15px 20px;
-  background-color: var(--color-xamnhat);
-  border: none;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  transition: all 0.3s;
-  height: 55px;
-  margin: 5px 0;
-  padding-right: 45px !important;
+input[type="password"]::-webkit-contacts-auto-fill-button,
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-password-toggle {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+  margin: 0;
 }
 
 .toggle-password {
@@ -152,6 +142,43 @@ label {
 
 .toggle-password:hover {
   opacity: 1;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-top: 5px;
+  text-align: left;
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #28A745;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 16px 0;
+  padding: 12px;
+  background-color: #D4EDDA;
+  border-radius: 8px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.success-message svg {
+  margin-right: 8px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .btn-primary {
@@ -181,27 +208,6 @@ label {
 .btn-primary:disabled {
   background-color: var(--color-camnhat);
   cursor: not-allowed;
-}
-
-.error-message {
-  color: #dc3545;
-  font-size: 0.95rem;
-  text-align: center;
-  width: 80%;
-  margin-top: 15px;
-  padding: 8px;
-  background-color: rgba(220, 53, 69, 0.1);
-  border-radius: 5px;
-  font-weight: 500;
-}
-
-.success-message {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #198754;
-  font-size: 0.9rem;
-  margin-top: 10px;
 }
 
 .loading-spinner {
@@ -259,25 +265,4 @@ label {
     padding: 10px;
     font-size: 1rem;
   }
-}
-
-/* CSS để ghi đè lên style mặc định của trình duyệt khi có lỗi validation */
-input::-ms-reveal,
-input::-ms-clear {
-  display: block !important;
-}
-
-/* Đảm bảo nút hiện/ẩn mật khẩu không bị ẩn khi form có lỗi */
-input[type="password"]::-webkit-contacts-auto-fill-button,
-input[type="password"]::-webkit-credentials-auto-fill-button,
-input[type="password"]::-webkit-inner-spin-button,
-input[type="password"]::-webkit-outer-spin-button,
-input[type="password"]::-webkit-search-cancel-button,
-input[type="password"]::-webkit-search-decoration,
-input[type="password"]::-webkit-search-results-button,
-input[type="password"]::-webkit-search-results-decoration,
-input[type="password"]::-webkit-textfield-decoration-container {
-  visibility: visible !important;
-  display: block !important;
-  pointer-events: auto !important;
 }

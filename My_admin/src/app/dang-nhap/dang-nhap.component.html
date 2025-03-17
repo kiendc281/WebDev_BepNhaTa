@@ -16,61 +16,49 @@
           formControlName="account"
           class="form-control"
           placeholder="Tài khoản Admin"
-          [ngClass]="{ 'is-invalid': submitted && f['account'].errors }"
+          [class.submitted]="submitted && f['account'].errors"
         />
         <div
-          *ngIf="submitted && f['account'].errors"
-          class="validation-message"
+          class="error-message"
+          *ngIf="submitted && f['account'].errors?.['required']"
         >
-          <div *ngIf="f['account'].errors['required']">
-            Vui lòng nhập tài khoản
-          </div>
-          <div
-            *ngIf="
-              f['account'].errors &&
-              f['account'].errors['invalidEmail'] &&
-              !f['account'].errors['required']
-            "
-          >
-            Email không hợp lệ
-          </div>
-          <div
-            *ngIf="
-              f['account'].errors &&
-              f['account'].errors['invalidPhone'] &&
-              !f['account'].errors['required']
-            "
-          >
-            Số điện thoại không hợp lệ
-          </div>
+          (*) Vui lòng nhập tài khoản
+        </div>
+        <div
+          class="error-message"
+          *ngIf="submitted && f['account'].errors?.['invalidEmail']"
+        >
+          (*) Email không hợp lệ
+        </div>
+        <div
+          class="error-message"
+          *ngIf="submitted && f['account'].errors?.['invalidPhone']"
+        >
+          (*) Số điện thoại không hợp lệ
         </div>
       </div>
 
       <div class="form-group">
-        <div class="password-field">
-          <input
-            [type]="showPassword ? 'text' : 'password'"
-            id="password"
-            formControlName="password"
-            class="form-control"
-            placeholder="Mật khẩu"
-            autocomplete="current-password"
-            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
-          />
-          <img
-            [src]="eyeIcon"
-            alt="Hiện/ẩn mật khẩu"
-            class="toggle-password"
-            (click)="togglePassword()"
-          />
-        </div>
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          formControlName="password"
+          class="form-control"
+          placeholder="Mật khẩu"
+          autocomplete="current-password"
+          [class.submitted]="submitted && f['password'].errors"
+        />
+        <img
+          [src]="eyeIcon"
+          alt="Hiện/ẩn mật khẩu"
+          class="toggle-password"
+          (click)="togglePassword()"
+        />
         <div
-          *ngIf="submitted && f['password'].errors"
-          class="validation-message"
+          class="error-message"
+          *ngIf="submitted && f['password'].errors?.['required']"
         >
-          <div *ngIf="f['password'].errors['required']">
-            Vui lòng nhập mật khẩu
-          </div>
+          (*) Vui lòng nhập mật khẩu
         </div>
       </div>
 
@@ -79,7 +67,7 @@
         {{ loading ? "Đang xử lý..." : "ĐĂNG NHẬP" }}
       </button>
 
-      <div *ngIf="errorMessage" class="error-message">
+      <div class="error-message" *ngIf="errorMessage">
         {{ errorMessage }}
       </div>
       <div *ngIf="successMessage" class="success-message">

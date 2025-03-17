@@ -14,7 +14,7 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './dang-nhap.component.html',
-  styleUrl: './dang-nhap.component.css'
+  styleUrls: ['./dang-nhap.component.css']
 })
 export class DangNhapComponent {
   loginForm: FormGroup;
