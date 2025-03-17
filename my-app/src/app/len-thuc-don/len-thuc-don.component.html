@@ -1,1 +1,129 @@
-<p>len-thuc-don works!</p>
+<div class="container">
+  <!-- Khu vực loading và error -->
+  <div class="loading" *ngIf="isLoading">Đang tải thực đơn và công thức...</div>
+  <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <!-- Thực đơn chính -->
+  <div *ngIf="!isLoading && !errorMessage">
+    <!-- Tiêu đề -->
+    <div class="main-title">
+      <h1>Kế Hoạch <span>Nấu Ăn</span></h1>
+    </div>
+    <div class="subtitle">Thực đơn được đề xuất bởi Bếp Nhà Ta</div>
+    <br />
+    <p></p>
+    
+    <!-- Container cho menu và nút điều hướng -->
+    <div class="menu-container">
+      <!-- Nút điều hướng bên trái -->
+      <button class="nav-button nav-button-left" (click)="prevMenuPage()" [disabled]="currentMenuPage === 0">
+        <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
+      </button>
+
+      <!-- Meal types container - moved to the right of the nav button -->
+      <div class="meal-types-container">
+        <div class="meal-type-indicator" data-type="Sáng">Sáng</div>
+        <div class="meal-type-indicator" data-type="Trưa">Trưa</div>
+        <div class="meal-type-indicator" data-type="Tối">Tối</div>
+      </div>
+      
+      <!-- Grid hiển thị thực đơn -->
+      <div class="menu-grid">
+        <div class="menu-day" *ngFor="let day of visibleMenuDays">
+          <div class="menu-day-header">
+            <!-- Removed "gói nguyên liệu" text, showing only clean day name -->
+            <h3>Thực đơn {{ day.day }}</h3>
+          </div>
+          <div class="menu-day-content">
+            <div class="meal-content">
+              <div class="meal-slot" *ngFor="let meal of day.meals" [attr.data-meal-type]="meal.type">
+                <div class="meal-product">
+                  <img [src]="meal.product.image" [alt]="meal.product.title" />
+                  <div class="meal-product-info">
+                    <!-- Use the cleanTitle pipe to remove "Gói nguyên liệu" from product title -->
+                    <div class="meal-product-title">{{ meal.product.title | cleanTitle }}</div>
+                    <div class="meal-category">{{ meal.product.category }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="menu-actions">
+              <button class="button-buy" (click)="buyMenu(day)">MUA NGAY</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Nút điều hướng bên phải -->
+      <button class="nav-button nav-button-right" (click)="nextMenuPage()" [disabled]="currentMenuPage >= allMenuDays.length / menusPerPage - 1">
+        <img src="../../assets/trang-chu/slider.svg" alt="Next" />
+      </button>
+    </div>
+
+    <!-- Công thức gợi ý -->
+    <div class="recipes-section">
+      <div class="suggested-recipes-container">
+        <div class="suggested-recipes">
+          <div class="section-title">
+            <h2>Công thức <span>Bạn có thể thích</span></h2>
+          </div>
+
+          <div class="recipes-navigation">
+            <!-- Nút điều hướng trái -->
+            <button class="nav-button nav-button-left" (click)="prevRecipePage()" [disabled]="currentRecipePage === 0">
+              <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
+            </button>
+           
+            <div class="products-grid">
+              <div class="product-card" *ngFor=" let recipe of visibleRecipes">
+                <div class="save-button">
+                  <img
+                    src="../../assets/san-pham/favourite.svg"
+                    alt="Lưu vào yêu thích"
+                  />
+                </div>
+                <a [routerLink]="['/cong-thuc', recipe._id]">
+                  <img
+                    [src]="recipe.recipeImage"
+                    [alt]="recipe.recipeName"
+                    class="product-image"
+                  />
+                  <div class="product-content">
+                    <h5 class="product-title">{{ recipe.recipeName }}</h5>
+                    <div class="product-info">
+                      <div class="info-item">
+                        <img src="../../assets/san-pham/khauphan.svg" alt="category" />
+                        <span>4 Người</span>
+                      </div>
+                      <div class="info-item">
+                        <img src="../../assets/san-pham/dokho.svg" alt="difficulty" />
+                        <span>{{ recipe.difficulty }}</span>
+                      </div>
+                      <div class="info-item">
+                        <img
+                          src="../../assets/san-pham/ph-cooking-pot.svg"
+                          alt="time"
+                        />
+                        <span>{{ recipe.time }}</span>
+                      </div>
+                    </div>
+                    <div class="product-actions">
+                      <button class="button-camnhat">XEM CHI TIẾT</button>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <!-- Nút điều hướng phải -->
+            <button class="nav-button nav-button-right" (click)="nextRecipePage()" [disabled]="currentRecipePage >= suggestedRecipes.length / recipesPerPage - 1">
+              <img src="../../assets/trang-chu/slider.svg" alt="Next" />
+            </button>
+          </div>
+        </div>
+        <div class="view-more">
+          <button class="view-more-button" routerLink="/cong-thuc">XEM THÊM</button>
+        </div>
+      </div>
+    </div>
+
+  
