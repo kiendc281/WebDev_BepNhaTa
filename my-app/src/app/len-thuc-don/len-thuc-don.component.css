@@ -16,7 +16,7 @@
   font-weight: bold;
   margin-bottom: 10px;
   display: inline-block;
-  color: #333 !important;
+  color: #000 !important;
 }
 
 .main-title h1 span {
@@ -28,7 +28,7 @@
   color: white;
   display: inline-block;
   padding: 5px 15px;
-  border-radius: 5px;
+  border-radius: 20px;
   margin-bottom: 20px;
 }
 
@@ -135,28 +135,35 @@
 
 /* Menu day with better spacing */
 .menu-day {
-  border: 2px solid #e0e0e0;
+  border: 1px solid #e0e0e0;
   border-radius: 10px;
   overflow: hidden;
   height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   margin: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Update meal slots spacing to ensure consistent height */
+.menu-day:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+/* Update meal slots spacing to ensure consistent height with new expanded content */
 .meal-slot {
-  padding: 15px;
+  padding: 15px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   border-bottom: 1px solid #f0f0f0;
   position: relative;
   box-sizing: border-box;
-  height: 180px;
+  height: auto;
+  min-height: 300px;
 }
 
 .meal-slot:last-child {
@@ -202,25 +209,28 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
   padding: 5px 0;
+  width: 100%;
 }
 
 .meal-product img {
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   object-fit: cover;
-  border-radius: 4px;
-  margin-bottom: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .meal-product-title {
   font-weight: bold;
   margin-bottom: 0;
-  font-size: 16px;
+  font-size: 18px;
   text-align: center;
-  color: #333;
+  color: #000;
+  line-height: 1.3;
 }
 
 .meal-product-info {
@@ -245,12 +255,14 @@
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   text-transform: uppercase;
   text-align: center;
   width: 100%;
   font-weight: bold;
   transition: background-color 0.3s;
+  max-width: 180px;
+  margin: 0 auto;
 }
 
 .button-buy:hover {
@@ -270,30 +282,30 @@
 
 /* Công thức gợi ý */
 .suggested-recipes-container {
-  margin-top: 60px;
+  margin-top: 0px;
   background-color: #EDEDED;
-  padding: 30px 0;
+  padding: 5px 0;
   width: 100%;
 }
 
 .suggested-recipes {
-  max-width: 1500px;
+  max-width: 1480px;
   margin: 0 auto;
-  padding: 0 60px;
+  padding: 0;
   position: relative;
 }
 
 .section-title {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .section-title h2, .section-title a {
-  font-size: 28px;
-  margin-bottom: 5px;
+  font-size: 24px;
+  margin-bottom: 0;
   font-weight: bold;
   text-decoration: none;
-  color: #333 !important;
+  color: #000 !important;
 }
 
 .section-title h2 span, .section-title a span {
@@ -315,6 +327,7 @@
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .recipe-card {
@@ -322,7 +335,7 @@
   border-radius: 10px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -367,47 +380,36 @@
 .recipe-likes {
   display: flex;
   align-items: center;
+  gap: 5px;
   color: #f44336;
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 14px;
 }
 
-.recipe-likes i {
-  margin-left: 5px;
+.recipe-likes span {
+  margin-left: 4px;
 }
 
 .recipe-info {
   display: flex;
-  gap: 10px;
+  gap: 4px;
+  justify-content: center;
   margin-bottom: 15px;
-  justify-content: space-between;
   width: 100%;
 }
 
 .info-item {
-  display: flex;
+  flex: 0 0 auto;
+  display: flex !important;
   align-items: center;
-  gap: 5px;
-  font-size: 14px;
-  color: #666;
-  background-color: #f0f0f0;
-  padding: 8px 10px;
+  gap: 3px;
+  padding: 4px 6px;
   border-radius: 5px;
+  background-color: #f7f7f7;
+  font-size: 12px;
   border: none;
-  flex: 1;
-  text-align: center;
-  justify-content: center;
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 38px;
-  box-sizing: border-box;
-}
-
-.info-item img {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
+  color: #000;
+  font-weight: bold;
 }
 
 .heart-icon {
@@ -423,6 +425,7 @@
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 5;
 }
 
 .heart-icon i {
@@ -430,32 +433,45 @@
   font-size: 18px;
 }
 
+/* Badge for view count */
+.view-count-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #FF6347;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 5;
+}
+
 .view-more {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
 .xem-chi-tiet {
-  display: inline-block;
+  display: none !important;
   background-color: #F9D5C0;
   color: #EE6C4D;
-  padding: 8px 20px;
+  padding: 8px 15px;
   border-radius: 5px;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   transition: background-color 0.3s;
   border: none;
   text-decoration: none;
-  margin-top: 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   text-align: center;
-  width: 100%;
-  max-width: 150px;
-  align-self: center;
 }
 
-.xem-chi-tiet:hover {
+.meal-product-info .xem-chi-tiet:hover {
   background-color: #F8C1A3;
 }
 
@@ -524,7 +540,7 @@ h1, h2, h3, h4, a {
   }
   
   .recipes-navigation {
-    padding: 0 10px;
+    padding: 0;
   }
   
   .recipes-navigation .nav-button {
@@ -568,8 +584,8 @@ h1, h2, h3, h4, a {
   
   /* Ensure meal slots maintain proper height on mobile */
   .meal-slot {
-    height: auto;
-    min-height: 160px;
+    min-height: 320px;
+    padding: 20px 10px;
   }
   
   /* Stack nav buttons and meal types on mobile */
@@ -579,7 +595,7 @@ h1, h2, h3, h4, a {
   }
   
   .recipes-navigation {
-    padding: 0 40px;
+    padding: 0;
   }
   
   .recipes-navigation .nav-button {
@@ -590,62 +606,35 @@ h1, h2, h3, h4, a {
 
 .recipes-section {
   background-color: #EDEDED;
-  padding: 0px 0;
-  margin: 0px 0;
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  margin: 0 auto;
-  background-color: white;
-  max-width: 1200px;
-  width: 100%;
-  padding: 0 30px;
+  padding: 20px 0;
+  margin: 0;
+  border-radius: 10px;
 }
 
 .product-card {
-  background: white;
+  border: none;
   border-radius: 10px;
+  padding-bottom: 15px;
+  box-shadow: none;
+  transition: all 0.3s ease;
+  max-width: 340px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: white;
   overflow: hidden;
   position: relative;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
 }
 
 .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  border-color: var(--color-camdam);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
 }
 
 .product-image {
   width: 100%;
   height: 200px;
   object-fit: cover;
-}
-
-.save-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-}
-
-.product-card:hover .save-button {
-  opacity: 1;
-  transform: translateY(0);
+  border-radius: 10px 10px 0 0;
 }
 
 .product-save-button:hover {
@@ -653,12 +642,12 @@ h1, h2, h3, h4, a {
 }
 
 .product-content {
-  padding: 15px;
+  padding: 18px;
 }
 
 .product-title {
   font-size: 1.1em;
-  color: black !important;
+  color: #000 !important;
   margin: 0 0 15px;
   font-weight: bold;
   display: -webkit-box;
@@ -673,23 +662,6 @@ h1, h2, h3, h4, a {
   gap: 20px;
   margin-bottom: 15px;
   width: 100%;
-}
-
-.info-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: black;
-  font-size: 0.9em;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 5px;
-  background-color: var(--color-xamnhat);
-}
-
-.info-item img {
-  width: 16px;
-  height: 16px;
 }
 
 .view-recipe {
@@ -717,15 +689,19 @@ h1, h2, h3, h4, a {
   .products-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 30px;
-    padding: 0 25px;
+    padding: 25px;
+  }
+  
+  .recipes-navigation {
+    width: 90%;
   }
   
   .recipes-navigation .nav-button-left {
-    left: -40px;
+    left: -22px;
   }
   
   .recipes-navigation .nav-button-right {
-    right: -40px;
+    right: -22px;
   }
 }
 
@@ -737,15 +713,19 @@ h1, h2, h3, h4, a {
   .products-grid {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding: 0 20px;
+    padding: 20px;
+  }
+  
+  .recipes-navigation {
+    width: 85%;
   }
   
   .recipes-navigation .nav-button-left {
-    left: -30px;
+    left: -22px;
   }
   
   .recipes-navigation .nav-button-right {
-    right: -30px;
+    right: -22px;
   }
 }
 
@@ -772,7 +752,7 @@ h1, h2, h3, h4, a {
 .menu-day-header h3 {
   margin: 0;
   font-size: 16px;
-  color: #EE6C4D;
+  color: #000;
   font-weight: bold;
   text-transform: capitalize;
 }
@@ -809,40 +789,48 @@ h1, h2, h3, h4, a {
 .recipes-navigation {
   position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 20px 0;
-  padding: 0 60px;
+  margin: 0 auto;
+  padding: 0;
+  overflow: visible;
+}
+
+.recipes-navigation .products-grid {
+  margin: 0 auto;
+  width: 1140px;
 }
 
 .recipes-navigation .nav-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 20;
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  box-shadow: none !important;
   background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
 }
 
 .recipes-navigation .nav-button:hover {
   background-color: #f5f5f5;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   transform: translateY(-50%) scale(1.05);
 }
 
 .recipes-navigation .nav-button-left {
-  left: -50px;
+  left: 5px;
 }
 
 .recipes-navigation .nav-button-right {
-  right: -50px;
+  right: 5px;
   transform: translateY(-50%) rotate(180deg);
 }
 
@@ -850,12 +838,336 @@ h1, h2, h3, h4, a {
   transform: translateY(-50%) rotate(180deg) scale(1.05);
 }
 
+/* Responsive adjustments for navigation */
+@media (max-width: 1280px) {
+  .recipes-navigation .products-grid {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .recipes-navigation .products-grid {
+    width: 85%;
+  }
+}
+
+/* Styles for the expanded meal details */
+.meal-details-row {
+  display: none !important;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+  width: 100%;
+}
+
+/* Base meal info pill style - updated to match image */
+.meal-info-pill {
+  display: none !important;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  padding: 8px 12px;
+  border: none;
+  font-size: 14px;
+  gap: 8px;
+  text-align: center;
+  margin: 0 4px;
+  min-height: 36px;
+  box-shadow: none;
+}
+
+/* Icon and text styles - updated for better matching */
+.meal-info-pill img {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+.meal-info-pill span {
+  color: #000;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .meal-details-row {
+    justify-content: center;
+    gap: 5px;
+  }
+  
+  .meal-info-pill {
+    margin: 2px 3px;
+  }
+}
+
+/* Reset the specific modifiers */
+.meal-info-people, 
+.meal-info-difficulty, 
+.meal-info-time {
+  display: none !important;
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: none;
+}
+
+.meal-details-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+  width: 100%;
+}
+
+/* Style for the XEM CHI TIẾT button in meal cards */
+.meal-view-details {
+  display: none !important;
+  background-color: #F9D5C0;
+  color: #EE6C4D;
+  padding: 8px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: none;
+  text-decoration: none;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.meal-view-details:hover {
+  background-color: #F8C1A3;
+}
+
 .products-grid {
+  width: 100%;
+  padding: 30px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  margin: 0 auto;
-  background-color: white;
+  gap: 16px;
   max-width: 1200px;
+  margin: 0 auto 40px auto;
+  height: auto;
+  min-height: 430px;
+  background-color: white;
+  border-radius: 8px;
+  position: relative;
+}
+
+/* Override to show information in recipe cards */
+.recipes-section .xem-chi-tiet,
+.suggested-recipes-container .xem-chi-tiet,
+.recipe-card .xem-chi-tiet {
+  display: inline-block !important;
+  background-color: #F9D5C0;
+  color: #EE6C4D;
+}
+
+/* Show meal info in recipe cards */
+.recipes-section .meal-details-row,
+.suggested-recipes-container .meal-details-row,
+.recipe-card .meal-details-row {
+  display: flex !important;
+}
+
+/* Show meal info pills in recipe cards */
+.recipes-section .meal-info-pill,
+.suggested-recipes-container .meal-info-pill,
+.recipe-card .meal-info-pill,
+.recipes-section .info-item,
+.suggested-recipes-container .info-item,
+.recipe-card .info-item {
+  display: inline-flex !important;
+}
+
+/* Show specific info pills in recipe cards */
+.recipes-section .meal-info-people,
+.recipes-section .meal-info-difficulty,
+.recipes-section .meal-info-time,
+.suggested-recipes-container .meal-info-people,
+.suggested-recipes-container .meal-info-difficulty,
+.suggested-recipes-container .meal-info-time,
+.recipe-card .meal-info-people,
+.recipe-card .meal-info-difficulty,
+.recipe-card .meal-info-time {
+  display: flex !important;
+}
+
+/* Clean up view details button in recipe section */
+.recipes-section .meal-view-details,
+.suggested-recipes-container .meal-view-details,
+.recipe-card .meal-view-details {
+  display: inline-block !important;
+}
+.save-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+/* Styling for recipe info items to match the image */
+.recipe-info .info-item {
+  display: flex !important;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 6px;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  font-size: 13px;
+  color: #000;
+  font-weight: bold;
+}
+
+/* Ensure proper spacing for the recipe details */
+.recipe-card .recipe-info {
+  margin-bottom: 15px;
+  justify-content: space-between;
   width: 100%;
+}
+
+/* Ensure proper styling for the XEM CHI TIẾT button in recipe cards */
+.recipe-card .xem-chi-tiet {
+  padding: 8px 15px;
+  margin-top: 10px;
+  font-size: 13px;
+  text-align: center;
+  width: auto;
+}
+
+/* Styling specifically for recipe cards in the grid */
+.recipes-grid .recipe-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.recipes-grid .recipe-info {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.recipes-grid .info-item {
+  flex: 0 0 auto;
+  display: flex !important;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 6px;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  font-size: 12px;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  margin: 0 1px;
+}
+
+.recipes-grid .xem-chi-tiet {
+  display: inline-block !important;
+  background-color: #F9D5C0;
+  color: #EE6C4D;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 13px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* Likes counter styling */
+.recipe-likes {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #f44336;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.recipe-likes span {
+  margin-left: 4px;
+}
+
+/* Styling for XEM CHI TIET button */
+.recipe-card .xem-chi-tiet,
+.recipes-grid .xem-chi-tiet {
+  display: inline-block !important;
+  background-color: #F9D5C0;
+  color: #EE6C4D;
+  padding: 6px 20px;
+  font-size: 13px;
+  text-align: center;
+  margin: 10px auto;
+  border-radius: 5px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Styling for info pills */
+.recipe-card .info-item,
+.recipes-grid .info-item {
+  flex: 0 0 auto;
+  display: flex !important;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 6px;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  font-size: 12px;
+  border: none;
+  margin: 0 1px;
+  color: #000;
+  font-weight: bold;
+}
+
+.info-item img {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.save-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: white;
+  width: 35px;
+  height: 35px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.product-card:hover .save-button {
+  opacity: 1;
+  transform: translateY(0);
 }

@@ -38,10 +38,30 @@
             <div class="meal-content">
               <div class="meal-slot" *ngFor="let meal of day.meals" [attr.data-meal-type]="meal.type">
                 <div class="meal-product">
-                  <img [src]="meal.product.image" [alt]="meal.product.title" />
+                  <img [src]="getProductImage(meal.product)" [alt]="getProductTitle(meal.product)" />
                   <div class="meal-product-info">
                     <!-- Use the cleanTitle pipe to remove "Gói nguyên liệu" from product title -->
-                    <div class="meal-product-title">{{ meal.product.title | cleanTitle }}</div>
+                    <div class="meal-product-title">{{ getProductTitle(meal.product) | cleanTitle }}</div>
+                    
+                    <!-- Expanded information section with styled pills -->
+                    <div class="meal-details-row">
+                      <div class="meal-info-pill">
+                        <img src="../../assets/san-pham/khauphan.svg" alt="Khẩu phần" />
+                        <span>4 Người</span>
+                      </div>
+                      <div class="meal-info-pill">
+                        <img src="../../assets/san-pham/dokho.svg" alt="Độ khó" />
+                        <span>{{ meal.product.level || 'Trung bình' }}</span>
+                      </div>
+                      <div class="meal-info-pill">
+                        <img src="../../assets/san-pham/ph-cooking-pot.svg" alt="Thời gian" />
+                        <span>{{ meal.product.time || '30 phút' }}</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Add view details button -->
+                    <button class="meal-view-details" (click)="viewProductDetails(meal.product)">XEM CHI TIẾT</button>
+                    
                     <div class="meal-category">{{ meal.product.category }}</div>
                   </div>
                 </div>

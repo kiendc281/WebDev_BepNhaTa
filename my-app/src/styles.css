@@ -1,4 +1,4 @@
-/* @import "~bootstrap-icons/font/bootstrap-icons.css"; */
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
 /* 300 (light), 400 (regular), 500 (medium), 600 (semi-bold), 700 (bold), 800 (extra-bold) */
 * {
   font-family: "Open Sans", sans-serif;

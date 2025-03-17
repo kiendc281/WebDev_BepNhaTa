@@ -1,7 +1,10 @@
 export interface Product {
   _id: string;
+  id?: string;
   ingredientName: string;
+  title?: string;
   mainImage: string;
+  image?: string;
   subImage: string;
   level: string;
   time: string;

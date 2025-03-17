@@ -165,7 +165,15 @@ export class LenThucDonComponent implements OnInit {
   getRandomProduct(): Product | null {
     if (this.products.length === 0) return null;
     const randomIndex = Math.floor(Math.random() * this.products.length);
-    return this.products[randomIndex];
+    const product = this.products[randomIndex];
+    
+    // Add mappings for backward compatibility
+    return {
+      ...product,
+      id: product._id,
+      title: product.ingredientName,
+      image: product.mainImage
+    };
   }
   
   getRandomRecipes(count: number): Recipe[] {
@@ -188,11 +196,13 @@ export class LenThucDonComponent implements OnInit {
     console.log('Mua thực đơn:', menuDay.day);
     // Thêm tất cả sản phẩm trong thực đơn vào giỏ hàng
     menuDay.meals.forEach(meal => {
-      this.addToCart(meal.product.id);
+      if (meal.product && meal.product.id) {
+        this.addToCart(meal.product.id.toString());
+      }
     });
   }
   
-  addToCart(productId: number): void {
+  addToCart(productId: string): void {
     // Thêm vào giỏ hàng
     console.log('Thêm vào giỏ hàng:', productId);
   }
@@ -215,5 +225,22 @@ export class LenThucDonComponent implements OnInit {
       this.currentRecipePage++;
       this.updateVisibleRecipes();
     }
+  }
+
+  // Helper methods for template to avoid errors
+  getProductTitle(product: Product): string {
+    return product.title || product.ingredientName || '';
+  }
+  
+  getProductImage(product: Product): string {
+    return product.image || product.mainImage || '';
+  }
+  
+  // View product details
+  viewProductDetails(product: Product): void {
+    // Navigate to product details page
+    console.log('View product details:', product);
+    // You can implement routing to the product details page here
+    // this.router.navigate(['/san-pham', product._id]);
   }
 }
