@@ -42,12 +42,14 @@
         <div class="details-grid">
           <div class="detail-item">
             <h4>Thành phần nguyên liệu</h4>
-            <div *ngIf="!product?.components">Không có dữ liệu components</div>
-            <div *ngIf="product?.components && product.components.length === 0">
-              Danh sách components rỗng
+            <div *ngIf="!product?.components" class="alert alert-warning">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i> Không có dữ liệu thành phần nguyên liệu
+            </div>
+            <div *ngIf="product?.components && product.components.length === 0" class="alert alert-info">
+              <i class="bi bi-info-circle-fill me-2"></i> Chưa cập nhật thành phần nguyên liệu
             </div>
             <ul
-              class="components-list"
+              class="ingredients-list"
               *ngIf="product?.components && product.components.length > 0"
             >
               <li *ngFor="let component of product.components">
@@ -119,23 +121,29 @@
       </div>
 
       <div class="price-section">
-        <div class="original-price" *ngIf="hasDiscount()">
-          {{ getOriginalPrice() | number : "1.0-0" }}đ
+        <div *ngIf="!getOriginalPrice() && !getDiscountedPrice()" class="alert alert-warning">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> Không có thông tin giá cho sản phẩm này
         </div>
-        <div class="price">
-          <span class="discounted-price"
-            >{{ getDiscountedPrice() | number : "1.0-0" }}đ</span
-          >
-          <span class="discount-tag" *ngIf="hasDiscount()"
-            >-{{ product.discount }}%</span
-          >
-        </div>
-        <div class="price-note" *ngIf="hasDiscount()">
-          <div>
-            Sản phẩm đang được giảm giá
-            <span class="fw-bold text-danger"> {{ product.discount }}%</span>
+        
+        <ng-container *ngIf="getOriginalPrice() || getDiscountedPrice()">
+          <div class="original-price" *ngIf="hasDiscount()">
+            {{ getOriginalPrice() | number : "1.0-0" }}đ
           </div>
-        </div>
+          <div class="price">
+            <span class="discounted-price"
+              >{{ getDiscountedPrice() | number : "1.0-0" }}đ</span
+            >
+            <span class="discount-tag" *ngIf="hasDiscount()"
+              >-{{ product.discount }}%</span
+            >
+          </div>
+          <div class="price-note" *ngIf="hasDiscount()">
+            <div>
+              Sản phẩm đang được giảm giá
+              <span class="fw-bold text-danger"> {{ product.discount }}%</span>
+            </div>
+          </div>
+        </ng-container>
       </div>
 
       <div class="serving-options">

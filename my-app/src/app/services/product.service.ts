@@ -24,12 +24,56 @@ export class ProductService {
           // Log để kiểm tra dữ liệu gốc
           console.log('Raw components:', item.components);
 
-          // Đảm bảo components là một mảng
-          const components = Array.isArray(item.components)
-            ? item.components
-            : typeof item.components === 'object' && item.components !== null
-            ? Object.values(item.components).map((c) => String(c))
-            : [];
+          // Cải thiện xử lý components
+          let components: string[] = [];
+          
+          if (Array.isArray(item.components)) {
+            // Xử lý trường hợp mảng các object hoặc mảng các string
+            components = item.components.map((comp: any) => {
+              if (typeof comp === 'string') {
+                return comp;
+              } else if (typeof comp === 'object' && comp !== null) {
+                return comp.name || String(comp);
+              }
+              return String(comp);
+            });
+          } else if (typeof item.components === 'string') {
+            // Nếu components là string, thử phân tích nó thành mảng
+            try {
+              const parsed = JSON.parse(item.components);
+              if (Array.isArray(parsed)) {
+                components = parsed.map((comp: any) => {
+                  if (typeof comp === 'string') {
+                    return comp;
+                  } else if (typeof comp === 'object' && comp !== null) {
+                    return comp.name || String(comp);
+                  }
+                  return String(comp);
+                });
+              } else if (typeof parsed === 'object' && parsed !== null) {
+                components = Object.values(parsed).map((c: any) => {
+                  if (typeof c === 'string') {
+                    return c;
+                  } else if (typeof c === 'object' && c !== null) {
+                    return c.name || String(c);
+                  }
+                  return String(c);
+                });
+              }
+            } catch (e) {
+              // Nếu không thể parse, xử lý như một chuỗi đơn
+              components = [item.components];
+            }
+          } else if (typeof item.components === 'object' && item.components !== null) {
+            components = Object.values(item.components).map((c: any) => {
+              if (typeof c === 'string') {
+                return c;
+              } else if (typeof c === 'object' && c !== null) {
+                return c.name || String(c);
+              }
+              return String(c);
+            });
+          }
 
           // Log sau khi xử lý
           console.log('Processed components:', components);
@@ -101,7 +145,13 @@ export class ProductService {
 
   getPortionPrice(product: Product, portion: string = '2'): number {
     if (!product || !product.pricePerPortion) {
-      console.warn('Không tìm thấy thông tin giá cho sản phẩm:', product);
+      console.warn('Không tìm thấy thông tin giá cho sản phẩm:', product?.ingredientName || 'unknown');
+      return 0;
+    }
+
+    // Kiểm tra xem pricePerPortion có phải là object không
+    if (typeof product.pricePerPortion !== 'object' || product.pricePerPortion === null) {
+      console.error('pricePerPortion không phải là object:', product.pricePerPortion);
       return 0;
     }
 
@@ -111,10 +161,21 @@ export class ProductService {
         `Không tìm thấy giá cho khẩu phần ${portion} người:`,
         product.pricePerPortion
       );
-      // Nếu không có giá cho khẩu phần 4 người, tính dựa trên giá 2 người
+      
+      // Nếu không có giá cho khẩu phần yêu cầu, tìm khẩu phần đầu tiên có sẵn
+      const availablePortions = Object.keys(product.pricePerPortion);
+      if (availablePortions.length > 0) {
+        const firstAvailablePortion = availablePortions[0];
+        console.log(`Sử dụng giá của khẩu phần ${firstAvailablePortion} thay thế:`, 
+                   product.pricePerPortion[firstAvailablePortion]);
+        return product.pricePerPortion[firstAvailablePortion];
+      }
+      
+      // Nếu không có khẩu phần nào, tính dựa trên giá 2 người (nếu có)
       if (portion === '4' && product.pricePerPortion['2']) {
         return Math.round(product.pricePerPortion['2'] * 1.8);
       }
+      
       return 0;
     }
 

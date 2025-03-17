@@ -96,12 +96,20 @@ export class ChiTietSanPhamComponent implements OnInit {
 
         if (this.product) {
           console.log('Found product:', this.product);
-          console.log('Product components:', this.product.components);
-          console.log('Components type:', typeof this.product.components);
-          console.log(
-            'Is components array?',
-            Array.isArray(this.product.components)
-          );
+          
+          // Kiểm tra và log thành phần nguyên liệu
+          if (this.product.components && this.product.components.length > 0) {
+            console.log('Thành phần nguyên liệu:', this.product.components);
+          } else {
+            console.warn('Không tìm thấy thành phần nguyên liệu cho sản phẩm:', id);
+          }
+          
+          // Kiểm tra và log thông tin giá
+          if (this.product.pricePerPortion) {
+            console.log('Thông tin giá theo khẩu phần:', this.product.pricePerPortion);
+          } else {
+            console.warn('Không tìm thấy thông tin giá cho sản phẩm:', id);
+          }
 
           this.loadRelatedProducts();
           this.updatePrices();
@@ -155,6 +163,22 @@ export class ChiTietSanPhamComponent implements OnInit {
     if (!this.product) return;
 
     console.log('Dữ liệu sản phẩm trước khi tính giá:', this.product);
+    
+    if (!this.product.pricePerPortion || Object.keys(this.product.pricePerPortion).length === 0) {
+      console.error('Không tìm thấy thông tin giá theo khẩu phần cho sản phẩm:', this.product.ingredientName);
+      this._currentOriginalPrice = 0;
+      this._currentDiscountedPrice = 0;
+      return;
+    }
+    
+    // Nếu không có khẩu phần đã chọn, sử dụng mặc định '2'
+    if (!this.selectedServing || !this.product.pricePerPortion[this.selectedServing]) {
+      console.warn(`Không tìm thấy giá cho khẩu phần ${this.selectedServing}, sử dụng khẩu phần mặc định`);
+      const availablePortions = Object.keys(this.product.pricePerPortion);
+      if (availablePortions.length > 0) {
+        this.selectedServing = availablePortions[0];
+      }
+    }
 
     // Cập nhật cả giá gốc và giá sau giảm giá
     this._currentOriginalPrice = this.productService.getPortionPrice(
