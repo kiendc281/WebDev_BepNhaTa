@@ -131,6 +131,43 @@
       id="thong-tin"
     >
       <h1>THÔNG TIN TÀI KHOẢN</h1>
+      <div class="thong-tin-tai-khoan">
+        <div class="thong-tin-tai-khoan-item">
+          <div class="thong-tin-tai-khoan-item-label">Họ và tên:</div>
+          <span>{{ currentUser?.name || "Chưa cập nhật" }}</span>
+        </div>
+        <div class="thong-tin-tai-khoan-item">
+          <div class="thong-tin-tai-khoan-item-label">Email:</div>
+          <span>{{ currentUser?.email || "Chưa cập nhật" }}</span>
+        </div>
+        <div class="thong-tin-tai-khoan-item">
+          <div class="thong-tin-tai-khoan-item-label">Số điện thoại:</div>
+          <span>{{ currentUser?.phone || "Chưa cập nhật" }}</span>
+        </div>
+        <div class="thong-tin-tai-khoan-item">
+          <div class="thong-tin-tai-khoan-item-label">Giới tính:</div>
+          <span>Nam</span>
+        </div>
+        <div class="thong-tin-tai-khoan-item">
+          <div class="thong-tin-tai-khoan-item-label">Ngày sinh:</div>
+          <span>20/01/2000</span>
+        </div>
+        <button class="button-trang" (click)="openUpdateModal()">
+          CẬP NHẬT
+        </button>
+      </div>
+      <h1>THÔNG TIN ĐĂNG NHẬP</h1>
+      <div class="thong-tin-tai-khoan-item">
+        <div class="thong-tin-tai-khoan-item-label">Email:</div>
+        <span>{{ currentUser?.email || "Chưa cập nhật" }}</span>
+      </div>
+      <div class="thong-tin-tai-khoan-item">
+        <div class="thong-tin-tai-khoan-item-label">Mật khẩu:</div>
+        <span>********</span>
+      </div>
+      <button class="button-trang" (click)="openPasswordModal()">
+        CẬP NHẬT
+      </button>
     </div>
 
     <!-- LỊCH SỬ ĐƠN HÀNG -->
@@ -158,6 +195,244 @@
       id="so-dia-chi"
     >
       <h1>SỔ ĐỊA CHỈ</h1>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Cập nhật thông tin tài khoản -->
+<div class="modal-overlay" *ngIf="showUpdateModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h4>Chỉnh sửa thông tin tài khoản</h4>
+      <button class="close-button" (click)="closeUpdateModal()">
+        <img
+          src="../../assets/tai-khoan/zondicons-close-outline.svg"
+          alt="Đóng"
+        />
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="updateForm" (ngSubmit)="updateUserInfo()">
+        <!-- Họ và tên -->
+        <div class="form-group">
+          <label>
+            <img src="../../assets/tai-khoan/hovaten.svg" alt="User" />
+            Họ và tên của bạn:
+          </label>
+          <input
+            type="text"
+            formControlName="name"
+            placeholder="Nhập họ và tên"
+          />
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label>
+            <img src="../../assets/tai-khoan/email.svg" alt="Email" />
+            Email của bạn:
+          </label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="Nhập email"
+          />
+        </div>
+
+        <!-- Số điện thoại -->
+        <div class="form-group">
+          <label>
+            <img src="../../assets/tai-khoan/phone.svg" alt="Phone" />
+            Số điện thoại
+          </label>
+          <input
+            type="tel"
+            formControlName="phone"
+            placeholder="Nhập số điện thoại"
+          />
+        </div>
+
+        <!-- Ngày sinh -->
+        <div class="form-group">
+          <label>
+            <img src="../../assets/tai-khoan/dob.svg" alt="Birthday" />
+            Ngày sinh của bạn
+          </label>
+          <div class="birthday-select">
+            <div class="select-container">
+              <select formControlName="day">
+                <option *ngFor="let day of days" [value]="day">
+                  Ngày {{ day }}
+                </option>
+              </select>
+              <img
+                src="../../assets/tai-khoan/icon-down.svg"
+                alt="Dropdown"
+                class="dropdown-icon"
+              />
+            </div>
+            <div class="select-container">
+              <select formControlName="month">
+                <option *ngFor="let month of months" [value]="month">
+                  Tháng {{ month }}
+                </option>
+              </select>
+              <img
+                src="../../assets/tai-khoan/icon-down.svg"
+                alt="Dropdown"
+                class="dropdown-icon"
+              />
+            </div>
+            <div class="select-container">
+              <select formControlName="year">
+                <option *ngFor="let year of years" [value]="year">
+                  Năm {{ year }}
+                </option>
+              </select>
+              <img
+                src="../../assets/tai-khoan/icon-down.svg"
+                alt="Dropdown"
+                class="dropdown-icon"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Giới tính -->
+        <div class="form-group">
+          <div class="gender-options">
+            <label class="radio-container">
+              <input
+                type="radio"
+                formControlName="gender"
+                value="Nam"
+                [checked]="gender === 'Nam'"
+                (change)="selectGender('Nam')"
+              />
+              <span class="radio-label">Nam</span>
+            </label>
+            <label class="radio-container">
+              <input
+                type="radio"
+                formControlName="gender"
+                value="Nữ"
+                [checked]="gender === 'Nữ'"
+                (change)="selectGender('Nữ')"
+              />
+              <span class="radio-label">Nữ</span>
+            </label>
+            <label class="radio-container">
+              <input
+                type="radio"
+                formControlName="gender"
+                value="Khác"
+                [checked]="gender === 'Khác'"
+                (change)="selectGender('Khác')"
+              />
+              <span class="radio-label">Khác</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Nút cập nhật -->
+        <button type="submit" class="button-cam">CẬP NHẬT</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Cập nhật thông tin đăng nhập (mật khẩu) -->
+<div class="modal-overlay" *ngIf="showPasswordModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h4>Chỉnh sửa thông tin đăng nhập</h4>
+      <button class="close-button" (click)="closePasswordModal()">
+        <img
+          src="../../assets/tai-khoan/zondicons-close-outline.svg"
+          alt="Đóng"
+        />
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+        <!-- Mật khẩu cũ -->
+        <div class="form-group password-field">
+          <label>
+            <img src="../../assets/tai-khoan/lock.svg" alt="Password" />
+            Mật khẩu cũ
+          </label>
+          <div class="password-input-container">
+            <input
+              [type]="showOldPassword ? 'text' : 'password'"
+              formControlName="oldPassword"
+              placeholder="Nhập mật khẩu cũ"
+            />
+            <img
+              [src]="
+                showOldPassword
+                  ? '../../assets/tai-khoan/unhide.svg'
+                  : '../../assets/tai-khoan/hideeye.svg'
+              "
+              alt="Toggle"
+              class="toggle-password"
+              (click)="togglePasswordVisibility('old')"
+            />
+          </div>
+        </div>
+
+        <!-- Mật khẩu mới -->
+        <div class="form-group password-field">
+          <label>
+            <img src="../../assets/tai-khoan/lock.svg" alt="Password" />
+            Mật khẩu mới
+          </label>
+          <div class="password-input-container">
+            <input
+              [type]="showNewPassword ? 'text' : 'password'"
+              formControlName="newPassword"
+              placeholder="Nhập mật khẩu mới"
+            />
+            <img
+              [src]="
+                showNewPassword
+                  ? '../../assets/tai-khoan/unhide.svg'
+                  : '../../assets/tai-khoan/hideeye.svg'
+              "
+              alt="Toggle"
+              class="toggle-password"
+              (click)="togglePasswordVisibility('new')"
+            />
+          </div>
+        </div>
+
+        <!-- Xác nhận mật khẩu mới -->
+        <div class="form-group password-field">
+          <label>
+            <img src="../../assets/tai-khoan/lock.svg" alt="Password" />
+            Xác nhận mật khẩu mới
+          </label>
+          <div class="password-input-container">
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              placeholder="Xác nhận mật khẩu mới"
+            />
+            <img
+              [src]="
+                showConfirmPassword
+                  ? '../../assets/tai-khoan/unhide.svg'
+                  : '../../assets/tai-khoan/hideeye.svg'
+              "
+              alt="Toggle"
+              class="toggle-password"
+              (click)="togglePasswordVisibility('confirm')"
+            />
+          </div>
+        </div>
+
+        <!-- Nút cập nhật -->
+        <button type="submit" class="button-cam">CẬP NHẬT</button>
+      </form>
     </div>
   </div>
 </div>
