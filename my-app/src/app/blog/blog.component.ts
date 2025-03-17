@@ -64,7 +64,11 @@ export class BlogComponent implements OnInit {
           name: 'Đặc sản vùng miền',
           slug: 'dac-san-vung-mien'
         },
-        author: 'Bếp Nhà Ta',
+        author: {
+          _id: 'default-author',
+          name: 'Bếp Nhà Ta',
+          email: 'info@bepnhata.com'
+        },
         views: 1764,
         likes: 46,
         likedBy: [],
@@ -83,7 +87,11 @@ export class BlogComponent implements OnInit {
           name: 'Dinh dưỡng',
           slug: 'dinh-duong'
         },
-        author: 'Bếp Nhà Ta',
+        author: {
+          _id: 'default-author',
+          name: 'Bếp Nhà Ta',
+          email: 'info@bepnhata.com'
+        },
         views: 1764,
         likes: 46,
         likedBy: [],
@@ -102,7 +110,11 @@ export class BlogComponent implements OnInit {
           name: 'Đặc sản vùng miền',
           slug: 'dac-san-vung-mien'
         },
-        author: 'Bếp Nhà Ta',
+        author: {
+          _id: 'default-author',
+          name: 'Bếp Nhà Ta',
+          email: 'info@bepnhata.com'
+        },
         views: 1764,
         likes: 46,
         likedBy: [],
@@ -121,7 +133,11 @@ export class BlogComponent implements OnInit {
           name: 'Mẹo bếp núc',
           slug: 'meo-bep-nuc'
         },
-        author: 'Bếp Nhà Ta',
+        author: {
+          _id: 'default-author',
+          name: 'Bếp Nhà Ta',
+          email: 'info@bepnhata.com'
+        },
         views: 1764,
         likes: 46,
         likedBy: [],
@@ -140,7 +156,11 @@ export class BlogComponent implements OnInit {
           name: 'Mẹo bếp núc',
           slug: 'meo-bep-nuc'
         },
-        author: 'Bếp Nhà Ta',
+        author: {
+          _id: 'default-author',
+          name: 'Bếp Nhà Ta',
+          email: 'info@bepnhata.com'
+        },
         views: 1764,
         likes: 46,
         likedBy: [],

@@ -42,7 +42,7 @@
 
           <!-- Meta Information -->
           <div class="blog-meta">
-            <span class="author">Đăng bởi: <span class="author-name">Bếp Nhà Ta</span></span>
+            <span class="author">Đăng bởi: <span class="author-name">{{ blogPost.author?.name || 'Bếp Nhà Ta' }}</span></span>
             <span class="divider">|</span>
             <span class="date">{{ blogPost.publishDate | date:'dd/MM/yyyy' }}</span>
             <span class="divider">|</span>
@@ -61,14 +61,37 @@
             <ng-container *ngIf="blogPost.sections && blogPost.sections.length > 0">
               <div *ngFor="let section of sortSections(blogPost.sections)" class="section-content">
                 <ng-container *ngIf="section.content">
-                  <ng-container [ngSwitch]="section.content.type">
-                    <!-- Hiển thị nội dung dựa vào loại section -->
-                    <div *ngSwitchCase="'text'" [innerHTML]="section.content.text"></div>
-                    <div *ngSwitchCase="'image'" class="section-image">
-                      <img [src]="section.content.url" [alt]="section.content.caption || ''" class="img-fluid">
-                      <div *ngIf="section.content.caption" class="image-caption">{{ section.content.caption }}</div>
-                    </div>
-                    <div *ngSwitchDefault>{{ section.content }}</div>
+                  <!-- Tiêu đề section -->
+                  <h3 *ngIf="section.content.title" class="section-title">{{ section.content.title }}</h3>
+                  
+                  <!-- Nội dung văn bản -->
+                  <ng-container *ngIf="section.content.text">
+                    <!-- Nếu text là mảng, hiển thị từng đoạn -->
+                    <ng-container *ngIf="isArray(section.content.text); else textAsHtml">
+                      <p *ngFor="let paragraph of getTextArray(section.content.text)">{{ paragraph }}</p>
+                    </ng-container>
+                    <!-- Nếu text là HTML, hiển thị trực tiếp -->
+                    <ng-template #textAsHtml>
+                      <div [innerHTML]="section.content.text"></div>
+                    </ng-template>
+                  </ng-container>
+                  
+                  <!-- Hình ảnh -->
+                  <div *ngIf="section.content.imageUrl" class="section-image">
+                    <img [src]="section.content.imageUrl" [alt]="section.content.imageCaption || ''" class="img-fluid">
+                    <div *ngIf="section.content.imageCaption" class="image-caption">{{ section.content.imageCaption }}</div>
+                  </div>
+                  
+                  <!-- Hỗ trợ khả năng tương thích với cấu trúc cũ -->
+                  <ng-container *ngIf="!section.content.text && !section.content.imageUrl && section.content.type">
+                    <ng-container [ngSwitch]="section.content.type">
+                      <div *ngSwitchCase="'text'" [innerHTML]="section.content.text"></div>
+                      <div *ngSwitchCase="'image'" class="section-image">
+                        <img [src]="section.content.url" [alt]="section.content.caption || ''" class="img-fluid">
+                        <div *ngIf="section.content.caption" class="image-caption">{{ section.content.caption }}</div>
+                      </div>
+                      <div *ngSwitchDefault>{{ section.content }}</div>
+                    </ng-container>
                   </ng-container>
                 </ng-container>
               </div>

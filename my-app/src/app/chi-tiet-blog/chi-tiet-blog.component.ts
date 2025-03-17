@@ -43,8 +43,10 @@ export class ChiTietBlogComponent implements OnInit {
 
     this.blogService.getBlogById(id).subscribe({
       next: (post) => {
+        console.log('Blog Post received from API:', post);
         if (post) {
           this.blogPost = post;
+          console.log('Blog Post after assignment:', this.blogPost);
           
           // Check if we should use structured sections or direct content
           if (!this.blogPost.sections || this.blogPost.sections.length === 0) {
@@ -52,6 +54,8 @@ export class ChiTietBlogComponent implements OnInit {
             if (!this.blogPost.content) {
               this.blogPost.content = '<p>Bài viết này không có nội dung.</p>';
             }
+          } else {
+            console.log('Blog sections:', this.blogPost.sections);
           }
           
           // Load related blog posts
@@ -98,7 +102,11 @@ export class ChiTietBlogComponent implements OnInit {
         name: 'Đặc sản vùng miền',
         slug: 'dac-san-vung-mien'
       },
-      author: 'Bếp Nhà Ta',
+      author: {
+        _id: 'sample-author',
+        name: 'Bếp Nhà Ta',
+        email: 'info@bepnhata.com'
+      },
       views: 1764,
       likes: 246,
       likedBy: [],
@@ -135,7 +143,11 @@ export class ChiTietBlogComponent implements OnInit {
           name: 'Đặc sản vùng miền',
           slug: 'dac-san-vung-mien'
         },
-        author: 'Bếp Nhà Ta',
+        author: {
+          _id: 'sample-author',
+          name: 'Bếp Nhà Ta',
+          email: 'info@bepnhata.com'
+        },
         views: 1255,
         likes: 158,
         likedBy: [],
@@ -154,7 +166,11 @@ export class ChiTietBlogComponent implements OnInit {
           name: 'Món ngon hàng ngày',
           slug: 'mon-ngon-hang-ngay'
         },
-        author: 'Bếp Nhà Ta',
+        author: {
+          _id: 'sample-author',
+          name: 'Bếp Nhà Ta',
+          email: 'info@bepnhata.com'
+        },
         views: 982,
         likes: 112,
         likedBy: [],
@@ -187,5 +203,18 @@ export class ChiTietBlogComponent implements OnInit {
   sortSections(sections: BlogSection[]): BlogSection[] {
     if (!sections) return [];
     return [...sections].sort((a, b) => a.order - b.order);
+  }
+
+  // Kiểm tra nếu một đối tượng là mảng
+  isArray(obj: any): boolean {
+    return Array.isArray(obj);
+  }
+
+  // Trả về mảng string an toàn cho ngFor
+  getTextArray(text: string | string[]): string[] {
+    if (Array.isArray(text)) {
+      return text;
+    }
+    return [];
   }
 }

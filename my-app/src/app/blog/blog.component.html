@@ -59,7 +59,7 @@
             <div class="post-meta">
               <!-- <span class="author">Đăng bởi: <span class="author-name">{{ post.author }}</span></span> -->
               <span class="author"
-                >Đăng bởi: <span class="author-name">Bếp Nhà Ta</span></span
+                >Đăng bởi: <span class="author-name">{{ post.author?.name || 'Bếp Nhà Ta' }}</span></span
               >
               <span>|</span>
               <span class="date">{{
