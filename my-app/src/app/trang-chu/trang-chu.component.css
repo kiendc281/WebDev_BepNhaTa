@@ -245,81 +245,256 @@
   color: var(--color-camdam);
 }
 
-/* Trending Dishes Slider */
-.dishes-slider {
+/* Trending Dishes Section */
+.trending-dishes {
+  margin-bottom: 60px;
+}
+
+.trending-dishes .section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.trending-dishes .title-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.trending-dishes .line {
+  height: 2px;
+  width: 120px;
+  background-color: var(--color-camdam);
+}
+
+.trending-dishes .heart-icon {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.trending-dishes h2 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.trending-dishes .first-word {
+  color: var(--color-camdam);
+}
+
+.trending-dishes .products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  position: relative;
+  margin-bottom: 40px;
 }
 
-.dishes-container {
-  display: flex;
-  gap: 24px;
-  overflow: hidden;
-  max-width: 1200px;
-  padding: 10px 0;
-}
-
-.dish-card {
+.trending-dishes .product-card {
   background: white;
-  border-radius: 16px;
+  border-radius: 10px;
   overflow: hidden;
-  width: 270px;
-  border: 1px solid #e6e6e6;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
   transition: all 0.3s ease;
+  border: 1px solid transparent;
+  height: 100%;
 }
 
-.dish-card:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+.trending-dishes .product-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-camdam);
 }
 
-.dish-image {
-  position: relative;
-  margin-bottom: 0;
-  gap: 40px;
+.trending-dishes .product-card a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.dish-image img {
-  width: auto;
-  height: 160px;
+.trending-dishes .product-image {
+  width: 100%;
+  height: 200px;
   object-fit: cover;
-  border-radius: 16px 16px 0 0;
 }
 
-.likes {
+.trending-dishes .save-button {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: white;
-  padding: 6px 12px;
-  border-radius: 20px;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.trending-dishes .product-card:hover .save-button {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.trending-dishes .save-button:hover {
+  background-color: var(--color-camdam);
+}
+
+.trending-dishes .save-button img {
+  width: 41px;
+  height: 41px;
+}
+
+.trending-dishes .product-content {
+  padding: 15px;
+}
+
+.trending-dishes .product-title {
+  color: black !important;
+  font-size: 16px;
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.trending-dishes .product-info {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.trending-dishes .info-item {
   display: flex;
   align-items: center;
-  gap: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  gap: 5px;
+  color: black;
+  font-size: 0.9em;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: var(--color-xamnhat);
 }
 
-.likes img {
+.trending-dishes .info-item img {
   width: 16px;
   height: 16px;
 }
 
-.likes span {
-  font-size: 14px;
-  font-weight: 500;
-  color: #1a1a1a;
+.trending-dishes .product-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 15px;
 }
 
-.dish-name {
+.trending-dishes .button-camnhat {
+  width: 100%;
+  padding: 8px 16px;
+  background-color: var(--color-camnhat);
+  color: var(--color-camdam);
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
   text-align: center;
-  font-size: 16px;
-  font-weight: 500;
-  color: #1a1a1a;
-  margin: 16px 0;
-  padding: 0 16px;
+}
+
+.trending-dishes .product-card:hover .button-camnhat {
+  background-color: var(--color-camdam);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(var(--color-camdam-rgb), 0.2);
+}
+
+.trending-dishes .dots-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.trending-dishes .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.trending-dishes .dot.active {
+  background-color: var(--color-camdam);
+}
+
+@media (max-width: 1024px) {
+  .trending-dishes .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .trending-dishes h2 {
+    font-size: 28px;
+  }
+
+  .trending-dishes .info-item {
+    font-size: 0.8em;
+    padding: 4px;
+  }
+
+  .trending-dishes .product-title {
+    font-size: 0.9em;
+  }
+
+  .trending-dishes .product-info {
+    gap: 10px;
+  }
+
+  .trending-dishes .button-camnhat {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 576px) {
+  .trending-dishes .products-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .trending-dishes h2 {
+    font-size: 24px;
+  }
+
+  .trending-dishes .product-image {
+    height: 180px;
+  }
+
+  .trending-dishes .product-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .trending-dishes .button-camnhat {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 /* Navigation Button Styles */
@@ -364,17 +539,17 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .categories-slider,
-  .dishes-container {
+  .trending-dishes .products-grid {
     gap: 20px;
   }
 
   .category-card,
-  .dish-card {
+  .trending-dishes .product-card {
     width: 180px;
   }
 
   .category-card img,
-  .dish-image img {
+  .trending-dishes .product-image {
     height: 180px;
   }
 
@@ -488,7 +663,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  height: 2.4em;
+  height: 1.4em;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   margin-bottom: 10px;

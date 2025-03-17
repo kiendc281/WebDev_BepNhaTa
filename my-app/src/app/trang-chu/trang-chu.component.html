@@ -83,13 +83,13 @@
     </div>
   </section>
 
-  <!-- Món Ngon Xu Hướng Section -->
+  <!-- Trending Dishes Section -->
   <section class="trending-dishes">
     <div class="section-header">
       <div class="title-wrapper">
         <div class="line"></div>
         <img
-          src="../../assets/trang-chu/home-tim-png-1.png"
+          src="../../assets/trang-chu/best-seller.png"
           alt="heart"
           class="heart-icon"
         />
@@ -98,76 +98,63 @@
       <h2><span class="first-word">Món Ngon</span> Xu Hướng</h2>
     </div>
 
-    <div class="dishes-slider">
-      <button class="nav-button prev">
-        <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
-      </button>
-
-      <div class="dishes-container">
-        <div class="dish-card">
-          <div class="dish-image">
-            <img
-              src="../../assets/trang-chu/monxuhuong.png"
-              alt="Cơm Giòn Tôm Kho Quẹt"
-            />
-            <div class="likes">
-              <img src="../../assets/trang-chu/like.svg" alt="likes" />
-              <span>54</span>
+    <div class="products-grid" *ngIf="!isLoadingRecipes">
+      <div class="product-card" *ngFor="let recipe of currentTrendingRecipes">
+        <div class="save-button">
+          <img
+            src="../../assets/san-pham/favourite.svg"
+            alt="Lưu vào yêu thích"
+          />
+        </div>
+        <a [routerLink]="['/cong-thuc', recipe._id]">
+          <img
+            [src]="recipe.recipeImage"
+            [alt]="recipe.recipeName"
+            class="product-image"
+          />
+          <div class="product-content">
+            <h5 class="product-title">{{ recipe.recipeName }}</h5>
+            <div class="product-info">
+              <div class="info-item">
+                <img src="../../assets/san-pham/khauphan.svg" alt="category" />
+                <span>{{ getServingSize(recipe) }} người</span>
+              </div>
+              <div class="info-item">
+                <img src="../../assets/san-pham/dokho.svg" alt="difficulty" />
+                <span>{{ recipe.difficulty }}</span>
+              </div>
+              <div class="info-item">
+                <img
+                  src="../../assets/san-pham/ph-cooking-pot.svg"
+                  alt="time"
+                />
+                <span>{{ recipe.time }}</span>
+              </div>
+            </div>
+            <div class="product-actions">
+              <button class="button-camnhat">XEM CHI TIẾT</button>
             </div>
           </div>
-          <h3 class="dish-name">Cơm Giòn Tôm Kho Quẹt</h3>
-        </div>
-        <div class="dish-card">
-          <div class="dish-image">
-            <img
-              src="../../assets/trang-chu/monxuhuong.png"
-              alt="Panna Cotta Kem Muối"
-            />
-            <div class="likes">
-              <img src="../../assets/trang-chu/like.svg" alt="likes" />
-              <span>48</span>
-            </div>
-          </div>
-          <h3 class="dish-name">Panna Cotta Kem Muối</h3>
-        </div>
-        <div class="dish-card">
-          <div class="dish-image">
-            <img
-              src="../../assets/trang-chu/monxuhuong.png"
-              alt="Panna Cotta Kem Muối"
-            />
-            <div class="likes">
-              <img src="../../assets/trang-chu/like.svg" alt="likes" />
-              <span>31</span>
-            </div>
-          </div>
-          <h3 class="dish-name">Panna Cotta Kem Muối</h3>
-        </div>
-        <div class="dish-card">
-          <div class="dish-image">
-            <img
-              src="../../assets/trang-chu/monxuhuong.png"
-              alt="Panna Cotta Kem Muối"
-            />
-            <div class="likes">
-              <img src="../../assets/trang-chu/like.svg" alt="likes" />
-              <span>42</span>
-            </div>
-          </div>
-          <h3 class="dish-name">Panna Cotta Kem Muối</h3>
-        </div>
+        </a>
       </div>
-
-      <button class="nav-button next">
-        <img src="../../assets/trang-chu/slider.svg" alt="Next" />
-      </button>
     </div>
 
-    <div class="dots-navigation">
-      <div class="dot active"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
+    <!-- Loading State -->
+    <div class="loading-container" *ngIf="isLoadingRecipes">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Pagination Dots -->
+    <div
+      class="dots-navigation"
+      *ngIf="!isLoadingRecipes && totalTrendingPages > 1"
+    >
+      <div
+        class="dot"
+        *ngFor="let _ of [].constructor(totalTrendingPages); let i = index"
+        [class.active]="i === currentTrendingRecipePage"
+        (click)="goToTrendingPage(i)"
+      ></div>
     </div>
   </section>
 
@@ -195,8 +182,11 @@
             <h5 class="product-title">{{ product.ingredientName }}</h5>
             <div class="product-info">
               <div class="info-item">
-                <img src="../../assets/san-pham/khauphan.svg" alt="people" />
-                <span>{{ product.combo }}</span>
+                <img
+                  src="../../assets/san-pham/ri-bowl-line.svg"
+                  alt="people"
+                />
+                <span>{{ product.category }}</span>
               </div>
               <div class="info-item">
                 <img src="../../assets/san-pham/dokho.svg" alt="difficulty" />

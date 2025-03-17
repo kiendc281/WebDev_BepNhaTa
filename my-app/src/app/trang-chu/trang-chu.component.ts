@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product.interface';
 import { RouterModule } from '@angular/router';
+import { RecipeService } from '../services/recipe.service';
+import { Recipe } from '../models/recipe.interface';
 
 @Component({
   selector: 'app-trang-chu',
@@ -29,11 +31,22 @@ export class TrangChuComponent implements OnInit, OnDestroy {
   productsPerPage = 3;
   loading = true;
 
-  constructor(private router: Router, private productService: ProductService) {}
+  trendingRecipes: Recipe[] = [];
+  currentTrendingRecipePage = 0;
+  recipesPerPage = 6;
+  isLoadingRecipes = false;
+  savedRecipes: Set<string> = new Set();
+
+  constructor(
+    private router: Router,
+    private productService: ProductService,
+    private recipeService: RecipeService
+  ) {}
 
   ngOnInit() {
     this.startSlideTimer();
     this.loadHotProducts();
+    this.loadTrendingRecipes();
   }
 
   ngOnDestroy() {
@@ -170,5 +183,76 @@ export class TrangChuComponent implements OnInit, OnDestroy {
 
   navigateToProductDetail(productId: string) {
     this.router.navigate(['/chi-tiet-san-pham', productId]);
+  }
+
+  // Trending Recipes Methods
+  loadTrendingRecipes() {
+    this.isLoadingRecipes = true;
+    this.recipeService.getTrendingRecipes().subscribe({
+      next: (recipes: Recipe[]) => {
+        this.trendingRecipes = recipes;
+        this.isLoadingRecipes = false;
+      },
+      error: (error: Error) => {
+        console.error('Error loading trending recipes:', error);
+        this.isLoadingRecipes = false;
+      },
+    });
+  }
+
+  get currentTrendingRecipes(): Recipe[] {
+    const start = this.currentTrendingRecipePage * this.recipesPerPage;
+    return this.trendingRecipes.slice(start, start + this.recipesPerPage);
+  }
+
+  get totalTrendingPages(): number {
+    return Math.ceil(this.trendingRecipes.length / this.recipesPerPage);
+  }
+
+  nextTrendingPage(): void {
+    if (this.currentTrendingRecipePage < this.totalTrendingPages - 1) {
+      this.currentTrendingRecipePage++;
+    }
+  }
+
+  previousTrendingPage(): void {
+    if (this.currentTrendingRecipePage > 0) {
+      this.currentTrendingRecipePage--;
+    }
+  }
+
+  goToTrendingPage(index: number): void {
+    if (index >= 0 && index < this.totalTrendingPages) {
+      this.currentTrendingRecipePage = index;
+    }
+  }
+
+  toggleSaveRecipe(event: Event, recipeId: string): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (this.savedRecipes.has(recipeId)) {
+      this.savedRecipes.delete(recipeId);
+    } else {
+      this.savedRecipes.add(recipeId);
+    }
+  }
+
+  isRecipeSaved(recipeId: string): boolean {
+    return this.savedRecipes.has(recipeId);
+  }
+
+  viewRecipeDetails(recipeId: string): void {
+    this.router.navigate(['/cong-thuc', recipeId]);
+  }
+
+  getServingSize(recipe: Recipe): string {
+    if (
+      !recipe.servingsOptions ||
+      Object.keys(recipe.servingsOptions).length === 0
+    ) {
+      return '2';
+    }
+    return Object.keys(recipe.servingsOptions)[0];
   }
 }

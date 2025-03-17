@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, tap, map, throwError } from 'rxjs';
 import { Recipe } from '../models/recipe.interface';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipeService {
-  private apiUrl = 'http://localhost:3000/api/recipes';
+  private apiUrl = `${environment.apiUrl}/recipes`;
 
   constructor(private http: HttpClient) {}
 
@@ -237,5 +238,13 @@ export class RecipeService {
       tap((recipes) => console.log('Received popular recipes:', recipes)),
       catchError(this.handleError)
     );
+  }
+
+  getTrendingRecipes(): Observable<Recipe[]> {
+    return this.http
+      .get<Recipe[]>(this.apiUrl)
+      .pipe(
+        map((recipes) => recipes.sort((a, b) => b.likes - a.likes).slice(0, 12))
+      );
   }
 }
