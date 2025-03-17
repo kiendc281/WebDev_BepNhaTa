@@ -1,0 +1,106 @@
+<div class="login-page">
+  <div class="header">
+    <div class="logo-container">
+      <img src="../../../assets/images/logo.png" alt="Logo" class="logo" />
+      <span>Bếp nhà ta - Mang yêu thương đến căn bếp của bạn!</span>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <h2>Đăng nhập Admin</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input
+          type="text"
+          id="account"
+          formControlName="account"
+          class="form-control"
+          placeholder="Tài khoản Admin"
+          [ngClass]="{ 'is-invalid': submitted && f['account'].errors }"
+        />
+        <div
+          *ngIf="submitted && f['account'].errors"
+          class="validation-message"
+        >
+          <div *ngIf="f['account'].errors['required']">
+            Vui lòng nhập tài khoản
+          </div>
+          <div
+            *ngIf="
+              f['account'].errors &&
+              f['account'].errors['invalidEmail'] &&
+              !f['account'].errors['required']
+            "
+          >
+            Email không hợp lệ
+          </div>
+          <div
+            *ngIf="
+              f['account'].errors &&
+              f['account'].errors['invalidPhone'] &&
+              !f['account'].errors['required']
+            "
+          >
+            Số điện thoại không hợp lệ
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="password-field">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            placeholder="Mật khẩu"
+            autocomplete="current-password"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          />
+          <img
+            [src]="eyeIcon"
+            alt="Hiện/ẩn mật khẩu"
+            class="toggle-password"
+            (click)="togglePassword()"
+          />
+        </div>
+        <div
+          *ngIf="submitted && f['password'].errors"
+          class="validation-message"
+        >
+          <div *ngIf="f['password'].errors['required']">
+            Vui lòng nhập mật khẩu
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        <span *ngIf="loading" class="loading-spinner"></span>
+        {{ loading ? "Đang xử lý..." : "ĐĂNG NHẬP" }}
+      </button>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <div *ngIf="successMessage" class="success-message">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="12" cy="12" r="11" stroke="#28A745" stroke-width="2" />
+          <path
+            d="M7 12L10.5 15.5L17 9"
+            stroke="#28A745"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        {{ successMessage }}
+      </div>
+    </form>
+  </div>
+</div>

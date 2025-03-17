@@ -1,6 +1,12 @@
 <div class="maincontainer">
   <div class="banner">
-    <img src="../../assets/trang-chu/banner.png" alt="" />
+    <img [src]="currentBannerImage" alt="Banner">
+    
+    <div class="banner-dots">
+      <div class="banner-dot" [class.active]="currentBannerSlide === 0" (click)="setCurrentBannerSlide(0)"></div>
+      <div class="banner-dot" [class.active]="currentBannerSlide === 1" (click)="setCurrentBannerSlide(1)"></div>
+      <div class="banner-dot" [class.active]="currentBannerSlide === 2" (click)="setCurrentBannerSlide(2)"></div>
+    </div>
   </div>
 </div>
 
@@ -21,10 +27,6 @@
     </div>
 
     <div class="food-categories">
-      <button class="nav-button prev">
-        <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
-      </button>
-
       <div class="categories-slider">
         <div class="category-card" data-category="mon-tron">
           <img src="../../assets/trang-chu/mon-tron.png" alt="Món trộn" />
@@ -43,10 +45,6 @@
           <div class="category-name">Món nước</div>
         </div>
       </div>
-
-      <button class="nav-button next">
-        <img src="../../assets/trang-chu/slider.svg" alt="Next" />
-      </button>
     </div>
   </section>
 
@@ -239,7 +237,7 @@
       <div class="dot"></div>
     </div>
 
-    <button class="button-cam">
+    <button class="button-cam" (click)="navigateToProducts()">
       XEM THÊM <img src="../../assets/faq/icon-right.svg" alt="" />
     </button>
   </section>
@@ -337,7 +335,7 @@
       <div class="dot"></div>
     </div>
 
-    <button class="button-cam">
+    <button class="button-cam" (click)="navigateToBlog()">
       XEM THÊM <img src="../../assets/faq/icon-right.svg" alt="" />
     </button>
   </section>

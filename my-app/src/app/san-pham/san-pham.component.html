@@ -5,10 +5,21 @@
   <div class="products-container">
     <div class="filter-bar">
       <div class="filter-button-container">
-        <button class="button-cam">Tất Cả Công Thức</button>
-        <button class="button-trang">Miền Bắc</button>
-        <button class="button-trang">Miền Trung</button>
-        <button class="button-trang">Miền Nam</button>
+        <button class="button-cam" (click)="filterByCategory('all')">
+          Tất Cả Công Thức
+        </button>
+        <button class="button-trang" (click)="filterByCategory('mon-man')">
+          Món mặn
+        </button>
+        <button class="button-trang" (click)="filterByCategory('mon-xao')">
+          Món xào
+        </button>
+        <button class="button-trang" (click)="filterByCategory('mon-nuoc')">
+          Món nước
+        </button>
+        <button class="button-trang" (click)="filterByCategory('mon-tron')">
+          Món trộn
+        </button>
       </div>
       <div class="search-container">
         <button class="button-trang">
@@ -41,14 +52,16 @@
             alt="Lưu vào yêu thích"
           />
         </div>
-        <a [routerLink]="['/chi-tiet-san-pham', product.id]">
-          <img
-            [src]="product.image"
-            [alt]="product.title"
-            class="product-image"
-          />
+        <a [routerLink]="['/chi-tiet-san-pham', product._id]">
+          <div class="product-image">
+            <img
+              [src]="product.mainImage"
+              [alt]="product.ingredientName"
+              class="product-image"
+            />
+          </div>
           <div class="product-content">
-            <h5 class="product-title">{{ product.title }}</h5>
+            <h5 class="product-title">{{ product.ingredientName }}</h5>
             <div class="product-info">
               <div class="info-item">
                 <img src="../../assets/san-pham/khauphan.svg" alt="category" />
@@ -70,15 +83,19 @@
               <div class="price-container">
                 <div class="price-info">
                   <div class="price">
-                    <span class="old-price"
-                      >{{ product.price | number : "1.0-0" }}đ</span
+                    <span class="old-price" *ngIf="hasDiscount(product)"
+                      >{{ getOriginalPrice(product) | number : "1.0-0" }}đ</span
                     >
                     <span class="new-price"
-                      >{{ product.price * 0.8 | number : "1.0-0" }}đ</span
+                      >{{
+                        getDiscountedPrice(product) | number : "1.0-0"
+                      }}đ</span
                     >
                   </div>
                 </div>
-                <div class="discount-tag">-20%</div>
+                <div class="discount-tag" *ngIf="hasDiscount(product)">
+                  -{{ product.discount }}%
+                </div>
               </div>
               <button class="button-camnhat">XEM CHI TIẾT</button>
             </div>

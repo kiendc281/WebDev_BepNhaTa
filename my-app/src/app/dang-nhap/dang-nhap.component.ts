@@ -14,8 +14,7 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './dang-nhap.component.html',
-  styleUrl: './dang-nhap.component.css',
-  providers: [AuthService],
+  styleUrl: './dang-nhap.component.css'
 })
 export class DangNhapComponent {
   @Output() closePopup = new EventEmitter<void>();
@@ -86,15 +85,17 @@ export class DangNhapComponent {
           // Đợi 1.5 giây rồi đóng popup và chuyển hướng
           setTimeout(() => {
             this.onClose();
-            this.router.navigate(['/trang-chu']);
+            this.router.navigate(['/']);
           }, 1500);
         },
         error: (error) => {
           console.error('Lỗi đăng nhập:', error);
           this.loading = false;
-          this.errorMessage =
-            error.error.message ||
-            'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+          if (error.status === 0) {
+            this.errorMessage = 'Không thể kết nối đến server. Vui lòng thử lại sau.';
+          } else {
+            this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+          }
         },
       });
     }

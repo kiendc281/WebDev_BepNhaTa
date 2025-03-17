@@ -1,1 +1,142 @@
-<p>blog works!</p>
+<!-- Blog Header -->
+<div class="blog-header">
+  <h1 class="text-center">BLOG BẾP NHÀ TA</h1>
+  <div class="banner-image">
+    <img
+      src="assets/blog/blog-banner.jpg"
+      alt="Blog Bếp Nhà Ta"
+      class="img-fluid w-100"
+    />
+  </div>
+</div>
+
+<!-- Blog Content -->
+<div class="container mt-4">
+  <!-- Blog Title Section -->
+  <div class="blog-title-section">
+    <h2 class="title-heading">Bài viết</h2>
+    <div class="title-underline"></div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Đang tải...</span>
+    </div>
+    <p class="mt-2">Đang tải bài viết...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="alert alert-danger my-4" role="alert">
+    <i class="fa fa-exclamation-triangle me-2"></i> {{ error }}
+    <button
+      (click)="loadBlogPosts()"
+      class="btn btn-sm btn-outline-danger ms-3"
+    >
+      Thử lại
+    </button>
+  </div>
+
+  <!-- Blog Posts -->
+  <div
+    *ngIf="!loading && !error && paginatedBlogPosts.length > 0"
+    class="blog-posts mt-4"
+  >
+    <!-- Blog Post Item -->
+    <div *ngFor="let post of paginatedBlogPosts" class="blog-post-item">
+      <div class="row">
+        <div class="col-md-3 col-sm-4">
+          <div class="post-image">
+            <img [src]="post.thumbnail" [alt]="post.title" class="img-fluid" />
+          </div>
+        </div>
+        <div class="col-md-9 col-sm-8">
+          <div class="post-content">
+            <div class="post-category">
+              <span class="category-tag">{{ post.category.name }}</span>
+            </div>
+            <h4 class="post-title">{{ post.title }}</h4>
+            <div class="post-meta">
+              <!-- <span class="author">Đăng bởi: <span class="author-name">{{ post.author }}</span></span> -->
+              <span class="author"
+                >Đăng bởi: <span class="author-name">Bếp Nhà Ta</span></span
+              >
+              <span>|</span>
+              <span class="date">{{
+                post.publishDate | date : "dd/MM/yyyy"
+              }}</span>
+              <span>|</span>
+              <span class="views">{{ post.views }} Lượt xem</span>
+              <span>|</span>
+              <span class="likes"
+                >{{ post.likes }} &nbsp;<i
+                  class="bi bi-heart-fill text-danger"
+                ></i
+              ></span>
+            </div>
+            <div class="post-excerpt">
+              <p>{{ post.description }}</p>
+            </div>
+            <div class="post-actions">
+              <button
+                [routerLink]="['/blog', post._id]"
+                class="button-cam btn-sm"
+              >
+                XEM CHI TIẾT
+              </button>
+              <button
+                (click)="toggleSavePost(post)"
+                class="button-camnhat btn-sm ms-2"
+              >
+                {{ post.saved ? "Đã lưu bài viết" : "Lưu bài viết" }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Posts State -->
+  <div
+    *ngIf="!loading && !error && filteredBlogPosts.length === 0"
+    class="text-center my-5"
+  >
+    <div class="empty-state">
+      <i class="fa fa-newspaper-o fa-3x text-muted mb-3"></i>
+      <h4>Không có bài viết nào</h4>
+      <p class="text-muted">
+        Hiện chưa có bài viết nào trong hệ thống. Vui lòng quay lại sau!
+      </p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div
+    class="pagination"
+    *ngIf="!loading && !error && filteredBlogPosts.length > itemsPerPage"
+  >
+    <button
+      class="page-number"
+      (click)="previousPage()"
+      [disabled]="currentPage === 1"
+    >
+      ←
+    </button>
+    <button
+      class="page-number"
+      *ngFor="let page of displayedPages"
+      [class.active]="currentPage === page"
+      (click)="goToPage(page)"
+    >
+      {{ page }}
+    </button>
+    <button
+      class="page-number"
+      (click)="nextPage()"
+      [disabled]="currentPage === totalPages"
+    >
+      →
+    </button>
+  </div>
+</div>

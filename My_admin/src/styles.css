@@ -1,0 +1,65 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
+
+* {
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+:root {
+  --color-camdam: #ea5c2b;
+  --color-camvua: #ff7f3f;
+  --color-camnhat: #ffbf9f;
+  --color-xamnhat: #ededed;
+  --color-xamdam: #6f6f6f;
+  --color-camdam-rgb: 234, 92, 43;
+  --color-camnhat-rgb: 255, 191, 159;
+  --color-xam-rgb: 237, 237, 237;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: var(--color-camdam) !important;
+}
+
+h1 {
+  font-weight: 800 !important;
+  font-size: 40px !important;
+}
+
+h2 {
+  font-weight: 700 !important;
+  font-size: 32px !important;
+}
+
+h3 {
+  font-weight: 700 !important;
+  font-size: 28px !important;
+}
+
+h4 {
+  font-weight: 700 !important;
+  font-size: 24px !important;
+}
+
+h5 {
+  font-weight: 700 !important;
+  font-size: 20px !important;
+}
+
+p {
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--color-xamdam);
+}

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Account, LoginResponse } from '../models/account.interface';
 
 @Injectable({
@@ -13,7 +13,14 @@ export class AuthService {
     constructor(private http: HttpClient) { }
 
     login(account: string, password: string): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, { account, password });
+        return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, { account, password }).pipe(
+            catchError((error: HttpErrorResponse) => {
+                if (error.status === 0) {
+                    return throwError(() => new Error('Không thể kết nối đến server'));
+                }
+                return throwError(() => error);
+            })
+        );
     }
 
     saveToken(token: string): void {

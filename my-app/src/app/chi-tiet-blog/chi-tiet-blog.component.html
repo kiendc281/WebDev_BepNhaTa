@@ -1,0 +1,162 @@
+<div class="blog-detail-container">
+  <div class="breadcrumb-container">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/trang-chu">Trang chủ</a></li>
+          <li class="breadcrumb-item"><a routerLink="/blog">Blog</a></li>
+          <li class="breadcrumb-item active" aria-current="page" *ngIf="blogPost">{{ blogPost.title }}</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <!-- Main Content -->
+      <div class="col-lg-8" *ngIf="loading">
+        <div class="loading-spinner">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Đang tải...</span>
+          </div>
+          <p>Đang tải bài viết...</p>
+        </div>
+      </div>
+
+      <div class="col-lg-8" *ngIf="error && !loading">
+        <div class="error-message">
+          <div class="alert alert-danger">{{ error }}</div>
+          <a routerLink="/blog" class="button-cam">Quay lại trang blog</a>
+        </div>
+      </div>
+
+      <div class="col-lg-8" *ngIf="blogPost && !loading">
+        <article class="blog-detail">
+          <!-- Category Badge -->
+          <div class="category-badge">
+            <span class="category-tag">{{ blogPost.category.name }}</span>
+          </div>
+
+          <!-- Blog Title -->
+          <h1 class="blog-title">{{ blogPost.title }}</h1>
+
+          <!-- Meta Information -->
+          <div class="blog-meta">
+            <span class="author">Đăng bởi: <span class="author-name">Bếp Nhà Ta</span></span>
+            <span class="divider">|</span>
+            <span class="date">{{ blogPost.publishDate | date:'dd/MM/yyyy' }}</span>
+            <span class="divider">|</span>
+            <span class="views">{{ blogPost.views }} Lượt xem</span>
+            <span class="divider">|</span>
+            <span class="likes">{{ blogPost.likes }} <i class="bi bi-heart-fill text-danger"></i></span>
+          </div>
+
+          <!-- Featured Image -->
+          <div class="featured-image">
+            <img [src]="blogPost.thumbnail" [alt]="blogPost.title" class="img-fluid">
+          </div>
+
+          <!-- Blog Content -->
+          <div class="blog-content">
+            <ng-container *ngIf="blogPost.sections && blogPost.sections.length > 0">
+              <div *ngFor="let section of sortSections(blogPost.sections)" class="section-content">
+                <ng-container *ngIf="section.content">
+                  <ng-container [ngSwitch]="section.content.type">
+                    <!-- Hiển thị nội dung dựa vào loại section -->
+                    <div *ngSwitchCase="'text'" [innerHTML]="section.content.text"></div>
+                    <div *ngSwitchCase="'image'" class="section-image">
+                      <img [src]="section.content.url" [alt]="section.content.caption || ''" class="img-fluid">
+                      <div *ngIf="section.content.caption" class="image-caption">{{ section.content.caption }}</div>
+                    </div>
+                    <div *ngSwitchDefault>{{ section.content }}</div>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </ng-container>
+            
+            <!-- Hiển thị content nếu không có sections -->
+            <div *ngIf="(!blogPost.sections || blogPost.sections.length === 0) && blogPost.content" [innerHTML]="blogPost.content"></div>
+            
+            <!-- Thông báo nếu không có nội dung -->
+            <div *ngIf="(!blogPost.sections || blogPost.sections.length === 0) && !blogPost.content" class="no-content">
+              Bài viết này không có nội dung.
+            </div>
+          </div>
+
+          <!-- Social Share and Actions -->
+          <div class="blog-actions">
+            <div class="social-share">
+              <p>Chia sẻ bài viết:</p>
+              <div class="share-buttons">
+                <a href="javascript:void(0);" class="social-button facebook">
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a href="javascript:void(0);" class="social-button twitter">
+                  <i class="bi bi-twitter"></i>
+                </a>
+                <a href="javascript:void(0);" class="social-button pinterest">
+                  <i class="bi bi-pinterest"></i>
+                </a>
+              </div>
+            </div>
+            <div class="user-actions">
+              <button (click)="likePost()" class="action-button like-button">
+                <i class="bi bi-heart"></i> Thích bài viết
+              </button>
+              <button (click)="savePost()" class="action-button save-button">
+                <i class="bi" [ngClass]="blogPost.saved ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
+                {{ blogPost.saved ? 'Đã lưu bài viết' : 'Lưu bài viết' }}
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4" *ngIf="!loading && !error">
+        <div class="sidebar">
+          <div class="sidebar-widget">
+            <h3 class="widget-title">
+              <span class="title-text">Bài viết liên quan</span>
+              <span class="title-underline"></span>
+            </h3>
+            <div class="related-posts">
+              <div class="related-post-item" *ngFor="let post of relatedPosts">
+                <div class="post-image">
+                  <a [routerLink]="['/blog', post._id]">
+                    <img [src]="post.thumbnail" [alt]="post.title" class="img-fluid">
+                  </a>
+                </div>
+                <div class="post-info">
+                  <span class="post-category">{{ post.category.name }}</span>
+                  <h4 class="post-title">
+                    <a [routerLink]="['/blog', post._id]">{{ post.title }}</a>
+                  </h4>
+                  <div class="post-meta">
+                    <span class="date">{{ post.publishDate | date:'dd/MM/yyyy' }}</span>
+                    <span class="divider">|</span>
+                    <span class="views">{{ post.views }} lượt xem</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-widget">
+            <h3 class="widget-title">
+              <span class="title-text">Danh mục</span>
+              <span class="title-underline"></span>
+            </h3>
+            <ul class="category-list">
+              <li><a routerLink="/blog">Tất cả bài viết</a></li>
+              <li><a [routerLink]="['/blog']" [queryParams]="{category: 'dac-san-vung-mien'}">Đặc sản vùng miền</a></li>
+              <li><a [routerLink]="['/blog']" [queryParams]="{category: 'ket-hop-nguyen-lieu'}">Kết hợp nguyên liệu</a></li>
+              <li><a [routerLink]="['/blog']" [queryParams]="{category: 'dinh-duong'}">Dinh dưỡng</a></li>
+              <li><a [routerLink]="['/blog']" [queryParams]="{category: 'meo-nau-an'}">Mẹo nấu ăn</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -9,11 +9,13 @@ import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.c
 import { LenThucDonComponent } from './len-thuc-don/len-thuc-don.component';
 import { BmibmrComponent } from './bmibmr/bmibmr.component';
 import { BlogComponent } from './blog/blog.component';
+import { ChiTietBlogComponent } from './chi-tiet-blog/chi-tiet-blog.component';
 import { LienHeComponent } from './lien-he/lien-he.component';
 import { FaqComponent } from './faq/faq.component';
 import { DangKyComponent } from './dang-ky/dang-ky.component';
 import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
 import { TaiKhoanComponent } from './tai-khoan/tai-khoan.component';
+import { GioHangComponent } from './gio-hang/gio-hang.component';
 
 export const routes: Routes = [
   { path: 'trang-chu', component: TrangChuComponent },
@@ -23,6 +25,7 @@ export const routes: Routes = [
   { path: 'chi-tiet-san-pham/:id', component: ChiTietSanPhamComponent },
   { path: 'len-thuc-don', component: LenThucDonComponent },
   { path: 'blog', component: BlogComponent },
+  { path: 'blog/:id', component: ChiTietBlogComponent },
   { path: 'cong-cu', component: BmibmrComponent },
   { path: 'about-us', component: AboutusComponent },
   { path: 'chinh-sach', component: ChinhSachComponent },
@@ -33,5 +36,6 @@ export const routes: Routes = [
   { path: 'dang-nhap', component: DangNhapComponent },
   { path: 'tai-khoan', component: TaiKhoanComponent },
   { path: '', component: TrangChuComponent },
+  { path: 'gio-hang', component: GioHangComponent },
   // { path: '', redirectTo: '/dang-nhap', pathMatch: 'full' },
 ];

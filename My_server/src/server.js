@@ -11,12 +11,18 @@ const accountRoutes = require('./routes/account.routes');
 const blogRoutes = require('./routes/blog.routes');
 const cartRoutes = require('./routes/cart.routes');
 const passwordResetRoutes = require('./routes/passwordReset.routes');
+const contactRoutes = require('./routes/contactRoutes');
 const cors = require('cors');
 
 // Kiểm tra JWT_SECRET
 if (!process.env.JWT_SECRET) {
     console.error('FATAL ERROR: JWT_SECRET is not defined.');
     process.exit(1);
+}
+
+// Kiểm tra các biến môi trường cho email
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+    console.error('WARNING: Email configuration is missing. Contact form will not work.');
 }
 
 // config cors
@@ -31,6 +37,7 @@ app.use('/api', menuRoutes);
 app.use('/api', ingredientRoutes);
 app.use('/api', cartRoutes);
 app.use('/api', passwordResetRoutes);
+app.use('/api', contactRoutes);
 
 // Connect to DB
 db.connect().then(() => {

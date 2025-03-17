@@ -32,25 +32,25 @@
   <div class="nav">
     <div class="container-fluid">
       <div class="row align-items-center">
-        <div class="col-6 col-md-auto">
+        <div class="col-2 col-md-auto">
           <div class="logo"><img src="../../assets/logo.png" alt="logo" /></div>
-        </div>
-
-        <!-- Hamburger button for mobile -->
-        <div class="col-6 d-md-none text-end">
-          <button class="hamburger-btn" (click)="toggleMobileMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
         </div>
 
         <!-- Desktop menu -->
         <div class="col-md d-none d-md-block">
           <div class="nav-links">
-            <a routerLink="/trang-chu">Trang chủ</a>
+            <a
+              routerLink="/trang-chu"
+              [class.active]="currentRoute === '/trang-chu'"
+              >Trang chủ</a
+            >
             <div class="dropdown">
-              <a routerLink="/cong-thuc" class="dropdown-toggle">Công thức</a>
+              <a
+                routerLink="/cong-thuc"
+                class="dropdown-toggle"
+                [class.active]="currentRoute.startsWith('/cong-thuc')"
+                >Công thức</a
+              >
               <div class="dropdown-content">
                 <a
                   [routerLink]="['/cong-thuc']"
@@ -75,19 +75,45 @@
               </div>
             </div>
             <div class="dropdown">
-              <a routerLink="/san-pham" class="dropdown-toggle">Sản phẩm</a>
+              <a
+                routerLink="/san-pham"
+                class="dropdown-toggle"
+                [class.active]="currentRoute.startsWith('/san-pham')"
+                >Sản phẩm</a
+              >
               <div class="dropdown-content">
                 <a routerLink="/san-pham">Tất cả</a>
-                <a routerLink="/san-pham/mien-bac">Miền Bắc</a>
-                <a routerLink="/san-pham/mien-trung">Miền Trung</a>
-                <a routerLink="/san-pham/mien-nam">Miền Nam</a>
+                <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-man'}">Món mặn</a>
+                <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-xao'}">Món xào</a>
+                <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-nuoc'}">Món nước</a>
+                <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-tron'}">Món trộn</a>
               </div>
             </div>
-            <a routerLink="/len-thuc-don">Lên thực đơn</a>
-            <a routerLink="/blog">Blog</a>
-            <a routerLink="/cong-cu">Công cụ</a>
+            <a
+              routerLink="/len-thuc-don"
+              [class.active]="currentRoute === '/len-thuc-don'"
+              >Lên thực đơn</a
+            >
+            <a routerLink="/blog" [class.active]="currentRoute === '/blog'"
+              >Blog</a
+            >
+            <a
+              routerLink="/cong-cu"
+              [class.active]="currentRoute === '/cong-cu'"
+              >Công cụ</a
+            >
             <div class="dropdown">
-              <a routerLink="/about-us" class="dropdown-toggle">Giới thiệu</a>
+              <a
+                routerLink="/about-us"
+                class="dropdown-toggle"
+                [class.active]="
+                  currentRoute.startsWith('/about-us') ||
+                  currentRoute.startsWith('/chinh-sach') ||
+                  currentRoute.startsWith('/faq') ||
+                  currentRoute.startsWith('/lien-he')
+                "
+                >Giới thiệu</a
+              >
               <div class="dropdown-content">
                 <a routerLink="/about-us">Về chúng tôi</a>
                 <a routerLink="/chinh-sach">Chính sách</a>
@@ -97,19 +123,32 @@
             </div>
           </div>
         </div>
-        <div class="col-md-auto d-none d-md-block">
-          <div class="nav-icons">
-            <div class="search-container">
-              <input type="text" placeholder="Tìm kiếm" />
-            </div>
-            <img src="../../assets/header/mdi-cart-outline.svg" alt="" />
-            <img
-              src="../../assets/header/group.svg"
-              alt=""
-              (click)="toggleLoginPopup()"
-              style="cursor: pointer"
-            />
+
+        <!-- Search and Icons - Always visible -->
+        <div class="col-auto ml-auto d-flex align-items-center nav-right">
+          <div class="search-container">
+            <input type="text" placeholder="Tìm kiếm" />
           </div>
+          <a routerLink="/gio-hang" class="cart-icon">
+            <img
+              src="../../assets/header/mdi-cart-outline.svg"
+              alt="Giỏ hàng"
+            />
+          </a>
+          <img
+            src="../../assets/header/group.svg"
+            alt=""
+            (click)="toggleLoginPopup()"
+            class="user-icon"
+            style="cursor: pointer"
+          />
+
+          <!-- Hamburger button - only visible on mobile -->
+          <button class="hamburger-btn d-md-none" (click)="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
       </div>
     </div>
@@ -119,10 +158,16 @@
   <!-- Mobile Menu -->
   <div class="mobile-menu" [class.active]="isMobileMenuOpen">
     <div class="mobile-nav-links">
-      <a routerLink="/trang-chu" (click)="closeMobileMenu()">Trang chủ</a>
+      <a
+        routerLink="/trang-chu"
+        (click)="closeMobileMenu()"
+        [class.active]="currentRoute === '/trang-chu'"
+        >Trang chủ</a
+      >
       <div
         class="mobile-dropdown"
         [class.active]="activeDropdown === 'congthuc'"
+        [class.active-route]="currentRoute.startsWith('/cong-thuc')"
       >
         <div
           class="mobile-dropdown-toggle"
@@ -160,6 +205,7 @@
       <div
         class="mobile-dropdown"
         [class.active]="activeDropdown === 'sanpham'"
+        [class.active-route]="currentRoute.startsWith('/san-pham')"
       >
         <div
           class="mobile-dropdown-toggle"
@@ -169,23 +215,39 @@
         </div>
         <div class="mobile-dropdown-content">
           <a routerLink="/san-pham" (click)="closeMobileMenu()">Tất cả</a>
-          <a routerLink="/san-pham/mien-bac" (click)="closeMobileMenu()"
-            >Miền Bắc</a
-          >
-          <a routerLink="/san-pham/mien-trung" (click)="closeMobileMenu()"
-            >Miền Trung</a
-          >
-          <a routerLink="/san-pham/mien-nam" (click)="closeMobileMenu()"
-            >Miền Nam</a
-          >
+          <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-man'}" (click)="closeMobileMenu()">Món mặn</a>
+          <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-xao'}" (click)="closeMobileMenu()">Món xào</a>
+          <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-nuoc'}" (click)="closeMobileMenu()">Món nước</a>
+          <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-tron'}" (click)="closeMobileMenu()">Món trộn</a>
         </div>
       </div>
-      <a routerLink="/len-thuc-don" (click)="closeMobileMenu()">Lên thực đơn</a>
-      <a routerLink="/blog" (click)="closeMobileMenu()">Blog</a>
-      <a routerLink="/cong-cu" (click)="closeMobileMenu()">Công cụ</a>
+      <a
+        routerLink="/len-thuc-don"
+        (click)="closeMobileMenu()"
+        [class.active]="currentRoute === '/len-thuc-don'"
+        >Lên thực đơn</a
+      >
+      <a
+        routerLink="/blog"
+        (click)="closeMobileMenu()"
+        [class.active]="currentRoute === '/blog'"
+        >Blog</a
+      >
+      <a
+        routerLink="/cong-cu"
+        (click)="closeMobileMenu()"
+        [class.active]="currentRoute === '/cong-cu'"
+        >Công cụ</a
+      >
       <div
         class="mobile-dropdown"
         [class.active]="activeDropdown === 'gioithieu'"
+        [class.active-route]="
+          currentRoute.startsWith('/about-us') ||
+          currentRoute.startsWith('/chinh-sach') ||
+          currentRoute.startsWith('/faq') ||
+          currentRoute.startsWith('/lien-he')
+        "
       >
         <div
           class="mobile-dropdown-toggle"
@@ -202,24 +264,13 @@
           <a routerLink="/lien-he" (click)="closeMobileMenu()">Liên hệ</a>
         </div>
       </div>
-      <div class="mobile-search">
-        <input type="text" placeholder="Tìm kiếm" />
-      </div>
-      <div class="mobile-icons">
-        <img src="../../assets/header/mdi-cart-outline.svg" alt="" />
-        <img
-          src="../../assets/header/group.svg"
-          alt=""
-          (click)="toggleLoginPopup(); closeMobileMenu()"
-        />
-      </div>
     </div>
   </div>
 
   <!-- Mobile Menu Overlay -->
   <div
     class="mobile-menu-overlay"
-    *ngIf="isMobileMenuOpen"
+    [class.active]="isMobileMenuOpen"
     (click)="closeMobileMenu()"
   ></div>
 </div>
