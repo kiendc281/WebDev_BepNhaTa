@@ -335,6 +335,13 @@ export class TaiKhoanComponent implements OnInit {
           },
         });
       }
+    } else {
+      // Hiển thị thông báo lỗi khi form không hợp lệ
+      this.showToast(
+        'error',
+        'Vui lòng nhập đầy đủ thông tin',
+        'Bạn cần điền đầy đủ và chính xác các thông tin trước khi cập nhật'
+      );
     }
   }
 
@@ -374,11 +381,18 @@ export class TaiKhoanComponent implements OnInit {
             this.showToast(
               'error',
               'Lỗi!',
-              error.error?.message || 'Không thể cập nhật mật khẩu'
+              error.error?.message || 'Vui lòng kiểm tra lại mật khẩu'
             );
           },
         });
       }
+    } else {
+      // Hiển thị thông báo lỗi khi form không hợp lệ
+      this.showToast(
+        'error',
+        'Vui lòng nhập đầy đủ thông tin',
+        'Bạn cần điền đầy đủ và chính xác các thông tin trước khi cập nhật mật khẩu'
+      );
     }
   }
 
