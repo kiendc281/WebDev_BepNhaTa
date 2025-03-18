@@ -119,10 +119,46 @@ export class GioHangComponent implements OnInit, OnDestroy {
   private subscribeToCartChanges(): void {
     this.cartSubscription = this.cartService.cart$.subscribe(cart => {
       if (cart && Array.isArray(cart.items)) {
-        this.cartItems = cart.items.map(item => ({
-          ...item,
-          selected: item.selected === undefined ? false : item.selected // Đảm bảo thuộc tính selected luôn tồn tại
-        }));
+        // Lưu trữ ID và servingSize của các sản phẩm hiện có để giữ thứ tự
+        const currentItemIds = this.cartItems.map(item => `${item.productId}_${item.servingSize}`);
+        
+        // Cập nhật các sản phẩm hiện có và thêm các sản phẩm mới
+        const updatedItems = [...this.cartItems];
+        
+        // Cập nhật số lượng, giá và các thuộc tính khác cho các mục hiện có
+        updatedItems.forEach((item, index) => {
+          const newItem = cart.items.find(
+            i => i.productId === item.productId && i.servingSize === item.servingSize
+          );
+          if (newItem) {
+            updatedItems[index] = {
+              ...item,
+              quantity: newItem.quantity,
+              price: newItem.price,
+              selected: newItem.selected === undefined ? item.selected : newItem.selected
+            };
+          }
+        });
+        
+        // Thêm các mục mới
+        cart.items.forEach(newItem => {
+          const key = `${newItem.productId}_${newItem.servingSize}`;
+          if (!currentItemIds.includes(key)) {
+            updatedItems.push({
+              ...newItem,
+              selected: newItem.selected === undefined ? false : newItem.selected
+            });
+          }
+        });
+        
+        // Xóa các mục không còn tồn tại
+        const newItemIds = cart.items.map(item => `${item.productId}_${item.servingSize}`);
+        const finalItems = updatedItems.filter(item => {
+          const key = `${item.productId}_${item.servingSize}`;
+          return newItemIds.includes(key);
+        });
+        
+        this.cartItems = finalItems;
         this.totalPrice = cart.totalPrice || 0;
         this.totalQuantity = cart.totalQuantity || 0;
       } else {

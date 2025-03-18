@@ -122,8 +122,14 @@ export class GuestCartService {
     );
     
     if (existingItemIndex > -1) {
-      cart.items[existingItemIndex].quantity = quantity;
-      const updatedCart = this.calculateCartTotals(cart.items);
+      // Giữ lại đối tượng item cũ và chỉ cập nhật thuộc tính quantity
+      const updatedItem = { ...cart.items[existingItemIndex], quantity };
+      
+      // Tạo mảng items mới với thứ tự không thay đổi
+      const newItems = [...cart.items];
+      newItems[existingItemIndex] = updatedItem;
+      
+      const updatedCart = this.calculateCartTotals(newItems);
       this.saveLocalCart(updatedCart);
     } else {
       console.warn('Không tìm thấy sản phẩm trong giỏ hàng cục bộ:', { productId, servingSize });
@@ -137,6 +143,7 @@ export class GuestCartService {
     console.log('Xóa sản phẩm khỏi giỏ hàng cục bộ:', { productId, servingSize });
     
     const cart = this.getLocalCart();
+    // Lọc ra sản phẩm cần xóa nhưng giữ nguyên thứ tự các sản phẩm khác
     const updatedItems = cart.items.filter(
       item => !(item.productId === productId && item.servingSize === servingSize)
     );
@@ -169,8 +176,9 @@ export class GuestCartService {
       totalPrice += item.quantity * item.price;
     });
     
+    // Đảm bảo không thay đổi cấu trúc của items
     return {
-      items,
+      items: [...items],
       totalQuantity,
       totalPrice
     };

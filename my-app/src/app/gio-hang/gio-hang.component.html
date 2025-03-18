@@ -185,7 +185,10 @@
                 </div>
 
                 <div class="item-price">
-                  {{ item.price | number : "1.0-0" }} đ
+                  {{ getTotalPriceByItem(item) | number : "1.0-0" }} đ
+                  <small class="unit-price"
+                    >({{ item.price | number : "1.0-0" }} đ/đơn vị)</small
+                  >
                 </div>
               </div>
             </div>

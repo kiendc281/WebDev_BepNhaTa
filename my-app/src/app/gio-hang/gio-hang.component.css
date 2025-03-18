@@ -1211,3 +1211,10 @@ select.form-control {
   padding: 20px;
   height: 100%;
 }
+
+.unit-price {
+  display: block;
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 2px;
+}
