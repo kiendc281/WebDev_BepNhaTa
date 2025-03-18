@@ -74,14 +74,30 @@ export class AuthService {
     id: string,
     passwords: { oldPassword: string; newPassword: string }
   ): Observable<any> {
+    console.log('AuthService: Updating password for user ID:', id);
+    console.log('AuthService: Request payload:', {
+      oldPassword: '********', // For security, don't log actual password
+      newPassword: '********',
+    });
+
     return this.http
-      .patch(`${this.apiUrl}/accounts/${id}`, {
-        password: passwords.newPassword,
+      .patch(`${this.apiUrl}/accounts/${id}/password`, {
+        oldPassword: passwords.oldPassword,
+        newPassword: passwords.newPassword,
       })
       .pipe(
+        tap((response) => {
+          console.log('AuthService: Password update successful:', response);
+        }),
         catchError((error: HttpErrorResponse) => {
+          console.error('AuthService: Password update error:', error);
           if (error.status === 0) {
             return throwError(() => new Error('Không thể kết nối đến server'));
+          } else if (error.status === 400) {
+            // Pass through the server's error message
+            return throwError(
+              () => new Error(error.error?.message || 'Mật khẩu cũ không đúng')
+            );
           }
           return throwError(() => error);
         })

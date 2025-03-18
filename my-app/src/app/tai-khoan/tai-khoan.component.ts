@@ -316,8 +316,15 @@ export class TaiKhoanComponent implements OnInit {
       newPassword: this.passwordForm.value.newPassword,
     };
 
+    console.log('Form data (masked):', {
+      oldPassword: '********',
+      newPassword: '********',
+      confirmPassword: '********',
+    });
+
     // Lấy ID người dùng hiện tại
     const userId = (this.currentUser as any)?.id;
+    console.log('User ID:', userId);
 
     if (userId) {
       this.authService.updatePassword(userId, passwordData).subscribe({
@@ -330,9 +337,11 @@ export class TaiKhoanComponent implements OnInit {
         },
         error: (error) => {
           console.error('Lỗi khi cập nhật mật khẩu:', error);
-          alert(
-            'Có lỗi xảy ra: ' + (error.message || 'Không thể cập nhật mật khẩu')
-          );
+          // Hiển thị thông báo lỗi từ server
+          const errorMessage =
+            error.error?.message ||
+            'Mật khẩu cũ chưa đúng. Vui lòng kiểm tra lại';
+          alert(errorMessage);
         },
       });
     } else {

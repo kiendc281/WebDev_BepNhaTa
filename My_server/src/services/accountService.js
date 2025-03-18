@@ -190,6 +190,38 @@ class AccountService {
     }
   }
 
+  // Cập nhật mật khẩu
+  async updatePassword(id, passwordData) {
+    try {
+      const { oldPassword, newPassword } = passwordData;
+
+      // Tìm tài khoản
+      const account = await Account.findById(id);
+      if (!account) {
+        throw new Error("Không tìm thấy tài khoản");
+      }
+
+      // Kiểm tra mật khẩu cũ
+      const isMatch = await bcrypt.compare(oldPassword, account.password);
+      if (!isMatch) {
+        throw new Error(
+          "Bạn đã nhập sai mật khẩu cũ. Vui lòng kiểm tra và thử lại."
+        );
+      }
+
+      // Hash mật khẩu mới
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      // Cập nhật mật khẩu
+      account.password = hashedPassword;
+      await account.save();
+
+      return { message: "Cập nhật mật khẩu thành công" };
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
   // Tạo JWT token
   generateToken(accountId) {
     return jwt.sign({ accountId }, process.env.JWT_SECRET, {
