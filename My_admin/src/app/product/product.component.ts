@@ -1,88 +1,121 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-interface Product {
-  id: number;
-  name: string;
-  code: string;
-  status: string;
-  price: string;
-  numericPrice: number;
-  category: string;
-  tags: string[];
-  date: string;
-  timestamp: number;
-  [key: string]: any; // Thêm index signature
-}
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { ProductService } from '../services/product.service';
+import { Product } from '../models/product.interface';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
 })
-export class ProductComponent {
+export class ProductComponent implements OnInit {
   // Biến theo dõi sắp xếp
-  sortColumn: string = 'code'; // Mặc định sắp xếp theo mã sản phẩm
+  sortColumn: string = '_id'; // Mặc định sắp xếp theo mã sản phẩm
   sortDirection: 'asc' | 'desc' = 'asc'; // Mặc định sắp xếp tăng dần
 
-  // Data model for products
-  originalProducts: Product[] = [
-    {
-      id: 1,
-      name: 'Phở bò Bình Định',
-      code: '20250221P01',
-      status: 'Còn hàng',
-      price: '120.000đ',
-      numericPrice: 120000,
-      category: 'Miền Trung',
-      tags: ['#monnuoc', '#bunbo'],
-      date: '21/2/2025',
-      timestamp: new Date('2025-02-21').getTime(),
-    },
-    {
-      id: 2,
-      name: 'Cuốn ram Bến Tre',
-      code: '20250221P02',
-      status: 'Còn hàng',
-      price: '90.000đ',
-      numericPrice: 90000,
-      category: 'Miền Trung',
-      tags: ['#monnuoc', '#bunbo'],
-      date: '20/2/2025',
-      timestamp: new Date('2025-02-20').getTime(),
-    },
-    {
-      id: 3,
-      name: 'Bánh canh cua Cần Thơ',
-      code: '20250221P03',
-      status: 'Còn hàng',
-      price: '150.000đ',
-      numericPrice: 150000,
-      category: 'Miền Trung',
-      tags: ['#monnuoc', '#bunbo'],
-      date: '22/2/2025',
-      timestamp: new Date('2025-02-22').getTime(),
-    },
-  ];
+  // Biến lọc
+  filterCategory: string = '';
+  filterRegion: string = '';
+  filterStatus: string = '';
+  searchTerm: string = '';
 
-  // Products hiển thị trên bảng (có thể được sắp xếp)
-  products: Product[] = [...this.originalProducts];
+  // API products
+  originalProducts: Product[] = [];
+  products: Product[] = [];
 
-  constructor() {
-    // Sắp xếp mặc định theo mã sản phẩm khi khởi tạo
-    this.sortProducts(this.sortColumn, this.sortDirection);
+  // Trạng thái loading
+  isLoading: boolean = false;
+  error: string | null = null;
+
+  // Biến phân trang
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalItems: number = 0;
+
+  constructor(private productService: ProductService) {}
+
+  ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  // Lấy danh sách sản phẩm từ API
+  loadProducts(): void {
+    this.isLoading = true;
+    this.error = null;
+
+    const filters = {
+      category: this.filterCategory,
+      region: this.filterRegion,
+      status: this.filterStatus,
+      search: this.searchTerm,
+    };
+
+    this.productService.getAllProducts(filters).subscribe({
+      next: (data) => {
+        this.originalProducts = data;
+        this.totalItems = data.length;
+        this.transformProducts();
+        this.sortProducts(this.sortColumn, this.sortDirection);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Lỗi khi tải dữ liệu sản phẩm:', err);
+        this.error = 'Không thể tải dữ liệu sản phẩm. Vui lòng thử lại sau.';
+        this.isLoading = false;
+      },
+    });
+  }
+
+  // Chuyển đổi dữ liệu sản phẩm từ API để phù hợp với giao diện
+  transformProducts(): void {
+    this.products = this.originalProducts.map((product) => {
+      const price = product.pricePerPortion['2'] || 0;
+      const formattedPrice = price.toLocaleString('vi-VN') + 'đ';
+
+      // Tạo ngày từ expirationDate hoặc ngày hiện tại nếu không có
+      const date = product.expirationDate
+        ? new Date(product.expirationDate)
+        : new Date();
+
+      // Format ngày dạng dd/MM/yyyy
+      const formattedDate = date.toLocaleDateString('vi-VN');
+
+      return {
+        ...product,
+        name: product.ingredientName,
+        code: product._id,
+        price: formattedPrice,
+        numericPrice: price,
+        date: formattedDate,
+        timestamp: date.getTime(),
+        tags: product.tags || [],
+      };
+    });
   }
 
   // Hàm xử lý sắp xếp khi click vào header
   sort(column: string): void {
+    // Chuyển đổi tên cột giao diện sang tên cột API
+    const apiColumnMap: { [key: string]: string } = {
+      name: 'ingredientName',
+      code: '_id',
+      price: 'price', // Sử dụng numericPrice trong hàm so sánh
+      date: 'timestamp',
+    };
+
+    // Lấy tên cột API tương ứng
+    const apiColumn = apiColumnMap[column] || column;
+
     // Nếu click vào cùng một cột đang sắp xếp, đảo ngược thứ tự sắp xếp
-    if (this.sortColumn === column) {
+    if (this.sortColumn === apiColumn) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
       // Nếu click vào cột khác, chuyển sang sắp xếp cột mới theo thứ tự tăng dần
-      this.sortColumn = column;
+      this.sortColumn = apiColumn;
       this.sortDirection = 'asc';
     }
 
@@ -92,30 +125,30 @@ export class ProductComponent {
 
   // Hàm sắp xếp danh sách sản phẩm
   sortProducts(column: string, direction: 'asc' | 'desc'): void {
-    this.products = [...this.originalProducts].sort((a, b) => {
+    this.products = [...this.products].sort((a, b) => {
       let valueA: any, valueB: any;
 
       // Xác định giá trị so sánh cho từng loại cột
       switch (column) {
-        case 'name':
-          valueA = a.name.toLowerCase();
-          valueB = b.name.toLowerCase();
+        case 'ingredientName':
+          valueA = a.name?.toLowerCase() || '';
+          valueB = b.name?.toLowerCase() || '';
           break;
-        case 'code':
-          valueA = a.code;
-          valueB = b.code;
+        case '_id':
+          valueA = a.code || '';
+          valueB = b.code || '';
           break;
         case 'price':
-          valueA = a.numericPrice;
-          valueB = b.numericPrice;
+          valueA = a.numericPrice || 0;
+          valueB = b.numericPrice || 0;
           break;
-        case 'date':
-          valueA = a.timestamp;
-          valueB = b.timestamp;
+        case 'timestamp':
+          valueA = a.timestamp || 0;
+          valueB = b.timestamp || 0;
           break;
         default:
-          valueA = a[column];
-          valueB = b[column];
+          valueA = a[column] || '';
+          valueB = b[column] || '';
       }
 
       // So sánh giá trị dựa vào direction
@@ -129,7 +162,22 @@ export class ProductComponent {
     });
   }
 
-  // Methods for product actions
+  // Tính tổng số trang
+  getTotalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
+  // Helper method để tạo mảng số trang
+  getPageArray(): number[] {
+    return Array.from({ length: this.getTotalPages() }, (_, i) => i + 1);
+  }
+
+  // Đếm số lượng sản phẩm theo từng trạng thái
+  getProductCountByStatus(status: string): number {
+    return this.originalProducts.filter((p) => p.status === status).length;
+  }
+
+  // Actions
   addProduct() {
     console.log('Add product clicked');
   }
@@ -143,12 +191,13 @@ export class ProductComponent {
   }
 
   applyFilter() {
-    console.log('Apply filter clicked');
+    this.loadProducts();
   }
 
   search(event: any) {
-    const searchTerm = event.target.value;
-    console.log('Searching for:', searchTerm);
-    // Implement search logic here
+    this.searchTerm = event.target.value;
+    if (this.searchTerm.trim().length > 2) {
+      this.applyFilter();
+    }
   }
 }
