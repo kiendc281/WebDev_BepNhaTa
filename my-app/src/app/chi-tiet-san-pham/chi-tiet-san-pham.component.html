@@ -182,6 +182,106 @@
   </div>
 </div>
 
+<!-- Sản phẩm gợi ý -->
+<div class="recipes-section">
+  <div class="suggested-recipes-container">
+    <div class="suggested-recipes">
+      <div class="section-title">
+        <h2>Sản phẩm <span>Bạn có thể thích</span></h2>
+      </div>
+
+      <div class="recipes-navigation">
+        <!-- Nút điều hướng trái -->
+        <button
+          class="nav-button nav-button-left"
+          (click)="prevProductPage()"
+          [disabled]="currentProductPage === 0"
+        >
+          <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
+        </button>
+
+        <div class="products-grid">
+          <div class="product-card" *ngFor="let product of visibleProducts">
+            <div class="save-button">
+              <img
+                src="../../assets/san-pham/favourite.svg"
+                alt="Lưu vào yêu thích"
+              />
+            </div>
+            <a [routerLink]="['/chi-tiet-san-pham', product._id]">
+              <img
+                [src]="product.mainImage"
+                [alt]="product.ingredientName"
+                class="product-image"
+              />
+              <div class="product-content">
+                <h5 class="product-title">{{ product.ingredientName }}</h5>
+                <div class="product-info">
+                  <div class="info-item">
+                    <img
+                      src="../../assets/san-pham/ri-bowl-line.svg"
+                      alt="category"
+                    />
+                    <span>{{ product.category }}</span>
+                  </div>
+                  <div class="info-item">
+                    <img
+                      src="../../assets/san-pham/dokho.svg"
+                      alt="difficulty"
+                    />
+                    <span>{{ product.level }}</span>
+                  </div>
+                  <div class="info-item">
+                    <img
+                      src="../../assets/san-pham/ph-cooking-pot.svg"
+                      alt="time"
+                    />
+                    <span>{{ product.time }}</span>
+                  </div>
+                </div>
+                <div class="product-actions">
+                  <div class="price-container">
+                    <div class="price-info">
+                      <span class="old-price"
+                        >{{
+                          getRelatedProductPrice(product) | number : "1.0-0"
+                        }}đ</span
+                      >
+                      <span class="new-price"
+                        >{{
+                          getRelatedProductDiscountedPrice(product)
+                            | number : "1.0-0"
+                        }}đ</span
+                      >
+
+                      <div class="discount-tag">-{{ product.discount }}%</div>
+                    </div>
+                  </div>
+                  <button class="button-camnhat">XEM CHI TIẾT</button>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Nút điều hướng phải -->
+        <button
+          class="nav-button nav-button-right"
+          (click)="nextProductPage()"
+          [disabled]="
+            currentProductPage >= suggestedProducts.length / productsPerPage - 1
+          "
+        >
+          <img src="../../assets/trang-chu/slider.svg" alt="Next" />
+        </button>
+      </div>
+    </div>
+    <div class="view-more">
+      <button class="view-more-button" routerLink="/san-pham">XEM THÊM</button>
+    </div>
+  </div>
+</div>
+
 <!-- Công thức gợi ý -->
 <div class="recipes-section">
   <div class="suggested-recipes-container">
@@ -239,7 +339,7 @@
                     <span>{{ recipe.time }}</span>
                   </div>
                 </div>
-                <div class="product-actions">
+                <div class="product-actionss">
                   <button class="button-camnhat">XEM CHI TIẾT</button>
                 </div>
               </div>

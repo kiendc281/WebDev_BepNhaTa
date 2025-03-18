@@ -44,6 +44,13 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
   recipesPerPage: number = 3;
   suggestedRecipes: any[] = [];
   visibleRecipes: any[] = [];
+
+  // Properties for related/suggested products pagination
+  currentProductPage: number = 0;
+  productsPerPage: number = 3;
+  suggestedProducts: Product[] = [];
+  visibleProducts: Product[] = [];
+
   cartItemCount: number = 0;
   private cartSubscription: Subscription | null = null;
 
@@ -104,6 +111,7 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     );
     this.updateVisibleRecipes();
     this.loadSuggestedRecipes();
+    this.updateVisibleProducts();
   }
 
   ngOnDestroy(): void {
@@ -179,9 +187,20 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
             this.product?.relatedProductIds.includes(p._id)
           );
           console.log('Loaded related products:', this.relatedProducts);
+          this.loadSuggestedProducts(products);
         },
         error: (error) => {
           console.error('Error loading related products:', error);
+        },
+      });
+    } else {
+      // Nếu không có sản phẩm liên quan, vẫn tải sản phẩm gợi ý
+      this.productService.getProducts().subscribe({
+        next: (products) => {
+          this.loadSuggestedProducts(products);
+        },
+        error: (error) => {
+          console.error('Error loading products:', error);
         },
       });
     }
@@ -421,6 +440,67 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     ) {
       this.currentRecipePage++;
       this.updateVisibleRecipes();
+    }
+  }
+
+  // Phương thức để tải sản phẩm gợi ý
+  loadSuggestedProducts(allProducts: Product[]): void {
+    // Lọc bỏ sản phẩm hiện tại
+    const filteredProducts = allProducts.filter(
+      (p) => p._id !== this.product?._id
+    );
+
+    // Nếu có sản phẩm liên quan, ưu tiên sản phẩm liên quan
+    if (this.relatedProducts.length > 0) {
+      this.suggestedProducts = [...this.relatedProducts];
+
+      // Nếu sản phẩm liên quan ít hơn 9, bổ sung thêm sản phẩm ngẫu nhiên
+      if (this.suggestedProducts.length < 9) {
+        const remainingProductsNeeded = 9 - this.suggestedProducts.length;
+        const otherProducts = filteredProducts
+          .filter((p) => !this.relatedProducts.some((rp) => rp._id === p._id))
+          .sort(() => 0.5 - Math.random())
+          .slice(0, remainingProductsNeeded);
+
+        this.suggestedProducts = [...this.suggestedProducts, ...otherProducts];
+      }
+    } else {
+      // Nếu không có sản phẩm liên quan, lấy ngẫu nhiên 9 sản phẩm
+      this.suggestedProducts = this.getRandomProducts(filteredProducts, 9);
+    }
+
+    this.updateVisibleProducts();
+  }
+
+  // Phương thức để lấy sản phẩm ngẫu nhiên
+  getRandomProducts(products: Product[], count: number): Product[] {
+    if (!products || products.length === 0) return [];
+    const shuffled = [...products].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  }
+
+  // Phương thức để cập nhật sản phẩm hiển thị
+  updateVisibleProducts(): void {
+    const start = this.currentProductPage * this.productsPerPage;
+    const end = start + this.productsPerPage;
+    this.visibleProducts = this.suggestedProducts.slice(start, end);
+  }
+
+  // Phương thức để điều hướng trang sản phẩm
+  prevProductPage(): void {
+    if (this.currentProductPage > 0) {
+      this.currentProductPage--;
+      this.updateVisibleProducts();
+    }
+  }
+
+  nextProductPage(): void {
+    if (
+      this.currentProductPage <
+      Math.ceil(this.suggestedProducts.length / this.productsPerPage) - 1
+    ) {
+      this.currentProductPage++;
+      this.updateVisibleProducts();
     }
   }
 }
