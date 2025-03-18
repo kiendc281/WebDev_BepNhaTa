@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { Product } from '../models/product.interface';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
   // Biến theo dõi sắp xếp
   sortColumn: string = '_id'; // Mặc định sắp xếp theo mã sản phẩm
   sortDirection: 'asc' | 'desc' = 'asc'; // Mặc định sắp xếp tăng dần
@@ -33,14 +33,36 @@ export class ProductComponent implements OnInit {
 
   // Biến phân trang
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 8;
   totalItems: number = 0;
+
+  // Biến quản lý dropdown đang mở
+  openDropdown: string | null = null;
+
+  // Quản lý các sản phẩm được chọn
+  selectedProductIds: string[] = [];
+  allProductsSelected: boolean = false;
+
+  // Quản lý hành động hàng loạt
+  selectedAction: string = '';
 
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.loadProducts();
+
+    // Tạo bound function một lần để tránh vấn đề với việc remove listener
+    this.boundCloseDropdownHandler = this.closeDropdownOutside.bind(this);
+
+    // Thêm event listener để đóng dropdown khi click ra ngoài
+    // Sử dụng setTimeout để đảm bảo event listener được thêm sau khi component đã render
+    setTimeout(() => {
+      document.addEventListener('click', this.boundCloseDropdownHandler);
+    }, 0);
   }
+
+  // Property để lưu trữ bound function
+  private boundCloseDropdownHandler: any;
 
   // Lấy danh sách sản phẩm từ API
   loadProducts(): void {
@@ -198,6 +220,185 @@ export class ProductComponent implements OnInit {
     this.searchTerm = event.target.value;
     if (this.searchTerm.trim().length > 2) {
       this.applyFilter();
+    }
+  }
+
+  // Toggle dropdown menu
+  toggleDropdown(dropdown: string, event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.openDropdown = this.openDropdown === dropdown ? null : dropdown;
+  }
+
+  // Đóng dropdown
+  closeDropdown(): void {
+    this.openDropdown = null;
+  }
+
+  // Xử lý chọn danh mục
+  selectCategory(category: string): void {
+    this.filterCategory = category;
+    this.applyFilter();
+  }
+
+  // Xử lý chọn vùng miền
+  selectRegion(region: string): void {
+    this.filterRegion = region;
+    this.applyFilter();
+  }
+
+  // Xử lý chọn trạng thái
+  selectStatus(status: string): void {
+    this.filterStatus = status;
+    this.applyFilter();
+  }
+
+  // Xử lý đóng dropdown khi click ra ngoài
+  closeDropdownOutside(event: MouseEvent): void {
+    if (this.openDropdown) {
+      const target = event.target as HTMLElement;
+      // Kiểm tra xem click có phải trong dropdown không
+      if (!target.closest('.custom-dropdown')) {
+        this.openDropdown = null;
+      }
+    }
+  }
+
+  // Cleanup event listener khi component bị hủy
+  ngOnDestroy(): void {
+    if (this.boundCloseDropdownHandler) {
+      document.removeEventListener('click', this.boundCloseDropdownHandler);
+    }
+  }
+
+  // Kiểm tra xem có sản phẩm nào được chọn không
+  get hasSelectedProducts(): boolean {
+    return this.selectedProductIds.length > 0;
+  }
+
+  // Kiểm tra xem một sản phẩm có được chọn không
+  isProductSelected(productId: string): boolean {
+    return this.selectedProductIds.includes(productId);
+  }
+
+  // Xử lý chọn/bỏ chọn một sản phẩm
+  toggleProductSelection(productId: string): void {
+    const index = this.selectedProductIds.indexOf(productId);
+    if (index === -1) {
+      this.selectedProductIds.push(productId);
+    } else {
+      this.selectedProductIds.splice(index, 1);
+    }
+
+    // Cập nhật trạng thái "chọn tất cả"
+    this.updateAllSelectedState();
+  }
+
+  // Cập nhật trạng thái "chọn tất cả" dựa trên số lượng sản phẩm được chọn
+  updateAllSelectedState(): void {
+    const currentPageProducts = this.getCurrentPageProducts();
+    this.allProductsSelected =
+      currentPageProducts.length > 0 &&
+      currentPageProducts.every(
+        (product) =>
+          product.code && this.selectedProductIds.includes(product.code)
+      );
+  }
+
+  // Lấy danh sách sản phẩm trên trang hiện tại
+  getCurrentPageProducts(): any[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = Math.min(
+      startIndex + this.itemsPerPage,
+      this.products.length
+    );
+    return this.products.slice(startIndex, endIndex);
+  }
+
+  // Xử lý chọn/bỏ chọn tất cả sản phẩm trên trang hiện tại
+  toggleAllProducts(): void {
+    this.allProductsSelected = !this.allProductsSelected;
+
+    const currentPageProducts = this.getCurrentPageProducts();
+    if (this.allProductsSelected) {
+      // Thêm tất cả sản phẩm trên trang hiện tại vào danh sách đã chọn
+      currentPageProducts.forEach((product) => {
+        if (product.code && !this.selectedProductIds.includes(product.code)) {
+          this.selectedProductIds.push(product.code);
+        }
+      });
+    } else {
+      // Xóa tất cả sản phẩm trên trang hiện tại khỏi danh sách đã chọn
+      currentPageProducts.forEach((product) => {
+        if (product.code) {
+          const index = this.selectedProductIds.indexOf(product.code);
+          if (index !== -1) {
+            this.selectedProductIds.splice(index, 1);
+          }
+        }
+      });
+    }
+  }
+
+  // Xử lý chọn hành động hàng loạt
+  selectAction(action: string): void {
+    this.selectedAction = action;
+  }
+
+  // Áp dụng hành động hàng loạt cho các sản phẩm đã chọn
+  applyBatchAction(): void {
+    if (!this.selectedAction || this.selectedProductIds.length === 0) {
+      return;
+    }
+
+    // Lấy các sản phẩm đã chọn
+    const selectedProducts = this.products.filter(
+      (product) =>
+        product.code && this.selectedProductIds.includes(product.code)
+    );
+
+    // Hiển thị tên hành động đồng nhất với tên trong dropdown
+    switch (this.selectedAction) {
+      case 'hide':
+        console.log('Ẩn sản phẩm:', selectedProducts);
+        // TODO: Implement hide product logic
+        break;
+      case 'price':
+        console.log('Thay đổi giá:', selectedProducts);
+        // TODO: Implement price change logic
+        break;
+      case 'stock':
+        console.log('Cập nhật tồn kho:', selectedProducts);
+        // TODO: Implement stock update logic
+        break;
+      case 'delete':
+        console.log('Xóa sản phẩm:', selectedProducts);
+        // TODO: Implement delete products logic
+        break;
+      default:
+        break;
+    }
+
+    // Reset sau khi áp dụng
+    // this.selectedProductIds = [];
+    // this.selectedAction = '';
+    // this.allProductsSelected = false;
+  }
+
+  // Lấy tên hiển thị của hành động dựa trên giá trị
+  getActionName(actionValue: string): string {
+    switch (actionValue) {
+      case 'hide':
+        return 'Ẩn sản phẩm';
+      case 'price':
+        return 'Thay đổi giá';
+      case 'stock':
+        return 'Cập nhật tồn kho';
+      case 'delete':
+        return 'Xóa sản phẩm';
+      default:
+        return 'Hành động hàng loạt';
     }
   }
 }

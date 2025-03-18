@@ -35,39 +35,197 @@
 
   <!-- Filters -->
   <div class="filter-section" *ngIf="!isLoading">
-    <div class="search-box">
-      <input
-        type="text"
-        placeholder="Tìm kiếm sản phẩm..."
-        [(ngModel)]="searchTerm"
-        (keyup)="search($event)"
-      />
+    <div class="batch-actions">
+      <!-- Custom dropdown for batch actions -->
+      <div class="custom-dropdown" [class.active]="openDropdown === 'actions'">
+        <div
+          class="selected-option"
+          (click)="toggleDropdown('actions', $event)"
+        >
+          {{
+            selectedAction
+              ? getActionName(selectedAction)
+              : "Hành động hàng loạt"
+          }}
+          <img src="../../assets/product/arrow-down.svg" alt="dropdown" />
+        </div>
+        <div
+          class="dropdown-menu"
+          *ngIf="openDropdown === 'actions'"
+          (click)="$event.stopPropagation()"
+        >
+          <div
+            class="dropdown-item"
+            (click)="selectAction(''); closeDropdown()"
+          >
+            Hành động hàng loạt
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectAction('hide'); closeDropdown()"
+          >
+            Ẩn sản phẩm
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectAction('price'); closeDropdown()"
+          >
+            Thay đổi giá
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectAction('stock'); closeDropdown()"
+          >
+            Cập nhật tồn kho
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectAction('delete'); closeDropdown()"
+          >
+            Xóa sản phẩm
+          </div>
+        </div>
+      </div>
+      <button
+        class="button-cam"
+        [disabled]="!hasSelectedProducts || !selectedAction"
+        (click)="applyBatchAction()"
+      >
+        Áp dụng
+      </button>
     </div>
 
     <div class="filter-dropdowns">
-      <select [(ngModel)]="filterCategory" (change)="applyFilter()">
-        <option value="">Tất cả danh mục</option>
-        <option value="Xào">Xào</option>
-        <option value="Nước">Nước</option>
-        <option value="Món mặn">Món mặn</option>
-        <option value="Trộn">Trộn</option>
-      </select>
+      <!-- Custom dropdown for categories -->
+      <div class="custom-dropdown" [class.active]="openDropdown === 'category'">
+        <div
+          class="selected-option"
+          (click)="toggleDropdown('category', $event)"
+        >
+          {{ filterCategory || "Tất cả danh mục" }}
+          <img src="../../assets/product/arrow-down.svg" alt="dropdown" />
+        </div>
+        <div
+          class="dropdown-menu"
+          *ngIf="openDropdown === 'category'"
+          (click)="$event.stopPropagation()"
+        >
+          <div
+            class="dropdown-item"
+            (click)="selectCategory(''); closeDropdown()"
+          >
+            Tất cả danh mục
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectCategory('Xào'); closeDropdown()"
+          >
+            Xào
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectCategory('Nước'); closeDropdown()"
+          >
+            Nước
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectCategory('Món mặn'); closeDropdown()"
+          >
+            Món mặn
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectCategory('Trộn'); closeDropdown()"
+          >
+            Trộn
+          </div>
+        </div>
+      </div>
 
-      <select [(ngModel)]="filterRegion" (change)="applyFilter()">
-        <option value="">Tất cả vùng miền</option>
-        <option value="Bắc">Miền Bắc</option>
-        <option value="Trung">Miền Trung</option>
-        <option value="Nam">Miền Nam</option>
-      </select>
+      <!-- Custom dropdown for regions -->
+      <div class="custom-dropdown" [class.active]="openDropdown === 'region'">
+        <div class="selected-option" (click)="toggleDropdown('region', $event)">
+          {{
+            filterRegion
+              ? filterRegion === "Bắc"
+                ? "Miền Bắc"
+                : filterRegion === "Trung"
+                ? "Miền Trung"
+                : "Miền Nam"
+              : "Tất cả vùng miền"
+          }}
+          <img src="../../assets/product/arrow-down.svg" alt="dropdown" />
+        </div>
+        <div
+          class="dropdown-menu"
+          *ngIf="openDropdown === 'region'"
+          (click)="$event.stopPropagation()"
+        >
+          <div
+            class="dropdown-item"
+            (click)="selectRegion(''); closeDropdown()"
+          >
+            Tất cả vùng miền
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectRegion('Bắc'); closeDropdown()"
+          >
+            Miền Bắc
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectRegion('Trung'); closeDropdown()"
+          >
+            Miền Trung
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectRegion('Nam'); closeDropdown()"
+          >
+            Miền Nam
+          </div>
+        </div>
+      </div>
 
-      <select [(ngModel)]="filterStatus" (change)="applyFilter()">
-        <option value="">Tất cả trạng thái</option>
-        <option value="Còn hàng">Còn hàng</option>
-        <option value="Hết hàng">Hết hàng</option>
-        <option value="Ngừng kinh doanh">Ngừng kinh doanh</option>
-      </select>
-
-      <button class="button-cam" (click)="applyFilter()">Lọc</button>
+      <!-- Custom dropdown for status -->
+      <div class="custom-dropdown" [class.active]="openDropdown === 'status'">
+        <div class="selected-option" (click)="toggleDropdown('status', $event)">
+          {{ filterStatus || "Tất cả trạng thái" }}
+          <img src="../../assets/product/arrow-down.svg" alt="dropdown" />
+        </div>
+        <div
+          class="dropdown-menu"
+          *ngIf="openDropdown === 'status'"
+          (click)="$event.stopPropagation()"
+        >
+          <div
+            class="dropdown-item"
+            (click)="selectStatus(''); closeDropdown()"
+          >
+            Tất cả trạng thái
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectStatus('Còn hàng'); closeDropdown()"
+          >
+            Còn hàng
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectStatus('Hết hàng'); closeDropdown()"
+          >
+            Hết hàng
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectStatus('Ngừng kinh doanh'); closeDropdown()"
+          >
+            Ngừng kinh doanh
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -75,7 +233,13 @@
   <table class="product-table" *ngIf="!isLoading && products.length > 0">
     <thead>
       <tr>
-        <th><input type="checkbox" /></th>
+        <th>
+          <input
+            type="checkbox"
+            [checked]="allProductsSelected"
+            (change)="toggleAllProducts()"
+          />
+        </th>
         <th class="sortable" (click)="sort('name')">
           Tên sản phẩm
           <img
@@ -126,8 +290,21 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of products">
-        <td><input type="checkbox" /></td>
+      <tr
+        *ngFor="
+          let product of products
+            | slice
+              : (currentPage - 1) * itemsPerPage
+              : currentPage * itemsPerPage
+        "
+      >
+        <td>
+          <input
+            type="checkbox"
+            [checked]="product.code && isProductSelected(product.code)"
+            (change)="product.code && toggleProductSelection(product.code)"
+          />
+        </td>
         <td>{{ product.name }}</td>
         <td>{{ product.code }}</td>
         <td>

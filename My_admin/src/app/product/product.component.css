@@ -68,19 +68,6 @@ span {
   margin: 20px 0;
 }
 
-.filter-button {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 8px 15px;
-}
-
-.filter-icon {
-  width: 14px;
-  height: 14px;
-  margin-left: 8px;
-}
-
 .button-cam {
   padding: 10px 20px;
 }
@@ -103,39 +90,86 @@ span {
 /* Filter dropdowns */
 .filter-dropdowns {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .filter-dropdowns select {
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 25px;
+  background-color: #ffded1;
+  color: var(--color-camdam);
   cursor: pointer;
   min-width: 180px;
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-image: url("../../assets/product/arrow-down.svg");
   background-repeat: no-repeat;
-  background-position: right 12px top 50%;
+  background-position: right 15px top 50%;
   background-size: 10px auto;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  font-weight: 500;
   font-size: 14px;
-}
-
-.filter-dropdowns select:focus {
-  outline: none;
-  border-color: var(--color-camvua);
-  box-shadow: 0 0 0 2px rgba(254, 147, 46, 0.2);
+  transition: background-color 0.2s;
 }
 
 .filter-dropdowns select:hover {
-  border-color: #bbb;
+  background-color: #ffd0bd;
 }
 
-.filter-dropdowns option {
-  padding: 8px;
+/* Dropdown styling - thêm selector mạnh hơn */
+select option,
+.filter-dropdowns select option,
+select > option {
+  background-color: white !important;
+  color: #333 !important;
+  padding: 12px;
   font-size: 14px;
+  border: none;
+}
+
+/* Tiêu đề dropdown */
+.filter-dropdowns select option:first-child,
+select option:first-child {
+  background-color: #ff6b35 !important;
+  color: white !important;
+  font-weight: 500;
+}
+
+/* Hover và active - thêm selector mạnh hơn */
+select option:hover,
+select option:focus,
+select option:active,
+select option:checked,
+select option.selected,
+option:hover,
+option:focus,
+option[selected],
+option:checked {
+  background-color: #ff6b35 !important;
+  color: white !important;
+  box-shadow: 0 0 10px 100px #ff6b35 inset !important;
+  -webkit-text-fill-color: white !important;
+}
+
+/* Thêm style để ghi đè lên kiểu mặc định của trình duyệt */
+select:focus > option:checked,
+select > option:checked {
+  background: #ff6b35 !important;
+  background-color: #ff6b35 !important;
+  color: white !important;
+}
+
+/* Sử dụng attribute selector mạnh hơn */
+[role="listbox"] > [role="option"][aria-selected="true"],
+[role="listbox"] > [role="option"]:hover {
+  background-color: #ff6b35 !important;
+  color: white !important;
+}
+
+/* Custom dropdown container */
+.filter-dropdowns select:focus {
+  outline: none;
+  border: 1px solid var(--color-camdam);
 }
 
 /* Product table */
@@ -331,4 +365,89 @@ th.sortable {
     display: block;
     overflow-x: auto;
   }
+}
+
+/* Custom dropdown */
+.custom-dropdown {
+  position: relative;
+  min-width: 180px;
+  user-select: none;
+  z-index: 100;
+}
+
+.custom-dropdown.active .dropdown-menu {
+  display: block;
+}
+
+.selected-option {
+  padding: 10px 15px;
+  background-color: #ffded1;
+  color: #e94e24;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.selected-option:hover {
+  background-color: #ffd0bd;
+}
+
+.selected-option img {
+  width: 10px;
+  height: 10px;
+  margin-left: 10px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.dropdown-item:first-child {
+  background-color: #ff6b35;
+  color: white;
+}
+
+.dropdown-item:hover {
+  background-color: #ff6b35;
+  color: white;
+}
+
+/* Batch actions */
+.batch-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 20px;
+}
+
+.batch-actions .button-cam {
+  height: 38px;
+  padding: 0 20px;
+}
+
+.batch-actions .button-cam:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #ccc;
 }
