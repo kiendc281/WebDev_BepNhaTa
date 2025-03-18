@@ -59,6 +59,7 @@ export class TaiKhoanComponent implements OnInit {
   showNewPassword: boolean = false;
   showConfirmPassword: boolean = false;
 
+  // Khai báo mảng để lưu trữ toast messages
   toasts: Toast[] = [];
 
   constructor(
@@ -250,11 +251,12 @@ export class TaiKhoanComponent implements OnInit {
     }
   }
 
-  private showToast(type: 'success' | 'error', title: string, message: string) {
+  // Method để hiển thị toast notification
+  showToast(type: 'success' | 'error', title: string, message: string) {
     const toast: Toast = { type, title, message };
     this.toasts.push(toast);
 
-    // Auto remove after 3 seconds
+    // Tự động xóa toast sau 3 giây
     setTimeout(() => {
       const index = this.toasts.indexOf(toast);
       if (index > -1) {
@@ -266,6 +268,7 @@ export class TaiKhoanComponent implements OnInit {
     }, 3000);
   }
 
+  // Method để xóa toast notification
   removeToast(index: number) {
     this.toasts[index].fading = true;
     setTimeout(() => {
@@ -275,15 +278,46 @@ export class TaiKhoanComponent implements OnInit {
 
   // Xử lý cập nhật thông tin cá nhân
   updateUserInfo(): void {
+    // Đánh dấu tất cả các trường là đã touched để hiển thị lỗi
+    Object.keys(this.updateForm.controls).forEach((key) => {
+      const control = this.updateForm.get(key);
+      control?.markAsTouched();
+    });
+
     if (this.updateForm.valid) {
       const formData = this.updateForm.value;
+
+      // Chuẩn bị dữ liệu ngày sinh
+      const birthDate = new Date(
+        formData.year,
+        formData.month - 1,
+        formData.day
+      );
+
+      // Chuẩn bị dữ liệu cập nhật
+      const updateData: Partial<Account> = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        gender: formData.gender,
+        birthOfDate: birthDate,
+      };
+
+      console.log('Dữ liệu cập nhật:', updateData);
+
+      // Lấy ID người dùng hiện tại
       const userId = (this.currentUser as any)?.id;
 
       if (userId) {
-        this.authService.updateAccount(userId, formData).subscribe({
+        // Gọi service để cập nhật thông tin
+        this.authService.updateAccount(userId, updateData).subscribe({
           next: (response) => {
-            console.log('Cập nhật thông tin thành công:', response);
+            console.log('Cập nhật thành công:', response);
+            // Cập nhật thông tin người dùng hiện tại
+            this.currentUser = this.authService.getCurrentUser();
+            // Đóng modal
             this.closeUpdateModal();
+            // Hiển thị thông báo thành công bằng toast
             this.showToast(
               'success',
               'Thành công!',
@@ -291,11 +325,12 @@ export class TaiKhoanComponent implements OnInit {
             );
           },
           error: (error) => {
-            console.error('Lỗi khi cập nhật thông tin:', error);
+            console.error('Lỗi khi cập nhật:', error);
+            // Hiển thị thông báo lỗi bằng toast
             this.showToast(
               'error',
               'Lỗi!',
-              'Không thể cập nhật thông tin tài khoản'
+              error.message || 'Không thể cập nhật thông tin tài khoản'
             );
           },
         });
@@ -305,18 +340,28 @@ export class TaiKhoanComponent implements OnInit {
 
   // Xử lý cập nhật mật khẩu
   updatePassword(): void {
+    // Đánh dấu tất cả các trường là đã touched để hiển thị lỗi
+    Object.keys(this.passwordForm.controls).forEach((key) => {
+      const control = this.passwordForm.get(key);
+      control?.markAsTouched();
+    });
+
     if (this.passwordForm.valid) {
       const passwordData = {
         oldPassword: this.passwordForm.value.oldPassword,
         newPassword: this.passwordForm.value.newPassword,
       };
 
+      // Lấy ID người dùng hiện tại
       const userId = (this.currentUser as any)?.id;
+
       if (userId) {
         this.authService.updatePassword(userId, passwordData).subscribe({
           next: (response) => {
             console.log('Cập nhật mật khẩu thành công:', response);
+            // Đóng modal
             this.closePasswordModal();
+            // Hiển thị thông báo thành công bằng toast
             this.showToast(
               'success',
               'Thành công!',
@@ -325,10 +370,11 @@ export class TaiKhoanComponent implements OnInit {
           },
           error: (error) => {
             console.error('Lỗi khi cập nhật mật khẩu:', error);
+            // Hiển thị thông báo lỗi bằng toast
             this.showToast(
               'error',
               'Lỗi!',
-              error.error?.message || 'Vui lòng kiểm tra lại mật khẩu'
+              error.error?.message || 'Không thể cập nhật mật khẩu'
             );
           },
         });
