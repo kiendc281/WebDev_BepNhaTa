@@ -592,3 +592,31 @@
     </div>
   </div>
 </div>
+
+<!-- Toast Container for Notifications -->
+<div class="toast-container">
+  <div
+    *ngFor="let toast of toasts; let i = index"
+    class="toast-message"
+    [ngClass]="toast.type === 'success' ? 'toast-success' : 'toast-error'"
+    [class.toast-fadeout]="toast.fading"
+  >
+    <div class="toast-icon">
+      <img
+        *ngIf="toast.type === 'success'"
+        src="../../assets/tai-khoan/lets-icons-check-fill.svg"
+        alt="Success"
+      />
+      <img
+        *ngIf="toast.type === 'error'"
+        src="../../assets/tai-khoan/material-symbols-error-outline.svg"
+        alt="Error"
+      />
+    </div>
+    <div class="toast-content">
+      <div class="toast-title">{{ toast.title }}</div>
+      <div class="toast-body">{{ toast.message }}</div>
+    </div>
+    <button class="toast-close" (click)="removeToast(i)">×</button>
+  </div>
+</div>
