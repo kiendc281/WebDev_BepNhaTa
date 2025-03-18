@@ -46,14 +46,14 @@
             <div *ngIf="product?.components && product.components.length === 0">
               Danh sách components rỗng
             </div>
-            <ol
+            <ul
               class="components-list"
               *ngIf="product?.components && product.components.length > 0"
             >
-              <li *ngFor="let component of product.components">
-                {{ component }}
+              <li *ngFor="let component of product.components; let i = index">
+                {{ i + 1 }}. {{ component }}
               </li>
-            </ol>
+            </ul>
           </div>
           <div class="detail-item">
             <h4>Bảo quản</h4>
@@ -63,14 +63,14 @@
             <h4>Hạn sử dụng</h4>
             <p>{{ product.notes }}</p>
           </div>
-          <!-- <div class="detail-item">
+          <div class="detail-item">
             <h4>Độ khó</h4>
             <p>{{ product.level }}</p>
           </div>
           <div class="detail-item">
             <h4>Thời gian chế biến</h4>
             <p>{{ product.time }}</p>
-          </div> -->
+          </div>
         </div>
       </div>
 
@@ -178,89 +178,57 @@
           MUA NGAY
         </button>
       </div>
-    </div>
-  </div>
-</div>
 
-<!-- Công thức gợi ý -->
-<div class="recipes-section">
-  <div class="suggested-recipes-container">
-    <div class="suggested-recipes">
-      <div class="section-title">
-        <h2>Công thức <span>Bạn có thể thích</span></h2>
+      <div class="special-offer">
+        <i class="fas fa-gift"></i> ƯU ĐÃI ĐẶC BIỆT
       </div>
+      <div class="promotion">Khuyến mãi giảm giá khi mua kèm</div>
 
-      <div class="recipes-navigation">
-        <!-- Nút điều hướng trái -->
-        <button
-          class="nav-button nav-button-left"
-          (click)="prevRecipePage()"
-          [disabled]="currentRecipePage === 0"
-        >
-          <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
-        </button>
-
-        <div class="products-grid">
-          <div class="product-card" *ngFor="let recipe of visibleRecipes">
-            <div class="save-button">
+      <!-- Sản phẩm liên quan -->
+      <div
+        class="related-products"
+        *ngIf="relatedProducts && relatedProducts.length > 0"
+      >
+        <h3>SẢN PHẨM LIÊN QUAN</h3>
+        <div class="product-grid">
+          <div
+            class="related-product-card"
+            *ngFor="let relatedProduct of relatedProducts"
+          >
+            <a
+              class="product-link"
+              (click)="navigateToProduct(relatedProduct._id)"
+              style="cursor: pointer"
+            >
               <img
-                src="../../assets/san-pham/favourite.svg"
-                alt="Lưu vào yêu thích"
-              />
-            </div>
-            <a [routerLink]="['/cong-thuc', recipe._id]">
-              <img
-                [src]="recipe.recipeImage"
-                [alt]="recipe.recipeName"
+                [src]="relatedProduct.mainImage"
+                [alt]="relatedProduct.ingredientName"
                 class="product-image"
               />
-              <div class="product-content">
-                <h5 class="product-title">{{ recipe.recipeName }}</h5>
-                <div class="product-info">
-                  <div class="info-item">
-                    <img
-                      src="../../assets/san-pham/khauphan.svg"
-                      alt="category"
-                    />
-                    <span>4 Người</span>
-                  </div>
-                  <div class="info-item">
-                    <img
-                      src="../../assets/san-pham/dokho.svg"
-                      alt="difficulty"
-                    />
-                    <span>{{ recipe.difficulty }}</span>
-                  </div>
-                  <div class="info-item">
-                    <img
-                      src="../../assets/san-pham/ph-cooking-pot.svg"
-                      alt="time"
-                    />
-                    <span>{{ recipe.time }}</span>
-                  </div>
-                </div>
-                <div class="product-actions">
-                  <button class="button-camnhat">XEM CHI TIẾT</button>
+              <div class="product-info">
+                <h4 class="product-title">
+                  {{ relatedProduct.ingredientName }}
+                </h4>
+                <div class="product-price">
+                  <span
+                    class="original-price"
+                    *ngIf="relatedProductHasDiscount(relatedProduct)"
+                    >{{
+                      getRelatedProductPrice(relatedProduct) | number : "1.0-0"
+                    }}đ</span
+                  >
+                  <span class="discounted-price"
+                    >{{
+                      getRelatedProductDiscountedPrice(relatedProduct)
+                        | number : "1.0-0"
+                    }}đ</span
+                  >
                 </div>
               </div>
             </a>
           </div>
         </div>
-
-        <!-- Nút điều hướng phải -->
-        <button
-          class="nav-button nav-button-right"
-          (click)="nextRecipePage()"
-          [disabled]="
-            currentRecipePage >= suggestedRecipes.length / recipesPerPage - 1
-          "
-        >
-          <img src="../../assets/trang-chu/slider.svg" alt="Next" />
-        </button>
       </div>
-    </div>
-    <div class="view-more">
-      <button class="view-more-button" routerLink="/cong-thuc">XEM THÊM</button>
     </div>
   </div>
 </div>

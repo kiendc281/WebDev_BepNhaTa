@@ -33,6 +33,9 @@ import { GioHangComponent } from './gio-hang/gio-hang.component';
 import { ChiTietBlogComponent } from './chi-tiet-blog/chi-tiet-blog.component';
 import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { BlogComponent } from './blog/blog.component';
+import { AuthService } from './services/auth.service';
+import { CartService } from './services/cart.service';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -72,8 +75,11 @@ export class AppComponent implements OnInit {
   title = 'my-app';
   private router: Router; //auto scroll top when route
 
-  constructor(router: Router) {
+  constructor(router: Router, private authService: AuthService, private cartService: CartService) {
     this.router = router;
+    
+    // Make the auth service globally available for the HTTP interceptor
+    (window as any).__authService__ = this.authService;
   }
 
   ngOnInit() {
@@ -82,5 +88,20 @@ export class AppComponent implements OnInit {
         window.scrollTo(0, 0);
       }
     });
+    
+    // If user is logged in, load and merge carts
+    if (this.authService.isLoggedIn()) {
+      this.cartService.mergeCartsAfterLogin().subscribe({
+        next: (cart) => {
+          console.log('Cart loaded/merged:', cart);
+        },
+        error: (error) => {
+          console.error('Error loading/merging cart:', error);
+        }
+      });
+    } else {
+      // Otherwise, just load cart from local storage
+      this.cartService.loadCart();
+    }
   }
 }
