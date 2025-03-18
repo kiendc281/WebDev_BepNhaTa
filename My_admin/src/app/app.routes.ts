@@ -11,5 +11,10 @@ export const routes: Routes = [
         (m) => m.TrangChuComponent
       ),
   },
+  {
+    path: 'san-pham',
+    loadComponent: () =>
+      import('./product/product.component').then((m) => m.ProductComponent),
+  },
   { path: '**', redirectTo: '/trang-chu' },
 ];

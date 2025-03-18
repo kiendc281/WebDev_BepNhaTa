@@ -6,7 +6,7 @@
     </div>
 
     <div class="menu-items">
-      <div class="menu-item">
+      <div class="menu-item" routerLink="/trang-chu" routerLinkActive="active">
         <img src="../../assets/sidebar/mainpage.svg" alt="" />
         <span>Trang chủ</span>
       </div>
@@ -24,7 +24,13 @@
         <img src="../../assets/sidebar/arrow.svg" alt="" />
       </div>
       <div class="submenu" [ngClass]="{ open: openSubmenu === 'product' }">
-        <div class="submenu-item">Danh sách sản phẩm</div>
+        <div
+          class="submenu-item"
+          routerLink="/san-pham"
+          routerLinkActive="active"
+        >
+          Danh sách sản phẩm
+        </div>
         <div class="submenu-item">Thêm sản phẩm mới</div>
         <div class="submenu-item">Phân loại sản phẩm</div>
       </div>

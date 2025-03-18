@@ -1,0 +1,144 @@
+/* Product Page Container */
+.product-container {
+  padding: 20px;
+  margin-left: 250px; /* Căn lề trái bằng chiều rộng của sidebar */
+  min-height: calc(100vh - 70px);
+}
+
+/* Action buttons container */
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+span {
+  font-size: 18px;
+}
+
+/* Filter section */
+.filter-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 15px;
+}
+
+.filter-icon {
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+}
+
+.button-cam {
+  padding: 10px 20px;
+}
+
+/* Product table */
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.product-table th {
+  background-color: var(--color-camvua);
+  color: white;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 500;
+  position: relative;
+}
+
+.product-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.product-table tr:last-child td {
+  border-bottom: none;
+}
+
+.product-table th:first-child,
+.product-table td:first-child {
+  width: 40px;
+  text-align: center;
+}
+
+/* Styling cho sortable columns */
+th.sortable {
+  cursor: pointer;
+}
+
+.sort-icon {
+  width: 14px;
+  height: 14px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+/* Product status */
+.product-status {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  background-color: #e6f7eb;
+  color: #2e7d32;
+  display: inline-block;
+}
+
+/* Product price */
+.product-price {
+  font-weight: 500;
+}
+
+/* Product category tags */
+.product-tag {
+  background-color: #f0f0f0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  display: inline-block;
+  margin-right: 5px; /* Thêm margin giữa các tag */
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+.page-button {
+  min-width: 32px;
+  height: 32px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+}
+
+.page-button.active {
+  background-color: var(--color-camvua);
+  color: white;
+  border-color: var(--color-camvua);
+}
+
+.page-button:hover:not(.active) {
+  background-color: #f5f5f5;
+}

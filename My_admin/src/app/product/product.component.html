@@ -1,1 +1,128 @@
-<p>product works!</p>
+<div class="product-container">
+  <h1>Sản phẩm</h1>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button class="button-camnhat" (click)="addProduct()">Thêm sản phẩm</button>
+    <button class="button-trang" (click)="batchImport()">Nhập hàng loạt</button>
+    <button class="button-trang" (click)="batchExport()">Xuất hàng loạt</button>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div>
+    <strong
+      ><span
+        >Tất cả (3) | Đã xuất bản (2) | Bản nháp (1) | Ẩn (1) | Lọc</span
+      ></strong
+    >
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-section">
+    <div class="button-camnhat filter-button">
+      Hành động hàng loạt
+      <img
+        src="../../assets/product/arrow down.svg"
+        alt="dropdown"
+        class="filter-icon"
+      />
+    </div>
+    <button class="button-cam">Áp dụng</button>
+    <div class="button-camnhat filter-button">
+      Lọc danh mục
+      <img
+        src="../../assets/product/arrow down.svg"
+        alt="dropdown"
+        class="filter-icon"
+      />
+    </div>
+    <div class="button-camnhat filter-button">
+      Lọc loại sản phẩm
+      <img
+        src="../../assets/product/arrow down.svg"
+        alt="dropdown"
+        class="filter-icon"
+      />
+    </div>
+    <div class="button-camnhat filter-button">
+      Lọc theo trạng thái
+      <img
+        src="../../assets/product/arrow down.svg"
+        alt="dropdown"
+        class="filter-icon"
+      />
+    </div>
+    <button class="button-cam" (click)="applyFilter()">Lọc</button>
+  </div>
+
+  <!-- Product Table -->
+  <table class="product-table">
+    <thead>
+      <tr>
+        <th><input type="checkbox" /></th>
+        <th class="sortable">
+          Tên sản phẩm
+          <img
+            src="../../assets/product/sort.svg"
+            alt="sort"
+            class="sort-icon"
+          />
+        </th>
+        <th class="sortable">
+          Mã sản phẩm
+          <img
+            src="../../assets/product/sort.svg"
+            alt="sort"
+            class="sort-icon"
+          />
+        </th>
+        <th>Trạng thái</th>
+        <th class="sortable">
+          Giá
+          <img
+            src="../../assets/product/sort.svg"
+            alt="sort"
+            class="sort-icon"
+          />
+        </th>
+        <th>Danh mục</th>
+        <th>Thẻ</th>
+        <th class="sortable">
+          Ngày
+          <img
+            src="../../assets/product/sort.svg"
+            alt="sort"
+            class="sort-icon"
+          />
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td><input type="checkbox" /></td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.code }}</td>
+        <td>
+          <span class="product-status">{{ product.status }}</span>
+        </td>
+        <td class="product-price">{{ product.price }}</td>
+        <td>{{ product.category }}</td>
+        <td>
+          <span class="product-tag" *ngFor="let tag of product.tags">{{
+            tag
+          }}</span>
+        </td>
+        <td>{{ product.date }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <div class="page-button active">1</div>
+    <div class="page-button">2</div>
+    <div class="page-button">3</div>
+    <div class="page-button">4</div>
+    <div class="page-button">5</div>
+  </div>
+</div>

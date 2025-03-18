@@ -13,6 +13,11 @@
   padding-top: 20px;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
   z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .logo-container {
@@ -100,4 +105,24 @@
 
 .submenu-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+.submenu-item.active,
+.submenu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.submenu-item.active {
+  font-weight: 500;
+  position: relative;
+}
+
+.submenu-item.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background-color: white;
 }
