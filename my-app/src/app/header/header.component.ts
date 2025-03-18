@@ -1,12 +1,11 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { CartService } from '../services/cart.service';
+import { CommonModule } from '@angular/common';
 import { DangNhapComponent } from '../dang-nhap/dang-nhap.component';
 import { DangKyComponent } from '../dang-ky/dang-ky.component';
 import { QuenMatKhauComponent } from '../quen-mat-khau/quen-mat-khau.component';
-import { Subscription } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -22,7 +21,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
   showLoginPopup = false;
   currentForm = 'login'; // 'login', 'register', or 'forgot'
   mouseDownTarget: EventTarget | null = null;
@@ -30,12 +29,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   activeDropdown: string | null = null;
   currentRoute: string = '';
   cartItemCount: number = 0;
-  private cartSubscription: Subscription | null = null;
 
   constructor(
     private router: Router,
     public authService: AuthService,
-    private cartService: CartService
+    public cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -50,16 +48,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Subscribe to cart changes
-    this.cartSubscription = this.cartService.getCartItems().subscribe((items) => {
-      this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
+    // Subscribe to the cart to update the cart item count
+    this.cartService.cart$.subscribe(cart => {
+      this.cartItemCount = cart.totalQuantity;
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this.cartSubscription) {
-      this.cartSubscription.unsubscribe();
-    }
   }
 
   toggleLoginPopup() {

@@ -3,10 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
-import { Product } from '../models/product.interface';
 import { CartService } from '../services/cart.service';
-import { RecipeService } from '../services/recipe.service';
-import { Recipe } from '../models/recipe.interface';
+import { AuthService } from '../services/auth.service';
+import { Product } from '../models/product.interface';
 
 interface FAQ {
   question: string;
@@ -29,6 +28,8 @@ export class ChiTietSanPhamComponent implements OnInit {
   thumbnails: string[] = [];
   loading: boolean = true;
   error: string | null = null;
+  addingToCart: boolean = false;
+  cartSuccessMessage: string | null = null;
 
   // Lưu trữ giá hiện tại để tránh tính toán lại nhiều lần
   private _currentOriginalPrice: number = 0;
@@ -53,18 +54,12 @@ export class ChiTietSanPhamComponent implements OnInit {
     },
   ];
 
-  // Thêm các biến cho công thức gợi ý
-  suggestedRecipes: Recipe[] = [];
-  visibleRecipes: Recipe[] = [];
-  currentRecipePage = 0;
-  recipesPerPage = 3;
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
     private cartService: CartService,
-    private recipeService: RecipeService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -84,8 +79,6 @@ export class ChiTietSanPhamComponent implements OnInit {
     for (let i = 0; i < 5; i++) {
       this.thumbnails.push('../../assets/san-pham/thumbnail.jpg');
     }
-
-    this.loadSuggestedRecipes();
   }
 
   // Reset product data when loading a new product
@@ -98,15 +91,33 @@ export class ChiTietSanPhamComponent implements OnInit {
     this.selectedServing = '2';
     this._currentOriginalPrice = 0;
     this._currentDiscountedPrice = 0;
+    this.cartSuccessMessage = null;
   }
 
   loadProduct(id: string): void {
+    this.loading = true;
     this.productService.getProducts().subscribe({
       next: (products) => {
+        console.log('All products:', products);
         this.product = products.find((p) => p._id === id) || null;
 
         if (this.product) {
-          console.log('Loaded product:', this.product);
+          console.log('Found product:', this.product);
+          
+          // Kiểm tra và log thành phần nguyên liệu
+          if (this.product.components && this.product.components.length > 0) {
+            console.log('Thành phần nguyên liệu:', this.product.components);
+          } else {
+            console.warn('Không tìm thấy thành phần nguyên liệu cho sản phẩm:', id);
+          }
+          
+          // Kiểm tra và log thông tin giá
+          if (this.product.pricePerPortion) {
+            console.log('Thông tin giá theo khẩu phần:', this.product.pricePerPortion);
+          } else {
+            console.warn('Không tìm thấy thông tin giá cho sản phẩm:', id);
+          }
+
           this.loadRelatedProducts();
           this.updatePrices();
         } else {
@@ -157,8 +168,26 @@ export class ChiTietSanPhamComponent implements OnInit {
   // Cập nhật giá hiện tại dựa trên khẩu phần đã chọn
   updatePrices(): void {
     if (!this.product) return;
-
-    console.log('Dữ liệu sản phẩm trước khi tính giá:', this.product);
+    
+    if (!this.product.pricePerPortion || Object.keys(this.product.pricePerPortion).length === 0) {
+      console.error('Không tìm thấy thông tin giá theo khẩu phần cho sản phẩm:', this.product.ingredientName);
+      this._currentOriginalPrice = 0;
+      this._currentDiscountedPrice = 0;
+      return;
+    }
+    
+    // Kiểm tra xem khẩu phần đã chọn có giá trực tiếp không
+    if (!this.product.pricePerPortion[this.selectedServing]) {
+      // Nếu là khẩu phần 4 người và có giá cho 2 người, không cần thông báo lỗi vì đã xử lý ở ProductService
+      if (!(this.selectedServing === '4' && this.product.pricePerPortion['2'])) {
+        // Chỉ thông báo cho các trường hợp khác
+        const availablePortions = Object.keys(this.product.pricePerPortion);
+        if (availablePortions.length > 0) {
+          this.selectedServing = availablePortions[0];
+          console.log(`Chuyển sang khẩu phần ${this.selectedServing} vì không tìm thấy giá cho khẩu phần đã chọn`);
+        }
+      }
+    }
 
     // Cập nhật cả giá gốc và giá sau giảm giá
     this._currentOriginalPrice = this.productService.getPortionPrice(
@@ -189,25 +218,48 @@ export class ChiTietSanPhamComponent implements OnInit {
   }
 
   addToCart(): void {
-    if (this.product) {
-      console.log(
-        'Thêm vào giỏ hàng:',
-        this.product.ingredientName,
-        'Số lượng:',
-        this.quantity,
-        'Khẩu phần:',
-        this.selectedServing,
-        'Giá:',
-        this.getDiscountedPrice()
-      );
-      // Add to cart using CartService
-      this.cartService.addToCart(
-        this.product,
-        this.quantity,
-        this.selectedServing,
-        this.getDiscountedPrice()
-      );
-    }
+    if (!this.product) return;
+    
+    this.addingToCart = true;
+    
+    // Use cart service to add product to cart
+    this.cartService.addToCart(
+      this.product,
+      this.quantity,
+      this.selectedServing,
+      this.getDiscountedPrice()
+    ).subscribe({
+      next: (cart) => {
+        console.log('Product added to cart:', {
+          product: this.product?.ingredientName,
+          quantity: this.quantity,
+          servingSize: this.selectedServing,
+          price: this.getDiscountedPrice(),
+          isLoggedIn: this.authService.isLoggedIn(),
+          cartItems: cart.items.length,
+          totalQuantity: cart.totalQuantity,
+          totalPrice: cart.totalPrice
+        });
+        
+        this.cartSuccessMessage = `Đã thêm ${this.quantity} ${this.product?.ingredientName} vào giỏ hàng`;
+        this.addingToCart = false;
+        
+        // Clear success message after 3 seconds
+        setTimeout(() => {
+          this.cartSuccessMessage = null;
+        }, 3000);
+      },
+      error: (error) => {
+        console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
+        this.addingToCart = false;
+        this.cartSuccessMessage = 'Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.';
+        
+        // Clear error message after 3 seconds
+        setTimeout(() => {
+          this.cartSuccessMessage = null;
+        }, 3000);
+      }
+    });
   }
 
   addToWishlist(): void {
@@ -218,19 +270,29 @@ export class ChiTietSanPhamComponent implements OnInit {
   }
 
   buyNow(): void {
-    if (this.product) {
-      console.log(
-        'Mua ngay:',
-        this.product.ingredientName,
-        'Số lượng:',
-        this.quantity,
-        'Khẩu phần:',
-        this.selectedServing,
-        'Giá:',
-        this.getDiscountedPrice()
-      );
-      // Implement buy now logic here
-    }
+    if (!this.product) return;
+    
+    // First add to cart
+    this.cartService.addToCart(
+      this.product,
+      this.quantity,
+      this.selectedServing,
+      this.getDiscountedPrice()
+    ).subscribe({
+      next: () => {
+        // Then navigate to cart page
+        this.router.navigate(['/gio-hang']);
+      },
+      error: (error) => {
+        console.error('Error during buy now process:', error);
+        this.error = 'Có lỗi xảy ra khi xử lý đơn hàng';
+        
+        // Clear error message after 3 seconds
+        setTimeout(() => {
+          this.error = null;
+        }, 3000);
+      }
+    });
   }
 
   // Lấy giá gốc của sản phẩm theo khẩu phần đã chọn
@@ -264,49 +326,14 @@ export class ChiTietSanPhamComponent implements OnInit {
   relatedProductHasDiscount(product: Product): boolean {
     return product?.discount !== undefined && product.discount > 0;
   }
+  // FAQ
+  visibleAnswers: { [key: string]: boolean } = {};
 
-  // Phương thức để tải công thức gợi ý
-  loadSuggestedRecipes(): void {
-    this.recipeService.getRecipes().subscribe({
-      next: (data) => {
-        this.suggestedRecipes = this.getRandomRecipes(data, 9); // Lấy 9 công thức ngẫu nhiên
-        this.updateVisibleRecipes();
-      },
-      error: (err) => {
-        console.error('Lỗi khi tải công thức gợi ý:', err);
-      },
-    });
+  toggleAnswer(questionId: string): void {
+    this.visibleAnswers[questionId] = !this.visibleAnswers[questionId];
   }
 
-  // Phương thức để lấy công thức ngẫu nhiên
-  getRandomRecipes(recipes: Recipe[], count: number): Recipe[] {
-    if (!recipes || recipes.length === 0) return [];
-    const shuffled = [...recipes].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  }
-
-  // Phương thức để cập nhật công thức hiển thị
-  updateVisibleRecipes(): void {
-    const start = this.currentRecipePage * this.recipesPerPage;
-    const end = start + this.recipesPerPage;
-    this.visibleRecipes = this.suggestedRecipes.slice(start, end);
-  }
-
-  // Phương thức để điều hướng trang công thức
-  prevRecipePage(): void {
-    if (this.currentRecipePage > 0) {
-      this.currentRecipePage--;
-      this.updateVisibleRecipes();
-    }
-  }
-
-  nextRecipePage(): void {
-    if (
-      this.currentRecipePage <
-      Math.ceil(this.suggestedRecipes.length / this.recipesPerPage) - 1
-    ) {
-      this.currentRecipePage++;
-      this.updateVisibleRecipes();
-    }
+  isAnswerVisible(questionId: string): boolean {
+    return this.visibleAnswers[questionId] || false;
   }
 }

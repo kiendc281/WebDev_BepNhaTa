@@ -169,13 +169,18 @@ export class ProductService {
 
     const price = product.pricePerPortion[portion];
     if (price === undefined) {
-      console.warn(
-        `Không tìm thấy giá cho khẩu phần ${portion} người:`,
-        product.pricePerPortion
-      );
-
-      // Nếu không có giá cho khẩu phần yêu cầu, tìm khẩu phần đầu tiên có sẵn
+      // Nếu không có giá cho khẩu phần yêu cầu
       const availablePortions = Object.keys(product.pricePerPortion);
+      
+      // Đặc biệt xử lý cho khẩu phần 4 người
+      if (portion === '4' && product.pricePerPortion['2']) {
+        // Tính giá cho 4 người dựa trên giá 2 người nhân với hệ số 1.8
+        const calculatedPrice = Math.round(product.pricePerPortion['2'] * 1.8);
+        console.log(`Tính toán giá cho khẩu phần 4 người dựa trên giá 2 người:`, calculatedPrice);
+        return calculatedPrice;
+      }
+      
+      // Xử lý cho các trường hợp khác
       if (availablePortions.length > 0) {
         const firstAvailablePortion = availablePortions[0];
         console.log(
@@ -183,11 +188,6 @@ export class ProductService {
           product.pricePerPortion[firstAvailablePortion]
         );
         return product.pricePerPortion[firstAvailablePortion];
-      }
-
-      // Nếu không có khẩu phần nào, tính dựa trên giá 2 người (nếu có)
-      if (portion === '4' && product.pricePerPortion['2']) {
-        return Math.round(product.pricePerPortion['2'] * 1.8);
       }
 
       return 0;

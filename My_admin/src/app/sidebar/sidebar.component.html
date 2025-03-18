@@ -1,0 +1,55 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-container">
+      <img src="../../assets/logo.png" alt="Logo" class="logo" />
+    </div>
+
+    <div class="menu-items">
+      <div class="menu-item">
+        <img src="../../assets/sidebar/mainpage.svg" alt="" />
+        <span>Trang chủ</span>
+      </div>
+      <div class="menu-item">
+        <img src="../../assets/sidebar/cart.svg" alt="" />
+        <span>Quản lý đơn hàng</span>
+      </div>
+      <div
+        class="menu-item with-submenu"
+        (click)="toggleSubmenu('product')"
+        [ngClass]="{ open: openSubmenu === 'product' }"
+      >
+        <img src="../../assets/sidebar/product.svg" alt="" />
+        <span>Quản lý sản <br />phẩm</span>
+        <img src="../../assets/sidebar/arrow.svg" alt="" />
+      </div>
+      <div class="submenu" [ngClass]="{ open: openSubmenu === 'product' }">
+        <div class="submenu-item">Danh sách sản phẩm</div>
+        <div class="submenu-item">Thêm sản phẩm mới</div>
+        <div class="submenu-item">Phân loại sản phẩm</div>
+      </div>
+      <div class="menu-item">
+        <img src="../../assets/sidebar/recipes.svg" alt="" />
+        <span>Quản lý công thức</span>
+      </div>
+      <div class="menu-item">
+        <img src="../../assets/sidebar/blog.svg" alt="" />
+        <span>Quản lý blog</span>
+      </div>
+      <div
+        class="menu-item with-submenu"
+        (click)="toggleSubmenu('customer')"
+        [ngClass]="{ open: openSubmenu === 'customer' }"
+      >
+        <img src="../../assets/sidebar/user.svg" alt="" />
+        <span>Quản lý khách hàng</span>
+        <img src="../../assets/sidebar/arrow.svg" alt="" />
+      </div>
+      <div class="submenu" [ngClass]="{ open: openSubmenu === 'customer' }">
+        <div class="submenu-item">Danh sách khách hàng</div>
+        <div class="submenu-item">Phân loại khách hàng</div>
+        <div class="submenu-item">Phản hồi khách hàng</div>
+      </div>
+    </div>
+  </div>
+</div>

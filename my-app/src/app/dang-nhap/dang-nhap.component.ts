@@ -8,6 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-dang-nhap',
@@ -32,7 +33,8 @@ export class DangNhapComponent {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private cartService: CartService
   ) {
     this.loginForm = this.fb.group({
       emailOrPhone: ['', [Validators.required, this.emailOrPhoneValidator]],
@@ -78,15 +80,40 @@ export class DangNhapComponent {
           this.authService.saveToken(response.token);
           localStorage.setItem('user', JSON.stringify(response.account));
 
-          // Hiển thị thông báo thành công
-          this.loading = false;
-          this.successMessage = 'Đăng nhập thành công!';
-
-          // Đợi 1.5 giây rồi đóng popup và chuyển hướng
-          setTimeout(() => {
-            this.onClose();
-            this.router.navigate(['/']);
-          }, 1500);
+          console.log('Token đã được lưu, bắt đầu đồng bộ giỏ hàng...');
+          
+          // Kiểm tra giỏ hàng hiện tại trong localStorage
+          const localCart = localStorage.getItem('cart');
+          console.log('Giỏ hàng hiện tại trong localStorage trước khi đồng bộ:', localCart);
+          
+          // Merge cart from local storage with server cart
+          this.cartService.mergeCartsAfterLogin().subscribe({
+            next: (cart) => {
+              console.log('Giỏ hàng đã được đồng bộ thành công:', cart);
+              
+              // Hiển thị thông báo thành công
+              this.loading = false;
+              this.successMessage = 'Đăng nhập thành công!';
+              
+              // Đợi 1.5 giây rồi đóng popup và chuyển hướng
+              setTimeout(() => {
+                this.onClose();
+                // Tải lại trang để đảm bảo giỏ hàng được cập nhật đúng
+                window.location.href = '/';
+              }, 1500);
+            },
+            error: (error) => {
+              console.error('Lỗi khi đồng bộ giỏ hàng:', error);
+              // Vẫn tiếp tục đăng nhập thành công dù có lỗi giỏ hàng
+              this.loading = false;
+              this.successMessage = 'Đăng nhập thành công!';
+              
+              setTimeout(() => {
+                this.onClose();
+                this.router.navigate(['/']);
+              }, 1500);
+            }
+          });
         },
         error: (error) => {
           console.error('Lỗi đăng nhập:', error);
