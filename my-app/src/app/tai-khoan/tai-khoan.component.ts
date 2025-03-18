@@ -13,6 +13,13 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 
+interface Toast {
+  type: 'success' | 'error';
+  title: string;
+  message: string;
+  fading?: boolean;
+}
+
 @Component({
   selector: 'app-tai-khoan',
   standalone: true,
@@ -51,6 +58,8 @@ export class TaiKhoanComponent implements OnInit {
   showOldPassword: boolean = false;
   showNewPassword: boolean = false;
   showConfirmPassword: boolean = false;
+
+  toasts: Toast[] = [];
 
   constructor(
     private authService: AuthService,
@@ -241,112 +250,89 @@ export class TaiKhoanComponent implements OnInit {
     }
   }
 
+  private showToast(type: 'success' | 'error', title: string, message: string) {
+    const toast: Toast = { type, title, message };
+    this.toasts.push(toast);
+
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+      const index = this.toasts.indexOf(toast);
+      if (index > -1) {
+        this.toasts[index].fading = true;
+        setTimeout(() => {
+          this.toasts.splice(index, 1);
+        }, 300);
+      }
+    }, 3000);
+  }
+
+  removeToast(index: number) {
+    this.toasts[index].fading = true;
+    setTimeout(() => {
+      this.toasts.splice(index, 1);
+    }, 300);
+  }
+
   // Xử lý cập nhật thông tin cá nhân
   updateUserInfo(): void {
     if (this.updateForm.valid) {
       const formData = this.updateForm.value;
-
-      // Chuẩn bị dữ liệu ngày sinh
-      const birthDate = new Date(
-        formData.year,
-        formData.month - 1,
-        formData.day
-      );
-
-      // Chuẩn bị dữ liệu cập nhật
-      const updateData: Partial<Account> = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        gender: formData.gender,
-        birthOfDate: birthDate,
-      };
-
-      console.log('Dữ liệu cập nhật:', updateData);
-
-      // Lấy ID người dùng hiện tại
       const userId = (this.currentUser as any)?.id;
 
       if (userId) {
-        // Gọi service để cập nhật thông tin
-        this.authService.updateAccount(userId, updateData).subscribe({
+        this.authService.updateAccount(userId, formData).subscribe({
           next: (response) => {
-            console.log('Cập nhật thành công:', response);
-            // Cập nhật thông tin người dùng hiện tại
-            this.currentUser = this.authService.getCurrentUser();
-            // Đóng modal
+            console.log('Cập nhật thông tin thành công:', response);
             this.closeUpdateModal();
-            // Hiển thị thông báo thành công
-            alert('Cập nhật thông tin thành công!');
+            this.showToast(
+              'success',
+              'Thành công!',
+              'Thông tin tài khoản đã được cập nhật'
+            );
           },
           error: (error) => {
-            console.error('Lỗi khi cập nhật:', error);
-            alert(
-              'Có lỗi xảy ra: ' +
-                (error.message || 'Không thể cập nhật thông tin')
+            console.error('Lỗi khi cập nhật thông tin:', error);
+            this.showToast(
+              'error',
+              'Lỗi!',
+              'Không thể cập nhật thông tin tài khoản'
             );
           },
         });
-      } else {
-        console.error('Không tìm thấy ID người dùng');
-        alert('Không thể xác định người dùng hiện tại');
       }
-    } else {
-      // Đánh dấu tất cả các trường là đã touched để hiển thị lỗi
-      Object.keys(this.updateForm.controls).forEach((key) => {
-        const control = this.updateForm.get(key);
-        control?.markAsTouched();
-      });
     }
   }
 
   // Xử lý cập nhật mật khẩu
   updatePassword(): void {
-    if (this.passwordForm.invalid) {
-      // Đánh dấu tất cả các trường là đã touched để hiển thị lỗi
-      Object.keys(this.passwordForm.controls).forEach((key) => {
-        const control = this.passwordForm.get(key);
-        control?.markAsTouched();
-      });
-      return;
-    }
+    if (this.passwordForm.valid) {
+      const passwordData = {
+        oldPassword: this.passwordForm.value.oldPassword,
+        newPassword: this.passwordForm.value.newPassword,
+      };
 
-    const passwordData = {
-      oldPassword: this.passwordForm.value.oldPassword,
-      newPassword: this.passwordForm.value.newPassword,
-    };
-
-    console.log('Form data (masked):', {
-      oldPassword: '********',
-      newPassword: '********',
-      confirmPassword: '********',
-    });
-
-    // Lấy ID người dùng hiện tại
-    const userId = (this.currentUser as any)?.id;
-    console.log('User ID:', userId);
-
-    if (userId) {
-      this.authService.updatePassword(userId, passwordData).subscribe({
-        next: (response) => {
-          console.log('Cập nhật mật khẩu thành công:', response);
-          // Đóng modal
-          this.closePasswordModal();
-          // Hiển thị thông báo thành công
-          alert('Cập nhật mật khẩu thành công!');
-        },
-        error: (error) => {
-          console.error('Lỗi khi cập nhật mật khẩu:', error);
-          // Hiển thị thông báo lỗi từ server
-          const errorMessage =
-            error.error?.message ||
-            'Mật khẩu cũ chưa đúng. Vui lòng kiểm tra lại';
-          alert(errorMessage);
-        },
-      });
-    } else {
-      console.error('Không tìm thấy ID người dùng');
-      alert('Không thể xác định người dùng hiện tại');
+      const userId = (this.currentUser as any)?.id;
+      if (userId) {
+        this.authService.updatePassword(userId, passwordData).subscribe({
+          next: (response) => {
+            console.log('Cập nhật mật khẩu thành công:', response);
+            this.closePasswordModal();
+            this.showToast(
+              'success',
+              'Thành công!',
+              'Mật khẩu đã được cập nhật'
+            );
+          },
+          error: (error) => {
+            console.error('Lỗi khi cập nhật mật khẩu:', error);
+            this.showToast(
+              'error',
+              'Lỗi!',
+              error.error?.message || 'Vui lòng kiểm tra lại mật khẩu'
+            );
+          },
+        });
+      }
     }
   }
 

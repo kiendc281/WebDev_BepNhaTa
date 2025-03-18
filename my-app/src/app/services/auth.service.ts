@@ -38,6 +38,72 @@ export class AuthService {
     );
   }
 
+  // Method to update user account information
+  updateAccount(id: string, updateData: Partial<Account>): Observable<any> {
+    // Create a copy of the update data
+    const dataToSend: any = { ...updateData };
+
+    // Handle Date objects properly
+    if (dataToSend.birthOfDate instanceof Date) {
+      // Convert to ISO string for server
+      dataToSend.birthOfDate = dataToSend.birthOfDate.toISOString();
+    }
+
+    console.log('Sending to server:', dataToSend);
+
+    return this.http.patch(`${this.apiUrl}/accounts/${id}`, dataToSend).pipe(
+      tap((response) => {
+        // Update the local user data if the update was successful
+        const currentUser = this.getCurrentUser();
+        if (currentUser) {
+          const updatedUser = { ...currentUser, ...updateData };
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+        }
+      }),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 0) {
+          return throwError(() => new Error('Không thể kết nối đến server'));
+        }
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // Method to update password
+  updatePassword(
+    id: string,
+    passwords: { oldPassword: string; newPassword: string }
+  ): Observable<any> {
+    console.log('AuthService: Updating password for user ID:', id);
+    console.log('AuthService: Request payload:', {
+      oldPassword: '********', // For security, don't log actual password
+      newPassword: '********',
+    });
+
+    return this.http
+      .patch(`${this.apiUrl}/accounts/${id}/password`, {
+        oldPassword: passwords.oldPassword,
+        newPassword: passwords.newPassword,
+      })
+      .pipe(
+        tap((response) => {
+          console.log('AuthService: Password update successful:', response);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error('AuthService: Password update error:', error);
+          if (error.status === 0) {
+            return throwError(() => new Error('Không thể kết nối đến server'));
+          } else if (error.status === 400) {
+            // Pass through the server's error message
+            return throwError(
+              () => new Error(error.error?.message || 'Mật khẩu cũ không đúng')
+            );
+          }
+          return throwError(() => error);
+        })
+      );
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('tokenExpiration');
