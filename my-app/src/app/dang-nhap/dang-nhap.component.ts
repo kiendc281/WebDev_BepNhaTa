@@ -8,7 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { CartService } from '../services/cart.service';
+import { CartManagerService } from '../services/cart-manager.service';
 
 @Component({
   selector: 'app-dang-nhap',
@@ -34,7 +34,7 @@ export class DangNhapComponent {
     private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
-    private cartService: CartService
+    private cartService: CartManagerService
   ) {
     this.loginForm = this.fb.group({
       emailOrPhone: ['', [Validators.required, this.emailOrPhoneValidator]],
@@ -76,10 +76,8 @@ export class DangNhapComponent {
       this.authService.login(emailOrPhone, password).subscribe({
         next: (response) => {
           console.log('Đăng nhập thành công:', response);
-          // Lưu thông tin đăng nhập với thời hạn 1 giờ
-          this.authService.saveToken(response.token);
-          localStorage.setItem('user', JSON.stringify(response.account));
-
+          
+          // Không cần lưu token và user ở đây vì đã được xử lý trong authService.login
           console.log('Token đã được lưu, bắt đầu đồng bộ giỏ hàng...');
           
           // Kiểm tra giỏ hàng hiện tại trong localStorage
@@ -120,6 +118,8 @@ export class DangNhapComponent {
           this.loading = false;
           if (error.status === 0) {
             this.errorMessage = 'Không thể kết nối đến server. Vui lòng thử lại sau.';
+          } else if (error.status === 401) {
+            this.errorMessage = 'Email/Số điện thoại hoặc mật khẩu không đúng';
           } else {
             this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
           }

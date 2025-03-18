@@ -12,7 +12,7 @@ router.get('/cart/:id', cartController.getCartById);
 router.get('/cart/account/:accountId', cartController.getCartByAccountId);
 
 // Lấy giỏ hàng người dùng
-router.get('/cart/user/cart', cartController.getUserCart);
+router.get('/cart/user', cartController.getUserCart);
 
 // Cập nhật giỏ hàng
 router.post('/cart/update', cartController.updateUserCart);

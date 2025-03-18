@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="checkout-info">
         <h2 class="section-title">Thông tin thanh toán</h2>
 
@@ -81,77 +81,146 @@
       </div>
     </div>
 
-    <div class="col-md-4">
-      <div class="cart-summary">
-        <h2 class="section-title">Giỏ hàng</h2>
-
-        <div
-          class="empty-cart-message"
-          *ngIf="cartItems.length === 0 && !loading"
-        >
-          <p>Giỏ hàng của bạn đang trống.</p>
-          <p>Hãy mua sắm ngay nhé!</p>
-          <button class="reload-btn" (click)="reloadCart()">
-            Tải lại giỏ hàng
+    <div class="col-md-6">
+      <div class="cart-summary-container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="section-title mb-0">Giỏ hàng</h2>
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            (click)="reloadCart()"
+          >
+            <i class="bi bi-arrow-repeat"></i> Tải lại giỏ hàng
           </button>
         </div>
 
-        <div *ngIf="loading" class="loading-message">
+        <div class="loading-overlay" *ngIf="loading">
+          <div class="spinner"></div>
           <p>Đang tải giỏ hàng...</p>
         </div>
 
-        <div class="cart-items" *ngIf="cartItems.length > 0 && !loading">
-          <div class="cart-item" *ngFor="let item of cartItems">
-            <div class="cart-item-image">
-              <img [src]="item.mainImage" alt="{{ item.ingredientName }}" />
-            </div>
-            <div class="cart-item-details">
-              <h3 class="cart-item-name">{{ item.ingredientName }}</h3>
-              <p class="cart-item-price">{{ item.price | number }} đ</p>
-              <div class="cart-item-quantity">
-                <button
-                  class="quantity-btn"
-                  (click)="updateQuantity(item, item.quantity - 1)"
-                >
-                  -
-                </button>
-                <input
-                  type="number"
-                  [ngModel]="item.quantity"
-                  min="1"
-                  (ngModelChange)="updateQuantity(item, $event)"
-                />
-                <button
-                  class="quantity-btn"
-                  (click)="updateQuantity(item, item.quantity + 1)"
-                >
-                  +
-                </button>
-              </div>
-              <p class="cart-item-serving">
-                Khẩu phần: {{ item.servingSize }} người
-              </p>
-              <button class="remove-btn" (click)="removeItem(item)">Xóa</button>
-            </div>
+        <div
+          class="empty-cart"
+          *ngIf="!loading && (!cartItems || cartItems.length === 0)"
+        >
+          <div class="empty-cart-message">
+            <i class="bi bi-cart-x-fill"></i>
+            <p>Giỏ hàng của bạn đang trống</p>
+            <button class="btn btn-primary" routerLink="/san-pham">
+              Tiếp tục mua sắm
+            </button>
           </div>
         </div>
 
-        <div class="cart-totals">
-          <div class="total-row">
-            <span>Tạm tính</span>
-            <span class="price">{{ totalPrice | number }} đ</span>
+        <div
+          class="cart-content"
+          *ngIf="!loading && cartItems && cartItems.length > 0"
+        >
+          <div class="cart-items-container">
+            <div class="cart-header-new">
+              <div class="header-checkbox">
+                <input
+                  type="checkbox"
+                  id="select-all"
+                  (change)="toggleSelectAll()"
+                  [checked]="isAllSelected()"
+                />
+                <label for="select-all">Tất cả sản phẩm | Xóa sản phẩm</label>
+              </div>
+              <div class="header-quantity">Số lượng</div>
+              <div class="header-price">Giá</div>
+            </div>
+
+            <div class="cart-items-list">
+              <div
+                class="cart-item-new"
+                *ngFor="let item of cartItems; let i = index"
+              >
+                <div class="item-select">
+                  <input
+                    type="checkbox"
+                    [id]="'select-item-' + i"
+                    [(ngModel)]="item.selected"
+                    (change)="onItemSelectionChange()"
+                  />
+                </div>
+
+                <div class="item-info">
+                  <img
+                    [src]="item.mainImage"
+                    [alt]="item.ingredientName"
+                    class="item-image"
+                  />
+                  <div class="item-details">
+                    <h4 class="item-name">{{ item.ingredientName }}</h4>
+                  </div>
+                </div>
+
+                <div class="item-delete">
+                  <button
+                    class="delete-btn"
+                    (click)="removeItem(item)"
+                    title="Xóa sản phẩm"
+                  >
+                    <i class="bi bi-trash">Xóa</i>
+                  </button>
+                </div>
+
+                <div class="item-quantity">
+                  <div class="quantity-control-new">
+                    <button
+                      class="quantity-btn-new minus-btn"
+                      (click)="updateQuantity(item, item.quantity - 1)"
+                      [disabled]="item.quantity <= 1"
+                    >
+                      −
+                    </button>
+                    <span class="quantity-display">{{ item.quantity }}</span>
+                    <button
+                      class="quantity-btn-new plus-btn"
+                      (click)="updateQuantity(item, item.quantity + 1)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div class="item-price">
+                  {{ item.price | number : "1.0-0" }} đ
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="total-row">
-            <span>Giảm giá</span>
-            <span class="price">0 đ</span>
-          </div>
-          <div class="total-row">
-            <span>Phí giao hàng</span>
-            <span class="price">Miễn phí</span>
-          </div>
-          <div class="total-row grand-total">
-            <span>Tổng</span>
-            <span class="price">{{ totalPrice | number }} đ</span>
+
+          <div class="cart-summary">
+            <div class="summary-actions">
+              <button class="btn btn-outline-danger" (click)="clearCart()">
+                Xóa giỏ hàng
+              </button>
+              <button class="btn btn-outline-primary" routerLink="/san-pham">
+                Tiếp tục mua sắm
+              </button>
+            </div>
+            <div class="summary-details">
+              <div class="summary-row">
+                <span>Tổng số sản phẩm:</span>
+                <span>{{ totalQuantity }}</span>
+              </div>
+              <div class="summary-row">
+                <span>Tạm tính:</span>
+                <span>{{ totalPrice | number : "1.0-0" }}đ</span>
+              </div>
+              <div class="summary-row">
+                <span>Phí vận chuyển:</span>
+                <span>Miễn phí</span>
+              </div>
+              <div class="summary-row total">
+                <span>Tổng cộng:</span>
+                <span>{{ totalPrice | number : "1.0-0" }}đ</span>
+              </div>
+              <button class="checkout-btn" (click)="proceedToCheckout()">
+                Thanh toán
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -173,7 +242,7 @@
     </div>
     <button
       class="button-cam"
-      [disabled]="cartItems.length === 0"
+      [disabled]="!cartItems || cartItems.length === 0"
       (click)="proceedToCheckout()"
     >
       THANH TOÁN
@@ -192,7 +261,7 @@
   </div>
   <button
     class="button-cam"
-    [disabled]="cartItems.length === 0"
+    [disabled]="!cartItems || cartItems.length === 0"
     (click)="proceedToCheckout()"
   >
     THANH TOÁN

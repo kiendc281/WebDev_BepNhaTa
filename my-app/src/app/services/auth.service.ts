@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, throwError, tap } from 'rxjs';
+import { Observable, catchError, throwError, tap, BehaviorSubject } from 'rxjs';
 import { Account, LoginResponse } from '../models/account.interface';
 
 @Injectable({
@@ -9,13 +9,47 @@ import { Account, LoginResponse } from '../models/account.interface';
 export class AuthService {
   private apiUrl = 'http://localhost:3000/api';
   private tokenExpirationTime = 60 * 60 * 1000; // 1 giờ tính bằng mili giây
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.checkInitialLoginState());
+  isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   constructor(private http: HttpClient) {}
+
+  private checkInitialLoginState(): boolean {
+    const token = localStorage.getItem('token');
+    const expirationTime = localStorage.getItem('tokenExpiration');
+
+    if (!token || !expirationTime) {
+      return false;
+    }
+
+    const currentTime = new Date().getTime();
+    const expiration = parseInt(expirationTime, 10);
+
+    return currentTime <= expiration;
+  }
 
   login(account: string, password: string): Observable<LoginResponse> {
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/auth/login`, { account, password })
       .pipe(
+        tap((response) => {
+          if (response && response.token) {
+            // Lưu token và thông tin user
+            this.saveToken(response.token);
+            localStorage.setItem('user', JSON.stringify(response.account));
+            
+            // Cập nhật trạng thái đăng nhập
+            this.isLoggedInSubject.next(true);
+            
+            // Thêm class cho icon đăng nhập
+            const loginIcon = document.querySelector('.login-icon');
+            if (loginIcon) {
+              loginIcon.classList.remove('fa-user-group');
+              loginIcon.classList.add('fa-user');
+              loginIcon.classList.add('logged-in');
+            }
+          }
+        }),
         catchError((error: HttpErrorResponse) => {
           if (error.status === 0) {
             return throwError(() => new Error('Không thể kết nối đến server'));
@@ -108,6 +142,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('tokenExpiration');
     localStorage.removeItem('user');
+    this.isLoggedInSubject.next(false);
   }
 
   isLoggedIn(): boolean {
@@ -137,5 +172,9 @@ export class AuthService {
   getCurrentUser(): Account | null {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
+  }
+
+  isAuthenticated(): boolean {
+    return this.isLoggedIn();
   }
 }

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product.interface';
-import { CartService } from '../services/cart.service';
+import { CartManagerService } from '../services/cart-manager.service';
 import { AuthService } from '../services/auth.service';
 import { CartItem } from '../models/cart.interface';
 import { Subscription } from 'rxjs';
@@ -70,7 +70,7 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
-    private cartService: CartService,
+    private cartService: CartManagerService,
     private authService: AuthService,
     private recipeService: RecipeService
   ) {}

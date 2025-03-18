@@ -87,18 +87,21 @@ const cartController = {
     addToCart: async (req, res) => {
         try {
             const { userId, productId, quantity, servingSize, price } = req.body;
+            console.log('Request body for addToCart:', req.body);
             
             if (!userId || !productId || !quantity || !servingSize || !price) {
                 return res.status(400).json({ 
-                    message: 'Cần có đầy đủ thông tin: userId, productId, quantity, servingSize, price' 
+                    message: 'Cần có đầy đủ thông tin: userId, productId, quantity, servingSize, price',
+                    received: { userId, productId, quantity, servingSize, price }
                 });
             }
             
             const updatedCart = await cartService.addToCart(
-                userId, productId, quantity, servingSize, price
+                String(userId), String(productId), Number(quantity), String(servingSize), Number(price)
             );
             res.json(updatedCart);
         } catch (error) {
+            console.error('Error in addToCart controller:', error);
             res.status(400).json({ message: error.message });
         }
     },

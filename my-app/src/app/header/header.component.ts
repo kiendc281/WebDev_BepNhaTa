@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { CartService } from '../services/cart.service';
+import { CartManagerService } from '../services/cart-manager.service';
 import { DangNhapComponent } from '../dang-nhap/dang-nhap.component';
 import { DangKyComponent } from '../dang-ky/dang-ky.component';
 import { QuenMatKhauComponent } from '../quen-mat-khau/quen-mat-khau.component';
@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     public authService: AuthService,
-    private cartService: CartService
+    private cartService: CartManagerService
   ) {}
 
   ngOnInit() {
