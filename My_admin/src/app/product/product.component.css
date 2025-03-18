@@ -85,6 +85,16 @@ th.sortable {
   height: 14px;
   margin-left: 5px;
   vertical-align: middle;
+  opacity: 0.5;
+  transition: all 0.2s ease;
+}
+
+.sort-icon.active {
+  opacity: 1;
+}
+
+.sort-icon.desc {
+  transform: rotate(180deg);
 }
 
 /* Product status */

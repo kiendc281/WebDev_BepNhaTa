@@ -60,39 +60,47 @@
     <thead>
       <tr>
         <th><input type="checkbox" /></th>
-        <th class="sortable">
+        <th class="sortable" (click)="sort('name')">
           Tên sản phẩm
           <img
             src="../../assets/product/sort.svg"
             alt="sort"
             class="sort-icon"
+            [class.active]="sortColumn === 'name'"
+            [class.desc]="sortColumn === 'name' && sortDirection === 'desc'"
           />
         </th>
-        <th class="sortable">
+        <th class="sortable" (click)="sort('code')">
           Mã sản phẩm
           <img
             src="../../assets/product/sort.svg"
             alt="sort"
             class="sort-icon"
+            [class.active]="sortColumn === 'code'"
+            [class.desc]="sortColumn === 'code' && sortDirection === 'desc'"
           />
         </th>
         <th>Trạng thái</th>
-        <th class="sortable">
+        <th class="sortable" (click)="sort('price')">
           Giá
           <img
             src="../../assets/product/sort.svg"
             alt="sort"
             class="sort-icon"
+            [class.active]="sortColumn === 'price'"
+            [class.desc]="sortColumn === 'price' && sortDirection === 'desc'"
           />
         </th>
         <th>Danh mục</th>
         <th>Thẻ</th>
-        <th class="sortable">
+        <th class="sortable" (click)="sort('date')">
           Ngày
           <img
             src="../../assets/product/sort.svg"
             alt="sort"
             class="sort-icon"
+            [class.active]="sortColumn === 'date'"
+            [class.desc]="sortColumn === 'date' && sortDirection === 'desc'"
           />
         </th>
       </tr>
