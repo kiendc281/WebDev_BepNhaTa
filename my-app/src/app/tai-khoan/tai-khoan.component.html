@@ -134,23 +134,33 @@
       <div class="thong-tin-tai-khoan">
         <div class="thong-tin-tai-khoan-item">
           <div class="thong-tin-tai-khoan-item-label">Họ và tên:</div>
-          <span>{{ currentUser?.name || "Chưa cập nhật" }}</span>
+          <span [ngClass]="{ 'not-updated': !currentUser?.name }">{{
+            currentUser?.name || "Chưa cập nhật"
+          }}</span>
         </div>
         <div class="thong-tin-tai-khoan-item">
           <div class="thong-tin-tai-khoan-item-label">Email:</div>
-          <span>{{ currentUser?.email || "Chưa cập nhật" }}</span>
+          <span [ngClass]="{ 'not-updated': !currentUser?.email }">{{
+            currentUser?.email || "Chưa cập nhật"
+          }}</span>
         </div>
         <div class="thong-tin-tai-khoan-item">
           <div class="thong-tin-tai-khoan-item-label">Số điện thoại:</div>
-          <span>{{ currentUser?.phone || "Chưa cập nhật" }}</span>
+          <span [ngClass]="{ 'not-updated': !currentUser?.phone }">{{
+            currentUser?.phone || "Chưa cập nhật"
+          }}</span>
         </div>
         <div class="thong-tin-tai-khoan-item">
           <div class="thong-tin-tai-khoan-item-label">Giới tính:</div>
-          <span>Nam</span>
+          <span [ngClass]="{ 'not-updated': !currentUser?.gender }">{{
+            currentUser?.gender || "Chưa cập nhật"
+          }}</span>
         </div>
         <div class="thong-tin-tai-khoan-item">
           <div class="thong-tin-tai-khoan-item-label">Ngày sinh:</div>
-          <span>20/01/2000</span>
+          <span [ngClass]="{ 'not-updated': !formatBirthDate() }">{{
+            formatBirthDate() || "Chưa cập nhật"
+          }}</span>
         </div>
         <button class="button-trang" (click)="openUpdateModal()">
           CẬP NHẬT
@@ -159,7 +169,9 @@
       <h1>THÔNG TIN ĐĂNG NHẬP</h1>
       <div class="thong-tin-tai-khoan-item">
         <div class="thong-tin-tai-khoan-item-label">Email:</div>
-        <span>{{ currentUser?.email || "Chưa cập nhật" }}</span>
+        <span [ngClass]="{ 'not-updated': !currentUser?.email }">{{
+          currentUser?.email || "Chưa cập nhật"
+        }}</span>
       </div>
       <div class="thong-tin-tai-khoan-item">
         <div class="thong-tin-tai-khoan-item-label">Mật khẩu:</div>
@@ -214,7 +226,13 @@
     <div class="modal-body">
       <form [formGroup]="updateForm" (ngSubmit)="updateUserInfo()">
         <!-- Họ và tên -->
-        <div class="form-group">
+        <div
+          class="form-group"
+          [ngClass]="{
+            'has-error':
+              updateForm.get('name')?.invalid && updateForm.get('name')?.touched
+          }"
+        >
           <label>
             <img src="../../assets/tai-khoan/hovaten.svg" alt="User" />
             Họ và tên của bạn:
@@ -224,10 +242,27 @@
             formControlName="name"
             placeholder="Nhập họ và tên"
           />
+          <div
+            *ngIf="
+              updateForm.get('name')?.invalid && updateForm.get('name')?.touched
+            "
+            class="validation-error"
+          >
+            <span *ngIf="updateForm.get('name')?.hasError('required')"
+              >Họ tên không được để trống</span
+            >
+          </div>
         </div>
 
         <!-- Email -->
-        <div class="form-group">
+        <div
+          class="form-group"
+          [ngClass]="{
+            'has-error':
+              updateForm.get('email')?.invalid &&
+              updateForm.get('email')?.touched
+          }"
+        >
           <label>
             <img src="../../assets/tai-khoan/email.svg" alt="Email" />
             Email của bạn:
@@ -237,10 +272,31 @@
             formControlName="email"
             placeholder="Nhập email"
           />
+          <div
+            *ngIf="
+              updateForm.get('email')?.invalid &&
+              updateForm.get('email')?.touched
+            "
+            class="validation-error"
+          >
+            <span *ngIf="updateForm.get('email')?.hasError('required')"
+              >Email không được để trống</span
+            >
+            <span *ngIf="updateForm.get('email')?.hasError('email')"
+              >Email không hợp lệ</span
+            >
+          </div>
         </div>
 
         <!-- Số điện thoại -->
-        <div class="form-group">
+        <div
+          class="form-group"
+          [ngClass]="{
+            'has-error':
+              updateForm.get('phone')?.invalid &&
+              updateForm.get('phone')?.touched
+          }"
+        >
           <label>
             <img src="../../assets/tai-khoan/phone.svg" alt="Phone" />
             Số điện thoại
@@ -250,6 +306,20 @@
             formControlName="phone"
             placeholder="Nhập số điện thoại"
           />
+          <div
+            *ngIf="
+              updateForm.get('phone')?.invalid &&
+              updateForm.get('phone')?.touched
+            "
+            class="validation-error"
+          >
+            <span *ngIf="updateForm.get('phone')?.hasError('required')"
+              >Số điện thoại không được để trống</span
+            >
+            <span *ngIf="updateForm.get('phone')?.hasError('pattern')"
+              >Số điện thoại phải có 10 chữ số</span
+            >
+          </div>
         </div>
 
         <!-- Ngày sinh -->
@@ -335,7 +405,13 @@
         </div>
 
         <!-- Nút cập nhật -->
-        <button type="submit" class="button-cam">CẬP NHẬT</button>
+        <button
+          type="submit"
+          class="button-cam"
+          [disabled]="updateForm.invalid"
+        >
+          CẬP NHẬT
+        </button>
       </form>
     </div>
   </div>
@@ -356,7 +432,14 @@
     <div class="modal-body">
       <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
         <!-- Mật khẩu cũ -->
-        <div class="form-group password-field">
+        <div
+          class="form-group password-field"
+          [ngClass]="{
+            'has-error':
+              passwordForm.get('oldPassword')?.invalid &&
+              passwordForm.get('oldPassword')?.touched
+          }"
+        >
           <label>
             <img src="../../assets/tai-khoan/lock.svg" alt="Password" />
             Mật khẩu cũ
@@ -378,10 +461,28 @@
               (click)="togglePasswordVisibility('old')"
             />
           </div>
+          <div
+            *ngIf="
+              passwordForm.get('oldPassword')?.invalid &&
+              passwordForm.get('oldPassword')?.touched
+            "
+            class="validation-error"
+          >
+            <span *ngIf="passwordForm.get('oldPassword')?.hasError('required')"
+              >Vui lòng nhập mật khẩu cũ</span
+            >
+          </div>
         </div>
 
         <!-- Mật khẩu mới -->
-        <div class="form-group password-field">
+        <div
+          class="form-group password-field"
+          [ngClass]="{
+            'has-error':
+              passwordForm.get('newPassword')?.invalid &&
+              passwordForm.get('newPassword')?.touched
+          }"
+        >
           <label>
             <img src="../../assets/tai-khoan/lock.svg" alt="Password" />
             Mật khẩu mới
@@ -403,10 +504,43 @@
               (click)="togglePasswordVisibility('new')"
             />
           </div>
+          <div
+            *ngIf="
+              passwordForm.get('newPassword')?.invalid &&
+              passwordForm.get('newPassword')?.touched
+            "
+            class="validation-error"
+          >
+            <span *ngIf="passwordForm.get('newPassword')?.hasError('required')"
+              >Vui lòng nhập mật khẩu mới</span
+            >
+            <span *ngIf="passwordForm.get('newPassword')?.hasError('minlength')"
+              >Mật khẩu phải có ít nhất 8 ký tự</span
+            >
+            <span
+              *ngIf="
+                passwordForm.get('newPassword')?.hasError('strongPassword')
+              "
+              >Mật khẩu phải bao gồm chữ in hoa, số và ký tự đặc biệt</span
+            >
+          </div>
+          <div class="mt-2 small">
+            <ul>
+              <li>Tối thiểu 8 ký tự</li>
+              <li>Bao gồm chữ in hoa, số và ký tự đặc biệt</li>
+            </ul>
+          </div>
         </div>
 
         <!-- Xác nhận mật khẩu mới -->
-        <div class="form-group password-field">
+        <div
+          class="form-group password-field"
+          [ngClass]="{
+            'has-error':
+              passwordForm.get('confirmPassword')?.invalid &&
+              passwordForm.get('confirmPassword')?.touched
+          }"
+        >
           <label>
             <img src="../../assets/tai-khoan/lock.svg" alt="Password" />
             Xác nhận mật khẩu mới
@@ -428,10 +562,32 @@
               (click)="togglePasswordVisibility('confirm')"
             />
           </div>
+          <div
+            *ngIf="
+              passwordForm.get('confirmPassword')?.invalid &&
+              passwordForm.get('confirmPassword')?.touched
+            "
+            class="validation-error"
+          >
+            <span
+              *ngIf="passwordForm.get('confirmPassword')?.hasError('required')"
+              >Vui lòng xác nhận mật khẩu mới</span
+            >
+            <span
+              *ngIf="passwordForm.get('confirmPassword')?.hasError('noMatch')"
+              >Mật khẩu xác nhận không khớp</span
+            >
+          </div>
         </div>
 
         <!-- Nút cập nhật -->
-        <button type="submit" class="button-cam">CẬP NHẬT</button>
+        <button
+          type="submit"
+          class="button-cam"
+          [disabled]="passwordForm.invalid"
+        >
+          CẬP NHẬT
+        </button>
       </form>
     </div>
   </div>

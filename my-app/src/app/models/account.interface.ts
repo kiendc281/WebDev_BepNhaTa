@@ -1,16 +1,20 @@
 export interface Account {
-    name: string;
-    email: string;
-    phone: string;
-    password?: string;
+  id?: string;
+  name: string;
+  email: string;
+  phone: string;
+  password?: string;
+  gender?: string;
+  birthOfDate?: Date;
+  role?: string;
 }
 
 export interface LoginResponse {
-    token: string;
-    account: Account;
+  token: string;
+  account: Account;
 }
 
 export interface AuthResponse {
-    token: string;
-    account: Account;
-} 
+  token: string;
+  account: Account;
+}

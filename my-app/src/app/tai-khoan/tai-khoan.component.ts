@@ -61,7 +61,7 @@ export class TaiKhoanComponent implements OnInit {
     this.updateForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{10,11}$/)]],
+      phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       day: [1],
       month: [1],
       year: [2000],
@@ -72,13 +72,45 @@ export class TaiKhoanComponent implements OnInit {
     this.passwordForm = this.fb.group(
       {
         oldPassword: ['', Validators.required],
-        newPassword: ['', [Validators.required, Validators.minLength(6)]],
+        newPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            this.strongPasswordValidator,
+          ],
+        ],
         confirmPassword: ['', [Validators.required]],
       },
       {
         validators: this.passwordMatchValidator,
       }
     );
+  }
+
+  // Validator để kiểm tra mật khẩu mạnh
+  strongPasswordValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value);
+
+    const passwordValid = hasUpperCase && hasNumber && hasSpecialChar;
+
+    return !passwordValid
+      ? {
+          strongPassword: {
+            hasUpperCase: hasUpperCase,
+            hasNumber: hasNumber,
+            hasSpecialChar: hasSpecialChar,
+          },
+        }
+      : null;
   }
 
   // Validator để kiểm tra mật khẩu xác nhận
@@ -123,15 +155,45 @@ export class TaiKhoanComponent implements OnInit {
       phone: this.currentUser.phone,
     });
 
+    // Set gender if available
+    if (this.currentUser.gender) {
+      this.gender = this.currentUser.gender;
+      this.updateForm.patchValue({ gender: this.currentUser.gender });
+    }
+
+    // Set date if available
+    if (this.currentUser.birthOfDate) {
+      const birthDate = new Date(this.currentUser.birthOfDate);
+      this.selectedDay = birthDate.getDate();
+      this.selectedMonth = birthDate.getMonth() + 1;
+      this.selectedYear = birthDate.getFullYear();
+
+      this.updateForm.patchValue({
+        day: this.selectedDay,
+        month: this.selectedMonth,
+        year: this.selectedYear,
+      });
+    }
+
     this.initPasswordForm();
     this.generateDaysInMonth();
+
+    // Debug info
+    console.log('Current user:', this.currentUser);
   }
 
   private initPasswordForm(): void {
     this.passwordForm = this.fb.group(
       {
         oldPassword: ['', [Validators.required]],
-        newPassword: ['', [Validators.required, Validators.minLength(6)]],
+        newPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            this.strongPasswordValidator,
+          ],
+        ],
         confirmPassword: ['', [Validators.required]],
       },
       { validators: this.passwordMatchValidator }
@@ -144,7 +206,7 @@ export class TaiKhoanComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/dang-nhap']);
+    this.router.navigate(['/trang-chu']);
   }
 
   // Mở modal cập nhật thông tin cá nhân
@@ -184,23 +246,57 @@ export class TaiKhoanComponent implements OnInit {
     if (this.updateForm.valid) {
       const formData = this.updateForm.value;
 
-      // Cập nhật thông tin người dùng
-      // Thông thường sẽ gọi API để cập nhật thông tin
-      console.log('Cập nhật thông tin:', formData);
+      // Chuẩn bị dữ liệu ngày sinh
+      const birthDate = new Date(
+        formData.year,
+        formData.month - 1,
+        formData.day
+      );
 
-      // Cập nhật thông tin trong localStorage (tạm thời)
-      const updatedUser: Account = {
-        ...(this.currentUser as Account),
+      // Chuẩn bị dữ liệu cập nhật
+      const updateData: Partial<Account> = {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
+        gender: formData.gender,
+        birthOfDate: birthDate,
       };
 
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-      this.currentUser = updatedUser;
+      console.log('Dữ liệu cập nhật:', updateData);
 
-      // Đóng modal
-      this.showUpdateModal = false;
+      // Lấy ID người dùng hiện tại
+      const userId = (this.currentUser as any)?.id;
+
+      if (userId) {
+        // Gọi service để cập nhật thông tin
+        this.authService.updateAccount(userId, updateData).subscribe({
+          next: (response) => {
+            console.log('Cập nhật thành công:', response);
+            // Cập nhật thông tin người dùng hiện tại
+            this.currentUser = this.authService.getCurrentUser();
+            // Đóng modal
+            this.closeUpdateModal();
+            // Hiển thị thông báo thành công
+            alert('Cập nhật thông tin thành công!');
+          },
+          error: (error) => {
+            console.error('Lỗi khi cập nhật:', error);
+            alert(
+              'Có lỗi xảy ra: ' +
+                (error.message || 'Không thể cập nhật thông tin')
+            );
+          },
+        });
+      } else {
+        console.error('Không tìm thấy ID người dùng');
+        alert('Không thể xác định người dùng hiện tại');
+      }
+    } else {
+      // Đánh dấu tất cả các trường là đã touched để hiển thị lỗi
+      Object.keys(this.updateForm.controls).forEach((key) => {
+        const control = this.updateForm.get(key);
+        control?.markAsTouched();
+      });
     }
   }
 
@@ -220,16 +316,54 @@ export class TaiKhoanComponent implements OnInit {
       newPassword: this.passwordForm.value.newPassword,
     };
 
-    console.log('Password update data:', passwordData);
+    // Lấy ID người dùng hiện tại
+    const userId = (this.currentUser as any)?.id;
 
-    // Trong thực tế, bạn sẽ gọi API để cập nhật mật khẩu ở đây
-    // this.authService.updatePassword(passwordData).subscribe(...)
+    if (userId) {
+      this.authService.updatePassword(userId, passwordData).subscribe({
+        next: (response) => {
+          console.log('Cập nhật mật khẩu thành công:', response);
+          // Đóng modal
+          this.closePasswordModal();
+          // Hiển thị thông báo thành công
+          alert('Cập nhật mật khẩu thành công!');
+        },
+        error: (error) => {
+          console.error('Lỗi khi cập nhật mật khẩu:', error);
+          alert(
+            'Có lỗi xảy ra: ' + (error.message || 'Không thể cập nhật mật khẩu')
+          );
+        },
+      });
+    } else {
+      console.error('Không tìm thấy ID người dùng');
+      alert('Không thể xác định người dùng hiện tại');
+    }
+  }
 
-    // Đóng modal sau khi cập nhật thành công
-    this.closePasswordModal();
+  // Format date of birth for display
+  formatBirthDate(): string | null {
+    if (!this.currentUser?.birthOfDate) {
+      return null;
+    }
 
-    // Hiển thị thông báo thành công (có thể thêm sau)
-    alert('Cập nhật mật khẩu thành công!');
+    try {
+      const birthDate = new Date(this.currentUser.birthOfDate);
+      if (isNaN(birthDate.getTime())) {
+        // Invalid date
+        return null;
+      }
+
+      // Format as DD/MM/YYYY
+      const day = birthDate.getDate().toString().padStart(2, '0');
+      const month = (birthDate.getMonth() + 1).toString().padStart(2, '0');
+      const year = birthDate.getFullYear();
+
+      return `${day}/${month}/${year}`;
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return null;
+    }
   }
 
   // Chọn giới tính
