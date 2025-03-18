@@ -1,14 +1,29 @@
 const express = require('express');
-const router = express.Router();
 const cartController = require('../controllers/cart.controller');
-const { authenticateToken } = require('../middleware/auth');
+const router = express.Router();
 
-// Public routes - no authentication needed
-// None for cart since cart operations require authentication
+// Lấy tất cả giỏ hàng - Admin route
+router.get('/cart/all', cartController.getAllCarts);
 
-// Protected routes - authentication required
-router.get('/', authenticateToken, cartController.getUserCart);
-router.post('/', authenticateToken, cartController.updateUserCart);
-router.delete('/', authenticateToken, cartController.clearUserCart);
+// Lấy giỏ hàng theo ID
+router.get('/cart/:id', cartController.getCartById);
+
+// Lấy giỏ hàng theo accountId
+router.get('/cart/account/:accountId', cartController.getCartByAccountId);
+
+// Lấy giỏ hàng người dùng
+router.get('/cart/user/cart', cartController.getUserCart);
+
+// Cập nhật giỏ hàng
+router.post('/cart/update', cartController.updateUserCart);
+
+// Xóa giỏ hàng
+router.delete('/cart/clear', cartController.clearUserCart);
+
+// Thêm sản phẩm vào giỏ hàng
+router.post('/cart/add-item', cartController.addToCart);
+
+// Xóa sản phẩm khỏi giỏ hàng
+router.post('/cart/remove-item', cartController.removeFromCart);
 
 module.exports = router; 

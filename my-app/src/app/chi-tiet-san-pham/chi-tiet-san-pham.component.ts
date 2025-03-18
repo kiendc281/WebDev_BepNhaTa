@@ -168,8 +168,6 @@ export class ChiTietSanPhamComponent implements OnInit {
   // Cập nhật giá hiện tại dựa trên khẩu phần đã chọn
   updatePrices(): void {
     if (!this.product) return;
-
-    console.log('Dữ liệu sản phẩm trước khi tính giá:', this.product);
     
     if (!this.product.pricePerPortion || Object.keys(this.product.pricePerPortion).length === 0) {
       console.error('Không tìm thấy thông tin giá theo khẩu phần cho sản phẩm:', this.product.ingredientName);
@@ -178,12 +176,16 @@ export class ChiTietSanPhamComponent implements OnInit {
       return;
     }
     
-    // Nếu không có khẩu phần đã chọn, sử dụng mặc định '2'
-    if (!this.selectedServing || !this.product.pricePerPortion[this.selectedServing]) {
-      console.warn(`Không tìm thấy giá cho khẩu phần ${this.selectedServing}, sử dụng khẩu phần mặc định`);
-      const availablePortions = Object.keys(this.product.pricePerPortion);
-      if (availablePortions.length > 0) {
-        this.selectedServing = availablePortions[0];
+    // Kiểm tra xem khẩu phần đã chọn có giá trực tiếp không
+    if (!this.product.pricePerPortion[this.selectedServing]) {
+      // Nếu là khẩu phần 4 người và có giá cho 2 người, không cần thông báo lỗi vì đã xử lý ở ProductService
+      if (!(this.selectedServing === '4' && this.product.pricePerPortion['2'])) {
+        // Chỉ thông báo cho các trường hợp khác
+        const availablePortions = Object.keys(this.product.pricePerPortion);
+        if (availablePortions.length > 0) {
+          this.selectedServing = availablePortions[0];
+          console.log(`Chuyển sang khẩu phần ${this.selectedServing} vì không tìm thấy giá cho khẩu phần đã chọn`);
+        }
       }
     }
 
@@ -248,13 +250,13 @@ export class ChiTietSanPhamComponent implements OnInit {
         }, 3000);
       },
       error: (error) => {
-        console.error('Error adding to cart:', error);
-        this.error = 'Có lỗi xảy ra khi thêm vào giỏ hàng';
+        console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
         this.addingToCart = false;
+        this.cartSuccessMessage = 'Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.';
         
         // Clear error message after 3 seconds
         setTimeout(() => {
-          this.error = null;
+          this.cartSuccessMessage = null;
         }, 3000);
       }
     });
