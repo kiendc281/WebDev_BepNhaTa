@@ -156,9 +156,13 @@
         (click)="goToTrendingPage(i)"
       ></div>
     </div>
+    <button class="button-cam" (click)="navigateToRecipes()">
+      XEM THÊM <img src="../../assets/faq/icon-right.svg" alt="" />
+    </button>
   </section>
 
   <!-- Sản Phẩm Hot Nhất Section -->
+
   <section class="hot-products">
     <div class="section-header">
       <div class="title-wrapper">
@@ -172,7 +176,10 @@
     <div class="products-grid" *ngIf="!loading">
       <div class="product-card" *ngFor="let product of currentHotProducts">
         <div class="like-button">
-          <img src="../../assets/trang-chu/favorite.svg" alt="like" />
+          <img
+            src="../../assets/san-pham/favourite.svg"
+            alt="Lưu vào yêu thích"
+          />
         </div>
         <a [routerLink]="['/chi-tiet-san-pham', product._id]">
           <div class="product-image">

@@ -33,7 +33,7 @@ export class TrangChuComponent implements OnInit, OnDestroy {
 
   trendingRecipes: Recipe[] = [];
   currentTrendingRecipePage = 0;
-  recipesPerPage = 6;
+  recipesPerPage = 3;
   isLoadingRecipes = false;
   savedRecipes: Set<string> = new Set();
 
@@ -118,6 +118,10 @@ export class TrangChuComponent implements OnInit, OnDestroy {
 
   navigateToProducts() {
     this.router.navigate(['/san-pham']);
+  }
+
+  navigateToRecipes() {
+    this.router.navigate(['/cong-thuc']);
   }
 
   navigateToBlog() {

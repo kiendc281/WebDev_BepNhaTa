@@ -617,18 +617,14 @@
   object-fit: cover;
 }
 
+.save-button,
 .like-button {
   position: absolute;
   top: 10px;
   right: 10px;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  background: white;
-  border: none;
   display: flex;
   justify-content: center;
-  align-items: center;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   opacity: 0;
@@ -637,18 +633,21 @@
   z-index: 10;
 }
 
+.product-card:hover .save-button,
 .product-card:hover .like-button {
   opacity: 1;
   transform: translateY(0);
 }
 
+.save-button:hover,
 .like-button:hover {
   background-color: var(--color-camdam);
 }
 
+.save-button img,
 .like-button img {
-  width: 16px;
-  height: 16px;
+  width: 41px;
+  height: 41px;
 }
 
 .product-content {
