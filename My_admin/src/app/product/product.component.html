@@ -10,53 +10,69 @@
 
   <!-- Filter Tabs -->
   <div>
-    <strong
-      ><span
-        >Tất cả (3) | Đã xuất bản (2) | Bản nháp (1) | Ẩn (1) | Lọc</span
-      ></strong
-    >
+    <strong>
+      <span>Tất cả ({{ totalItems }}) | </span>
+      <span>Còn hàng ({{ getProductCountByStatus("Còn hàng") }}) | </span>
+      <span>Hết hàng ({{ getProductCountByStatus("Hết hàng") }}) | </span>
+      <span
+        >Ngừng kinh doanh ({{
+          getProductCountByStatus("Ngừng kinh doanh")
+        }})</span
+      >
+    </strong>
+  </div>
+
+  <!-- Hiển thị lỗi -->
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <!-- Loading indicator -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Đang tải dữ liệu...</p>
   </div>
 
   <!-- Filters -->
-  <div class="filter-section">
-    <div class="button-camnhat filter-button">
-      Hành động hàng loạt
-      <img
-        src="../../assets/product/arrow down.svg"
-        alt="dropdown"
-        class="filter-icon"
+  <div class="filter-section" *ngIf="!isLoading">
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Tìm kiếm sản phẩm..."
+        [(ngModel)]="searchTerm"
+        (keyup)="search($event)"
       />
     </div>
-    <button class="button-cam">Áp dụng</button>
-    <div class="button-camnhat filter-button">
-      Lọc danh mục
-      <img
-        src="../../assets/product/arrow down.svg"
-        alt="dropdown"
-        class="filter-icon"
-      />
+
+    <div class="filter-dropdowns">
+      <select [(ngModel)]="filterCategory" (change)="applyFilter()">
+        <option value="">Tất cả danh mục</option>
+        <option value="Xào">Xào</option>
+        <option value="Nước">Nước</option>
+        <option value="Món mặn">Món mặn</option>
+        <option value="Trộn">Trộn</option>
+      </select>
+
+      <select [(ngModel)]="filterRegion" (change)="applyFilter()">
+        <option value="">Tất cả vùng miền</option>
+        <option value="Bắc">Miền Bắc</option>
+        <option value="Trung">Miền Trung</option>
+        <option value="Nam">Miền Nam</option>
+      </select>
+
+      <select [(ngModel)]="filterStatus" (change)="applyFilter()">
+        <option value="">Tất cả trạng thái</option>
+        <option value="Còn hàng">Còn hàng</option>
+        <option value="Hết hàng">Hết hàng</option>
+        <option value="Ngừng kinh doanh">Ngừng kinh doanh</option>
+      </select>
+
+      <button class="button-cam" (click)="applyFilter()">Lọc</button>
     </div>
-    <div class="button-camnhat filter-button">
-      Lọc loại sản phẩm
-      <img
-        src="../../assets/product/arrow down.svg"
-        alt="dropdown"
-        class="filter-icon"
-      />
-    </div>
-    <div class="button-camnhat filter-button">
-      Lọc theo trạng thái
-      <img
-        src="../../assets/product/arrow down.svg"
-        alt="dropdown"
-        class="filter-icon"
-      />
-    </div>
-    <button class="button-cam" (click)="applyFilter()">Lọc</button>
   </div>
 
   <!-- Product Table -->
-  <table class="product-table">
+  <table class="product-table" *ngIf="!isLoading && products.length > 0">
     <thead>
       <tr>
         <th><input type="checkbox" /></th>
@@ -66,8 +82,10 @@
             src="../../assets/product/sort.svg"
             alt="sort"
             class="sort-icon"
-            [class.active]="sortColumn === 'name'"
-            [class.desc]="sortColumn === 'name' && sortDirection === 'desc'"
+            [class.active]="sortColumn === 'ingredientName'"
+            [class.desc]="
+              sortColumn === 'ingredientName' && sortDirection === 'desc'
+            "
           />
         </th>
         <th class="sortable" (click)="sort('code')">
@@ -76,8 +94,8 @@
             src="../../assets/product/sort.svg"
             alt="sort"
             class="sort-icon"
-            [class.active]="sortColumn === 'code'"
-            [class.desc]="sortColumn === 'code' && sortDirection === 'desc'"
+            [class.active]="sortColumn === '_id'"
+            [class.desc]="sortColumn === '_id' && sortDirection === 'desc'"
           />
         </th>
         <th>Trạng thái</th>
@@ -94,13 +112,15 @@
         <th>Danh mục</th>
         <th>Thẻ</th>
         <th class="sortable" (click)="sort('date')">
-          Ngày
+          Ngày hết hạn
           <img
             src="../../assets/product/sort.svg"
             alt="sort"
             class="sort-icon"
-            [class.active]="sortColumn === 'date'"
-            [class.desc]="sortColumn === 'date' && sortDirection === 'desc'"
+            [class.active]="sortColumn === 'timestamp'"
+            [class.desc]="
+              sortColumn === 'timestamp' && sortDirection === 'desc'
+            "
           />
         </th>
       </tr>
@@ -111,7 +131,15 @@
         <td>{{ product.name }}</td>
         <td>{{ product.code }}</td>
         <td>
-          <span class="product-status">{{ product.status }}</span>
+          <span
+            class="product-status"
+            [ngClass]="{
+              'status-instock': product.status === 'Còn hàng',
+              'status-outofstock': product.status === 'Hết hàng',
+              'status-discontinued': product.status === 'Ngừng kinh doanh'
+            }"
+            >{{ product.status }}</span
+          >
         </td>
         <td class="product-price">{{ product.price }}</td>
         <td>{{ product.category }}</td>
@@ -125,12 +153,36 @@
     </tbody>
   </table>
 
+  <!-- Không có dữ liệu -->
+  <div class="no-data" *ngIf="!isLoading && products.length === 0">
+    <p>Không có sản phẩm nào phù hợp với tiêu chí tìm kiếm.</p>
+  </div>
+
   <!-- Pagination -->
-  <div class="pagination">
-    <div class="page-button active">1</div>
-    <div class="page-button">2</div>
-    <div class="page-button">3</div>
-    <div class="page-button">4</div>
-    <div class="page-button">5</div>
+  <div class="pagination" *ngIf="!isLoading && totalItems > 0">
+    <button
+      [disabled]="currentPage === 1"
+      (click)="currentPage = currentPage - 1"
+      class="page-button"
+    >
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <div
+      *ngFor="let page of getPageArray()"
+      class="page-button"
+      [class.active]="currentPage === page"
+      (click)="currentPage = page"
+    >
+      {{ page }}
+    </div>
+
+    <button
+      [disabled]="currentPage === getTotalPages()"
+      (click)="currentPage = currentPage + 1"
+      class="page-button"
+    >
+      <i class="fas fa-chevron-right"></i>
+    </button>
   </div>
 </div>

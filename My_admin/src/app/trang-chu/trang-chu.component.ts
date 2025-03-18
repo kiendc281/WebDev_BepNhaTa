@@ -27,6 +27,9 @@ export class TrangChuComponent implements OnInit {
     { title: 'Đơn hàng đã hủy', count: '1.200' },
   ];
 
+  // Submenu state
+  openSubmenu: string | null = null;
+
   constructor() {}
 
   ngOnInit(): void {
@@ -40,5 +43,14 @@ export class TrangChuComponent implements OnInit {
     link.href =
       'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
     document.head.appendChild(link);
+  }
+
+  // Toggle submenu function
+  toggleSubmenu(menuName: string): void {
+    if (this.openSubmenu === menuName) {
+      this.openSubmenu = null;
+    } else {
+      this.openSubmenu = menuName;
+    }
   }
 }
