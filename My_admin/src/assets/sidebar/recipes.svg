@@ -1,0 +1,9 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="material-symbols:chat-outline-rounded">
+<g id="Group">
+<path id="Vector" d="M4 7C4 4.172 4 2.757 4.879 1.879C5.757 1 7.172 1 10 1H14C16.828 1 18.243 1 19.121 1.879C20 2.757 20 4.172 20 7V15C20 17.828 20 19.243 19.121 20.121C18.243 21 16.828 21 14 21H10C7.172 21 5.757 21 4.879 20.121C4 19.243 4 17.828 4 15V7Z" stroke="white" stroke-width="1.5"/>
+<path id="Vector_2" d="M19.898 15H7.898C6.968 15 6.503 15 6.121 15.102C5.61231 15.2384 5.14849 15.5063 4.77618 15.8788C4.40386 16.2513 4.13616 16.7152 4 17.224" stroke="white" stroke-width="1.5"/>
+<path id="Vector_3" d="M8 6H16M8 9.5H13" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+</g>
+</g>
+</svg>

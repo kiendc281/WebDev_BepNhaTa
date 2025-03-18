@@ -14,14 +14,14 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './dang-nhap.component.html',
-  styleUrls: ['./dang-nhap.component.css']
+  styleUrls: ['./dang-nhap.component.css'],
 })
 export class DangNhapComponent {
   loginForm: FormGroup;
   submitted = false;
   loading = false;
   showPassword = false;
-  eyeIcon = '../../../assets/images/clarity-eye-hide-line.svg';
+  eyeIcon = '../../assets/dang-nhap/clarity-eye-hide-line.svg';
   errorMessage: string = '';
   successMessage: string = '';
 
@@ -71,14 +71,15 @@ export class DangNhapComponent {
       this.authService.login(account, password).subscribe({
         next: (response) => {
           console.log('Đăng nhập thành công:', response);
-          
+
           // Kiểm tra quyền admin
           if (response.account.role !== 'admin') {
             this.loading = false;
-            this.errorMessage = 'Tài khoản không có quyền truy cập trang quản trị';
+            this.errorMessage =
+              'Tài khoản không có quyền truy cập trang quản trị';
             return;
           }
-          
+
           // Lưu thông tin đăng nhập với thời hạn 1 giờ
           this.authService.saveToken(response.token);
           localStorage.setItem('admin_user', JSON.stringify(response.account));
@@ -96,9 +97,12 @@ export class DangNhapComponent {
           console.error('Lỗi đăng nhập:', error);
           this.loading = false;
           if (error.status === 0) {
-            this.errorMessage = 'Không thể kết nối đến server. Vui lòng thử lại sau.';
+            this.errorMessage =
+              'Không thể kết nối đến server. Vui lòng thử lại sau.';
           } else {
-            this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+            this.errorMessage =
+              error.error?.message ||
+              'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
           }
         },
       });
@@ -108,7 +112,7 @@ export class DangNhapComponent {
   togglePassword() {
     this.showPassword = !this.showPassword;
     this.eyeIcon = this.showPassword
-      ? '../../../assets/images/unhide.svg'
-      : '../../../assets/images/clarity-eye-hide-line.svg';
+      ? '../../assets/dang-nhap/unhide.svg'
+      : '../../assets/dang-nhap/clarity-eye-hide-line.svg';
   }
 }
