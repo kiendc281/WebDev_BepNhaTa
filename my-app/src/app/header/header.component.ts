@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
 
     // Subscribe to cart changes
-    this.cartSubscription = this.cartService.getCartItems().subscribe((items) => {
+    this.cartSubscription = this.cartService.cartItems$.subscribe((items) => {
       this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
     });
   }
