@@ -263,6 +263,112 @@ const cartController = {
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
+    },
+
+    // Get the cart for the authenticated user
+    getUserCart: async (req, res) => {
+        try {
+            const accountId = req.user.id;
+
+            // Find or create cart for this user
+            let cart = await Cart.findOne({ accountId });
+
+            if (!cart) {
+                // If no cart exists, return empty cart
+                return res.json({ 
+                    items: [],
+                    totalQuantity: 0,
+                    totalPrice: 0
+                });
+            }
+
+            // Calculate totals (as a safety check)
+            const totalQuantity = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Update totals if they don't match
+            if (cart.totalQuantity !== totalQuantity || cart.totalPrice !== totalPrice) {
+                cart.totalQuantity = totalQuantity;
+                cart.totalPrice = totalPrice;
+                await cart.save();
+            }
+
+            res.json({ items: cart.items, totalQuantity, totalPrice });
+        } catch (error) {
+            console.error('Error fetching user cart:', error);
+            res.status(500).json({ message: "Error fetching cart", error: error.message });
+        }
+    },
+
+    // Update the cart for the authenticated user (create if doesn't exist)
+    updateUserCart: async (req, res) => {
+        try {
+            const accountId = req.user.id;
+            const { items } = req.body;
+
+            if (!Array.isArray(items)) {
+                return res.status(400).json({ message: "Items must be an array" });
+            }
+
+            let cart = await Cart.findOne({ accountId });
+            
+            if (!cart) {
+                // Create new cart if it doesn't exist
+                cart = new Cart({ 
+                    accountId,
+                    items: [],
+                    totalQuantity: 0,
+                    totalPrice: 0
+                });
+            }
+            
+            // Replace the entire items array
+            cart.items = items;
+            
+            // Calculate totals
+            cart.totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+            cart.totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            await cart.save();
+            
+            res.json({ items: cart.items, totalQuantity: cart.totalQuantity, totalPrice: cart.totalPrice });
+        } catch (error) {
+            console.error('Error updating cart:', error);
+            res.status(500).json({ message: "Error updating cart", error: error.message });
+        }
+    },
+
+    // Clear the cart for the authenticated user
+    clearUserCart: async (req, res) => {
+        try {
+            const accountId = req.user.id;
+            
+            const cart = await Cart.findOne({ accountId });
+            
+            if (!cart) {
+                return res.json({ 
+                    items: [],
+                    totalQuantity: 0,
+                    totalPrice: 0
+                });
+            }
+            
+            // Clear items and reset totals
+            cart.items = [];
+            cart.totalQuantity = 0;
+            cart.totalPrice = 0;
+            
+            await cart.save();
+            
+            res.json({ 
+                items: [],
+                totalQuantity: 0,
+                totalPrice: 0
+            });
+        } catch (error) {
+            console.error('Error clearing cart:', error);
+            res.status(500).json({ message: "Error clearing cart", error: error.message });
+        }
     }
 };
 

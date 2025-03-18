@@ -83,10 +83,26 @@
               >
               <div class="dropdown-content">
                 <a routerLink="/san-pham">Tất cả</a>
-                <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-man'}">Món mặn</a>
-                <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-xao'}">Món xào</a>
-                <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-nuoc'}">Món nước</a>
-                <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-tron'}">Món trộn</a>
+                <a
+                  [routerLink]="['/san-pham']"
+                  [queryParams]="{ category: 'mon-man' }"
+                  >Món mặn</a
+                >
+                <a
+                  [routerLink]="['/san-pham']"
+                  [queryParams]="{ category: 'mon-xao' }"
+                  >Món xào</a
+                >
+                <a
+                  [routerLink]="['/san-pham']"
+                  [queryParams]="{ category: 'mon-nuoc' }"
+                  >Món nước</a
+                >
+                <a
+                  [routerLink]="['/san-pham']"
+                  [queryParams]="{ category: 'mon-tron' }"
+                  >Món trộn</a
+                >
               </div>
             </div>
             <a
@@ -134,6 +150,9 @@
               src="../../assets/header/mdi-cart-outline.svg"
               alt="Giỏ hàng"
             />
+            <span *ngIf="cartItemCount > 0" class="cart-badge">{{
+              cartItemCount
+            }}</span>
           </a>
           <img
             *ngIf="!authService.isLoggedIn()"
@@ -224,10 +243,30 @@
         </div>
         <div class="mobile-dropdown-content">
           <a routerLink="/san-pham" (click)="closeMobileMenu()">Tất cả</a>
-          <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-man'}" (click)="closeMobileMenu()">Món mặn</a>
-          <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-xao'}" (click)="closeMobileMenu()">Món xào</a>
-          <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-nuoc'}" (click)="closeMobileMenu()">Món nước</a>
-          <a [routerLink]="['/san-pham']" [queryParams]="{category: 'mon-tron'}" (click)="closeMobileMenu()">Món trộn</a>
+          <a
+            [routerLink]="['/san-pham']"
+            [queryParams]="{ category: 'mon-man' }"
+            (click)="closeMobileMenu()"
+            >Món mặn</a
+          >
+          <a
+            [routerLink]="['/san-pham']"
+            [queryParams]="{ category: 'mon-xao' }"
+            (click)="closeMobileMenu()"
+            >Món xào</a
+          >
+          <a
+            [routerLink]="['/san-pham']"
+            [queryParams]="{ category: 'mon-nuoc' }"
+            (click)="closeMobileMenu()"
+            >Món nước</a
+          >
+          <a
+            [routerLink]="['/san-pham']"
+            [queryParams]="{ category: 'mon-tron' }"
+            (click)="closeMobileMenu()"
+            >Món trộn</a
+          >
         </div>
       </div>
       <a
@@ -279,7 +318,11 @@
         (click)="closeMobileMenu(); toggleLoginPopup()"
         class="mobile-login-link"
       >
-        <img src="../../assets/header/group.svg" alt="Đăng nhập" class="mobile-login-icon" />
+        <img
+          src="../../assets/header/group.svg"
+          alt="Đăng nhập"
+          class="mobile-login-icon"
+        />
         Đăng nhập
       </a>
       <a
@@ -288,7 +331,11 @@
         (click)="closeMobileMenu()"
         class="mobile-login-link"
       >
-        <img src="../../assets/header/account.svg" alt="Tài khoản" class="mobile-login-icon" />
+        <img
+          src="../../assets/header/account.svg"
+          alt="Tài khoản"
+          class="mobile-login-icon"
+        />
         Tài khoản
       </a>
     </div>

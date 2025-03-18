@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
+import { CartService } from '../services/cart.service';
+import { AuthService } from '../services/auth.service';
 import { Product } from '../models/product.interface';
 
 interface FAQ {
@@ -26,6 +28,8 @@ export class ChiTietSanPhamComponent implements OnInit {
   thumbnails: string[] = [];
   loading: boolean = true;
   error: string | null = null;
+  addingToCart: boolean = false;
+  cartSuccessMessage: string | null = null;
 
   // Lưu trữ giá hiện tại để tránh tính toán lại nhiều lần
   private _currentOriginalPrice: number = 0;
@@ -53,7 +57,9 @@ export class ChiTietSanPhamComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private cartService: CartService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -85,6 +91,7 @@ export class ChiTietSanPhamComponent implements OnInit {
     this.selectedServing = '2';
     this._currentOriginalPrice = 0;
     this._currentDiscountedPrice = 0;
+    this.cartSuccessMessage = null;
   }
 
   loadProduct(id: string): void {
@@ -209,19 +216,48 @@ export class ChiTietSanPhamComponent implements OnInit {
   }
 
   addToCart(): void {
-    if (this.product) {
-      console.log(
-        'Thêm vào giỏ hàng:',
-        this.product.ingredientName,
-        'Số lượng:',
-        this.quantity,
-        'Khẩu phần:',
-        this.selectedServing,
-        'Giá:',
-        this.getDiscountedPrice()
-      );
-      // Implement cart logic here
-    }
+    if (!this.product) return;
+    
+    this.addingToCart = true;
+    
+    // Use cart service to add product to cart
+    this.cartService.addToCart(
+      this.product,
+      this.quantity,
+      this.selectedServing,
+      this.getDiscountedPrice()
+    ).subscribe({
+      next: (cart) => {
+        console.log('Product added to cart:', {
+          product: this.product?.ingredientName,
+          quantity: this.quantity,
+          servingSize: this.selectedServing,
+          price: this.getDiscountedPrice(),
+          isLoggedIn: this.authService.isLoggedIn(),
+          cartItems: cart.items.length,
+          totalQuantity: cart.totalQuantity,
+          totalPrice: cart.totalPrice
+        });
+        
+        this.cartSuccessMessage = `Đã thêm ${this.quantity} ${this.product?.ingredientName} vào giỏ hàng`;
+        this.addingToCart = false;
+        
+        // Clear success message after 3 seconds
+        setTimeout(() => {
+          this.cartSuccessMessage = null;
+        }, 3000);
+      },
+      error: (error) => {
+        console.error('Error adding to cart:', error);
+        this.error = 'Có lỗi xảy ra khi thêm vào giỏ hàng';
+        this.addingToCart = false;
+        
+        // Clear error message after 3 seconds
+        setTimeout(() => {
+          this.error = null;
+        }, 3000);
+      }
+    });
   }
 
   addToWishlist(): void {
@@ -232,19 +268,29 @@ export class ChiTietSanPhamComponent implements OnInit {
   }
 
   buyNow(): void {
-    if (this.product) {
-      console.log(
-        'Mua ngay:',
-        this.product.ingredientName,
-        'Số lượng:',
-        this.quantity,
-        'Khẩu phần:',
-        this.selectedServing,
-        'Giá:',
-        this.getDiscountedPrice()
-      );
-      // Implement buy now logic here
-    }
+    if (!this.product) return;
+    
+    // First add to cart
+    this.cartService.addToCart(
+      this.product,
+      this.quantity,
+      this.selectedServing,
+      this.getDiscountedPrice()
+    ).subscribe({
+      next: () => {
+        // Then navigate to cart page
+        this.router.navigate(['/gio-hang']);
+      },
+      error: (error) => {
+        console.error('Error during buy now process:', error);
+        this.error = 'Có lỗi xảy ra khi xử lý đơn hàng';
+        
+        // Clear error message after 3 seconds
+        setTimeout(() => {
+          this.error = null;
+        }, 3000);
+      }
+    });
   }
 
   // Lấy giá gốc của sản phẩm theo khẩu phần đã chọn

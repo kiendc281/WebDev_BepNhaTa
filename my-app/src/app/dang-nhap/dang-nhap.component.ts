@@ -8,6 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-dang-nhap',
@@ -32,7 +33,8 @@ export class DangNhapComponent {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private cartService: CartService
   ) {
     this.loginForm = this.fb.group({
       emailOrPhone: ['', [Validators.required, this.emailOrPhoneValidator]],
@@ -77,6 +79,16 @@ export class DangNhapComponent {
           // Lưu thông tin đăng nhập với thời hạn 1 giờ
           this.authService.saveToken(response.token);
           localStorage.setItem('user', JSON.stringify(response.account));
+
+          // Merge cart from local storage with server cart
+          this.cartService.mergeCartsAfterLogin().subscribe({
+            next: (cart) => {
+              console.log('Giỏ hàng đã được đồng bộ:', cart);
+            },
+            error: (error) => {
+              console.error('Lỗi khi đồng bộ giỏ hàng:', error);
+            }
+          });
 
           // Hiển thị thông báo thành công
           this.loading = false;

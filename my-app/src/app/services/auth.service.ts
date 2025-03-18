@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, throwError, tap } from 'rxjs';
 import { Account, LoginResponse } from '../models/account.interface';
 
 @Injectable({
@@ -19,6 +19,11 @@ export class AuthService {
                     return throwError(() => new Error('Không thể kết nối đến server'));
                 }
                 return throwError(() => error);
+            }),
+            tap(response => {
+                this.saveToken(response.token);
+                localStorage.setItem('user', JSON.stringify(response.account));
+                // We'll handle cart merging in the component using CartService.mergeCartsAfterLogin()
             })
         );
     }
@@ -30,13 +35,21 @@ export class AuthService {
     }
 
     register(userData: Account): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`${this.apiUrl}/auth/register`, userData);
+        return this.http.post<LoginResponse>(`${this.apiUrl}/auth/register`, userData).pipe(
+            tap(response => {
+                this.saveToken(response.token);
+                localStorage.setItem('user', JSON.stringify(response.account));
+                // We'll handle cart merging in the component using CartService.mergeCartsAfterLogin()
+            })
+        );
     }
 
     logout(): void {
         localStorage.removeItem('token');
         localStorage.removeItem('tokenExpiration');
         localStorage.removeItem('user');
+        // Note: We don't clear the cart from localStorage when logging out
+        // This allows guest users to keep their cart after logging out
     }
 
     isLoggedIn(): boolean {

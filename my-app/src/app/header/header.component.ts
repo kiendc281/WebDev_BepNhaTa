@@ -5,6 +5,7 @@ import { DangNhapComponent } from '../dang-nhap/dang-nhap.component';
 import { DangKyComponent } from '../dang-ky/dang-ky.component';
 import { QuenMatKhauComponent } from '../quen-mat-khau/quen-mat-khau.component';
 import { AuthService } from '../services/auth.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -27,10 +28,12 @@ export class HeaderComponent implements OnInit {
   isMobileMenuOpen = false;
   activeDropdown: string | null = null;
   currentRoute: string = '';
+  cartItemCount: number = 0;
 
   constructor(
     private router: Router,
-    public authService: AuthService
+    public authService: AuthService,
+    public cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -43,6 +46,11 @@ export class HeaderComponent implements OnInit {
           this.currentRoute = this.currentRoute.split('?')[0];
         }
       }
+    });
+
+    // Subscribe to the cart to update the cart item count
+    this.cartService.cart$.subscribe(cart => {
+      this.cartItemCount = cart.totalQuantity;
     });
   }
 

@@ -6,10 +6,18 @@ const cartSchema = new mongoose.Schema({
         ref: 'Account',
         required: true
     },
-    listCart: [{
-        ingredientId: {
+    items: [{
+        productId: {
             type: String,
             ref: 'Ingredient',
+            required: true
+        },
+        ingredientName: {
+            type: String,
+            required: true
+        },
+        mainImage: {
+            type: String,
             required: true
         },
         quantity: {
@@ -17,11 +25,24 @@ const cartSchema = new mongoose.Schema({
             required: true,
             min: 1
         },
-        totalPrice: {
+        servingSize: {
+            type: String,
+            required: true,
+            default: '2'
+        },
+        price: {
             type: Number,
             required: true
         }
-    }]
+    }],
+    totalQuantity: {
+        type: Number,
+        default: 0
+    },
+    totalPrice: {
+        type: Number,
+        default: 0
+    }
 }, {
     timestamps: true
 });
