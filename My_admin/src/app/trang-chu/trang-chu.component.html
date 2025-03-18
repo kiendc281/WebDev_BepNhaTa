@@ -1,64 +1,64 @@
-<div class="dashboard-container">
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Dashboard Overview -->
-    <div class="dashboard-section">
-      <h2 class="section-title">Tổng quan</h2>
+<!-- <div class="dashboard-container"> -->
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Dashboard Overview -->
+  <div class="dashboard-section">
+    <h2 class="section-title">Tổng quan</h2>
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <p>Doanh thu</p>
-          <div class="stat-value">{{ dashboardStats.revenue }}</div>
-        </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p>Doanh thu</p>
+        <div class="stat-value">{{ dashboardStats.revenue }}</div>
+      </div>
 
-        <div class="stat-card">
-          <p>Tổng số đơn hàng</p>
-          <div class="stat-value">{{ dashboardStats.totalOrders }}</div>
-        </div>
+      <div class="stat-card">
+        <p>Tổng số đơn hàng</p>
+        <div class="stat-value">{{ dashboardStats.totalOrders }}</div>
+      </div>
 
-        <div class="stat-card">
-          <p>Số đơn hàng sản phẩm đã bán</p>
-          <div class="stat-value">{{ dashboardStats.productsSold }}</div>
-        </div>
+      <div class="stat-card">
+        <p>Số đơn hàng sản phẩm đã bán</p>
+        <div class="stat-value">{{ dashboardStats.productsSold }}</div>
+      </div>
 
-        <div class="stat-card">
-          <p>Tổng lượt truy cập web</p>
-          <div class="stat-value">{{ dashboardStats.totalWebVisits }}</div>
-        </div>
+      <div class="stat-card">
+        <p>Tổng lượt truy cập web</p>
+        <div class="stat-value">{{ dashboardStats.totalWebVisits }}</div>
+      </div>
 
-        <div class="stat-card">
-          <p>Số lượng truy cập trong ngày</p>
-          <div class="stat-value">{{ dashboardStats.dailyVisits }}</div>
-        </div>
+      <div class="stat-card">
+        <p>Số lượng truy cập trong ngày</p>
+        <div class="stat-value">{{ dashboardStats.dailyVisits }}</div>
+      </div>
 
-        <div class="stat-card">
-          <p>Tổng số lượt xem catalogue</p>
-          <div class="stat-value">{{ dashboardStats.catalogueViews }}</div>
-        </div>
+      <div class="stat-card">
+        <p>Tổng số lượt xem catalogue</p>
+        <div class="stat-value">{{ dashboardStats.catalogueViews }}</div>
+      </div>
 
-        <div class="stat-card">
-          <p>Tổng số lượt xem bài viết</p>
-          <div class="stat-value">{{ dashboardStats.articleViews }}</div>
-        </div>
+      <div class="stat-card">
+        <p>Tổng số lượt xem bài viết</p>
+        <div class="stat-value">{{ dashboardStats.articleViews }}</div>
       </div>
     </div>
+  </div>
 
-    <!-- Order Status -->
-    <div class="dashboard-section">
-      <h2 class="section-title">Trạng thái đơn hàng</h2>
+  <!-- Order Status -->
+  <div class="dashboard-section">
+    <h2 class="section-title">Trạng thái đơn hàng</h2>
 
-      <div class="order-status-grid">
-        <div class="order-status-card" *ngFor="let status of orderStatus">
-          <div class="order-status">
-            <p>{{ status.title }}</p>
-            <div class="order-status-value">{{ status.count }}</div>
-          </div>
-          <div class="view-details">
-            <span>Xem chi tiết</span>
-            <i class="fas fa-arrow-right"></i>
-          </div>
+    <div class="order-status-grid">
+      <div class="order-status-card" *ngFor="let status of orderStatus">
+        <div class="order-status">
+          <p>{{ status.title }}</p>
+          <div class="order-status-value">{{ status.count }}</div>
+        </div>
+        <div class="view-details">
+          <span>Xem chi tiết</span>
+          <i class="fas fa-arrow-right"></i>
         </div>
       </div>
     </div>
   </div>
 </div>
+<!-- </div> -->

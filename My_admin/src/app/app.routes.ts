@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/trang-chu', pathMatch: 'full' },
   { path: 'login', component: DangNhapComponent },
   {
     path: 'trang-chu',
@@ -11,5 +11,5 @@ export const routes: Routes = [
         (m) => m.TrangChuComponent
       ),
   },
-  { path: '**', redirectTo: '/login' },
+  { path: '**', redirectTo: '/trang-chu' },
 ];
