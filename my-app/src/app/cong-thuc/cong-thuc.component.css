@@ -179,7 +179,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  /* height: 2.8em; */
+  height: 1.5em;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   /* margin-bottom: 10px; */
