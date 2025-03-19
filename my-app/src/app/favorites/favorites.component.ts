@@ -76,7 +76,22 @@ export class FavoritesComponent implements OnInit {
         (response) => {
           console.log('Item removed from favorites:', response);
           if (response.success) {
+            // Xóa khỏi danh sách hiển thị
             this.favorites = this.favorites.filter(fav => fav._id !== item._id);
+            
+            // Cập nhật localStorage để đảm bảo item không xuất hiện lại sau khi làm mới
+            try {
+              let removedFavorites = JSON.parse(localStorage.getItem('removedFavorites') || '{}');
+              if (!removedFavorites[this.favoriteType]) {
+                removedFavorites[this.favoriteType] = [];
+              }
+              if (!removedFavorites[this.favoriteType].includes(item.targetId)) {
+                removedFavorites[this.favoriteType].push(item.targetId);
+              }
+              localStorage.setItem('removedFavorites', JSON.stringify(removedFavorites));
+            } catch (e) {
+              console.error('Lỗi khi cập nhật localStorage:', e);
+            }
           } else {
             alert('Không thể xóa: ' + response.message);
           }

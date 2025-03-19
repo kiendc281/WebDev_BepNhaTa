@@ -198,15 +198,32 @@ export class BlogComponent implements OnInit {
 
     // Lưu trữ bản sao an toàn của tiêu đề bài viết (tránh tham chiếu đến object)
     const postTitle = post.title || 'Bài viết';
+    
+    // Cập nhật UI trước khi request để người dùng thấy phản hồi ngay lập tức
+    const originalSavedState = post.saved;
+    post.saved = !originalSavedState;
+    
+    // Xử lý xóa các ID trước đây trong localStorage nếu đang lưu
+    if (!originalSavedState) {
+      try {
+        const removedFavorites = JSON.parse(localStorage.getItem('removedFavorites') || '{}');
+        if (removedFavorites['blog'] && removedFavorites['blog'].length > 0) {
+          removedFavorites['blog'] = removedFavorites['blog'].filter((id: string) => 
+            id !== post._id
+          );
+          localStorage.setItem('removedFavorites', JSON.stringify(removedFavorites));
+        }
+      } catch (e) {
+        console.error('Lỗi khi cập nhật localStorage:', e);
+      }
+    }
 
     // Gọi FavoritesService để toggle trạng thái lưu
-    this.favoritesService.toggleFavorite(post._id, 'blog', post.saved)
+    this.favoritesService.toggleFavorite(post._id, 'blog', originalSavedState)
       .subscribe({
         next: (response) => {
           console.log('Kết quả lưu bài viết:', response);
           if (response.success) {
-            post.saved = !post.saved;
-            
             // Cập nhật các đối tượng liên quan
             // Cập nhật trong mảng gốc
             const postInOriginalList = this.blogPosts.find(p => p._id === post._id);
@@ -228,12 +245,70 @@ export class BlogComponent implements OnInit {
               'success'
             );
           } else {
+            // Nếu thất bại, khôi phục trạng thái
             console.error('Không thể lưu bài viết:', response.message);
+            post.saved = originalSavedState;
+            
+            // Cập nhật lại mảng
+            const postInOriginalList = this.blogPosts.find(p => p._id === post._id);
+            if (postInOriginalList) {
+              postInOriginalList.saved = originalSavedState;
+            }
+            
+            const postInFilteredList = this.filteredBlogPosts.find(p => p._id === post._id);
+            if (postInFilteredList) {
+              postInFilteredList.saved = originalSavedState;
+            }
+            
+            // Nếu lỗi là trùng lặp, có thể không cần thông báo hoặc thông báo khác
+            if (response.message && response.message.includes('duplicate key error')) {
+              // Nếu đang cố thêm vào danh sách yêu thích và bị lỗi trùng lặp
+              if (!originalSavedState) {
+                // Đặt lại trạng thái thành "đã lưu" vì mục này thực sự đã tồn tại trong DB
+                post.saved = true;
+                // Cập nhật các mảng khác
+                if (postInOriginalList) postInOriginalList.saved = true;
+                if (postInFilteredList) postInFilteredList.saved = true;
+                
+                this.showNotification(`"${postTitle}" đã có trong danh sách yêu thích của bạn`, 'success');
+                return;
+              }
+            }
+            
             this.showNotification(response.message || 'Không thể lưu bài viết. Vui lòng thử lại sau.', 'error');
           }
         },
         error: (error) => {
           console.error('Lỗi khi lưu bài viết:', error);
+          // Khôi phục trạng thái ban đầu nếu có lỗi
+          post.saved = originalSavedState;
+          
+          // Cập nhật lại mảng
+          const postInOriginalList = this.blogPosts.find(p => p._id === post._id);
+          if (postInOriginalList) {
+            postInOriginalList.saved = originalSavedState;
+          }
+          
+          const postInFilteredList = this.filteredBlogPosts.find(p => p._id === post._id);
+          if (postInFilteredList) {
+            postInFilteredList.saved = originalSavedState;
+          }
+          
+          // Nếu là lỗi 400 với thông báo trùng lặp (duplicate key), xử lý riêng
+          if (error.status === 400 && error.error && error.error.message && error.error.message.includes('duplicate key error')) {
+            // Nếu đang cố thêm vào danh sách yêu thích
+            if (!originalSavedState) {
+              // Đặt lại trạng thái thành "đã lưu" vì mục này thực sự đã tồn tại trong DB
+              post.saved = true;
+              // Cập nhật các mảng khác
+              if (postInOriginalList) postInOriginalList.saved = true;
+              if (postInFilteredList) postInFilteredList.saved = true;
+              
+              this.showNotification(`"${postTitle}" đã có trong danh sách yêu thích của bạn`, 'success');
+              return;
+            }
+          }
+          
           this.showNotification('Đã xảy ra lỗi khi lưu bài viết. Vui lòng thử lại sau.', 'error');
         }
       });

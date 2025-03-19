@@ -311,24 +311,25 @@
   position: absolute;
   top: 10px;
   right: 10px;
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
   border-radius: 50%;
   display: flex;
   justify-content: center;
+  align-items: center;
   cursor: pointer;
+  z-index: 2;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-  z-index: 10;
 }
 
-.product-card:hover .save-button {
-  opacity: 1;
-  transform: translateY(0);
+.save-button svg {
+  color: #6c757d;
 }
 
 .save-button:hover {
-  background-color: var(--color-camdam);
+  transform: scale(1.1);
+  opacity: 0.9;
 }
 
 .product-content {
@@ -1068,7 +1069,30 @@
   }
 }
 
-<<<<<<< HEAD
+/* Styles for stock info */
+.stock-info {
+  margin: 10px 0;
+  padding: 5px 0;
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.stock-label {
+  font-weight: 500;
+  margin-right: 5px;
+}
+
+.stock-quantity {
+  color: #28a745; /* Màu xanh cho số lượng bình thường */
+  font-weight: 500;
+}
+
+.stock-quantity.low-stock {
+  color: #dc3545; /* Màu đỏ cho số lượng thấp */
+}
+
 /* Styles cho nút lưu khi đã lưu */
 .button-xam.saved {
   background-color: #f8f9fa;
@@ -1117,47 +1141,13 @@
   justify-content: center;
 }
 
-/* Các class positional cho indicator */
-.position-absolute {
-  position: absolute;
+.heart-icon svg {
+  color: #6c757d;
 }
 
-.top-0 {
-  top: 0;
-}
-
-.end-0 {
-  right: 0;
-}
-
-.mt-2 {
-  margin-top: 0.5rem;
-}
-
-.me-2 {
-  margin-right: 0.5rem;
-=======
-/* Styles for stock info */
-.stock-info {
-  margin: 10px 0;
-  padding: 5px 0;
-  font-size: 14px;
-  color: #666;
-  display: flex;
-  align-items: center;
-}
-
-.stock-label {
-  font-weight: 500;
+.save-button-text svg {
+  width: 16px;
+  height: 16px;
   margin-right: 5px;
-}
-
-.stock-quantity {
-  color: #28a745; /* Màu xanh cho số lượng bình thường */
-  font-weight: 500;
-}
-
-.stock-quantity.low-stock {
-  color: #dc3545; /* Màu đỏ cho số lượng thấp */
->>>>>>> 5fa60067bdcdd40cf9aa670347aca538b59431c8
+  color: #6c757d;
 }

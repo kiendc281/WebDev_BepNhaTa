@@ -123,14 +123,42 @@ export class FavoritesService {
       return of({ success: false, message: 'ID không hợp lệ' });
     }
     
+    // Xử lý targetId cho blog
+    let processedTargetId = targetId;
+    if (type === 'blog') {
+      // Nếu là ID ngắn (BLxx), chuyển về MongoDB ID
+      const blogIdMap: { [key: string]: string } = {
+        'BL01': '507f1f77bcf86cd799439011',
+        'BL02': '507f1f77bcf86cd799439012',
+        'BL03': '507f1f77bcf86cd799439013',
+        'BL04': '507f1f77bcf86cd799439014',
+        'BL05': '507f1f77bcf86cd799439015'
+      };
+      processedTargetId = blogIdMap[targetId] || targetId;
+    }
+    
     const data = {
       accountId,
-      targetId,
+      targetId: processedTargetId,
       type,
       createdAt: new Date().toISOString()
     };
     
     console.log('Đang gửi request thêm vào yêu thích:', data);
+    
+    // Xóa bài viết khỏi danh sách đã xóa trong localStorage (nếu có)
+    try {
+      let removedFavorites = JSON.parse(localStorage.getItem('removedFavorites') || '{}');
+      if (removedFavorites[type] && removedFavorites[type].length > 0) {
+        // Xóa cả ID gốc và ID đã xử lý
+        removedFavorites[type] = removedFavorites[type].filter((id: string) => 
+          id !== targetId && id !== processedTargetId
+        );
+        localStorage.setItem('removedFavorites', JSON.stringify(removedFavorites));
+      }
+    } catch (e) {
+      console.error('Lỗi khi cập nhật danh sách đã xóa:', e);
+    }
     
     return this.http.post(this.apiUrl + '/favorites', data).pipe(
       tap(response => console.log('Kết quả API thêm vào yêu thích:', response)),
@@ -159,18 +187,60 @@ export class FavoritesService {
       return of({ success: false, message: 'ID không hợp lệ' });
     }
     
-    console.log('Đang gửi request xóa khỏi yêu thích:', { accountId, targetId, type });
+    // Xử lý targetId cho blog
+    let processedTargetId = targetId;
+    if (type === 'blog') {
+      // Nếu là ID ngắn (BLxx), chuyển về MongoDB ID
+      const blogIdMap: { [key: string]: string } = {
+        'BL01': '507f1f77bcf86cd799439011',
+        'BL02': '507f1f77bcf86cd799439012',
+        'BL03': '507f1f77bcf86cd799439013',
+        'BL04': '507f1f77bcf86cd799439014',
+        'BL05': '507f1f77bcf86cd799439015'
+      };
+      processedTargetId = blogIdMap[targetId] || targetId;
+    }
+    
+    console.log('Đang gửi request xóa khỏi yêu thích:', { accountId, targetId: processedTargetId, type });
     
     // Encode các tham số URL
     const encodedAccountId = encodeURIComponent(accountId);
-    const encodedTargetId = encodeURIComponent(targetId);
+    const encodedTargetId = encodeURIComponent(processedTargetId);
     const encodedType = encodeURIComponent(type);
     
     const url = `${this.apiUrl}/favorites?accountId=${encodedAccountId}&targetId=${encodedTargetId}&type=${encodedType}`;
     console.log('URL DELETE request:', url);
     
     return this.http.delete(url).pipe(
-      tap(response => console.log('Kết quả API xóa khỏi yêu thích:', response)),
+      tap(response => {
+        console.log('Kết quả API xóa khỏi yêu thích:', response);
+        
+        // Cập nhật cache phía client
+        try {
+          let removedFavorites = JSON.parse(localStorage.getItem('removedFavorites') || '{}');
+          if (!removedFavorites[type]) {
+            removedFavorites[type] = [];
+          }
+          // Lưu cả ID ngắn và ID MongoDB để đảm bảo không bị trùng lặp
+          if (type === 'blog') {
+            const shortId = targetId;
+            const mongoId = processedTargetId;
+            if (!removedFavorites[type].includes(shortId)) {
+              removedFavorites[type].push(shortId);
+            }
+            if (!removedFavorites[type].includes(mongoId)) {
+              removedFavorites[type].push(mongoId);
+            }
+          } else {
+            if (!removedFavorites[type].includes(targetId)) {
+              removedFavorites[type].push(targetId);
+            }
+          }
+          localStorage.setItem('removedFavorites', JSON.stringify(removedFavorites));
+        } catch (e) {
+          console.error('Lỗi khi cập nhật danh sách yêu thích đã xóa:', e);
+        }
+      }),
       catchError((error: HttpErrorResponse) => {
         console.error('Error removing from favorites:', error);
         console.error('Server response:', error.error);
@@ -196,11 +266,37 @@ export class FavoritesService {
       return of(false);
     }
     
-    console.log('Đang kiểm tra trạng thái yêu thích:', { accountId, targetId, type });
+    // Xử lý targetId cho blog
+    let processedTargetId = targetId;
+    if (type === 'blog') {
+      // Nếu là ID ngắn (BLxx), chuyển về MongoDB ID
+      const blogIdMap: { [key: string]: string } = {
+        'BL01': '507f1f77bcf86cd799439011',
+        'BL02': '507f1f77bcf86cd799439012',
+        'BL03': '507f1f77bcf86cd799439013',
+        'BL04': '507f1f77bcf86cd799439014',
+        'BL05': '507f1f77bcf86cd799439015'
+      };
+      processedTargetId = blogIdMap[targetId] || targetId;
+    }
+    
+    // Kiểm tra xem nó có trong danh sách đã xóa không
+    try {
+      const removedFavorites = JSON.parse(localStorage.getItem('removedFavorites') || '{}');
+      const removedIds = removedFavorites[type] || [];
+      if (removedIds.includes(targetId) || removedIds.includes(processedTargetId)) {
+        console.log('Mục đã bị xóa trong localStorage, trả về false');
+        return of(false);
+      }
+    } catch (e) {
+      console.error('Lỗi khi đọc danh sách yêu thích đã xóa:', e);
+    }
+    
+    console.log('Đang kiểm tra trạng thái yêu thích:', { accountId, targetId: processedTargetId, type });
     
     // Encode các tham số URL để tránh lỗi 400 Bad Request
     const encodedAccountId = encodeURIComponent(accountId);
-    const encodedTargetId = encodeURIComponent(targetId);
+    const encodedTargetId = encodeURIComponent(processedTargetId);
     const encodedType = encodeURIComponent(type);
     
     const url = `${this.apiUrl}/favorites/check?accountId=${encodedAccountId}&targetId=${encodedTargetId}&type=${encodedType}`;
@@ -232,6 +328,19 @@ export class FavoritesService {
     
     return this.http.get<any[]>(url).pipe(
       map(favorites => {
+        // Lọc các mục đã xóa từ localStorage
+        try {
+          const removedFavorites = JSON.parse(localStorage.getItem('removedFavorites') || '{}');
+          const removedIds = type && removedFavorites[type] ? removedFavorites[type] : [];
+          
+          if (removedIds.length > 0) {
+            console.log(`Lọc bỏ ${removedIds.length} mục đã xóa từ localStorage:`, removedIds);
+            favorites = favorites.filter(item => !removedIds.includes(item.targetId));
+          }
+        } catch (e) {
+          console.error('Lỗi khi đọc danh sách yêu thích đã xóa:', e);
+        }
+      
         // Clean data to remove any potential [object Object] or unwanted data
         return favorites.map(item => {
           // Create a clean copy with only necessary properties
@@ -248,33 +357,32 @@ export class FavoritesService {
             // Create a new object without author property
             const { author, ...detailsWithoutAuthor } = item.details;
             
-            cleanItem.details = {
-              ...detailsWithoutAuthor,
-              title: item.details.title || 'Không có tiêu đề',
-              description: item.details.description || 'Không có mô tả',
-              thumbnail: item.details.thumbnail || 'assets/images/default.jpg'
-            } as any;
+            // Format any date fields
+            cleanItem.details = detailsWithoutAuthor;
             
-            // Add type-specific properties
-            if (type === 'product' && item.details.price) {
-              cleanItem.details.price = item.details.price;
-            }
-            if (type === 'recipe' && item.details.difficulty) {
-              cleanItem.details.difficulty = item.details.difficulty;
-            }
-            if (type === 'blog' && item.details.category && typeof item.details.category === 'object') {
-              cleanItem.details.category = {
-                name: item.details.category.name || 'Chưa phân loại'
-              };
+            // Add special fields for different types
+            if (item.type === 'blog') {
+              cleanItem.blogTitle = item.details.title || 'Bài viết không có tiêu đề';
+              cleanItem.blogImage = item.details.image || '';
+              cleanItem.category = item.details.category || 'Chưa phân loại';
+            } else if (item.type === 'recipe') {
+              cleanItem.recipeName = item.details.recipeName || 'Công thức không có tên';
+              cleanItem.recipeImage = item.details.recipeImage || '';
+              cleanItem.difficulty = item.details.difficulty || 'Dễ';
+              cleanItem.time = item.details.time || '30 phút';
+            } else if (item.type === 'product') {
+              cleanItem.productName = item.details.ingredientName || 'Sản phẩm không có tên';
+              cleanItem.productImage = item.details.mainImage || '';
+              cleanItem.price = item.details.price || 0;
+              cleanItem.discount = item.details.discount || 0;
             }
           }
           
           return cleanItem;
         });
       }),
-      tap(data => console.log('Clean favorites data:', data)),
       catchError(error => {
-        console.error('Error fetching favorites:', error);
+        console.error('Lỗi khi lấy danh sách yêu thích:', error);
         return of([]);
       })
     );
@@ -298,6 +406,19 @@ export class FavoritesService {
     
     return this.http.get<any[]>(url).pipe(
       map(response => {
+        // Lọc các mục đã xóa từ localStorage
+        try {
+          const removedFavorites = JSON.parse(localStorage.getItem('removedFavorites') || '{}');
+          const removedIds = removedFavorites[type] || [];
+          
+          if (removedIds.length > 0) {
+            console.log(`Lọc bỏ ${removedIds.length} mục đã xóa từ localStorage:`, removedIds);
+            response = response.filter(item => !removedIds.includes(item.targetId));
+          }
+        } catch (e) {
+          console.error('Lỗi khi đọc danh sách yêu thích đã xóa:', e);
+        }
+        
         // Trong trường hợp blog, kiểm tra xem targetId có phải là MongoDB ID không
         if (type === 'blog') {
           response.forEach(item => {

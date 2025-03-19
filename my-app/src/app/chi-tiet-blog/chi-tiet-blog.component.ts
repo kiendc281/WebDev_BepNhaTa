@@ -5,14 +5,15 @@ import { BlogService } from '../services/blog.service';
 import { BlogPost, BlogSection } from '../models/blog.interface';
 import { HttpClientModule } from '@angular/common/http';
 import { FavoritesService } from '../services/favorites.service';
+import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-chi-tiet-blog',
   standalone: true,
-  imports: [CommonModule, RouterLink, HttpClientModule],
+  imports: [CommonModule, RouterLink, HttpClientModule, BreadcrumbComponent],
   templateUrl: './chi-tiet-blog.component.html',
   styleUrls: ['./chi-tiet-blog.component.css'],
-  providers: [BlogService, FavoritesService]
+  providers: [BlogService, FavoritesService],
 })
 export class ChiTietBlogComponent implements OnInit {
   blogPost: BlogPost | undefined;
@@ -24,7 +25,7 @@ export class ChiTietBlogComponent implements OnInit {
   notification = {
     show: false,
     message: '',
-    type: 'success' as 'success' | 'error'
+    type: 'success' as 'success' | 'error',
   };
 
   constructor(
@@ -32,10 +33,10 @@ export class ChiTietBlogComponent implements OnInit {
     private router: Router,
     private blogService: BlogService,
     private favoritesService: FavoritesService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
         this.loadBlogPost(id);
@@ -78,10 +79,10 @@ export class ChiTietBlogComponent implements OnInit {
         if (post) {
           this.blogPost = post;
           console.log('Blog Post after assignment:', this.blogPost);
-          
+
           // Kiểm tra trạng thái đã lưu
           this.checkPostSavedStatus(id);
-          
+
           // Check if we should use structured sections or direct content
           if (!this.blogPost.sections || this.blogPost.sections.length === 0) {
             // Ensure we have content if sections are not available
@@ -91,7 +92,7 @@ export class ChiTietBlogComponent implements OnInit {
           } else {
             console.log('Blog sections:', this.blogPost.sections);
           }
-          
+
           // Load related blog posts
           this.loadRelatedPosts(this.blogPost._id);
         } else {
@@ -103,10 +104,10 @@ export class ChiTietBlogComponent implements OnInit {
         console.error('Lỗi khi tải bài viết:', err);
         this.error = 'Không thể tải dữ liệu bài viết. Vui lòng thử lại sau.';
         this.loading = false;
-        
+
         // Fallback sample data
         this.loadSampleData();
-      }
+      },
     });
   }
 
@@ -124,7 +125,9 @@ export class ChiTietBlogComponent implements OnInit {
           this.blogPost.saved = isSaved;
           // Cập nhật trạng thái trong localStorage cho đồng bộ
           try {
-            const savedPosts = JSON.parse(localStorage.getItem('savedBlogPosts') || '[]');
+            const savedPosts = JSON.parse(
+              localStorage.getItem('savedBlogPosts') || '[]'
+            );
             if (isSaved && !savedPosts.includes(postId)) {
               savedPosts.push(postId);
             } else if (!isSaved && savedPosts.includes(postId)) {
@@ -141,7 +144,7 @@ export class ChiTietBlogComponent implements OnInit {
       },
       error: (error) => {
         console.error('Lỗi khi kiểm tra trạng thái lưu:', error);
-      }
+      },
     });
   }
 
@@ -150,14 +153,14 @@ export class ChiTietBlogComponent implements OnInit {
       next: (blogs) => {
         // Get up to 3 related posts (excluding current)
         this.relatedPosts = blogs
-          .filter(blog => blog._id !== currentPostId)
+          .filter((blog) => blog._id !== currentPostId)
           .slice(0, 3);
         this.loading = false;
       },
       error: (err) => {
         console.error('Lỗi khi tải bài viết liên quan:', err);
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -165,21 +168,23 @@ export class ChiTietBlogComponent implements OnInit {
   loadSampleData(): void {
     this.blogPost = {
       _id: 'sample-1',
-      title: 'Bắt mí bạn 3 cách chế biến cá hồi giúp nguyên định dưỡng tự nhiên',
+      title:
+        'Bắt mí bạn 3 cách chế biến cá hồi giúp nguyên định dưỡng tự nhiên',
       slug: 'bat-mi-ban-3-cach-che-bien-ca-hoi',
       category: {
         name: 'Đặc sản vùng miền',
-        slug: 'dac-san-vung-mien'
+        slug: 'dac-san-vung-mien',
       },
       author: {
         _id: 'sample-author',
         name: 'Bếp Nhà Ta',
-        email: 'info@bepnhata.com'
+        email: 'info@bepnhata.com',
       },
       views: 1764,
       likes: 246,
       likedBy: [],
-      description: 'Cá hồi là loại thực phẩm vô cùng giàu dưỡng chất để dùng cải thiện chúng công chế chế biến thành nhiều món ngon khiến bạn giật mình thèm ăn.',
+      description:
+        'Cá hồi là loại thực phẩm vô cùng giàu dưỡng chất để dùng cải thiện chúng công chế chế biến thành nhiều món ngon khiến bạn giật mình thèm ăn.',
       content: `<p>Cá hồi là loại thực phẩm vô cùng giàu dưỡng chất để dùng cải thiện chúng ta có thể chế biến thành nhiều món ngon khiến bạn giật mình thèm ăn.</p>
       <h3>Lợi ích của cá hồi đối với sức khỏe</h3>
       <p>Cá hồi giàu axit béo omega-3, protein, vitamin D và các khoáng chất thiết yếu khác. Một khẩu phần cá hồi 100 gram cung cấp khoảng 25 gram protein, axit béo omega-3, vitamin D, B12, B3...Việc ăn cá hồi đều đặn sẽ giúp ngăn ngừa bệnh tim, đột quỵ, tiểu đường, hỗ trợ giảm viêm, cải thiện sức khỏe não bộ và mắt.</p>
@@ -199,7 +204,7 @@ export class ChiTietBlogComponent implements OnInit {
       publishDate: '2025-02-21T00:00:00.000Z',
       createdAt: '2025-02-21T00:00:00.000Z',
       updatedAt: '2025-02-21T00:00:00.000Z',
-      saved: false
+      saved: false,
     };
 
     // Sample related posts
@@ -210,22 +215,23 @@ export class ChiTietBlogComponent implements OnInit {
         slug: 'cach-lam-pho-bo-truyen-thong',
         category: {
           name: 'Đặc sản vùng miền',
-          slug: 'dac-san-vung-mien'
+          slug: 'dac-san-vung-mien',
         },
         author: {
           _id: 'sample-author',
           name: 'Bếp Nhà Ta',
-          email: 'info@bepnhata.com'
+          email: 'info@bepnhata.com',
         },
         views: 1255,
         likes: 158,
         likedBy: [],
-        description: 'Phở bò Hà Nội nổi tiếng với nước dùng trong ngọt và thơm mùi thảo mộc...',
+        description:
+          'Phở bò Hà Nội nổi tiếng với nước dùng trong ngọt và thơm mùi thảo mộc...',
         thumbnail: 'assets/images/popular-3.jpg',
         publishDate: '2025-02-15T00:00:00.000Z',
         createdAt: '2025-02-15T00:00:00.000Z',
         updatedAt: '2025-02-15T00:00:00.000Z',
-        saved: false
+        saved: false,
       },
       {
         _id: 'sample-3',
@@ -233,23 +239,24 @@ export class ChiTietBlogComponent implements OnInit {
         slug: 'bi-quyet-lam-goi-cuon-tom-thit',
         category: {
           name: 'Món ngon hàng ngày',
-          slug: 'mon-ngon-hang-ngay'
+          slug: 'mon-ngon-hang-ngay',
         },
         author: {
           _id: 'sample-author',
           name: 'Bếp Nhà Ta',
-          email: 'info@bepnhata.com'
+          email: 'info@bepnhata.com',
         },
         views: 982,
         likes: 112,
         likedBy: [],
-        description: 'Gỏi cuốn là món ăn thanh mát, dễ làm và cực kỳ được yêu thích...',
+        description:
+          'Gỏi cuốn là món ăn thanh mát, dễ làm và cực kỳ được yêu thích...',
         thumbnail: 'assets/images/popular-2.jpg',
         publishDate: '2025-02-10T00:00:00.000Z',
         createdAt: '2025-02-10T00:00:00.000Z',
         updatedAt: '2025-02-10T00:00:00.000Z',
-        saved: false
-      }
+        saved: false,
+      },
     ];
   }
 
@@ -269,52 +276,125 @@ export class ChiTietBlogComponent implements OnInit {
     // Kiểm tra đăng nhập trước khi thực hiện
     const userStr = localStorage.getItem('user');
     if (!userStr) {
-      this.showNotification('Vui lòng đăng nhập để sử dụng tính năng này', 'error');
+      this.showNotification(
+        'Vui lòng đăng nhập để sử dụng tính năng này',
+        'error'
+      );
       return;
     }
 
-    // Lưu trữ bản sao an toàn của tiêu đề bài viết (tránh tham chiếu đến object)
+    // Lưu trữ bản sao an toàn của tiêu đề bài viết và trạng thái ban đầu
     const postTitle = this.blogPost.title || 'Bài viết';
+    const originalSavedState = this.blogPost.saved;
+    
+    // Cập nhật UI trước để người dùng thấy phản hồi ngay lập tức
+    this.blogPost.saved = !originalSavedState;
+    
+    // Xử lý xóa các ID trước đây trong localStorage nếu đang lưu
+    if (!originalSavedState) {
+      try {
+        const removedFavorites = JSON.parse(localStorage.getItem('removedFavorites') || '{}');
+        if (removedFavorites['blog'] && removedFavorites['blog'].length > 0) {
+          removedFavorites['blog'] = removedFavorites['blog'].filter((id: string) => 
+            id !== this.blogPost?._id
+          );
+          localStorage.setItem('removedFavorites', JSON.stringify(removedFavorites));
+        }
+      } catch (e) {
+        console.error('Lỗi khi cập nhật localStorage:', e);
+      }
+    }
 
     // Thực hiện toggle trạng thái lưu
-    this.favoritesService.toggleFavorite(this.blogPost._id, 'blog', this.blogPost.saved)
+    this.favoritesService
+      .toggleFavorite(this.blogPost._id, 'blog', originalSavedState)
       .subscribe({
         next: (response) => {
           console.log('Kết quả lưu bài viết:', response);
           if (response.success) {
-            this.blogPost!.saved = !this.blogPost!.saved;
-            
             // Cập nhật trạng thái trong localStorage cho đồng bộ
             try {
-              const savedPosts = JSON.parse(localStorage.getItem('savedBlogPosts') || '[]');
-              if (this.blogPost!.saved && !savedPosts.includes(this.blogPost!._id)) {
+              const savedPosts = JSON.parse(
+                localStorage.getItem('savedBlogPosts') || '[]'
+              );
+              if (
+                this.blogPost!.saved &&
+                !savedPosts.includes(this.blogPost!._id)
+              ) {
                 savedPosts.push(this.blogPost!._id);
-              } else if (!this.blogPost!.saved && savedPosts.includes(this.blogPost!._id)) {
+              } else if (
+                !this.blogPost!.saved &&
+                savedPosts.includes(this.blogPost!._id)
+              ) {
                 const index = savedPosts.indexOf(this.blogPost!._id);
                 if (index > -1) {
                   savedPosts.splice(index, 1);
                 }
               }
-              localStorage.setItem('savedBlogPosts', JSON.stringify(savedPosts));
+              localStorage.setItem(
+                'savedBlogPosts',
+                JSON.stringify(savedPosts)
+              );
             } catch (error) {
               console.error('Lỗi khi cập nhật localStorage:', error);
             }
-            
+
             this.showNotification(
-              this.blogPost!.saved 
-                ? `Đã lưu bài viết "${postTitle}"` 
-                : `Đã bỏ lưu bài viết "${postTitle}"`, 
+              this.blogPost!.saved
+                ? `Đã lưu bài viết "${postTitle}"`
+                : `Đã bỏ lưu bài viết "${postTitle}"`,
               'success'
             );
           } else {
+            // Nếu thất bại, khôi phục trạng thái ban đầu
+            this.blogPost!.saved = originalSavedState;
+            
+            // Nếu lỗi là trùng lặp và đang cố thêm vào danh sách yêu thích
+            if (response.message && response.message.includes('duplicate key error') && !originalSavedState) {
+              // Đặt lại trạng thái thành "đã lưu" vì mục này thực sự đã tồn tại trong DB
+              this.blogPost!.saved = true;
+              
+              this.showNotification(
+                `"${postTitle}" đã có trong danh sách yêu thích của bạn`,
+                'success'
+              );
+              return;
+            }
+            
             console.error('Không thể lưu bài viết:', response.message);
-            this.showNotification(response.message || 'Không thể lưu bài viết. Vui lòng thử lại sau.', 'error');
+            this.showNotification(
+              response.message ||
+                'Không thể lưu bài viết. Vui lòng thử lại sau.',
+              'error'
+            );
           }
         },
         error: (error) => {
+          // Khôi phục trạng thái ban đầu nếu có lỗi
+          this.blogPost!.saved = originalSavedState;
+          
+          // Nếu là lỗi 400 với thông báo trùng lặp và đang cố thêm vào danh sách
+          if (error.status === 400 && 
+              error.error && 
+              error.error.message && 
+              error.error.message.includes('duplicate key error') && 
+              !originalSavedState) {
+            // Đặt lại trạng thái thành "đã lưu" vì mục này thực sự đã tồn tại trong DB
+            this.blogPost!.saved = true;
+            
+            this.showNotification(
+              `"${postTitle}" đã có trong danh sách yêu thích của bạn`,
+              'success'
+            );
+            return;
+          }
+          
           console.error('Lỗi khi lưu bài viết:', error);
-          this.showNotification('Đã xảy ra lỗi khi lưu bài viết. Vui lòng thử lại sau.', 'error');
-        }
+          this.showNotification(
+            'Đã xảy ra lỗi khi lưu bài viết. Vui lòng thử lại sau.',
+            'error'
+          );
+        },
       });
   }
 
@@ -342,14 +422,14 @@ export class ChiTietBlogComponent implements OnInit {
     this.notification = {
       show: true,
       message,
-      type
+      type,
     };
 
     // Tự động ẩn thông báo sau 3 giây
     setTimeout(() => {
       this.notification = {
         ...this.notification,
-        show: false
+        show: false,
       };
     }, 3000);
   }
