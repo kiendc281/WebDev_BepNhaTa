@@ -3,12 +3,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, switchMap } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+
+export interface FavoriteResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
-  private apiUrl = 'http://localhost:3000/api/favorites';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
   
@@ -125,7 +132,7 @@ export class FavoritesService {
     
     console.log('Đang gửi request thêm vào yêu thích:', data);
     
-    return this.http.post(this.apiUrl, data).pipe(
+    return this.http.post(this.apiUrl + '/favorites', data).pipe(
       tap(response => console.log('Kết quả API thêm vào yêu thích:', response)),
       catchError((error: HttpErrorResponse) => {
         console.error('Error adding to favorites:', error);
@@ -159,7 +166,7 @@ export class FavoritesService {
     const encodedTargetId = encodeURIComponent(targetId);
     const encodedType = encodeURIComponent(type);
     
-    const url = `${this.apiUrl}?accountId=${encodedAccountId}&targetId=${encodedTargetId}&type=${encodedType}`;
+    const url = `${this.apiUrl}/favorites?accountId=${encodedAccountId}&targetId=${encodedTargetId}&type=${encodedType}`;
     console.log('URL DELETE request:', url);
     
     return this.http.delete(url).pipe(
@@ -196,7 +203,7 @@ export class FavoritesService {
     const encodedTargetId = encodeURIComponent(targetId);
     const encodedType = encodeURIComponent(type);
     
-    const url = `${this.apiUrl}/check?accountId=${encodedAccountId}&targetId=${encodedTargetId}&type=${encodedType}`;
+    const url = `${this.apiUrl}/favorites/check?accountId=${encodedAccountId}&targetId=${encodedTargetId}&type=${encodedType}`;
     console.log('URL kiểm tra yêu thích:', url);
     
     return this.http.get(url).pipe(
@@ -218,7 +225,7 @@ export class FavoritesService {
       return of([]);
     }
     
-    let url = `${this.apiUrl}?accountId=${accountId}`;
+    let url = `${this.apiUrl}/favorites?accountId=${accountId}`;
     if (type) {
       url += `&type=${type}`;
     }
@@ -286,7 +293,7 @@ export class FavoritesService {
       return of([]);
     }
     
-    const url = `${this.apiUrl}/details/${type}?accountId=${accountId}`;
+    const url = `${this.apiUrl}/favorites/details/${type}?accountId=${accountId}`;
     console.log(`Đang lấy danh sách yêu thích loại ${type} với chi tiết:`, url);
     
     return this.http.get<any[]>(url).pipe(
@@ -302,17 +309,57 @@ export class FavoritesService {
     );
   }
 
-  // Toggle yêu thích (thêm nếu chưa có, xóa nếu đã có)
-  toggleFavorite(targetId: string, type: string, isSaved?: boolean): Observable<any> {
-    if (isSaved !== undefined) {
-      return isSaved ? this.removeFromFavorites(targetId, type) : this.addToFavorites(targetId, type);
+  // Thêm/xóa yêu thích dựa vào trạng thái hiện tại
+  toggleFavorite(targetId: string, type: string, isSaved: boolean = false): Observable<FavoriteResponse> {
+    console.log(`Toggle favorite for ${targetId} (${type}), current state: ${isSaved}`);
+    
+    if (isSaved) {
+      return this.removeFromFavorites(targetId, type);
+    } else {
+      return this.addToFavorites(targetId, type);
     }
-    return this.checkFavorite(targetId, type).pipe(
-      switchMap(isFavorited => {
-        return isFavorited ? 
-          this.removeFromFavorites(targetId, type) : 
-          this.addToFavorites(targetId, type);
+  }
+
+  toggleFavoriteWithToken(itemId: string, itemType: 'product' | 'recipe', isSaved: boolean): Observable<FavoriteResponse> {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user || !user.token) {
+      return of({ success: false, message: 'Bạn chưa đăng nhập' });
+    }
+
+    const url = `${this.apiUrl}/favorites/${isSaved ? 'remove' : 'add'}`;
+    const payload = {
+      itemId,
+      itemType
+    };
+
+    return this.http.post<FavoriteResponse>(url, payload, {
+      headers: {
+        Authorization: `Bearer ${user.token}`
+      }
+    }).pipe(
+      catchError(error => {
+        return of({ 
+          success: false, 
+          message: error.error?.message || 'Đã xảy ra lỗi khi thao tác với mục yêu thích'
+        });
       })
+    );
+  }
+
+  checkFavoriteWithToken(itemId: string, itemType: 'product' | 'recipe'): Observable<boolean> {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user || !user.token) {
+      return of(false);
+    }
+
+    const url = `${this.apiUrl}/favorites/check`;
+    return this.http.post<{isFavorite: boolean}>(url, { itemId, itemType }, {
+      headers: {
+        Authorization: `Bearer ${user.token}`
+      }
+    }).pipe(
+      map(response => response.isFavorite),
+      catchError(() => of(false))
     );
   }
 }

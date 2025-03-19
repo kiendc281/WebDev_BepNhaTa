@@ -10,7 +10,7 @@ import { CartItem } from '../models/cart.interface';
 import { Subscription } from 'rxjs';
 import { RecipeService } from '../services/recipe.service';
 import { Recipe } from '../models/recipe.interface';
-import { FavoritesService } from '../services/favorites.service';
+import { FavoritesService, FavoriteResponse } from '../services/favorites.service';
 
 interface FAQ {
   question: string;
@@ -361,7 +361,7 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     
     this.favoritesService.toggleFavorite(productId, 'product', this.isSavedProduct)
       .subscribe({
-        next: (response) => {
+        next: (response: FavoriteResponse) => {
           console.log('Kết quả lưu sản phẩm:', response);
           if (response.success) {
             this.isSavedProduct = !this.isSavedProduct;
@@ -375,7 +375,7 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
             this.showNotification(response.message || 'Không thể lưu sản phẩm. Vui lòng thử lại sau.', 'error');
           }
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Lỗi khi lưu sản phẩm:', error);
           this.showNotification('Đã xảy ra lỗi khi lưu sản phẩm. Vui lòng thử lại sau.', 'error');
         }
@@ -557,11 +557,11 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     }
 
     this.favoritesService.checkFavorite(productId, 'product').subscribe({
-      next: (isFavorite) => {
+      next: (isFavorite: boolean) => {
         this.isSavedProduct = isFavorite;
         console.log(`Sản phẩm ${productId} đã được lưu: ${isFavorite}`);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Lỗi khi kiểm tra trạng thái yêu thích:', error);
       }
     });
@@ -626,7 +626,7 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     
     this.favoritesService.toggleFavorite(recipeId, 'recipe', isSaved)
       .subscribe({
-        next: (response) => {
+        next: (response: FavoriteResponse) => {
           console.log('Kết quả lưu:', response);
           if (response.success) {
             if (isSaved) {
@@ -641,7 +641,7 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
             this.showNotification(response.message || 'Không thể lưu công thức. Vui lòng thử lại sau.', 'error');
           }
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Lỗi khi lưu công thức:', error);
           this.showNotification('Đã xảy ra lỗi khi lưu công thức. Vui lòng thử lại sau.', 'error');
         }
