@@ -8,14 +8,50 @@ import { BlogPost } from '../models/blog.interface';
 })
 export class BlogService {
   private apiUrl = 'http://localhost:3000/api/blogs';
+  
+  // Bộ chuyển đổi ID ngắn sang MongoDB ID
+  private idMap = new Map<string, string>([
+    ['BL01', '507f1f77bcf86cd799439011'],
+    ['BL02', '507f1f77bcf86cd799439012'],
+    ['BL03', '507f1f77bcf86cd799439013'],
+    ['BL04', '507f1f77bcf86cd799439014'],
+    ['BL05', '507f1f77bcf86cd799439015'],
+  ]);
 
   constructor(private http: HttpClient) {}
+
+  // Hàm chuyển đổi ID ngắn sang MongoDB ID
+  private convertToMongoId(shortId: string): string {
+    if (!shortId) return '';
+    
+    // Kiểm tra nếu đã là MongoDB ID (24 ký tự hex) thì trả về nguyên bản
+    if (/^[0-9a-fA-F]{24}$/.test(shortId)) {
+      return shortId;
+    }
+    
+    // Nếu là ID ngắn (BL01, BL02, ...), chuyển đổi sang MongoDB ID
+    const mongoId = this.idMap.get(shortId);
+    if (mongoId) {
+      console.log(`Đã chuyển đổi ID ngắn ${shortId} thành MongoDB ID ${mongoId}`);
+      return mongoId;
+    }
+    
+    // Nếu không tìm thấy trong bảng, tạo một ID giả dựa trên mã ngắn
+    const randomId = '507f1f77bcf86cd7994390' + (Math.floor(Math.random() * 90) + 10);
+    console.log(`ID ${shortId} không tìm thấy trong bảng, tạo ID ngẫu nhiên: ${randomId}`);
+    this.idMap.set(shortId, randomId);
+    return randomId;
+  }
 
   private mapResponseToBlogPosts(items: any[]): BlogPost[] {
     console.log('Mapping items:', items);
     
     return items.map(item => {
       console.log('Processing item:', item);
+      
+      // Chuyển đổi ID ngắn sang MongoDB ID
+      const originalId = item._id;
+      const mongoId = this.convertToMongoId(originalId);
       
       // Xử lý sections nếu có
       let sections = [];
@@ -59,7 +95,8 @@ export class BlogService {
       }
 
       return {
-        _id: item._id || '',
+        _id: mongoId, // Sử dụng MongoDB ID đã chuyển đổi
+        originalId: originalId, // Lưu ID gốc để tham chiếu
         title: item.title || '',
         slug: item.slug || '',
         category: {

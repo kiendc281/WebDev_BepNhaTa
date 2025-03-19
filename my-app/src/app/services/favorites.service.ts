@@ -191,7 +191,15 @@ export class FavoritesService {
     
     console.log('Đang kiểm tra trạng thái yêu thích:', { accountId, targetId, type });
     
-    return this.http.get(`${this.apiUrl}/check?accountId=${accountId}&targetId=${targetId}&type=${type}`).pipe(
+    // Encode các tham số URL để tránh lỗi 400 Bad Request
+    const encodedAccountId = encodeURIComponent(accountId);
+    const encodedTargetId = encodeURIComponent(targetId);
+    const encodedType = encodeURIComponent(type);
+    
+    const url = `${this.apiUrl}/check?accountId=${encodedAccountId}&targetId=${encodedTargetId}&type=${encodedType}`;
+    console.log('URL kiểm tra yêu thích:', url);
+    
+    return this.http.get(url).pipe(
       tap(response => console.log('Kết quả API kiểm tra yêu thích:', response)),
       map((response: any) => response.exists || false),
       catchError((error: HttpErrorResponse) => {

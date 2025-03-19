@@ -67,7 +67,7 @@ export class BlogComponent implements OnInit {
     // Sample data as fallback if API fails
     this.blogPosts = [
       {
-        _id: '1',
+        _id: '507f1f77bcf86cd799439011', // MongoDB ID format
         title: 'Bắt mí bạn 5 cách chế biến cá hồi giúp nguyên định dưỡng tự nhiên',
         slug: 'bat-mi-ban-5-cach-che-bien-ca-hoi',
         category: {
@@ -90,7 +90,7 @@ export class BlogComponent implements OnInit {
         saved: false
       },
       {
-        _id: '2',
+        _id: '507f1f77bcf86cd799439012', // MongoDB ID format
         title: 'Bắt mí bạn 5 cách chế biến cá hồi giúp nguyên định dưỡng tự nhiên',
         slug: 'bat-mi-ban-5-cach-che-bien-ca-hoi-2',
         category: {
@@ -113,7 +113,7 @@ export class BlogComponent implements OnInit {
         saved: false
       },
       {
-        _id: '3',
+        _id: '507f1f77bcf86cd799439013', // MongoDB ID format
         title: 'Bắt mí bạn 5 cách chế biến cá hồi giúp nguyên định dưỡng tự nhiên',
         slug: 'bat-mi-ban-5-cach-che-bien-ca-hoi-3',
         category: {
@@ -136,7 +136,7 @@ export class BlogComponent implements OnInit {
         saved: false
       },
       {
-        _id: '4',
+        _id: '507f1f77bcf86cd799439014', // MongoDB ID format
         title: 'Bắt mí bạn 5 cách chế biến cá hồi giúp nguyên định dưỡng tự nhiên',
         slug: 'bat-mi-ban-5-cach-che-bien-ca-hoi-4',
         category: {
@@ -159,7 +159,7 @@ export class BlogComponent implements OnInit {
         saved: false
       },
       {
-        _id: '5',
+        _id: '507f1f77bcf86cd799439015', // MongoDB ID format
         title: 'Bắt mí bạn 5 cách chế biến cá hồi giúp nguyên định dưỡng tự nhiên',
         slug: 'bat-mi-ban-5-cach-che-bien-ca-hoi-5',
         category: {
@@ -207,21 +207,21 @@ export class BlogComponent implements OnInit {
           if (response.success) {
             post.saved = !post.saved;
             
-            // Cập nhật trạng thái trong localStorage cho đồng bộ
-            try {
-              const savedPosts = JSON.parse(localStorage.getItem('savedBlogPosts') || '[]');
-              if (post.saved && !savedPosts.includes(post._id)) {
-                savedPosts.push(post._id);
-              } else if (!post.saved && savedPosts.includes(post._id)) {
-                const index = savedPosts.indexOf(post._id);
-                if (index > -1) {
-                  savedPosts.splice(index, 1);
-                }
-              }
-              localStorage.setItem('savedBlogPosts', JSON.stringify(savedPosts));
-            } catch (error) {
-              console.error('Lỗi khi cập nhật localStorage:', error);
+            // Cập nhật các đối tượng liên quan
+            // Cập nhật trong mảng gốc
+            const postInOriginalList = this.blogPosts.find(p => p._id === post._id);
+            if (postInOriginalList) {
+              postInOriginalList.saved = post.saved;
             }
+            
+            // Cập nhật trong mảng đã lọc
+            const postInFilteredList = this.filteredBlogPosts.find(p => p._id === post._id);
+            if (postInFilteredList) {
+              postInFilteredList.saved = post.saved;
+            }
+            
+            // Cập nhật localStorage
+            this.updateSavedPostsInLocalStorage();
             
             this.showNotification(
               post.saved ? `Đã lưu bài viết "${postTitle}"` : `Đã bỏ lưu bài viết "${postTitle}"`, 
@@ -249,6 +249,7 @@ export class BlogComponent implements OnInit {
       this.currentPage--;
       this.updateDisplayedPages();
       this.updatePaginatedBlogPosts();
+      this.checkSavedPosts();
     }
   }
 
@@ -257,6 +258,7 @@ export class BlogComponent implements OnInit {
       this.currentPage++;
       this.updateDisplayedPages();
       this.updatePaginatedBlogPosts();
+      this.checkSavedPosts();
     }
   }
 
@@ -265,6 +267,7 @@ export class BlogComponent implements OnInit {
       this.currentPage = page;
       this.updateDisplayedPages();
       this.updatePaginatedBlogPosts();
+      this.checkSavedPosts();
     }
   }
 
@@ -291,8 +294,7 @@ export class BlogComponent implements OnInit {
 
   private updatePaginatedBlogPosts(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedBlogPosts = this.filteredBlogPosts.slice(startIndex, endIndex);
+    this.paginatedBlogPosts = this.filteredBlogPosts.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   // Hiển thị thông báo
@@ -316,29 +318,75 @@ export class BlogComponent implements OnInit {
   checkSavedPosts(): void {
     const userStr = localStorage.getItem('user');
     if (!userStr) {
+      console.log('Người dùng chưa đăng nhập, không kiểm tra bài viết đã lưu');
       return;
     }
 
+    console.log('Đang kiểm tra trạng thái lưu cho các bài viết hiển thị');
+    
+    // Trước tiên, đọc từ localStorage để có tính liên tục khi refresh
     try {
-      // Lấy danh sách bài viết đã lưu từ localStorage
       const savedPosts = JSON.parse(localStorage.getItem('savedBlogPosts') || '[]');
+      console.log('Danh sách bài viết đã lưu từ localStorage:', savedPosts);
       
-      // Cập nhật trạng thái saved cho tất cả các bài viết
+      // Hiển thị ngay từ localStorage trước khi API trả về
       this.blogPosts.forEach(post => {
         post.saved = savedPosts.includes(post._id);
       });
       
-      // Cập nhật trạng thái cho các bài viết đã được lọc
       this.filteredBlogPosts.forEach(post => {
         post.saved = savedPosts.includes(post._id);
       });
       
-      // Cập nhật trạng thái cho các bài viết đang hiển thị
       this.paginatedBlogPosts.forEach(post => {
         post.saved = savedPosts.includes(post._id);
       });
     } catch (error) {
-      console.error('Lỗi khi kiểm tra bài viết đã lưu:', error);
+      console.error('Lỗi khi đọc danh sách bài viết đã lưu từ localStorage:', error);
+    }
+    
+    // Sau đó mới gọi API để đồng bộ với server
+    this.paginatedBlogPosts.forEach(post => {
+      this.favoritesService.checkFavorite(post._id, 'blog').subscribe({
+        next: (isFavorite) => {
+          console.log(`Bài viết ${post._id} - "${post.title}" - đã lưu: ${isFavorite}`);
+          
+          // Cập nhật trạng thái cho bài viết hiện tại
+          post.saved = isFavorite;
+          
+          // Cập nhật trong mảng gốc
+          const postInOriginalList = this.blogPosts.find(p => p._id === post._id);
+          if (postInOriginalList) {
+            postInOriginalList.saved = isFavorite;
+          }
+          
+          // Cập nhật trong mảng đã lọc
+          const postInFilteredList = this.filteredBlogPosts.find(p => p._id === post._id);
+          if (postInFilteredList) {
+            postInFilteredList.saved = isFavorite;
+          }
+          
+          // Lưu lại vào localStorage
+          this.updateSavedPostsInLocalStorage();
+        },
+        error: (error) => {
+          console.error(`Lỗi khi kiểm tra trạng thái yêu thích cho bài viết ${post._id}:`, error);
+        }
+      });
+    });
+  }
+  
+  // Phương thức mới để cập nhật danh sách bài viết đã lưu trong localStorage
+  private updateSavedPostsInLocalStorage(): void {
+    try {
+      const savedPostIds = this.blogPosts
+        .filter(post => post.saved)
+        .map(post => post._id);
+      
+      localStorage.setItem('savedBlogPosts', JSON.stringify(savedPostIds));
+      console.log('Đã cập nhật danh sách bài viết đã lưu vào localStorage:', savedPostIds);
+    } catch (error) {
+      console.error('Lỗi khi lưu danh sách bài viết đã lưu vào localStorage:', error);
     }
   }
 }

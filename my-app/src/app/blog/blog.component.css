@@ -298,14 +298,10 @@ a{
 
 /* Nút lưu bài viết khi đã lưu */
 .button-camnhat.saved {
-  background-color: #f8f9fa;
-  color: #dc3545;
-  border: 1px solid #dc3545;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+  transition: all 0.3s ease;
 }
 
 /* Notification styles */
@@ -354,11 +350,12 @@ a{
 }
 
 .button-camnhat svg {
-  margin-right: 2px;
+  margin-right: 5px;
+  vertical-align: middle;
 }
 
-/* Thêm hiệu ứng khi hover */
-.button-camnhat:hover svg {
-  transform: scale(1.2);
-  transition: transform 0.2s ease;
+/* Hiệu ứng hover cho biểu tượng tim */
+.button-camnhat:hover:not(.saved) svg {
+  fill: #dc3545;
+  transition: fill 0.3s ease;
 }

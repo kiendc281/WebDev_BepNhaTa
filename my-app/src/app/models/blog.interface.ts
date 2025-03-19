@@ -1,5 +1,6 @@
 export interface BlogPost {
   _id: string;
+  originalId?: string; // ID gốc từ dữ liệu (BL01, BL02, ...)
   title: string;
   slug: string;
   category: {
