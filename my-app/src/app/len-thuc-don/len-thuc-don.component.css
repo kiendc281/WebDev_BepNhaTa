@@ -455,15 +455,24 @@
   position: absolute;
   top: 10px;
   right: 10px;
+  width: 36px;
+  height: 36px;
+  background-color: white;
   border-radius: 50%;
   display: flex;
   justify-content: center;
+  align-items: center;
   cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   opacity: 0;
   transform: translateY(-10px);
-  transition: all 0.3s ease;
-  z-index: 10;
+}
+
+.save-button:hover {
+  transform: scale(1.1);
+  background-color: white;
 }
 
 .product-card:hover .save-button {
@@ -471,8 +480,14 @@
   transform: translateY(0);
 }
 
-.save-button:hover {
-  background-color: var(--color-camdam);
+.save-button img, .save-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+.product-card:hover .save-button {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .product-content {
@@ -1100,20 +1115,7 @@ a {
 .recipe-card .meal-view-details {
   display: inline-block !important;
 }
-.save-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-  z-index: 10;
-}
+
 /* Styling for recipe info items to match the image */
 .recipe-info .info-item {
   display: flex !important;
@@ -1244,24 +1246,34 @@ a {
   position: absolute;
   top: 10px;
   right: 10px;
+  width: 36px;
+  height: 36px;
+  background-color: white;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background-color: white;
-  width: 35px;
-  height: 35px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  opacity: 1;
-  transform: translateY(0);
-  transition: all 0.3s ease;
   z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.save-button:hover {
+  transform: scale(1.1);
+  background-color: white;
 }
 
 .product-card:hover .save-button {
   opacity: 1;
   transform: translateY(0);
+}
+
+.save-button img, .save-button svg {
+  width: 24px;
+  height: 24px;
 }
 
 /* Responsive Styles */
@@ -1503,4 +1515,52 @@ a {
   .main-title h1 {
     font-size: 22px;
   }
+}
+
+/* CSS cho thông báo */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 4px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  color: #fff;
+  animation: slideIn 0.3s ease-out forwards;
+  max-width: 400px;
+  min-width: 300px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.notification.success {
+  background-color: #4caf50;
+  border-left: 5px solid #388e3c;
+}
+
+.notification.error {
+  background-color: #f44336;
+  border-left: 5px solid #d32f2f;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification-icon {
+  font-size: 20px;
 }

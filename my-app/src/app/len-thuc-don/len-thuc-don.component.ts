@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { Recipe } from '../models/recipe.interface';
 import { Product } from '../models/product.interface';
 import { CleanTitlePipe } from './clean-title.pipe';
+import { FavoritesService } from '../services/favorites.service';
 
 interface MenuDay {
   day: number;
@@ -31,7 +32,7 @@ interface FAQ {
   imports: [CommonModule, RouterModule, HttpClientModule, FormsModule, CleanTitlePipe],
   templateUrl: './len-thuc-don.component.html',
   styleUrl: './len-thuc-don.component.css',
-  providers: [MenuService, ProductService, RecipeService]
+  providers: [MenuService, ProductService, RecipeService, FavoritesService]
 })
 export class LenThucDonComponent implements OnInit {
   menus: Menu[] = [];
@@ -48,6 +49,9 @@ export class LenThucDonComponent implements OnInit {
   
   // Công thức gợi ý
   suggestedRecipes: Recipe[] = [];
+  
+  // Lưu trữ ID các công thức đã lưu
+  savedRecipes = new Set<string>();
   
   // FAQ
   faqs: FAQ[] = [
@@ -72,10 +76,16 @@ export class LenThucDonComponent implements OnInit {
   recipesPerPage = 3;
   visibleRecipes: any[] = [];
   
+  // Khai báo thêm biến để quản lý thông báo
+  notificationMessage = '';
+  notificationVisible = false;
+  notificationType = 'success'; // 'success' hoặc 'error'
+  
   constructor(
     private menuService: MenuService,
     private productService: ProductService,
-    private recipeService: RecipeService
+    private recipeService: RecipeService,
+    private favoritesService: FavoritesService
   ) {}
 
   ngOnInit(): void {
@@ -105,6 +115,7 @@ export class LenThucDonComponent implements OnInit {
         this.recipes = data;
         this.suggestedRecipes = this.getRandomRecipes(9); // Lấy 9 công thức để có thể phân trang
         this.updateVisibleRecipes(); // Cập nhật visibleRecipes ngay sau khi có dữ liệu
+        this.loadSavedRecipes(); // Load trạng thái đã lưu sau khi có dữ liệu công thức
       },
       error: (err) => {
         console.error('Lỗi khi tải công thức:', err);
@@ -242,5 +253,95 @@ export class LenThucDonComponent implements OnInit {
     console.log('View product details:', product);
     // You can implement routing to the product details page here
     // this.router.navigate(['/san-pham', product._id]);
+  }
+
+  loadSavedRecipes(): void {
+    // Lấy user từ localStorage
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+      // Nếu không có user, không cần kiểm tra các công thức đã lưu
+      return;
+    }
+
+    // Với mỗi công thức, kiểm tra xem đã lưu chưa
+    this.suggestedRecipes.forEach(recipe => {
+      if (recipe && recipe._id) {
+        this.favoritesService.checkFavorite(recipe._id, 'recipe').subscribe(
+          isSaved => {
+            if (isSaved) {
+              this.savedRecipes.add(recipe._id);
+            }
+          }
+        );
+      }
+    });
+  }
+
+  isRecipeSaved(recipeId: string): boolean {
+    // Kiểm tra trực tiếp từ Set đã lưu
+    return this.savedRecipes.has(recipeId);
+  }
+
+  // Hiển thị thông báo
+  showNotification(message: string, type: 'success' | 'error' = 'success'): void {
+    this.notificationMessage = message;
+    this.notificationType = type;
+    this.notificationVisible = true;
+    
+    // Tự động ẩn thông báo sau 3 giây
+    setTimeout(() => {
+      this.notificationVisible = false;
+    }, 3000);
+  }
+
+  toggleSaveRecipe(event: Event, recipe: any): void {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Kiểm tra nếu người dùng đã đăng nhập
+    if (!localStorage.getItem('user')) {
+      this.showNotification('Vui lòng đăng nhập để lưu công thức', 'error');
+      return;
+    }
+
+    if (!recipe || !recipe._id) {
+      console.error('Recipe or recipe ID is missing');
+      return;
+    }
+
+    const recipeId = recipe._id;
+    const isSaved = this.isRecipeSaved(recipeId);
+    const recipeName = recipe.recipeName || 'Công thức';
+
+    // Cập nhật UI ngay lập tức
+    if (isSaved) {
+      this.savedRecipes.delete(recipeId);
+      this.showNotification(`Đã xóa "${recipeName}" khỏi danh sách yêu thích`);
+    } else {
+      this.savedRecipes.add(recipeId);
+      this.showNotification(`Đã thêm "${recipeName}" vào danh sách yêu thích`);
+    }
+
+    console.log('Toggle save recipe', recipeId);
+    
+    this.favoritesService
+      .toggleFavorite(recipeId, 'recipe', isSaved)
+      .subscribe({
+        next: (response) => {
+          console.log('Toggle favorite response:', response);
+        },
+        error: (error) => {
+          // Nếu có lỗi, hoàn tác thay đổi UI
+          if (isSaved) {
+            this.savedRecipes.add(recipeId);
+            this.showNotification(`Lỗi khi xóa khỏi danh sách yêu thích`, 'error');
+          } else {
+            this.savedRecipes.delete(recipeId);
+            this.showNotification(`Lỗi khi thêm vào danh sách yêu thích`, 'error');
+          }
+
+          console.error('Error toggling favorite:', error);
+        },
+      });
   }
 }
