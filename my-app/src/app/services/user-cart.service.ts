@@ -379,158 +379,30 @@ export class UserCartService {
       return throwError(() => new Error('Không tìm thấy token xác thực'));
     }
 
-    // Kiểm tra giỏ hàng cục bộ có sản phẩm không
-    if (!localCart.items || localCart.items.length === 0) {
-      console.log('Giỏ hàng cục bộ trống, tải giỏ hàng từ server');
-      return this.loadCart();
-    }
-
-    // Đầu tiên, lấy giỏ hàng từ server
-    const url = `${environment.apiUrl}/cart/account/${userId}`;
-    console.log(`Tải giỏ hàng trước khi hợp nhất, URL: ${url}`);
-    
-    return this.http.get<Cart>(url, { headers }).pipe(
-      switchMap(serverCart => {
-        console.log('Giỏ hàng từ server:', serverCart);
-        
-        // Nếu server không có giỏ hàng hoặc giỏ hàng rỗng, đưa giỏ hàng cục bộ lên server
-        if (!serverCart || !serverCart.items || serverCart.items.length === 0) {
-          console.log('Giỏ hàng server trống, cập nhật giỏ hàng server với dữ liệu cục bộ');
-          return this.updateServerWithLocalItems(userId, localCart.items, headers);
-        }
-        
-        // Nếu cả hai đều có sản phẩm, cần hợp nhất
-        console.log('Cả giỏ hàng cục bộ và server đều có sản phẩm, tiến hành hợp nhất');
-        return this.mergeLocalAndServerCarts(userId, localCart.items, serverCart, headers);
-      }),
-      tap(finalCart => {
-        console.log('Giỏ hàng sau khi hợp nhất:', finalCart);
-        this.cartSubject.next(finalCart);
-        this.cartItems.next(finalCart.items || []);
+    // Chỉ tải giỏ hàng từ server, bỏ qua giỏ hàng cục bộ hoàn toàn
+    console.log('Đăng nhập thành công: Bỏ qua giỏ hàng cục bộ, chỉ tải giỏ hàng người dùng từ server');
+    return this.loadCart().pipe(
+      tap(serverCart => {
+        console.log('Đã tải giỏ hàng người dùng từ server:', serverCart);
+        this.cartSubject.next(serverCart);
+        this.cartItems.next(serverCart.items || []);
       }),
       catchError(error => {
-        console.error('Lỗi khi hợp nhất giỏ hàng:', error);
+        console.error('Lỗi khi tải giỏ hàng người dùng từ server:', error);
         
-        // Nếu giỏ hàng không tồn tại (404), tạo giỏ hàng mới từ local
+        // Nếu giỏ hàng không tồn tại (404), tạo giỏ hàng mới rỗng
         if (error.status === 404) {
-          console.log('Giỏ hàng server không tồn tại (404), tạo mới từ local');
-          return this.updateServerWithLocalItems(userId, localCart.items, headers);
+          console.log('Giỏ hàng server không tồn tại (404), tạo mới giỏ hàng rỗng');
+          const emptyCart: Cart = { items: [], totalQuantity: 0, totalPrice: 0 };
+          this.cartSubject.next(emptyCart);
+          this.cartItems.next([]);
+          return of(emptyCart);
         }
         
         return throwError(() => error);
       }),
       finalize(() => {
         this.loadingSubject.next(false);
-      })
-    );
-  }
-
-  /**
-   * Cập nhật giỏ hàng server với các sản phẩm từ giỏ hàng cục bộ
-   */
-  private updateServerWithLocalItems(userId: string, localItems: CartItem[], headers: HttpHeaders): Observable<Cart> {
-    console.log('Cập nhật giỏ hàng server với các sản phẩm cục bộ...');
-    
-    // Xử lý từng sản phẩm trong giỏ hàng cục bộ
-    const updateObservables = localItems.map(item => {
-      const payload = {
-        userId: userId,
-        productId: item.productId,
-        quantity: item.quantity,
-        servingSize: item.servingSize,
-        price: item.price
-      };
-      
-      return this.http.post<Cart>(`${this.apiUrl}/add-item`, payload, { headers });
-    });
-    
-    // Kết hợp tất cả các Observable lại
-    return updateObservables.reduce(
-      (acc, curr) => acc.pipe(switchMap(() => curr)),
-      of({} as Cart)
-    ).pipe(
-      switchMap(() => this.loadCart()),
-      catchError(error => {
-        console.error('Lỗi khi cập nhật giỏ hàng server với sản phẩm cục bộ:', error);
-        return throwError(() => error);
-      })
-    );
-  }
-
-  /**
-   * Hợp nhất giỏ hàng cục bộ và server
-   */
-  private mergeLocalAndServerCarts(userId: string, localItems: CartItem[], serverCart: Cart, headers: HttpHeaders): Observable<Cart> {
-    console.log('Hợp nhất giỏ hàng cục bộ và server...');
-    
-    // Tạo Map để lưu trữ sản phẩm server theo key productId_servingSize
-    const serverItemsMap = new Map<string, CartItem>();
-    serverCart.items.forEach(item => {
-      const key = `${item.productId}_${item.servingSize}`;
-      serverItemsMap.set(key, item);
-    });
-    
-    // Xác định sản phẩm cần thêm mới hoặc cập nhật
-    const itemsToUpdate: { item: CartItem, isNew: boolean }[] = [];
-    
-    localItems.forEach(localItem => {
-      const key = `${localItem.productId}_${localItem.servingSize}`;
-      if (serverItemsMap.has(key)) {
-        // Sản phẩm đã có trong server, cần cập nhật số lượng
-        const serverItem = serverItemsMap.get(key)!;
-        const newQuantity = serverItem.quantity + localItem.quantity;
-        itemsToUpdate.push({
-          item: { ...localItem, quantity: newQuantity },
-          isNew: false
-        });
-      } else {
-        // Sản phẩm chưa có trong server, cần thêm mới
-        itemsToUpdate.push({
-          item: localItem,
-          isNew: true
-        });
-      }
-    });
-    
-    // Nếu không có sản phẩm nào cần cập nhật, trả về giỏ hàng server hiện tại
-    if (itemsToUpdate.length === 0) {
-      console.log('Không có sản phẩm cục bộ nào cần cập nhật lên server');
-      return of(serverCart);
-    }
-    
-    // Xử lý từng sản phẩm cần cập nhật
-    const updateObservables = itemsToUpdate.map(({ item, isNew }) => {
-      if (isNew) {
-        // Thêm sản phẩm mới
-        const payload = {
-          userId: userId,
-          productId: item.productId,
-          quantity: item.quantity,
-          servingSize: item.servingSize,
-          price: item.price
-        };
-        return this.http.post<Cart>(`${this.apiUrl}/add-item`, payload, { headers });
-      } else {
-        // Cập nhật số lượng sản phẩm đã có
-        const payload = {
-          userId: userId,
-          productId: item.productId,
-          quantity: item.quantity,
-          servingSize: item.servingSize
-        };
-        return this.http.post<Cart>(`${this.apiUrl}/update-item`, payload, { headers });
-      }
-    });
-    
-    // Kết hợp tất cả các Observable lại
-    return updateObservables.reduce(
-      (acc, curr) => acc.pipe(switchMap(() => curr)),
-      of({} as Cart)
-    ).pipe(
-      switchMap(() => this.loadCart()),
-      catchError(error => {
-        console.error('Lỗi khi hợp nhất giỏ hàng:', error);
-        return throwError(() => error);
       })
     );
   }
