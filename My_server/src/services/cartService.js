@@ -244,6 +244,13 @@ class CartService {
             
             console.log(`Đã tìm thấy sản phẩm: ${product.ingredientName}`);
             
+            // Kiểm tra số lượng sản phẩm còn đủ không
+            const isAvailable = await Ingredient.checkAvailableQuantity(productId, servingSize, quantity);
+            if (!isAvailable) {
+                console.error(`Sản phẩm ${productId} khẩu phần ${servingSize} không đủ số lượng ${quantity}`);
+                throw new Error(`Sản phẩm không đủ số lượng`);
+            }
+            
             // Tìm hoặc tạo giỏ hàng
             let cart = await Cart.findOne({ accountId: userId });
             
@@ -336,6 +343,9 @@ class CartService {
             if (itemIndex === -1) {
                 throw new Error('Không tìm thấy sản phẩm trong giỏ hàng');
             }
+
+            // Lấy số lượng của sản phẩm trước khi xóa để hoàn lại vào kho
+            const removedQuantity = cart.items[itemIndex].quantity;
             
             // Xóa sản phẩm khỏi mảng items
             cart.items.splice(itemIndex, 1);
@@ -346,6 +356,15 @@ class CartService {
             
             await cart.save();
             console.log('Đã xóa sản phẩm khỏi giỏ hàng thành công');
+            
+            // Cập nhật lại số lượng sản phẩm trong kho (trả lại số lượng đã xóa)
+            try {
+                await Ingredient.updateQuantity(productId, servingSize, removedQuantity);
+                console.log(`Đã hoàn lại số lượng ${removedQuantity} cho sản phẩm ${productId} khẩu phần ${servingSize}`);
+            } catch (updateError) {
+                console.error('Lỗi khi cập nhật lại số lượng sản phẩm:', updateError);
+                // Không ảnh hưởng đến việc xóa giỏ hàng nên chỉ log lỗi
+            }
             
             return { 
                 items: cart.items, 

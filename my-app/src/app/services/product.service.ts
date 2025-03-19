@@ -23,6 +23,7 @@ export class ProductService {
         return response.map((item: any) => {
           // Log để kiểm tra dữ liệu gốc
           console.log('Raw components:', item.components);
+          console.log('Raw pricePerPortion:', item.pricePerPortion);
 
           // Cải thiện xử lý components
           let components: string[] = [];
@@ -80,6 +81,40 @@ export class ProductService {
 
           // Log sau khi xử lý
           console.log('Processed components:', components);
+          
+          // Xử lý pricePerPortion
+          let pricePerPortion: {[key: string]: number} = {};
+          let portionQuantities: {[key: string]: number} = {};
+          
+          // Kiểm tra xem pricePerPortion có phải là mảng (định dạng mới từ schema cập nhật)
+          if (Array.isArray(item.pricePerPortion)) {
+            console.log('Xử lý pricePerPortion dạng mảng:', item.pricePerPortion);
+            
+            // Chuyển đổi mảng thành object với key là portion
+            item.pricePerPortion.forEach((p: any) => {
+              if (p && p.portion && p.price !== undefined) {
+                pricePerPortion[p.portion] = p.price;
+                
+                // Lưu số lượng nếu có
+                if (p.quantity !== undefined) {
+                  portionQuantities[p.portion] = p.quantity;
+                }
+              }
+            });
+          } 
+          // Nếu là object (định dạng cũ)
+          else if (typeof item.pricePerPortion === 'object' && item.pricePerPortion !== null) {
+            pricePerPortion = { ...item.pricePerPortion };
+            
+            // Chỉ kiểm tra xem có quantity cụ thể cho từng khẩu phần không
+            if (item.portionQuantities && typeof item.portionQuantities === 'object') {
+              // Nếu backend đã cung cấp thông tin số lượng theo khẩu phần, sử dụng nó
+              portionQuantities = { ...item.portionQuantities };
+            }
+          }
+          
+          console.log('Processed pricePerPortion:', pricePerPortion);
+          console.log('Backend portionQuantities:', portionQuantities);
 
           return {
             _id: item._id,
@@ -90,7 +125,9 @@ export class ProductService {
             time: item.time,
             combo: item.combo,
             discount: item.discount || 0,
-            pricePerPortion: item.pricePerPortion || {},
+            pricePerPortion: pricePerPortion,
+            portionQuantities: portionQuantities,
+            pricePerPortionArray: Array.isArray(item.pricePerPortion) ? item.pricePerPortion : null,
             description: item.description,
             notes: item.notes,
             components: components,
