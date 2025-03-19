@@ -1,20 +1,5 @@
 <div class="product-container">
-  <div class="product-header">
-    <h1>Danh sách sản phẩm</h1>
-    <div class="actions">
-      <div class="search-box">
-        <input
-          type="text"
-          placeholder="Tìm kiếm sản phẩm..."
-          [(ngModel)]="searchTerm"
-          (keyup)="applyFilters()"
-        />
-      </div>
-      <button class="add-product-btn" (click)="addNewProduct()">
-        <i class="fas fa-plus"></i> Thêm mới sản phẩm
-      </button>
-    </div>
-  </div>
+  <h1>Quản lý sản phẩm</h1>
 
   <!-- Action Buttons -->
   <div class="action-buttons">
@@ -158,52 +143,6 @@
         </div>
       </div>
 
-      <!-- Custom dropdown for regions -->
-      <div class="custom-dropdown" [class.active]="openDropdown === 'region'">
-        <div class="selected-option" (click)="toggleDropdown('region', $event)">
-          {{
-            filterRegion
-              ? filterRegion === "Bắc"
-                ? "Miền Bắc"
-                : filterRegion === "Trung"
-                ? "Miền Trung"
-                : "Miền Nam"
-              : "Tất cả vùng miền"
-          }}
-          <img src="../../assets/product/arrow-down.svg" alt="dropdown" />
-        </div>
-        <div
-          class="dropdown-menu"
-          *ngIf="openDropdown === 'region'"
-          (click)="$event.stopPropagation()"
-        >
-          <div
-            class="dropdown-item"
-            (click)="selectRegion(''); closeDropdown()"
-          >
-            Tất cả vùng miền
-          </div>
-          <div
-            class="dropdown-item"
-            (click)="selectRegion('Bắc'); closeDropdown()"
-          >
-            Miền Bắc
-          </div>
-          <div
-            class="dropdown-item"
-            (click)="selectRegion('Trung'); closeDropdown()"
-          >
-            Miền Trung
-          </div>
-          <div
-            class="dropdown-item"
-            (click)="selectRegion('Nam'); closeDropdown()"
-          >
-            Miền Nam
-          </div>
-        </div>
-      </div>
-
       <!-- Custom dropdown for status -->
       <div class="custom-dropdown" [class.active]="openDropdown === 'status'">
         <div class="selected-option" (click)="toggleDropdown('status', $event)">
@@ -289,7 +228,16 @@
           />
         </th>
         <th>Danh mục</th>
-        <th>Thẻ</th>
+        <th class="sortable" (click)="sort('quantity')">
+          Số lượng
+          <img
+            src="../../assets/product/sort.svg"
+            alt="sort"
+            class="sort-icon"
+            [class.active]="sortColumn === 'quantity'"
+            [class.desc]="sortColumn === 'quantity' && sortDirection === 'desc'"
+          />
+        </th>
         <th class="sortable" (click)="sort('date')">
           Ngày hết hạn
           <img
@@ -359,11 +307,7 @@
         </td>
         <td class="product-price">{{ product.price }}</td>
         <td>{{ product.category }}</td>
-        <td>
-          <span class="product-tag" *ngFor="let tag of product.tags">{{
-            tag
-          }}</span>
-        </td>
+        <td>{{ product.quantity }}</td>
         <td>{{ product.date }}</td>
       </tr>
     </tbody>

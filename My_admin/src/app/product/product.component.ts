@@ -133,6 +133,7 @@ export class ProductComponent implements OnInit, OnDestroy {
       code: '_id',
       price: 'price', // Sử dụng numericPrice trong hàm so sánh
       date: 'timestamp',
+      quantity: 'quantity',
     };
 
     // Lấy tên cột API tương ứng
@@ -173,6 +174,16 @@ export class ProductComponent implements OnInit, OnDestroy {
         case 'timestamp':
           valueA = a.timestamp || 0;
           valueB = b.timestamp || 0;
+          break;
+        case 'quantity':
+          valueA =
+            typeof a.quantity === 'string'
+              ? parseInt(a.quantity, 10) || 0
+              : a.quantity || 0;
+          valueB =
+            typeof b.quantity === 'string'
+              ? parseInt(b.quantity, 10) || 0
+              : b.quantity || 0;
           break;
         default:
           valueA = a[column] || '';
