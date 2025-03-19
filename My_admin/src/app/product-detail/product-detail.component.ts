@@ -25,6 +25,10 @@ export class ProductDetailComponent implements OnInit {
       '2': 120000,
       '4': 230000,
     },
+    quantity2: 50,
+    status2: 'Còn hàng',
+    quantity4: 30,
+    status4: 'Còn hàng',
     description:
       'Gói nguyên liệu đầy đủ để nấu món Phở bò truyền thống, bao gồm xương bò, thịt bò, bánh phở và các loại gia vị đặc trưng.',
     notes:
@@ -52,14 +56,29 @@ export class ProductDetailComponent implements OnInit {
     suggestedRecipeIds: ['GNL03'],
     region: 'Bắc',
     category: 'Nước',
-    quantity: 100,
     status: 'Còn hàng',
   };
 
   isEdit: boolean = false;
   pendingChanges: boolean = false;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router) {
+    // Đảm bảo chỉ có khẩu phần 2 và 4 người
+    const tempPricePerPortion = {
+      '2': this.product.pricePerPortion['2'] || 0,
+      '4': this.product.pricePerPortion['4'] || 0,
+    };
+    this.product.pricePerPortion = tempPricePerPortion;
+
+    // Khởi tạo số lượng và trạng thái mặc định nếu chưa có
+    if (!this.product.quantity2) this.product.quantity2 = 50;
+    if (!this.product.quantity4) this.product.quantity4 = 30;
+    if (!this.product.status2) this.product.status2 = 'Còn hàng';
+    if (!this.product.status4) this.product.status4 = 'Còn hàng';
+
+    // Bỏ trường combo nếu cần
+    if (this.product.combo === undefined) this.product.combo = '';
+  }
 
   ngOnInit(): void {
     // Kiểm tra nếu đang sửa sản phẩm hiện có
@@ -69,12 +88,6 @@ export class ProductDetailComponent implements OnInit {
         this.loadProductDetails(params['id']);
       }
     });
-  }
-
-  getPortions(): string[] {
-    return Object.keys(this.product.pricePerPortion).sort(
-      (a, b) => parseInt(a) - parseInt(b)
-    );
   }
 
   loadProductDetails(id: string): void {
@@ -106,6 +119,10 @@ export class ProductDetailComponent implements OnInit {
           '2': 150000,
           '4': 280000,
         },
+        quantity2: 40,
+        status2: 'Còn hàng',
+        quantity4: 25,
+        status4: 'Hết hàng',
         description:
           'Gà nướng lá chanh là món ăn truyền thống với hương vị đặc trưng từ lá chanh và các loại gia vị.',
         notes: 'Nên ăn khi còn nóng để cảm nhận đầy đủ hương vị.',
@@ -125,9 +142,14 @@ export class ProductDetailComponent implements OnInit {
         suggestedRecipeIds: ['R001', 'R002'],
         region: 'Trung',
         category: 'Món mặn',
-        quantity: 50,
         status: 'Còn hàng',
       };
+
+      // Đảm bảo các thuộc tính quantity và status cho từng khẩu phần được thiết lập
+      if (!this.product.quantity2) this.product.quantity2 = 0;
+      if (!this.product.quantity4) this.product.quantity4 = 0;
+      if (!this.product.status2) this.product.status2 = 'Còn hàng';
+      if (!this.product.status4) this.product.status4 = 'Còn hàng';
     }, 500);
   }
 
@@ -194,13 +216,22 @@ export class ProductDetailComponent implements OnInit {
     this.pendingChanges = true;
   }
 
-  addTag(event: Event, tagInput: HTMLInputElement): void {
+  addTag(event: Event, inputElement: HTMLInputElement): void {
     event.preventDefault();
-    const value = tagInput.value.trim();
+    if (inputElement && inputElement.value && inputElement.value.trim()) {
+      const tagsArray = inputElement.value
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter((tag) => tag);
 
-    if (value && !this.product.tags.includes(value)) {
-      this.product.tags.push(value);
-      tagInput.value = '';
+      tagsArray.forEach((tag) => {
+        if (!this.product.tags.includes(tag)) {
+          this.product.tags.push(tag);
+        }
+      });
+
+      // Clear the input
+      inputElement.value = '';
       this.pendingChanges = true;
     }
   }
@@ -213,14 +244,21 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  uploadImage(event: any): void {
-    const file = event.target.files[0];
+  uploadImage(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+      return;
+    }
+
+    const file = fileInput.files[0];
     if (file) {
       // TODO: Implement actual image upload to server
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.product.mainImage = e.target.result;
-        this.pendingChanges = true;
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target && e.target.result) {
+          this.product.mainImage = e.target.result as string;
+          this.pendingChanges = true;
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -240,7 +278,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   updatePricePerPortion(portion: string, event: any): void {
-    const value = event.target.textContent.trim();
+    const value = event.target?.textContent?.trim() || '';
     const numericValue = parseInt(value.replace(/\D/g, ''));
 
     if (!isNaN(numericValue)) {
@@ -249,16 +287,30 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  addPricingRow(): void {
-    // Xác định khẩu phần tiếp theo
-    const portions = this.getPortions()
-      .map((p) => parseInt(p))
-      .sort((a, b) => a - b);
+  // Thêm phương thức để cập nhật mô tả từ WYSIWYG editor
+  updateDescription(event: Event): void {
+    const target = event.target as HTMLDivElement;
+    if (target && target.innerHTML !== undefined) {
+      this.product.description = target.innerHTML;
+      this.pendingChanges = true;
+    }
+  }
 
-    const nextPortion =
-      portions.length > 0 ? portions[portions.length - 1] + 2 : 2;
-    this.product.pricePerPortion[nextPortion.toString()] = 0;
+  // Thêm các phương thức để điều khiển định dạng văn bản
+  executeCommand(command: string, value?: string): void {
+    document.execCommand(command, false, value || '');
+  }
 
-    this.pendingChanges = true;
+  // Phương thức này có thể được gọi từ template để áp dụng định dạng
+  applyFormat(format: string, value?: string): void {
+    this.executeCommand(format, value);
+  }
+
+  // Handle format block change from select element
+  handleFormatBlockChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    if (selectElement && selectElement.value) {
+      this.applyFormat('formatBlock', selectElement.value);
+    }
   }
 }

@@ -1,0 +1,97 @@
+h1 {
+  color: #ea5c2b !important;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead th {
+  background-color: var(--color-camvua);
+  color: white;
+  font-weight: 600;
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: 12px 15px;
+  border: 1px solid #dee2e6;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.btn-outline-primary {
+  color: var(--color-xamdam);
+  border-color: var(--color-xamdam);
+}
+.btn-outline-primary:hover {
+  background-color: var(--color-xamdam);
+  color: white;
+}
+
+.btn-outline-danger {
+  color: var(--color-camdam);
+  border-color: var(--color-camdam);
+}
+.btn-outline-danger:hover {
+  background-color: var(--color-camdam);
+  color: white;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}
+
+/* Pagination styles */
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.page-item {
+  margin: 0 2px;
+}
+
+.page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  line-height: 1.25;
+  color: black;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: #ea5c2b;
+  border-color: #ea5c2b;
+}
+
+.page-item.disabled .page-link {
+  color: var(--color-xamdam);
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+
+.page-link:hover {
+  background-color: var(--color-camnhat);
+  color: white;
+  border-color: var(--color-camvua);
+}

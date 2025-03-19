@@ -1068,6 +1068,7 @@
   }
 }
 
+<<<<<<< HEAD
 /* Styles cho nút lưu khi đã lưu */
 .button-xam.saved {
   background-color: #f8f9fa;
@@ -1135,4 +1136,28 @@
 
 .me-2 {
   margin-right: 0.5rem;
+=======
+/* Styles for stock info */
+.stock-info {
+  margin: 10px 0;
+  padding: 5px 0;
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.stock-label {
+  font-weight: 500;
+  margin-right: 5px;
+}
+
+.stock-quantity {
+  color: #28a745; /* Màu xanh cho số lượng bình thường */
+  font-weight: 500;
+}
+
+.stock-quantity.low-stock {
+  color: #dc3545; /* Màu đỏ cho số lượng thấp */
+>>>>>>> 5fa60067bdcdd40cf9aa670347aca538b59431c8
 }

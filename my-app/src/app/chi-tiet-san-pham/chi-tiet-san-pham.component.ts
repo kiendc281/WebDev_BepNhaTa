@@ -55,6 +55,9 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
   cartItemCount: number = 0;
   private cartSubscription: Subscription | null = null;
 
+  // Thêm thuộc tính để lưu trữ số lượng hiện có của khẩu phần
+  currentPortionQuantity: number = 0;
+
   faqs: FAQ[] = [
     {
       question: 'Thời gian giao hàng là bao lâu?',
@@ -161,7 +164,7 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
           } else {
             console.warn(
               'Không tìm thấy thành phần nguyên liệu cho sản phẩm:',
-              id
+              this.product.ingredientName
             );
           }
 
@@ -175,8 +178,19 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
             console.warn('Không tìm thấy thông tin giá cho sản phẩm:', id);
           }
 
-          this.loadRelatedProducts();
+          // Cập nhật giá theo khẩu phần đã chọn
           this.updatePrices();
+          
+          // Khởi tạo số lượng hiện có cho khẩu phần đã chọn
+          this.currentPortionQuantity = this.getPortionQuantity();
+
+          // Load related products
+          this.loadRelatedProducts();
+          
+          // Load suggested products
+          this.productService.getProducts().subscribe(products => {
+            this.loadSuggestedProducts(products);
+          });
         } else {
           console.error('Không tìm thấy sản phẩm với id:', id);
           this.error = `Không tìm thấy sản phẩm với mã ${id}`;
@@ -289,6 +303,47 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
 
     // Cập nhật giá ngay khi thay đổi khẩu phần
     this.updatePrices();
+    
+    // Cập nhật số lượng hiện có cho khẩu phần đã chọn
+    this.currentPortionQuantity = this.getPortionQuantity();
+  }
+
+  // Phương thức để lấy số lượng hàng hiện có của khẩu phần đã chọn
+  getPortionQuantity(): number {
+    if (!this.product || !this.selectedServing) {
+      return 0;
+    }
+
+    try {
+      console.log('Product data:', this.product);
+      console.log('Selected serving:', this.selectedServing);
+      console.log('portionQuantities:', this.product.portionQuantities);
+      console.log('pricePerPortionArray:', this.product.pricePerPortionArray);
+      
+      // 1. Kiểm tra nếu có portionQuantities (dữ liệu đã được xử lý từ ProductService)
+      if (this.product.portionQuantities && 
+          typeof this.product.portionQuantities === 'object' && 
+          this.product.portionQuantities[this.selectedServing] !== undefined) {
+        console.log(`Quantity from portionQuantities:`, this.product.portionQuantities[this.selectedServing]);
+        return this.product.portionQuantities[this.selectedServing];
+      }
+      
+      // 2. Kiểm tra nếu có pricePerPortionArray (dữ liệu gốc từ API)
+      if (this.product.pricePerPortionArray && Array.isArray(this.product.pricePerPortionArray)) {
+        const portion = this.product.pricePerPortionArray.find(p => p.portion === this.selectedServing);
+        if (portion && typeof portion.quantity === 'number') {
+          console.log(`Quantity from pricePerPortionArray:`, portion.quantity);
+          return portion.quantity;
+        }
+      }
+      
+      // 3. Nếu không tìm thấy, trả về số lượng chung
+      console.log('Using general quantity:', this.product.quantity || 0);
+      return this.product.quantity || 0;
+    } catch (error) {
+      console.error('Error when reading portion quantity:', error);
+      return 0;
+    }
   }
 
   toggleFaq(faq: FAQ): void {

@@ -179,6 +179,17 @@
         >
       </div>
 
+      <!-- Hiển thị số lượng hàng hiện có -->
+      <div class="stock-info" *ngIf="product">
+        <span class="stock-label">Còn lại: </span>
+        <span
+          class="stock-quantity"
+          [class.low-stock]="currentPortionQuantity < 10"
+        >
+          {{ currentPortionQuantity }} sản phẩm
+        </span>
+      </div>
+
       <div class="quantity-section">
         <div class="d-flex align-items-center gap-2">
           <div>Số lượng:</div>
