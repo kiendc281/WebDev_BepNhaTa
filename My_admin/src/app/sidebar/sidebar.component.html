@@ -10,7 +10,7 @@
         <img src="../../assets/sidebar/mainpage.svg" alt="" />
         <span>Trang chủ</span>
       </div>
-      <div class="menu-item">
+      <div class="menu-item" routerLink="/order" routerLinkActive="active">
         <img src="../../assets/sidebar/cart.svg" alt="" />
         <span>Quản lý đơn hàng</span>
       </div>
@@ -26,7 +26,7 @@
       <div class="submenu" [ngClass]="{ open: openSubmenu === 'product' }">
         <div
           class="submenu-item"
-          routerLink="/san-pham"
+          routerLink="/product"
           routerLinkActive="active"
         >
           Danh sách sản phẩm
@@ -41,11 +41,11 @@
         <div class="submenu-item">Thêm sản phẩm mới</div>
         <div class="submenu-item">Phân loại sản phẩm</div>
       </div>
-      <div class="menu-item">
+      <div class="menu-item" routerLink="/recipe" routerLinkActive="active">
         <img src="../../assets/sidebar/recipes.svg" alt="" />
         <span>Quản lý công thức</span>
       </div>
-      <div class="menu-item">
+      <div class="menu-item" routerLink="/blog" routerLinkActive="active">
         <img src="../../assets/sidebar/blog.svg" alt="" />
         <span>Quản lý blog</span>
       </div>
@@ -59,7 +59,13 @@
         <img src="../../assets/sidebar/arrow.svg" alt="" />
       </div>
       <div class="submenu" [ngClass]="{ open: openSubmenu === 'customer' }">
-        <div class="submenu-item">Danh sách khách hàng</div>
+        <div
+          class="submenu-item"
+          routerLink="/customer"
+          routerLinkActive="active"
+        >
+          Danh sách khách hàng
+        </div>
         <div class="submenu-item">Phân loại khách hàng</div>
         <div class="submenu-item">Phản hồi khách hàng</div>
       </div>
