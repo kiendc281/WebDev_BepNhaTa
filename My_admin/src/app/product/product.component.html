@@ -78,12 +78,6 @@
           >
             Cập nhật tồn kho
           </div>
-          <div
-            class="dropdown-item"
-            (click)="selectAction('delete'); closeDropdown()"
-          >
-            Xóa sản phẩm
-          </div>
         </div>
       </div>
       <button
@@ -194,7 +188,7 @@
             (change)="toggleAllProducts()"
           />
         </th>
-        <th class="sortable" (click)="sort('name')">
+        <th class="sortable" (click)="sort('name', $event)">
           Tên sản phẩm
           <img
             src="../../assets/product/sort.svg"
@@ -206,7 +200,7 @@
             "
           />
         </th>
-        <th class="sortable" (click)="sort('code')">
+        <th class="sortable" (click)="sort('code', $event)">
           Mã sản phẩm
           <img
             src="../../assets/product/sort.svg"
@@ -218,27 +212,69 @@
         </th>
         <th>Trạng thái</th>
         <th class="sortable" (click)="sort('price')">
-          Giá
-          <img
-            src="../../assets/product/sort.svg"
-            alt="sort"
-            class="sort-icon"
-            [class.active]="sortColumn === 'price'"
-            [class.desc]="sortColumn === 'price' && sortDirection === 'desc'"
-          />
+          <div class="quantity-header">
+            <div class="quantity-title">Giá</div>
+            <div class="quantity-columns">
+              <div class="quantity-col" (click)="sort('price2', $event)">
+                <span>2p</span>
+                <img
+                  src="../../assets/product/sort.svg"
+                  alt="sort"
+                  class="sort-icon"
+                  [class.active]="sortColumn === 'price2'"
+                  [class.desc]="
+                    sortColumn === 'price2' && sortDirection === 'desc'
+                  "
+                />
+              </div>
+              <div class="quantity-col" (click)="sort('price4', $event)">
+                <span>4p</span>
+                <img
+                  src="../../assets/product/sort.svg"
+                  alt="sort"
+                  class="sort-icon"
+                  [class.active]="sortColumn === 'price4'"
+                  [class.desc]="
+                    sortColumn === 'price4' && sortDirection === 'desc'
+                  "
+                />
+              </div>
+            </div>
+          </div>
         </th>
         <th>Danh mục</th>
-        <th class="sortable" (click)="sort('quantity')">
-          Số lượng
-          <img
-            src="../../assets/product/sort.svg"
-            alt="sort"
-            class="sort-icon"
-            [class.active]="sortColumn === 'quantity'"
-            [class.desc]="sortColumn === 'quantity' && sortDirection === 'desc'"
-          />
+        <th>
+          <div class="quantity-header">
+            <div class="quantity-title">Số lượng</div>
+            <div class="quantity-columns">
+              <div class="quantity-col" (click)="sort('quantity2', $event)">
+                <span>2p</span>
+                <img
+                  src="../../assets/product/sort.svg"
+                  alt="sort"
+                  class="sort-icon"
+                  [class.active]="sortColumn === 'quantity2'"
+                  [class.desc]="
+                    sortColumn === 'quantity2' && sortDirection === 'desc'
+                  "
+                />
+              </div>
+              <div class="quantity-col" (click)="sort('quantity4', $event)">
+                <span>4p</span>
+                <img
+                  src="../../assets/product/sort.svg"
+                  alt="sort"
+                  class="sort-icon"
+                  [class.active]="sortColumn === 'quantity4'"
+                  [class.desc]="
+                    sortColumn === 'quantity4' && sortDirection === 'desc'
+                  "
+                />
+              </div>
+            </div>
+          </div>
         </th>
-        <th class="sortable" (click)="sort('date')">
+        <th class="sortable" (click)="sort('date', $event)">
           Ngày hết hạn
           <img
             src="../../assets/product/sort.svg"
@@ -305,9 +341,23 @@
             >{{ product.status }}</span
           >
         </td>
-        <td class="product-price">{{ product.price }}</td>
+        <td class="product-price">
+          <div class="quantity-info">
+            <span
+              >{{ (product.pricePerPortion?.['2'] || 0) | number:'1.0-0' }}</span
+            >
+            <span
+              >{{ (product.pricePerPortion?.['4'] || 0) | number:'1.0-0' }}</span
+            >
+          </div>
+        </td>
         <td>{{ product.category }}</td>
-        <td>{{ product.quantity }}</td>
+        <td>
+          <div class="quantity-info">
+            <span>{{ product['portionQuantities']?.['2'] || 0 }}</span>
+            <span>{{ product['portionQuantities']?.['4'] || 0 }}</span>
+          </div>
+        </td>
         <td>{{ product.date }}</td>
       </tr>
     </tbody>
@@ -325,7 +375,7 @@
       (click)="currentPage = currentPage - 1"
       class="page-button"
     >
-      <i class="fas fa-chevron-left"></i>
+      <img src="../../assets/sidebar/arrow.svg" alt="" />
     </button>
 
     <div
@@ -342,7 +392,7 @@
       (click)="currentPage = currentPage + 1"
       class="page-button"
     >
-      <i class="fas fa-chevron-right"></i>
+      <img src="../../assets/sidebar/arrow.svg" alt="" />
     </button>
   </div>
 </div>
