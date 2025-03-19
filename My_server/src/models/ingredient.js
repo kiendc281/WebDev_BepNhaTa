@@ -1,3 +1,6 @@
+// Thêm một console.log để xem schema
+console.log('Loading ingredient schema...');
+
 const mongoose = require('mongoose');
 
 const ingredientSchema = new mongoose.Schema({
@@ -31,6 +34,11 @@ const ingredientSchema = new mongoose.Schema({
         portion: {
             type: String,
             required: true
+        },
+        quantity: {
+            type: Number,
+            default: 0,
+            min: 0
         }
     }],
     description: {
@@ -90,8 +98,8 @@ const ingredientSchema = new mongoose.Schema({
     },
     quantity: {
         type: Number,
-        required: true,
-        min: 0
+        min: 0,
+        default: 0 // Đánh dấu không bắt buộc, có thể chuyển đổi dần
     },
     status: {
         type: String,
@@ -121,5 +129,60 @@ ingredientSchema.pre('save', async function(next) {
         next(error);
     }
 });
+
+// Thêm phương thức tĩnh để kiểm tra số lượng sản phẩm theo khẩu phần
+ingredientSchema.statics.checkAvailableQuantity = async function(productId, servingSize, requestedQuantity) {
+    const product = await this.findById(productId);
+    if (!product) return false;
+    
+    // Tìm khẩu phần phù hợp
+    const portion = product.pricePerPortion.find(p => p.portion === servingSize);
+    if (!portion) return false;
+    
+    // Nếu có quantity trong khẩu phần, kiểm tra nó
+    if (portion.quantity !== undefined) {
+        return portion.quantity >= requestedQuantity;
+    }
+    
+    // Nếu không, sử dụng trường quantity chung (cho khả năng tương thích ngược)
+    return product.quantity >= requestedQuantity;
+};
+
+// Thêm phương thức tĩnh để cập nhật số lượng sản phẩm theo khẩu phần
+ingredientSchema.statics.updateQuantity = async function(productId, servingSize, quantityChange) {
+    const product = await this.findById(productId);
+    if (!product) return false;
+    
+    // Tìm khẩu phần phù hợp
+    const portionIndex = product.pricePerPortion.findIndex(p => p.portion === servingSize);
+    if (portionIndex === -1) return false;
+    
+    // Nếu có quantity trong khẩu phần, cập nhật nó
+    if (product.pricePerPortion[portionIndex].quantity !== undefined) {
+        product.pricePerPortion[portionIndex].quantity += quantityChange;
+        
+        // Đảm bảo số lượng không âm
+        if (product.pricePerPortion[portionIndex].quantity < 0) {
+            product.pricePerPortion[portionIndex].quantity = 0;
+        }
+    } else {
+        // Nếu không, cập nhật trường quantity chung (cho khả năng tương thích ngược)
+        product.quantity += quantityChange;
+        
+        // Đảm bảo số lượng không âm
+        if (product.quantity < 0) {
+            product.quantity = 0;
+        }
+    }
+    
+    // Cập nhật trạng thái sản phẩm dựa trên số lượng
+    const anyAvailable = product.pricePerPortion.some(p => 
+        (p.quantity !== undefined && p.quantity > 0) || product.quantity > 0
+    );
+    
+    product.status = anyAvailable ? 'Còn hàng' : 'Hết hàng';
+    
+    return await product.save();
+};
 
 module.exports = mongoose.model('Ingredient', ingredientSchema); 

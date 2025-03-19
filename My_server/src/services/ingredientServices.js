@@ -84,15 +84,33 @@ class IngredientService {
             ingredients = ingredients.map(ingredient => {
                 const doc = ingredient.toObject();
                 
-                // Chuyển đổi pricePerPortion từ mảng sang object
+                // Chuyển đổi pricePerPortion từ mảng sang object và trích xuất thông tin về số lượng
                 if (doc.pricePerPortion && Array.isArray(doc.pricePerPortion)) {
                     const pricePerPortionObj = {};
+                    const portionQuantitiesObj = {};
+                    
+                    // Lưu lại mảng pricePerPortion gốc để client có thể truy cập
+                    doc.pricePerPortionArray = JSON.parse(JSON.stringify(doc.pricePerPortion));
+                    
+                    // Trích xuất giá và số lượng cho từng khẩu phần
                     doc.pricePerPortion.forEach(item => {
                         if (item.portion && item.price !== undefined) {
                             pricePerPortionObj[item.portion] = item.price;
+                            
+                            // Lưu số lượng nếu có
+                            if (item.quantity !== undefined) {
+                                portionQuantitiesObj[item.portion] = item.quantity;
+                            }
                         }
                     });
+                    
+                    // Gán lại các giá trị đã trích xuất
                     doc.pricePerPortion = pricePerPortionObj;
+                    doc.portionQuantities = portionQuantitiesObj;
+                    
+                    // Log để debug
+                    console.log(`Extracted prices for ${doc.ingredientName}:`, pricePerPortionObj);
+                    console.log(`Extracted quantities for ${doc.ingredientName}:`, portionQuantitiesObj);
                     
                     // Nếu pricePerPortion rỗng, tìm trong JSON
                     if (Object.keys(pricePerPortionObj).length === 0) {
@@ -217,15 +235,36 @@ class IngredientService {
             // Chuyển đổi dữ liệu để phù hợp với client
             const doc = ingredient.toObject();
             
-            // Chuyển đổi pricePerPortion từ mảng sang object
+            // Chuyển đổi pricePerPortion từ mảng sang object và trích xuất thông tin về số lượng
             if (doc.pricePerPortion && Array.isArray(doc.pricePerPortion)) {
                 const pricePerPortionObj = {};
+                const portionQuantitiesObj = {};
+                
+                // Lưu lại mảng pricePerPortion gốc để client có thể truy cập
+                doc.pricePerPortionArray = JSON.parse(JSON.stringify(doc.pricePerPortion));
+                
+                // Log để debug
+                console.log("Original pricePerPortion array:", doc.pricePerPortionArray);
+                
+                // Trích xuất giá và số lượng cho từng khẩu phần
                 doc.pricePerPortion.forEach(item => {
                     if (item.portion && item.price !== undefined) {
                         pricePerPortionObj[item.portion] = item.price;
+                        
+                        // Lưu số lượng nếu có
+                        if (item.quantity !== undefined) {
+                            portionQuantitiesObj[item.portion] = item.quantity;
+                        }
                     }
                 });
+                
+                // Gán lại các giá trị đã trích xuất
                 doc.pricePerPortion = pricePerPortionObj;
+                doc.portionQuantities = portionQuantitiesObj;
+                
+                // Log để debug
+                console.log("Extracted prices:", pricePerPortionObj);
+                console.log("Extracted quantities:", portionQuantitiesObj);
                 
                 // Nếu pricePerPortion rỗng, tìm trong JSON
                 if (Object.keys(pricePerPortionObj).length === 0) {

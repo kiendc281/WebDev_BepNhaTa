@@ -13,6 +13,14 @@ export interface Product {
   pricePerPortion: {
     [key: string]: number;
   };
+  portionQuantities?: {
+    [key: string]: number;
+  };
+  pricePerPortionArray?: Array<{
+    portion: string;
+    price: number;
+    quantity?: number;
+  }> | null;
   description: string;
   notes: string;
   components: string[];
