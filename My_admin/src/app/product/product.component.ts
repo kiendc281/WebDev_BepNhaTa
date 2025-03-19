@@ -465,7 +465,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   // Xử lý các hành động trên sản phẩm
   editProduct(product: any): void {
     console.log('Chỉnh sửa sản phẩm:', product);
-    // TODO: Implement edit product logic
+    // Chuyển hướng đến trang chi tiết sản phẩm với ID sản phẩm
     this.router.navigate(['/san-pham/chinh-sua', product._id]);
   }
 

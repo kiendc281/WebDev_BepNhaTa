@@ -78,12 +78,6 @@
           >
             Cập nhật tồn kho
           </div>
-          <div
-            class="dropdown-item"
-            (click)="selectAction('delete'); closeDropdown()"
-          >
-            Xóa sản phẩm
-          </div>
         </div>
       </div>
       <button
@@ -381,7 +375,7 @@
       (click)="currentPage = currentPage - 1"
       class="page-button"
     >
-      <i class="fas fa-chevron-left"></i>
+      <img src="../../assets/sidebar/arrow.svg" alt="" />
     </button>
 
     <div
@@ -398,7 +392,7 @@
       (click)="currentPage = currentPage + 1"
       class="page-button"
     >
-      <i class="fas fa-chevron-right"></i>
+      <img src="../../assets/sidebar/arrow.svg" alt="" />
     </button>
   </div>
 </div>

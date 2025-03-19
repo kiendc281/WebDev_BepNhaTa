@@ -2,83 +2,52 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProductService } from '../services/product.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css',
 })
 export class ProductDetailComponent implements OnInit {
+  // Khởi tạo product với giá trị mặc định rỗng khi tạo mới
   product: any = {
-    _id: 'GNL01',
-    ingredientName: 'Gói nguyên liệu Phở bò',
-    mainImage:
-      'https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741233430/phobohanoi_huh3fe.jpg',
-    subImage: ['https://example.com/images/pho-bo-sub.jpg'],
+    ingredientName: '',
+    mainImage: '',
+    subImage: [],
     level: 'Trung bình',
-    time: '30 phút',
-    combo: 'Phở bò + Rau sống',
-    discount: 10,
+    time: '',
+    discount: 0,
     pricePerPortion: {
-      '2': 120000,
-      '4': 230000,
+      '2': 0,
+      '4': 0,
     },
-    quantity2: 50,
-    status2: 'Còn hàng',
-    quantity4: 30,
-    status4: 'Còn hàng',
-    description:
-      'Gói nguyên liệu đầy đủ để nấu món Phở bò truyền thống, bao gồm xương bò, thịt bò, bánh phở và các loại gia vị đặc trưng.',
-    notes:
-      'Nên hầm xương lâu để nước dùng ngọt tự nhiên. Kiểm tra kỹ hạn sử dụng của từng thành phần trước khi chế biến.',
-    components: [
-      'Xương bò',
-      'Thịt bò (thăn hoặc nạm)',
-      'Bánh phở',
-      'Gừng',
-      'Hành tây',
-      'Hành lá',
-      'Rau mùi',
-      'Quế',
-      'Hồi',
-      'Nước mắm',
-      'Muối',
-      'Đường',
-      'Tiêu',
-    ],
-    storage:
-      'Bảo quản xương bò và thịt bò ở ngăn đá (-18°C), bánh phở và gia vị ở nơi khô ráo, thoáng mát.',
-    expirationDate: '2025-04-05',
-    tags: ['phở', 'món nước', 'truyền thống', 'bò'],
-    relatedProductIds: ['GNL02', 'GNL04'],
-    suggestedRecipeIds: ['GNL03'],
-    region: 'Bắc',
-    category: 'Nước',
+    description: '',
+    notes: '',
+    components: [],
+    storage: '',
+    expirationDate: '',
+    tags: [],
+    relatedProductIds: [],
+    suggestedRecipeIds: [],
+    region: '',
+    category: '',
     status: 'Còn hàng',
   };
 
   isEdit: boolean = false;
   pendingChanges: boolean = false;
+  isLoading: boolean = false;
+  errorMessage: string = '';
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-    // Đảm bảo chỉ có khẩu phần 2 và 4 người
-    const tempPricePerPortion = {
-      '2': this.product.pricePerPortion['2'] || 0,
-      '4': this.product.pricePerPortion['4'] || 0,
-    };
-    this.product.pricePerPortion = tempPricePerPortion;
-
-    // Khởi tạo số lượng và trạng thái mặc định nếu chưa có
-    if (!this.product.quantity2) this.product.quantity2 = 50;
-    if (!this.product.quantity4) this.product.quantity4 = 30;
-    if (!this.product.status2) this.product.status2 = 'Còn hàng';
-    if (!this.product.status4) this.product.status4 = 'Còn hàng';
-
-    // Bỏ trường combo nếu cần
-    if (this.product.combo === undefined) this.product.combo = '';
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private productService: ProductService
+  ) {}
 
   ngOnInit(): void {
     // Kiểm tra nếu đang sửa sản phẩm hiện có
@@ -91,66 +60,96 @@ export class ProductDetailComponent implements OnInit {
   }
 
   loadProductDetails(id: string): void {
-    // TODO: Gọi API để lấy thông tin sản phẩm
-    console.log('Loading product details for ID:', id);
+    this.isLoading = true;
+    this.productService.getProductById(id).subscribe({
+      next: (response) => {
+        // Lấy dữ liệu của sản phẩm từ API
+        const productData = response.data;
 
-    // Giả lập dữ liệu từ API
-    setTimeout(() => {
-      // Dữ liệu mẫu cho testing
-      if (id === 'GNL01') {
-        // Đã có dữ liệu mẫu này được khởi tạo ở trên
-        return;
-      }
+        // Đảm bảo cấu trúc dữ liệu khẩu phần đúng
+        if (!productData.pricePerPortion) {
+          productData.pricePerPortion = {
+            '2': 0,
+            '4': 0,
+          };
+        } else {
+          const tempPricePerPortion = {
+            '2': productData.pricePerPortion['2'] || 0,
+            '4': productData.pricePerPortion['4'] || 0,
+          };
+          productData.pricePerPortion = tempPricePerPortion;
+        }
 
-      // Các trường hợp ID khác
-      this.product = {
-        _id: id,
-        ingredientName: 'Gà nướng lá chanh',
-        mainImage: 'assets/images/product1.jpg',
-        subImage: [
-          'assets/images/product1_1.jpg',
-          'assets/images/product1_2.jpg',
-        ],
-        level: 'Trung bình',
-        time: '45 phút',
-        combo: 'Combo lễ hội',
-        discount: 10,
-        pricePerPortion: {
-          '2': 150000,
-          '4': 280000,
-        },
-        quantity2: 40,
-        status2: 'Còn hàng',
-        quantity4: 25,
-        status4: 'Hết hàng',
-        description:
-          'Gà nướng lá chanh là món ăn truyền thống với hương vị đặc trưng từ lá chanh và các loại gia vị.',
-        notes: 'Nên ăn khi còn nóng để cảm nhận đầy đủ hương vị.',
-        components: [
-          'Thịt gà',
-          'Lá chanh',
-          'Sả',
-          'Ớt',
-          'Nghệ',
-          'Nước mắm',
-          'Đường',
-        ],
-        storage: 'Bảo quản trong tủ lạnh 2-5 độ C không quá 3 ngày',
-        expirationDate: '2023-12-30',
-        tags: ['Món nướng', 'Đặc sản'],
-        relatedProductIds: ['SP002', 'SP003'],
-        suggestedRecipeIds: ['R001', 'R002'],
-        region: 'Trung',
-        category: 'Món mặn',
-        status: 'Còn hàng',
-      };
+        // Lấy số lượng từ portionQuantities
+        if (productData.portionQuantities) {
+          productData['quantity2'] = productData.portionQuantities['2'] || 0;
+          productData['quantity4'] = productData.portionQuantities['4'] || 0;
+        } else {
+          productData['quantity2'] = 0;
+          productData['quantity4'] = 0;
+        }
 
-      // Đảm bảo các thuộc tính quantity và status cho từng khẩu phần được thiết lập
-      if (!this.product.quantity2) this.product.quantity2 = 0;
-      if (!this.product.quantity4) this.product.quantity4 = 0;
-      if (!this.product.status2) this.product.status2 = 'Còn hàng';
-      if (!this.product.status4) this.product.status4 = 'Còn hàng';
-    }, 500);
+        // Thiết lập trạng thái mặc định cho từng khẩu phần
+        // Và cập nhật trạng thái dựa trên số lượng
+        if (productData['quantity2'] === 0) {
+          productData['status2'] = 'Hết hàng';
+        } else if (!productData['status2']) {
+          productData['status2'] = 'Còn hàng';
+        }
+
+        if (productData['quantity4'] === 0) {
+          productData['status4'] = 'Hết hàng';
+        } else if (!productData['status4']) {
+          productData['status4'] = 'Còn hàng';
+        }
+
+        // Định dạng ngày hạn sử dụng nếu có
+        if (productData.expirationDate) {
+          // Đảm bảo expirationDate ở định dạng YYYY-MM-DD cho thẻ input type="date"
+          const date = new Date(productData.expirationDate);
+          if (!isNaN(date.getTime())) {
+            productData.expirationDate = date.toISOString().split('T')[0];
+          }
+        }
+
+        // Xử lý sản phẩm liên quan - đảm bảo là mảng các chuỗi ID
+        if (productData.relatedProductIds) {
+          if (Array.isArray(productData.relatedProductIds)) {
+            // Nếu là mảng, chuyển đổi tất cả thành chuỗi ID
+            productData.relatedProductIds = productData.relatedProductIds.map(
+              (item: any) => {
+                if (typeof item === 'object' && item !== null) {
+                  // Nếu là object, lấy _id hoặc chuyển thành chuỗi
+                  return item._id || JSON.stringify(item);
+                }
+                return String(item); // Đảm bảo là chuỗi
+              }
+            );
+          } else if (typeof productData.relatedProductIds === 'object') {
+            // Nếu là một object, khởi tạo mới thành mảng rỗng
+            productData.relatedProductIds = [];
+          }
+        } else {
+          // Nếu không có, khởi tạo mới
+          productData.relatedProductIds = [];
+        }
+
+        // Đảm bảo các mảng khác có giá trị mặc định
+        if (!productData.components) productData.components = [];
+        if (!productData.tags) productData.tags = [];
+        if (!productData.suggestedRecipeIds)
+          productData.suggestedRecipeIds = [];
+
+        this.product = productData;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Lỗi khi tải thông tin sản phẩm:', error);
+        this.errorMessage =
+          'Không thể tải thông tin sản phẩm. Vui lòng thử lại sau.';
+        this.isLoading = false;
+      },
+    });
   }
 
   saveProduct(): void {
@@ -174,26 +173,71 @@ export class ProductDetailComponent implements OnInit {
     return true;
   }
 
-  createProduct(): void {
-    // TODO: Gọi API để tạo sản phẩm mới
-    console.log('Creating new product:', this.product);
+  // Helper để xử lý dữ liệu sản phẩm trước khi gửi lên server
+  prepareProductData(): any {
+    // Tạo bản sao của sản phẩm để xóa các trường không cần thiết
+    const productToSend = { ...this.product };
 
-    // Giả lập gọi API thành công
-    setTimeout(() => {
-      alert('Tạo sản phẩm thành công!');
-      this.router.navigate(['/san-pham']);
-    }, 1000);
+    // Cập nhật portionQuantities từ quantity2 và quantity4
+    if (!productToSend.portionQuantities) {
+      productToSend.portionQuantities = {};
+    }
+    productToSend.portionQuantities['2'] = productToSend['quantity2'] || 0;
+    productToSend.portionQuantities['4'] = productToSend['quantity4'] || 0;
+
+    // Đảm bảo expirationDate được xử lý đúng định dạng
+    if (
+      productToSend.expirationDate &&
+      typeof productToSend.expirationDate === 'string'
+    ) {
+      productToSend.expirationDate = new Date(productToSend.expirationDate);
+    }
+
+    // Xóa các trường không cần thiết
+    delete productToSend['quantity2'];
+    delete productToSend['quantity4'];
+    delete productToSend['status2'];
+    delete productToSend['status4'];
+
+    return productToSend;
+  }
+
+  createProduct(): void {
+    this.isLoading = true;
+    const productToSend = this.prepareProductData();
+
+    this.productService.createProduct(productToSend).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        alert('Tạo sản phẩm thành công!');
+        this.router.navigate(['/san-pham']);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Lỗi khi tạo sản phẩm:', error);
+        alert('Không thể tạo sản phẩm. Vui lòng thử lại sau.');
+      },
+    });
   }
 
   updateProduct(): void {
-    // TODO: Gọi API để cập nhật sản phẩm
-    console.log('Updating product:', this.product);
+    this.isLoading = true;
+    const productToSend = this.prepareProductData();
 
-    // Giả lập gọi API thành công
-    setTimeout(() => {
-      alert('Cập nhật sản phẩm thành công!');
-      this.pendingChanges = false;
-    }, 1000);
+    this.productService
+      .updateProduct(productToSend._id, productToSend)
+      .subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          alert('Cập nhật sản phẩm thành công!');
+          this.pendingChanges = false;
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Lỗi khi cập nhật sản phẩm:', error);
+          alert('Không thể cập nhật sản phẩm. Vui lòng thử lại sau.');
+        },
+      });
   }
 
   cancel(): void {
@@ -312,5 +356,88 @@ export class ProductDetailComponent implements OnInit {
     if (selectElement && selectElement.value) {
       this.applyFormat('formatBlock', selectElement.value);
     }
+  }
+
+  // Xóa sản phẩm liên quan
+  removeRelatedProduct(index: number): void {
+    if (this.product.relatedProductIds) {
+      this.product.relatedProductIds.splice(index, 1);
+      this.pendingChanges = true;
+    }
+  }
+
+  // Xóa công thức gợi ý
+  removeSuggestedRecipe(index: number): void {
+    this.product.suggestedRecipeIds.splice(index, 1);
+    this.pendingChanges = true;
+  }
+
+  // Mở hộp thoại chọn sản phẩm liên quan
+  openRelatedProductsDialog(): void {
+    // Đảm bảo relatedProductIds là mảng chuỗi
+    if (!Array.isArray(this.product.relatedProductIds)) {
+      this.product.relatedProductIds = [];
+    }
+
+    // Chuyển đổi các phần tử thành chuỗi nếu cần
+    this.product.relatedProductIds = this.product.relatedProductIds.map(
+      (item: any) => {
+        if (typeof item === 'object' && item !== null) {
+          return item._id || JSON.stringify(item);
+        }
+        return String(item);
+      }
+    );
+
+    // Tạm thời thêm ID mẫu cho testing
+    const randomId = 'GNL' + Math.floor(Math.random() * 10);
+    this.product.relatedProductIds.push(randomId);
+
+    this.pendingChanges = true;
+
+    // TODO: Triển khai hộp thoại chọn sản phẩm thực tế
+    alert('Chức năng chọn sản phẩm liên quan đang được phát triển!');
+  }
+
+  // Mở hộp thoại chọn công thức gợi ý
+  openSuggestedRecipesDialog(): void {
+    // Đảm bảo suggestedRecipeIds là mảng
+    if (!Array.isArray(this.product.suggestedRecipeIds)) {
+      this.product.suggestedRecipeIds = [];
+    }
+
+    // Tạm thời thêm ID mẫu cho testing
+    const randomId = 'recipe_' + Math.floor(Math.random() * 100);
+    this.product.suggestedRecipeIds.push(randomId);
+    this.pendingChanges = true;
+
+    // TODO: Triển khai hộp thoại chọn công thức thực tế
+    alert('Chức năng chọn công thức gợi ý đang được phát triển!');
+  }
+
+  // Phương thức cập nhật trạng thái dựa trên số lượng
+  updateStatusBasedOnQuantity(portion: string): void {
+    if (portion === '2') {
+      if (this.product['quantity2'] === 0) {
+        this.product['status2'] = 'Hết hàng';
+      } else if (
+        this.product['status2'] === 'Hết hàng' &&
+        this.product['quantity2'] > 0
+      ) {
+        // Nếu số lượng > 0 và đang là 'Hết hàng', chuyển lại thành 'Còn hàng'
+        this.product['status2'] = 'Còn hàng';
+      }
+    } else if (portion === '4') {
+      if (this.product['quantity4'] === 0) {
+        this.product['status4'] = 'Hết hàng';
+      } else if (
+        this.product['status4'] === 'Hết hàng' &&
+        this.product['quantity4'] > 0
+      ) {
+        // Nếu số lượng > 0 và đang là 'Hết hàng', chuyển lại thành 'Còn hàng'
+        this.product['status4'] = 'Còn hàng';
+      }
+    }
+    this.pendingChanges = true;
   }
 }
