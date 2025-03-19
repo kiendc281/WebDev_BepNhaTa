@@ -43,6 +43,20 @@ export class BlogService {
     return randomId;
   }
 
+  // Ngược dịch từ MongoDB ID sang ID ngắn
+  private reverseMapMongoId(mongoId: string): string {
+    // Duyệt qua idMap để tìm key cho mongoId
+    for (const [shortId, mappedMongoId] of this.idMap.entries()) {
+      if (mappedMongoId === mongoId) {
+        console.log(`Đã chuyển đổi MongoDB ID ${mongoId} thành ID ngắn ${shortId}`);
+        return shortId;
+      }
+    }
+    
+    // Nếu không tìm thấy, trả về ID gốc
+    return mongoId;
+  }
+
   private mapResponseToBlogPosts(items: any[]): BlogPost[] {
     console.log('Mapping items:', items);
     
@@ -151,7 +165,15 @@ export class BlogService {
   }
 
   getBlogById(id: string): Observable<BlogPost | undefined> {
-    const url = `${this.apiUrl}/${id}`;
+    // Kiểm tra xem id có phải là MongoDB ID không
+    const isMongoId = /^[0-9a-fA-F]{24}$/.test(id);
+    
+    // Nếu là MongoDB ID, tìm ID ngắn tương ứng
+    const apiId = isMongoId ? this.reverseMapMongoId(id) : id;
+    
+    console.log(`Đang gọi API lấy chi tiết blog với ID: ${apiId} (ID gốc: ${id})`);
+    
+    const url = `${this.apiUrl}/${apiId}`;
     const headers = { 
       'Content-Type': 'application/json',
       'Accept': 'application/json'
@@ -165,9 +187,9 @@ export class BlogService {
         return this.mapResponseToBlogPosts([response])[0];
       }),
       catchError(error => {
-        console.error(`Error fetching blog with ID ${id}:`, error);
+        console.error(`Error fetching blog with ID ${apiId}:`, error);
         return this.getBlogs().pipe(
-          map(blogs => blogs.find(blog => blog._id === id))
+          map(blogs => blogs.find(blog => blog._id === id || blog.originalId === id))
         );
       })
     );

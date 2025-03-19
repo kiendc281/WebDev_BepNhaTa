@@ -50,7 +50,29 @@ export class ChiTietBlogComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    this.blogService.getBlogById(id).subscribe({
+    // Kiểm tra và chuyển đổi giữa ID MongoDB và ID ngắn
+    let apiId = id;
+    
+    // Kiểm tra xem id có phải là MongoDB ID
+    if (/^[0-9a-fA-F]{24}$/.test(id)) {
+      // Đây có thể là MongoDB ID, cố gắng ánh xạ về ID ngắn
+      const mongoIdMap: {[key: string]: string} = {
+        '507f1f77bcf86cd799439011': 'BL01',
+        '507f1f77bcf86cd799439012': 'BL02',
+        '507f1f77bcf86cd799439013': 'BL03',
+        '507f1f77bcf86cd799439014': 'BL04',
+        '507f1f77bcf86cd799439015': 'BL05'
+      };
+      
+      if (mongoIdMap[id]) {
+        apiId = mongoIdMap[id];
+        console.log(`Đã chuyển đổi MongoDB ID ${id} thành ID ngắn ${apiId} cho API call`);
+      }
+    }
+    
+    console.log(`Lấy thông tin bài viết với ID: ${apiId}`);
+
+    this.blogService.getBlogById(apiId).subscribe({
       next: (post) => {
         console.log('Blog Post received from API:', post);
         if (post) {
@@ -71,7 +93,7 @@ export class ChiTietBlogComponent implements OnInit {
           }
           
           // Load related blog posts
-          this.loadRelatedPosts(id);
+          this.loadRelatedPosts(this.blogPost._id);
         } else {
           this.error = 'Không tìm thấy bài viết';
           this.loading = false;

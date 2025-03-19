@@ -297,6 +297,26 @@ export class FavoritesService {
     console.log(`Đang lấy danh sách yêu thích loại ${type} với chi tiết:`, url);
     
     return this.http.get<any[]>(url).pipe(
+      map(response => {
+        // Trong trường hợp blog, kiểm tra xem targetId có phải là MongoDB ID không
+        if (type === 'blog') {
+          response.forEach(item => {
+            // Chuyển ObjectId từ MongoDB (mẫu 24 ký tự hex) sang ID ngắn nếu có thể
+            if (/^[0-9a-fA-F]{24}$/.test(item.targetId)) {
+              // Kiểm tra ánh xạ ngược trong idMap của BlogService
+              const shortId = this.getShortIdForBlog(item.targetId);
+              if (shortId !== item.targetId) {
+                console.log(`Chuyển đổi targetId từ ${item.targetId} sang ${shortId}`);
+                // Lưu lại ID MongoDB gốc nếu cần để tham chiếu
+                item.originalMongoId = item.targetId;
+                // Cập nhật targetId thành ID ngắn
+                item.targetId = shortId;
+              }
+            }
+          });
+        }
+        return response;
+      }),
       tap(response => {
         console.log(`Kết quả API lấy danh sách yêu thích ${type} với chi tiết:`, response);
         console.log(`Số lượng items: ${response.length}`);
@@ -307,6 +327,20 @@ export class FavoritesService {
         return of([]);
       })
     );
+  }
+
+  // Helper để chuyển đổi MongoDB ID sang ID ngắn cho blog
+  private getShortIdForBlog(mongoId: string): string {
+    // Ánh xạ ngược từ MongoDB ID sang ID ngắn
+    const idMap = new Map<string, string>([
+      ['507f1f77bcf86cd799439011', 'BL01'],
+      ['507f1f77bcf86cd799439012', 'BL02'],
+      ['507f1f77bcf86cd799439013', 'BL03'],
+      ['507f1f77bcf86cd799439014', 'BL04'],
+      ['507f1f77bcf86cd799439015', 'BL05'],
+    ]);
+    
+    return idMap.get(mongoId) || mongoId;
   }
 
   // Thêm/xóa yêu thích dựa vào trạng thái hiện tại

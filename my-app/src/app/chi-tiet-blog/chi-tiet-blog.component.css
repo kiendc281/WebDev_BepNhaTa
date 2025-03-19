@@ -577,3 +577,35 @@ a {
   transform: scale(1.2);
   transition: transform 0.2s ease;
 }
+
+/* Save blog actions - Nút lưu bài viết */
+.save-blog-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.save-blog-actions .save-button,
+.save-blog-actions .like-button {
+  background-color: #f5f5f5;
+  border: none;
+  color: var(--color-den);
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.save-blog-actions .save-button:hover,
+.save-blog-actions .like-button:hover {
+  background-color: var(--color-camdam);
+  color: white;
+}
+
+.save-blog-actions .save-button.saved {
+  background-color: var(--color-camdam);
+  color: white;
+}

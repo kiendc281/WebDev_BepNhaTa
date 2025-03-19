@@ -111,6 +111,7 @@
   align-items: center;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border: none;
   opacity: 0;
   transform: translateY(-10px);
   transition: all 0.3s ease;
@@ -122,17 +123,17 @@
 }
 
 .save-button:hover {
-  background-color: var(--color-camnhat);
+  background-color: white;
+  transform: scale(1.1);
 }
 
-.save-button.saved {
-  opacity: 1;
-  background-color: var(--color-camdam);
-  transform: translateY(0);
+.save-button i {
+  font-size: 18px;
+  color: #777;
 }
 
-.save-button.saved img {
-  filter: brightness(0) invert(1);
+.save-button.active i {
+  color: #dc3545;
 }
 
 /* Indicator style for saved recipes */

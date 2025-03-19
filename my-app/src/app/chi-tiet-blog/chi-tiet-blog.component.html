@@ -72,6 +72,20 @@
             <span class="likes">{{ blogPost.likes }} <i class="bi bi-heart-fill text-danger"></i></span>
           </div>
 
+          <!-- Nút lưu bài viết -->
+          <div class="save-blog-actions">
+            <button 
+              class="btn save-button" 
+              [class.saved]="blogPost.saved"
+              (click)="savePost()">
+              <i class="bi" [ngClass]="blogPost.saved ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
+              {{ blogPost.saved ? 'Đã lưu' : 'Lưu bài viết' }}
+            </button>
+            <button class="btn like-button" (click)="likePost()">
+              <i class="bi bi-heart"></i> Thích
+            </button>
+          </div>
+
           <!-- Featured Image -->
           <div class="featured-image">
             <img [src]="blogPost.thumbnail" [alt]="blogPost.title" class="img-fluid">
