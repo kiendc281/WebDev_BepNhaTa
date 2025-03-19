@@ -30,6 +30,7 @@ h1 {
   color: var(--color-xamdam);
   border-color: var(--color-xamdam);
 }
+
 .btn-outline-primary:hover {
   background-color: var(--color-xamdam);
   color: white;
@@ -39,6 +40,7 @@ h1 {
   color: var(--color-camdam);
   border-color: var(--color-camdam);
 }
+
 .btn-outline-danger:hover {
   background-color: var(--color-camdam);
   color: white;
@@ -73,6 +75,8 @@ h1 {
   border: 1px solid #dee2e6;
   border-radius: 0.25rem;
   cursor: pointer;
+  transition: none;
+  outline: none;
 }
 
 .page-item.active .page-link {
@@ -94,4 +98,104 @@ h1 {
   background-color: var(--color-camnhat);
   color: white;
   border-color: var(--color-camvua);
+}
+
+.page-link:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.page-link:active {
+  background-color: #fff;
+  color: black;
+  border-color: #dee2e6;
+  transform: none;
+}
+
+/* Sortable table styles */
+.sortable {
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
+.sortable:hover {
+  background-color: #f0f0f0;
+}
+
+.sortable i {
+  font-size: 0.8rem;
+  color: #fff;
+  margin-left: 5px;
+}
+
+.sortable:hover i {
+  color: #fff;
+}
+
+/* Căn chỉnh text trong header */
+.sortable div {
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Cấu hình chiều rộng cột và tránh text bị xuống dòng */
+th {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+th.sortable {
+  padding-right: 16px; /* Để đủ chỗ cho icon sắp xếp */
+}
+
+/* Chiều rộng cụ thể cho từng cột */
+th:nth-child(1) {
+  /* STT */
+  width: 30px;
+  min-width: 30px;
+}
+
+th:nth-child(2) {
+  /* Tên đăng nhập */
+  width: 200px;
+  min-width: 200px;
+}
+
+th:nth-child(3) {
+  /* Tên khách hàng */
+  width: 140px;
+  min-width: 140px;
+}
+
+th:nth-child(4) {
+  /* Số điện thoại */
+  width: 120px;
+  min-width: 120px;
+}
+
+th:nth-child(5) {
+  /* Email */
+  width: 220px;
+  min-width: 220px;
+}
+
+th:nth-child(6) {
+  /* Ngày tạo - trước đây là thứ 7 */
+  width: 120px;
+  min-width: 120px;
+}
+
+th:nth-child(7) {
+  /* Hành động - trước đây là thứ 8 */
+  width: 80px;
+  min-width: 80px;
+}
+
+/* Đảm bảo các ô td cũng có chiều rộng tương ứng */
+td {
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

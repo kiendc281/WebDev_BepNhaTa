@@ -8,10 +8,18 @@
       "time": "30 phút",
       "combo": "Phở bò + Rau sống",
       "discount": 10,
-      "pricePerPortion": {
-        "2": 120000,
-        "4": 230000
-      },
+      "pricePerPortion": [
+        {
+          "price": 120000,
+          "portion": "2",
+          "quantity": 50
+        },
+        {
+          "price": 230000,
+          "portion": "4",
+          "quantity": 30
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để nấu món Phở bò truyền thống, bao gồm xương bò, thịt bò, bánh phở và các loại gia vị đặc trưng.",
       "notes": "Nên hầm xương lâu để nước dùng ngọt tự nhiên. Kiểm tra kỹ hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -48,10 +56,18 @@
       "time": "15 phút",
       "combo": "Bún thang + Mắm tôm",
       "discount": 15,
-      "pricePerPortion": {
-        "2": 100000,
-        "4": 190000
-      },
+      "pricePerPortion": [
+        {
+          "price": 100000,
+          "portion": "2",
+          "quantity": 45
+        },
+        {
+          "price": 190000,
+          "portion": "4",
+          "quantity": 25
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để nấu món Bún thang tinh tế của Hà Nội, bao gồm xương gà, thịt gà, bún tươi, trứng, chả lụa và các gia vị đặc trưng.",
       "notes": "Có thể thêm một chút mắm tôm để tăng hương vị đặc trưng. Kiểm tra kỹ hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -91,10 +107,18 @@
       "time": "20 phút",
       "combo": "Bún riêu cua + Rau sống",
       "discount": 12,
-      "pricePerPortion": {
-        "2": 90000,
-        "4": 170000
-      },
+      "pricePerPortion": [
+        {
+          "price": 90000,
+          "portion": "2",
+          "quantity": 60
+        },
+        {
+          "price": 170000,
+          "portion": "4",
+          "quantity": 40
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để nấu món Bún riêu cua dân dã, với cua đồng xay sẵn, bún tươi, cà chua, đậu hũ và gia vị đặc trưng.",
       "notes": "Có thể thêm mắm tôm để tăng hương vị tùy khẩu vị. Kiểm tra kỹ hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -127,10 +151,18 @@
       "time": "20 phút",
       "combo": "Nộm hoa chuối hải sản + Bánh phồng tôm",
       "discount": 8,
-      "pricePerPortion": {
-        "2": 85000,
-        "4": 160000
-      },
+      "pricePerPortion": [
+        {
+          "price": 85000,
+          "portion": "2",
+          "quantity": 45
+        },
+        {
+          "price": 160000,
+          "portion": "4",
+          "quantity": 35
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để làm món Nộm hoa chuối hải sản dân dã, với hoa chuối giòn, tôm sú và thịt ba chỉ ngọt, kèm gia vị chua ngọt hấp dẫn.",
       "notes": "Chọn hoa chuối hột để đảm bảo độ trắng, giòn và ít chát. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -169,10 +201,18 @@
       "time": "10 phút",
       "combo": "Bún gạo xào thập cẩm + Nước tương MAGGI",
       "discount": 10,
-      "pricePerPortion": {
-        "2": 95000,
-        "4": 180000
-      },
+      "pricePerPortion": [
+        {
+          "price": 95000,
+          "portion": "2",
+          "quantity": 55
+        },
+        {
+          "price": 180000,
+          "portion": "4",
+          "quantity": 40
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để chế biến món Bún gạo xào thập cẩm nhanh gọn, với bún gạo dai mềm, thịt bò, tôm sú và rau củ tươi ngon, thấm đẫm gia vị đậm đà.",
       "notes": "Có thể thay thịt bò bằng thịt heo hoặc gà tùy sở thích. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -211,10 +251,18 @@
       "time": "15 phút",
       "combo": "Miến xào cua + Nước mắm chua ngọt",
       "discount": 10,
-      "pricePerPortion": {
-        "2": 80000,
-        "4": 150000
-      },
+      "pricePerPortion": [
+        {
+          "price": 80000,
+          "portion": "2",
+          "quantity": 40
+        },
+        {
+          "price": 150000,
+          "portion": "4",
+          "quantity": 20
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để chế biến món Miến xào cua thơm ngon, với miến dong dai mềm, thịt cua ngọt tự nhiên, kết hợp nấm hương và rau củ.",
       "notes": "Nên chọn thịt cua tươi để món ăn thơm ngon hơn. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -253,10 +301,18 @@
       "time": "15 phút",
       "combo": "Canh chua cá lóc + Cơm trắng",
       "discount": 10,
-      "pricePerPortion": {
-        "2": 75000,
-        "4": 140000
-      },
+      "pricePerPortion": [
+        {
+          "price": 75000,
+          "portion": "2",
+          "quantity": 30
+        },
+        {
+          "price": 140000,
+          "portion": "4",
+          "quantity": 20
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để nấu món Canh chua cá lóc đặc trưng miền Nam, với cá lóc tươi, vị chua thanh từ me và dứa, cùng rau củ tươi mát.",
       "notes": "Chọn cá lóc tươi sống để thịt chắc và ngon hơn. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -295,10 +351,18 @@
       "time": "40 phút",
       "combo": "Bánh canh cá lóc + Nước mắm ớt",
       "discount": 12,
-      "pricePerPortion": {
-        "2": 70000,
-        "4": 130000
-      },
+      "pricePerPortion": [
+        {
+          "price": 70000,
+          "portion": "2",
+          "quantity": 30
+        },
+        {
+          "price": 130000,
+          "portion": "4",
+          "quantity": 20
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để nấu món Bánh canh cá lóc dân dã miền Nam, với nước dùng ngọt từ cá lóc tươi và sợi bánh canh dai mềm.",
       "notes": "Chọn cá lóc đồng để thịt ngọt và chắc hơn. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -333,10 +397,18 @@
       "level": "Dễ",
       "time": "10 phút",
       "discount": 8,
-      "pricePerPortion": {
-        "2": 65000,
-        "4": 120000
-      },
+      "pricePerPortion": [
+        {
+          "price": 65000,
+          "portion": "2",
+          "quantity": 50
+        },
+        {
+          "price": 120000,
+          "portion": "4",
+          "quantity": 30
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để chế biến món Thịt bò xào lá lốt nhanh gọn, với thịt bò mềm ngọt và hương thơm đặc trưng của lá lốt.",
       "notes": "Chọn thịt bò thăn để mềm và dễ xào. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -368,10 +440,18 @@
       "time": "35 phút",
       "combo": "Mì Quảng + Rau sống",
       "discount": 15,
-      "pricePerPortion": {
-        "2": 85000,
-        "4": 160000
-      },
+      "pricePerPortion": [
+        {
+          "price": 85000,
+          "portion": "2",
+          "quantity": 40
+        },
+        {
+          "price": 160000,
+          "portion": "4",
+          "quantity": 30
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để nấu món Mì Quảng đặc sản miền Trung, với sợi mì dai, nước dùng đậm đà từ thịt heo và tôm, kèm đậu phộng rang.",
       "notes": "Nước dùng không quá nhiều, chỉ chan xâm xấp mì là đúng kiểu Mì Quảng. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -409,10 +489,18 @@
       "time": "30 phút",
       "combo": "Bánh xèo + Rau sống",
       "discount": 10,
-      "pricePerPortion": {
-        "2": 70000,
-        "4": 130000
-      },
+      "pricePerPortion": [
+        {
+          "price": 70000,
+          "portion": "2",
+          "quantity": 35
+        },
+        {
+          "price": 130000,
+          "portion": "4",
+          "quantity": 25
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để làm món Bánh xèo truyền thống miền Nam, với vỏ bánh giòn rụm từ bột gạo và nước cốt dừa, nhân tôm thịt đậm đà.",
       "notes": "Dùng chảo chống dính để bánh dễ lật và giòn hơn. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -447,10 +535,18 @@
       "time": "30 phút",
       "combo": "Cá rô kho tộ + Cơm trắng",
       "discount": 8,
-      "pricePerPortion": {
-        "2": 80000,
-        "4": 150000
-      },
+      "pricePerPortion": [
+        {
+          "price": 80000,
+          "portion": "2",
+          "quantity": 40
+        },
+        {
+          "price": 150000,
+          "portion": "4",
+          "quantity": 20
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để nấu món Cá rô kho tộ dân dã miền Nam, với cá rô đồng béo ngọt, thịt ba chỉ mềm thơm và nước kho sệt đậm đà.",
       "notes": "Dùng nồi đất để kho sẽ thơm và giữ nhiệt tốt hơn. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -485,10 +581,18 @@
       "time": "40 phút",
       "combo": "Bún bò Huế + Rau sống",
       "discount": 10,
-      "pricePerPortion": {
-        "2": 110000,
-        "4": 200000
-      },
+      "pricePerPortion": [
+        {
+          "price": 110000,
+          "portion": "2",
+          "quantity": 50
+        },
+        {
+          "price": 200000,
+          "portion": "4",
+          "quantity": 30
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để nấu món Bún bò Huế đặc sản miền Trung, với nước dùng cay nồng từ mắm ruốc và sả, thịt bò mềm, chả Huế đặc trưng.",
       "notes": "Thêm ít ớt bột hoặc sa tế để tăng vị cay nếu thích. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -526,10 +630,18 @@
       "time": "15 phút",
       "combo": "Ốc hương xào củ hũ dừa + Bia",
       "discount": 8,
-      "pricePerPortion": {
-        "2": 90000,
-        "4": 170000
-      },
+      "pricePerPortion": [
+        {
+          "price": 90000,
+          "portion": "2",
+          "quantity": 40
+        },
+        {
+          "price": 170000,
+          "portion": "4",
+          "quantity": 20
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để chế biến món Ốc hương xào củ hũ dừa thơm ngon, lạ miệng, với ốc hương dai giòn và củ hũ dừa ngọt mát.",
       "notes": "Chọn ốc hương tươi để giữ độ ngon và thơm. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -564,10 +676,18 @@
       "time": "5 phút",
       "combo": "Canh tôm bồ ngót + Cơm trắng",
       "discount": 5,
-      "pricePerPortion": {
-        "2": 60000,
-        "4": 110000
-      },
+      "pricePerPortion": [
+        {
+          "price": 60000,
+          "portion": "2",
+          "quantity": 40
+        },
+        {
+          "price": 110000,
+          "portion": "4",
+          "quantity": 20
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để nấu món Canh tôm bơ ngọt thanh mát, với tôm sú tươi ngọt và bồ ngót bùi, lý tưởng cho bữa cơm gia đình.",
       "notes": "Chọn bồ ngót chín vừa để có độ bùi và không bị nát. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [
@@ -600,10 +720,18 @@
       "time": "25 phút",
       "combo": "Cơm hến trộn + Rau sống",
       "discount": 10,
-      "pricePerPortion": {
-        "2": 65000,
-        "4": 120000
-      },
+      "pricePerPortion": [
+        {
+          "price": 65000,
+          "portion": "2",
+          "quantity": 40
+        },
+        {
+          "price": 120000,
+          "portion": "4",
+          "quantity": 20
+        }
+      ],
       "description": "Gói nguyên liệu đầy đủ để chế biến món Cơm hến trộn đặc sản Huế, với hến ngọt, cơm nguội trộn topping giòn tan và nước mắm chua ngọt.",
       "notes": "Dùng cơm nguội để hạt cơm rời và ngon hơn. Kiểm tra hạn sử dụng của từng thành phần trước khi chế biến.",
       "components": [

@@ -5,13 +5,15 @@ import { OrderComponent } from './order/order.component';
 import { CustomerComponent } from './customer/customer.component';
 import { BlogComponent } from './blog/blog.component';
 import { RecipeComponent } from './recipe/recipe.component';
+import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/trang-chu', pathMatch: 'full' },
   { path: 'login', component: DangNhapComponent },
   { path: 'product', component: ProductComponent },
   { path: 'order', component: OrderComponent },
-  { path: 'customer', component: CustomerComponent },
+  { path: 'customers', component: CustomerComponent },
+  { path: 'customers/:id', component: CustomerDetailComponent },
   { path: 'blog', component: BlogComponent },
   { path: 'recipe', component: RecipeComponent },
   {

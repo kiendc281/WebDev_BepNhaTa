@@ -1,0 +1,142 @@
+.section-title {
+  color: #ea5c2b;
+  font-weight: 700;
+  margin-bottom: 20px;
+  flex: 1 0 0;
+}
+
+h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.button-xam {
+  padding: 10px 20px;
+}
+
+.customer-info {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Thông tin cá nhân */
+.personal-info {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.info-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.avatar-container {
+  margin-right: 30px;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ea5c2b;
+}
+
+.details {
+  flex-grow: 1;
+}
+
+.info-row {
+  margin-bottom: 12px;
+  display: flex;
+}
+
+.info-label {
+  min-width: 150px;
+  font-weight: 600;
+  color: #555;
+}
+
+.info-value {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Lịch sử mua hàng */
+.order-history {
+  padding: 20px;
+}
+
+.order-item {
+  background-color: #fff9f5;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.order-header {
+  background-color: #ffefea;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ffdfd2;
+}
+
+.order-date {
+  font-weight: 600;
+  color: #555;
+}
+
+.btn-view {
+  background-color: #ea5c2b;
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.btn-view:hover {
+  background-color: #d24e20;
+}
+
+.order-content {
+  padding: 15px;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.product-image {
+  width: 80px;
+  height: 60px;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.product-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.no-orders {
+  padding: 20px;
+  text-align: center;
+  color: #777;
+  font-style: italic;
+}

@@ -69,18 +69,30 @@
 
 .menu-item.with-submenu {
   position: relative;
+  padding: 14px 25px;
+  margin: 2px 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-.menu-item.with-submenu img:last-child {
+.menu-item.with-submenu img {
+  width: 28px;
+  height: 28px;
+  margin-right: 12px;
+  opacity: 0.9;
+}
+
+.menu-item.with-submenu .arrow-icon {
   position: absolute;
   right: 20px;
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   transition: transform 0.3s ease;
-  transform: rotate(0deg);
 }
 
-.menu-item.with-submenu.open img:last-child {
+.menu-item.with-submenu.open .arrow-icon {
   transform: rotate(90deg);
 }
 
