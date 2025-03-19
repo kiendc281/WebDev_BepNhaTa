@@ -1,0 +1,272 @@
+/* Chung */
+.container-fluid {
+  padding: 20px;
+}
+
+h1 {
+  color: var(--color-camdam) !important;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Header và nút trở lại */
+.header-section {
+  /* display: flex; */
+  /* flex-direction: column; */
+  align-items: center;
+  margin-bottom: 30px;
+  /* position: relative; */
+}
+
+i {
+  font-size: 16px;
+}
+
+/* Thông tin đơn hàng */
+.order-info-section {
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.order-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.order-info-item {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-right: 1px solid #dee2e6;
+}
+
+.order-info-item:last-child {
+  border-right: none;
+}
+
+.info-label {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.status-completed {
+  color: #28a745;
+}
+
+/* Bảng sản phẩm */
+.products-table-section {
+  margin-bottom: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background-color: var(--color-camvua);
+  color: white;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.col-stt {
+  width: 5%;
+}
+
+.col-product {
+  width: 45%;
+}
+
+.col-quantity {
+  width: 15%;
+}
+
+.col-price {
+  width: 15%;
+}
+
+.col-total {
+  width: 20%;
+}
+
+/* Tổng kết đơn hàng */
+.order-summary-section {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+}
+
+.summary-label {
+  font-weight: 500;
+  color: #6c757d;
+}
+
+.summary-value {
+  font-weight: 600;
+  color: #333;
+}
+
+.summary-item.total {
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-top: 5px;
+  border-top: 1px solid #dee2e6;
+  padding-top: 5px;
+}
+
+.total-value {
+  color: var(--color-camdam);
+  font-weight: 700;
+}
+
+/* Các nút hành động */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  justify-content: space-around;
+}
+
+.btn-action {
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-confirm {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.btn-awaiting {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.btn-delivering {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.btn-completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.btn-action:hover {
+  opacity: 0.8;
+}
+
+/* Thông tin khách hàng */
+.customer-info-section {
+  background-color: #ffebdf;
+  padding: 25px;
+  border-radius: 8px;
+  height: 100%;
+  max-height: 400px;
+}
+
+.customer-info-item {
+  margin-bottom: 15px;
+}
+
+.customer-label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.customer-value {
+  color: #333;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .order-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .order-info-item:nth-child(2) {
+    border-right: none;
+  }
+
+  .order-info-item:nth-child(1),
+  .order-info-item:nth-child(2) {
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .customer-info-section {
+    margin-top: 20px;
+  }
+
+  .action-buttons {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .btn-back {
+    position: static;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .btn-action {
+    width: 100%;
+  }
+}

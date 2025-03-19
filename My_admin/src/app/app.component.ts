@@ -7,7 +7,8 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
-
+import { OrderComponent } from './order/order.component';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -20,6 +21,8 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
     HeaderComponent,
     SidebarComponent,
     ProductDetailComponent,
+    OrderComponent,
+    OrderDetailComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

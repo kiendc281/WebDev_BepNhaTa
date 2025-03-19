@@ -1,0 +1,110 @@
+<div class="container-fluid">
+  <!-- Tiêu đề và nút trở lại -->
+  <div class="header-section">
+    <h1>Chi tiết đơn hàng</h1>
+    <button class="button-xam" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i> Trở lại
+    </button>
+  </div>
+
+  <div class="row">
+    <!-- Thông tin đơn hàng - Cột trái -->
+    <div class="col-lg-8">
+      <div class="order-info-section">
+        <div class="order-info-grid">
+          <div class="order-info-item">
+            <div class="info-label">Mã đơn hàng</div>
+            <div class="info-value">{{ orderId }}</div>
+          </div>
+          <div class="order-info-item">
+            <div class="info-label">Ngày đặt hàng</div>
+            <div class="info-value">{{ orderDate }}</div>
+          </div>
+          <div class="order-info-item">
+            <div class="info-label">Phương thức thanh toán</div>
+            <div class="info-value">{{ paymentMethod }}</div>
+          </div>
+          <div class="order-info-item">
+            <div class="info-label">Trạng thái</div>
+            <div class="info-value status-completed">{{ status }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bảng sản phẩm -->
+      <div class="products-table-section">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th class="col-stt">STT</th>
+              <th class="col-product">Tên sản phẩm</th>
+              <th class="col-quantity">Số lượng</th>
+              <th class="col-price">Giá thành</th>
+              <th class="col-total">Thành tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of orderItems">
+              <td>{{ item.id }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.price | number }}đ</td>
+              <td>{{ item.total | number }}đ</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tổng kết -->
+      <div class="order-summary-section">
+        <div class="summary-item">
+          <div class="summary-label">Tổng tiền hàng:</div>
+          <div class="summary-value">{{ subtotal | number }}đ</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Phí vận chuyển:</div>
+          <div class="summary-value">{{ shippingFee | number }}đ</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Giảm giá phí vận chuyển:</div>
+          <div class="summary-value">{{ shippingDiscount }}đ</div>
+        </div>
+        <div class="summary-item total">
+          <div class="summary-label">Thành tiền:</div>
+          <div class="summary-value total-value">{{ total | number }}đ</div>
+        </div>
+      </div>
+
+      <!-- Các nút hành động -->
+      <div class="action-buttons">
+        <button class="btn-action btn-confirm">Xác nhận</button>
+        <button class="btn-action btn-awaiting">Chờ lấy hàng</button>
+        <button class="btn-action btn-delivering">Đang giao hàng</button>
+        <button class="btn-action btn-completed">Hoàn thành</button>
+      </div>
+    </div>
+
+    <!-- Thông tin khách hàng - Cột phải -->
+    <div class="col-lg-4">
+      <div class="customer-info-section">
+        <h3>Thông tin khách hàng</h3>
+        <div class="customer-info-item">
+          <div class="customer-label">Tên khách hàng:</div>
+          <div class="customer-value">{{ customer.name }}</div>
+        </div>
+        <div class="customer-info-item">
+          <div class="customer-label">Số điện thoại:</div>
+          <div class="customer-value">{{ customer.phone }}</div>
+        </div>
+        <div class="customer-info-item">
+          <div class="customer-label">Địa chỉ:</div>
+          <div class="customer-value">{{ customer.address }}</div>
+        </div>
+        <div class="customer-info-item">
+          <div class="customer-label">Ghi chú</div>
+          <div class="customer-value">{{ customer.note }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

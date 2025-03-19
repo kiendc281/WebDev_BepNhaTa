@@ -11,7 +11,7 @@ export const routes: Routes = [
   { path: '', redirectTo: '/trang-chu', pathMatch: 'full' },
   { path: 'login', component: DangNhapComponent },
   { path: 'product', component: ProductComponent },
-  { path: 'order', component: OrderComponent },
+  { path: 'orders', component: OrderComponent },
   { path: 'customers', component: CustomerComponent },
   { path: 'customers/:id', component: CustomerDetailComponent },
   { path: 'blog', component: BlogComponent },
