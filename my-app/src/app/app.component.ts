@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   NavigationEnd,
   Router,
@@ -33,10 +34,12 @@ import { GioHangComponent } from './gio-hang/gio-hang.component';
 import { ChiTietBlogComponent } from './chi-tiet-blog/chi-tiet-blog.component';
 import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { BlogComponent } from './blog/blog.component';
+
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
+    CommonModule,
     RouterOutlet,
     RouterModule,
     RouterLinkActive,
