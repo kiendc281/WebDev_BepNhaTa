@@ -53,8 +53,8 @@
       </button>
       <button
         class="button-trang"
-        (click)="showContent('yeu-thich')"
         [ngClass]="{ active: selectedCategory === 'yeu-thich' }"
+        (click)="navigateToFavorites()"
       >
         <div class="button-content">
           <img
@@ -198,6 +198,8 @@
       id="yeu-thich"
     >
       <h1>MỤC YÊU THÍCH</h1>
+      <p>Chuyển hướng đến trang yêu thích...</p>
+      <!-- Mục yêu thích đã được chuyển sang component riêng -->
     </div>
 
     <!-- SỔ ĐỊA CHỈ -->

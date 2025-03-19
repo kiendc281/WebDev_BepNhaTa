@@ -101,15 +101,19 @@
   position: absolute;
   top: 10px;
   right: 10px;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 50%;
+  width: 35px;
+  height: 35px;
   display: flex;
   justify-content: center;
+  align-items: center;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   opacity: 0;
   transform: translateY(-10px);
   transition: all 0.3s ease;
-  z-index: 10;
 }
 
 .product-card:hover .save-button {
@@ -118,7 +122,51 @@
 }
 
 .save-button:hover {
+  background-color: var(--color-camnhat);
+}
+
+.save-button.saved {
+  opacity: 1;
   background-color: var(--color-camdam);
+  transform: translateY(0);
+}
+
+.save-button.saved img {
+  filter: brightness(0) invert(1);
+}
+
+/* Indicator style for saved recipes */
+.position-absolute {
+  position: absolute;
+  z-index: 5;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.end-0 {
+  right: 0;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.me-2 {
+  margin-right: 0.5rem;
+}
+
+.rounded-circle {
+  border-radius: 50%;
+}
+
+.p-1 {
+  padding: 0.25rem;
+}
+
+.bg-white {
+  background-color: #fff;
 }
 
 .product-content {
@@ -527,5 +575,51 @@
 
   .no-results {
     padding: 15px;
+  }
+}
+
+/* Styles for notifications */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 15px 20px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease-in-out;
+  max-width: 350px;
+  min-width: 300px;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+}
+
+.notification-icon {
+  margin-right: 10px;
+}
+
+.notification-success {
+  background-color: #d4edda;
+  color: #155724;
+  border-left: 5px solid #28a745;
+}
+
+.notification-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-left: 5px solid #dc3545;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
 }

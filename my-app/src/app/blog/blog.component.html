@@ -1,3 +1,25 @@
+<!-- Thông báo -->
+<div *ngIf="notification.show" 
+     class="notification" 
+     [ngClass]="{'notification-success': notification.type === 'success', 'notification-error': notification.type === 'error'}">
+  <div class="notification-content">
+    <div *ngIf="notification.type === 'success'" class="notification-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+    </div>
+    <div *ngIf="notification.type === 'error'" class="notification-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12" y2="16"></line>
+      </svg>
+    </div>
+    <span>{{ notification.message }}</span>
+  </div>
+</div>
+
 <!-- Blog Header -->
 <div class="blog-header">
   <h1 class="text-center">BLOG BẾP NHÀ TA</h1>
@@ -77,7 +99,7 @@
             <div class="post-excerpt">
               <p>{{ post.description }}</p>
             </div>
-            <div class="post-actions">
+            <div class="post-actions d-flex align-items-center justify-content-between">
               <button
                 [routerLink]="['/blog', post._id]"
                 class="button-cam btn-sm"
@@ -86,8 +108,12 @@
               </button>
               <button
                 (click)="toggleSavePost(post)"
-                class="button-camnhat btn-sm ms-2"
+                class="button-camnhat btn-sm"
+                [class.saved]="post.saved"
               >
+                <svg *ngIf="post.saved" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#dc3545" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                </svg>
                 {{ post.saved ? "Đã lưu bài viết" : "Lưu bài viết" }}
               </button>
             </div>

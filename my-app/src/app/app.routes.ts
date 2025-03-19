@@ -16,6 +16,7 @@ import { DangKyComponent } from './dang-ky/dang-ky.component';
 import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
 import { TaiKhoanComponent } from './tai-khoan/tai-khoan.component';
 import { GioHangComponent } from './gio-hang/gio-hang.component';
+import { FavoritesComponent } from './yeu-thich/favorites.component';
 
 export const routes: Routes = [
   { path: 'trang-chu', component: TrangChuComponent },
@@ -37,5 +38,6 @@ export const routes: Routes = [
   { path: 'tai-khoan', component: TaiKhoanComponent },
   { path: '', component: TrangChuComponent },
   { path: 'gio-hang', component: GioHangComponent },
+  { path: 'yeu-thich', component: FavoritesComponent },
   // { path: '', redirectTo: '/dang-nhap', pathMatch: 'full' },
 ];

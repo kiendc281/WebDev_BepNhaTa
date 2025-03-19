@@ -10,6 +10,7 @@ const ingredientRoutes = require('./routes/ingredient.routes');
 const accountRoutes = require('./routes/account.routes');
 const blogRoutes = require('./routes/blog.routes');
 const cartRoutes = require('./routes/cart.routes');
+const favoriteRoutes = require('./routes/favorite.routes');
 const passwordResetRoutes = require('./routes/passwordReset.routes');
 const contactRoutes = require('./routes/contactRoutes');
 const cors = require('cors');
@@ -36,6 +37,7 @@ app.use('/api', recipeRoutes);
 app.use('/api', menuRoutes);
 app.use('/api', ingredientRoutes);
 app.use('/api', cartRoutes);
+app.use('/api', favoriteRoutes);
 app.use('/api', passwordResetRoutes);
 app.use('/api', contactRoutes);
 

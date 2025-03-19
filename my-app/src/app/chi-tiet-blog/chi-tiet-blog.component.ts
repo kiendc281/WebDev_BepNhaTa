@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BlogService } from '../services/blog.service';
 import { BlogPost, BlogSection } from '../models/blog.interface';
 import { HttpClientModule } from '@angular/common/http';
+import { FavoritesService } from '../services/favorites.service';
 
 @Component({
   selector: 'app-chi-tiet-blog',
@@ -11,7 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [CommonModule, RouterLink, HttpClientModule],
   templateUrl: './chi-tiet-blog.component.html',
   styleUrls: ['./chi-tiet-blog.component.css'],
-  providers: [BlogService]
+  providers: [BlogService, FavoritesService]
 })
 export class ChiTietBlogComponent implements OnInit {
   blogPost: BlogPost | undefined;
@@ -19,10 +20,18 @@ export class ChiTietBlogComponent implements OnInit {
   loading: boolean = true;
   error: string | null = null;
 
+  // Khai báo notification
+  notification = {
+    show: false,
+    message: '',
+    type: 'success' as 'success' | 'error'
+  };
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private blogService: BlogService
+    private blogService: BlogService,
+    private favoritesService: FavoritesService
   ) { }
 
   ngOnInit(): void {
@@ -48,6 +57,9 @@ export class ChiTietBlogComponent implements OnInit {
           this.blogPost = post;
           console.log('Blog Post after assignment:', this.blogPost);
           
+          // Kiểm tra trạng thái đã lưu
+          this.checkPostSavedStatus(id);
+          
           // Check if we should use structured sections or direct content
           if (!this.blogPost.sections || this.blogPost.sections.length === 0) {
             // Ensure we have content if sections are not available
@@ -72,6 +84,41 @@ export class ChiTietBlogComponent implements OnInit {
         
         // Fallback sample data
         this.loadSampleData();
+      }
+    });
+  }
+
+  // Kiểm tra trạng thái đã lưu của bài viết
+  checkPostSavedStatus(postId: string): void {
+    const userStr = localStorage.getItem('user');
+    if (!userStr || !this.blogPost) {
+      return;
+    }
+
+    this.favoritesService.checkFavorite(postId, 'blog').subscribe({
+      next: (isSaved) => {
+        console.log('Bài viết đã được lưu:', isSaved);
+        if (this.blogPost) {
+          this.blogPost.saved = isSaved;
+          // Cập nhật trạng thái trong localStorage cho đồng bộ
+          try {
+            const savedPosts = JSON.parse(localStorage.getItem('savedBlogPosts') || '[]');
+            if (isSaved && !savedPosts.includes(postId)) {
+              savedPosts.push(postId);
+            } else if (!isSaved && savedPosts.includes(postId)) {
+              const index = savedPosts.indexOf(postId);
+              if (index > -1) {
+                savedPosts.splice(index, 1);
+              }
+            }
+            localStorage.setItem('savedBlogPosts', JSON.stringify(savedPosts));
+          } catch (error) {
+            console.error('Lỗi khi cập nhật localStorage:', error);
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Lỗi khi kiểm tra trạng thái lưu:', error);
       }
     });
   }
@@ -193,10 +240,60 @@ export class ChiTietBlogComponent implements OnInit {
   }
 
   savePost(): void {
-    if (this.blogPost) {
-      this.blogPost.saved = !this.blogPost.saved;
-      console.log(this.blogPost.saved ? 'Đã lưu bài viết' : 'Đã bỏ lưu bài viết');
+    if (!this.blogPost) {
+      return;
     }
+
+    // Kiểm tra đăng nhập trước khi thực hiện
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+      this.showNotification('Vui lòng đăng nhập để sử dụng tính năng này', 'error');
+      return;
+    }
+
+    // Lưu trữ bản sao an toàn của tiêu đề bài viết (tránh tham chiếu đến object)
+    const postTitle = this.blogPost.title || 'Bài viết';
+
+    // Thực hiện toggle trạng thái lưu
+    this.favoritesService.toggleFavorite(this.blogPost._id, 'blog', this.blogPost.saved)
+      .subscribe({
+        next: (response) => {
+          console.log('Kết quả lưu bài viết:', response);
+          if (response.success) {
+            this.blogPost!.saved = !this.blogPost!.saved;
+            
+            // Cập nhật trạng thái trong localStorage cho đồng bộ
+            try {
+              const savedPosts = JSON.parse(localStorage.getItem('savedBlogPosts') || '[]');
+              if (this.blogPost!.saved && !savedPosts.includes(this.blogPost!._id)) {
+                savedPosts.push(this.blogPost!._id);
+              } else if (!this.blogPost!.saved && savedPosts.includes(this.blogPost!._id)) {
+                const index = savedPosts.indexOf(this.blogPost!._id);
+                if (index > -1) {
+                  savedPosts.splice(index, 1);
+                }
+              }
+              localStorage.setItem('savedBlogPosts', JSON.stringify(savedPosts));
+            } catch (error) {
+              console.error('Lỗi khi cập nhật localStorage:', error);
+            }
+            
+            this.showNotification(
+              this.blogPost!.saved 
+                ? `Đã lưu bài viết "${postTitle}"` 
+                : `Đã bỏ lưu bài viết "${postTitle}"`, 
+              'success'
+            );
+          } else {
+            console.error('Không thể lưu bài viết:', response.message);
+            this.showNotification(response.message || 'Không thể lưu bài viết. Vui lòng thử lại sau.', 'error');
+          }
+        },
+        error: (error) => {
+          console.error('Lỗi khi lưu bài viết:', error);
+          this.showNotification('Đã xảy ra lỗi khi lưu bài viết. Vui lòng thử lại sau.', 'error');
+        }
+      });
   }
 
   // Helper method to sort sections by order
@@ -216,5 +313,22 @@ export class ChiTietBlogComponent implements OnInit {
       return text;
     }
     return [];
+  }
+
+  // Hiển thị thông báo
+  showNotification(message: string, type: 'success' | 'error'): void {
+    this.notification = {
+      show: true,
+      message,
+      type
+    };
+
+    // Tự động ẩn thông báo sau 3 giây
+    setTimeout(() => {
+      this.notification = {
+        ...this.notification,
+        show: false
+      };
+    }, 3000);
   }
 }

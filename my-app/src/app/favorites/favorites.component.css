@@ -1,0 +1,263 @@
+.favorites-container {
+  padding: 30px 0;
+}
+
+.section-title {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: var(--color-camdam);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Tab styles */
+.favorite-tabs {
+  display: flex;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  position: relative;
+}
+
+.tab-button.active {
+  color: var(--color-camdam);
+  font-weight: bold;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-camdam);
+}
+
+/* Loading state */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 122, 60, 0.2);
+  border-radius: 50%;
+  border-top-color: var(--color-camdam);
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Favorites list */
+.favorites-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.favorite-item {
+  display: flex;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  align-items: center;
+}
+
+.favorite-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 15px;
+  min-width: 150px;
+}
+
+.favorite-content {
+  display: flex;
+  flex: 1;
+}
+
+.favorite-image {
+  width: 30%;
+  min-width: 150px;
+}
+
+.favorite-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.favorite-info {
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.favorite-title {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.favorite-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.favorite-footer {
+  margin-top: auto;
+  font-size: 12px;
+  color: #888;
+}
+
+.button-view, .button-remove {
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  border: none;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.button-cam {
+  background-color: var(--color-camdam);
+  color: #fff;
+}
+
+.button-cam:hover {
+  background-color: #e55e20;
+}
+
+.button-remove {
+  background-color: #f5f5f5;
+  color: #ff4d4f;
+}
+
+.button-remove:hover {
+  background-color: #ffe5e5;
+}
+
+/* Empty state */
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+  text-align: center;
+}
+
+.empty-icon {
+  margin-bottom: 20px;
+}
+
+.empty-icon img {
+  width: 80px;
+  height: 80px;
+  opacity: 0.5;
+}
+
+.empty-container h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.empty-container p {
+  font-size: 14px;
+  color: #888;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.empty-actions {
+  margin-top: 10px;
+}
+
+.button-cam {
+  background-color: var(--color-camdam);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.button-cam:hover {
+  background-color: #e55e20;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .favorite-item {
+    flex-direction: column;
+  }
+  
+  .favorite-buttons {
+    width: 100%;
+    flex-direction: row;
+    padding: 15px;
+  }
+  
+  .favorite-content {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .favorite-image {
+    width: 100%;
+    height: 180px;
+  }
+}
+
+/* Style cho phần hiển thị lỗi */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #fff9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 2rem 0;
+}
+
+.error-icon {
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: #ff4d4d;
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}

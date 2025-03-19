@@ -431,4 +431,9 @@ export class TaiKhoanComponent implements OnInit {
   generateDaysInMonth(): void {
     // Implementation of generateDaysInMonth method
   }
+
+  // Thêm phương thức để điều hướng đến trang favorites
+  navigateToFavorites(): void {
+    this.router.navigate(['/yeu-thich']);
+  }
 }

@@ -1,0 +1,94 @@
+<div class="favorites-container">
+  <div class="container">
+    <h1 class="section-title">MỤC YÊU THÍCH</h1>
+    
+    <!-- Tab lựa chọn loại yêu thích -->
+    <div class="favorite-tabs">
+      <button 
+        class="tab-button" 
+        [class.active]="favoriteType === 'blog'"
+        (click)="changeFavoriteType('blog')"
+      >
+        Bài viết
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="favoriteType === 'recipe'"
+        (click)="changeFavoriteType('recipe')"
+      >
+        Công thức
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="favoriteType === 'product'"
+        (click)="changeFavoriteType('product')"
+      >
+        Sản phẩm
+      </button>
+    </div>
+    
+    <!-- Loading state -->
+    <div class="loading-container" *ngIf="loadingFavorites">
+      <div class="spinner"></div>
+      <p>Đang tải dữ liệu...</p>
+    </div>
+
+    <!-- Error message -->
+    <div class="error-container" *ngIf="errorMessage && !loadingFavorites">
+      <div class="error-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <p class="error-message">{{ errorMessage }}</p>
+      <button class="button-cam" (click)="loadFavorites()">Thử lại</button>
+    </div>
+    
+    <!-- Danh sách yêu thích -->
+    <div class="favorites-list" *ngIf="!loadingFavorites && !errorMessage && favorites.length > 0">
+      <div class="favorite-item" *ngFor="let favorite of favorites">
+        <div class="favorite-buttons">
+          <button class="button-view button-cam" (click)="viewFavoriteItem(favorite)">
+            Xem chi tiết
+          </button>
+          <button class="button-remove" (click)="removeFavorite(favorite)">
+            Xóa
+          </button>
+        </div>
+        <div class="favorite-content">
+          <div class="favorite-image">
+            <img [src]="favorite.details?.thumbnail || 'assets/images/default.jpg'" [alt]="favorite.details?.title">
+          </div>
+          <div class="favorite-info">
+            <h3 class="favorite-title">{{ favorite.details?.title || 'Không có tiêu đề' }}</h3>
+            <p class="favorite-description">{{ favorite.details?.description || 'Không có mô tả' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Empty state -->
+    <div class="empty-container" *ngIf="!loadingFavorites && !errorMessage && favorites.length === 0">
+      <div class="empty-icon">
+        <img src="assets/icons/heart-empty.svg" alt="Yêu thích trống">
+      </div>
+      <h3>Bạn chưa có mục yêu thích nào</h3>
+      <p *ngIf="favoriteType === 'blog'">
+        Khám phá các bài viết hay và nhấn vào biểu tượng trái tim để lưu vào mục yêu thích
+      </p>
+      <p *ngIf="favoriteType === 'recipe'">
+        Khám phá các công thức nấu ăn và nhấn vào biểu tượng trái tim để lưu vào mục yêu thích
+      </p>
+      <p *ngIf="favoriteType === 'product'">
+        Khám phá các sản phẩm và nhấn vào biểu tượng trái tim để lưu vào mục yêu thích
+      </p>
+      <div class="empty-actions">
+        <button class="button-cam" (click)="navigateTo(favoriteType)">
+          Khám phá ngay
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

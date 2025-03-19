@@ -6,6 +6,7 @@ import { Recipe } from '../models/recipe.interface';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FavoritesService } from '../services/favorites.service';
 
 @Component({
   selector: 'app-cong-thuc',
@@ -34,11 +35,18 @@ export class CongThucComponent implements OnInit {
     { value: 'name-desc', label: 'Tên: Z đến A' },
   ];
   selectedSort: string = 'default';
+  savedRecipes: Set<string> = new Set();
+  notification: { show: boolean; message: string; type: 'success' | 'error' } = {
+    show: false,
+    message: '',
+    type: 'success'
+  };
 
   constructor(
     private recipeService: RecipeService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private favoritesService: FavoritesService
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +73,44 @@ export class CongThucComponent implements OnInit {
       }
       this.loadRecipes();
     });
+    
+    // Kiểm tra danh sách công thức đã lưu
+    this.checkSavedRecipes();
+  }
+  
+  // Kiểm tra danh sách công thức đã lưu
+  checkSavedRecipes(): void {
+    this.favoritesService.getFavoritesWithDetails('recipe').subscribe(
+      (favorites) => {
+        // Xóa danh sách cũ
+        this.savedRecipes.clear();
+        
+        // Thêm các công thức đã lưu vào Set
+        favorites.forEach(item => {
+          if (item.targetId) {
+            this.savedRecipes.add(item.targetId);
+            console.log('Đã đánh dấu công thức đã lưu:', item.targetId);
+          }
+        });
+      },
+      (error) => {
+        console.error('Lỗi khi tải danh sách công thức yêu thích:', error);
+      }
+    );
+  }
+
+  // Hiển thị thông báo
+  showNotification(message: string, type: 'success' | 'error'): void {
+    this.notification = {
+      show: true,
+      message,
+      type
+    };
+    
+    // Tự động ẩn thông báo sau 3 giây
+    setTimeout(() => {
+      this.notification.show = false;
+    }, 3000);
   }
 
   loadRecipes(): void {
@@ -265,25 +311,89 @@ export class CongThucComponent implements OnInit {
   }
 
   private updatePagination(): void {
-    this.totalPages = Math.ceil(
-      this.filteredRecipes.length / this.itemsPerPage
-    );
+    this.totalPages = Math.ceil(this.filteredRecipes.length / this.itemsPerPage);
     this.updateDisplayedPages();
   }
 
   private updateDisplayedPages(): void {
-    const maxPages = 5;
-    let start = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
-    let end = start + maxPages - 1;
+    const maxVisible = 5;
+    let start = Math.max(1, this.currentPage - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
 
     if (end > this.totalPages) {
       end = this.totalPages;
-      start = Math.max(1, end - maxPages + 1);
+      start = Math.max(1, end - maxVisible + 1);
     }
 
     this.displayedPages = Array.from(
       { length: end - start + 1 },
       (_, i) => start + i
     );
+  }
+  
+  // Lưu công thức vào yêu thích
+  toggleSaveRecipe(event: Event, recipe: Recipe): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Kiểm tra đăng nhập trước khi thực hiện
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+      this.showNotification('Vui lòng đăng nhập để sử dụng tính năng này', 'error');
+      return;
+    }
+
+    // Log thông tin chi tiết để debug
+    console.log('Recipe info:', {
+      id: recipe._id,
+      name: recipe.recipeName,
+      idType: typeof recipe._id,
+      idLength: recipe._id ? recipe._id.length : 'undefined'
+    });
+    
+    // Đảm bảo công thức có ID trước khi thực hiện
+    if (!recipe._id) {
+      console.error('Công thức không có ID', recipe);
+      this.showNotification('Không thể lưu công thức này. Xin vui lòng thử lại sau.', 'error');
+      return;
+    }
+    
+    // Lấy ID của công thức
+    const recipeId = recipe._id;
+    
+    // Kiểm tra xem đã lưu chưa
+    const isSaved = this.isRecipeSaved(recipeId);
+    
+    console.log('Đang xử lý lưu công thức:', recipeId, 'trạng thái hiện tại:', isSaved);
+    
+    this.favoritesService.toggleFavorite(recipeId, 'recipe', isSaved)
+      .subscribe({
+        next: (response) => {
+          console.log('Kết quả lưu công thức:', response);
+          if (response.success) {
+            if (isSaved) {
+              this.savedRecipes.delete(recipeId);
+              console.log(`Đã xóa công thức ${recipeId} khỏi danh sách đã lưu`);
+              this.showNotification(`Đã xóa "${recipe.recipeName}" khỏi danh sách yêu thích`, 'success');
+            } else {
+              this.savedRecipes.add(recipeId);
+              console.log(`Đã thêm công thức ${recipeId} vào danh sách đã lưu`);
+              this.showNotification(`Đã thêm "${recipe.recipeName}" vào danh sách yêu thích`, 'success');
+            }
+          } else {
+            console.error('Không thể lưu công thức:', response.message);
+            this.showNotification(response.message || 'Không thể lưu công thức. Vui lòng thử lại sau.', 'error');
+          }
+        },
+        error: (error) => {
+          console.error('Lỗi khi lưu công thức:', error);
+          this.showNotification('Đã xảy ra lỗi khi lưu công thức. Vui lòng thử lại sau.', 'error');
+        }
+      });
+  }
+
+  // Kiểm tra công thức đã lưu hay chưa
+  isRecipeSaved(recipeId: string): boolean {
+    return this.savedRecipes.has(recipeId);
   }
 }

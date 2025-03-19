@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { BlogService } from '../services/blog.service';
 import { BlogPost } from '../models/blog.interface';
 import { HttpClientModule } from '@angular/common/http';
+import { FavoritesService } from '../services/favorites.service';
 
 @Component({
   selector: 'app-blog',
@@ -11,7 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [CommonModule, RouterLink, HttpClientModule],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.css',
-  providers: [BlogService]
+  providers: [BlogService, FavoritesService]
 })
 export class BlogComponent implements OnInit {
   blogPosts: BlogPost[] = [];
@@ -26,10 +27,18 @@ export class BlogComponent implements OnInit {
   totalPages: number = 0;
   displayedPages: number[] = [];
   
-  constructor(private blogService: BlogService) { }
+  // Property for notification
+  notification = {
+    show: false,
+    message: '',
+    type: 'success' as 'success' | 'error'
+  };
+  
+  constructor(private blogService: BlogService, private favoritesService: FavoritesService) { }
 
   ngOnInit(): void {
     this.loadBlogPosts();
+    this.checkSavedPosts();
   }
 
   loadBlogPosts(): void {
@@ -41,6 +50,7 @@ export class BlogComponent implements OnInit {
         this.loading = false;
         this.updatePagination();
         this.updatePaginatedBlogPosts();
+        this.checkSavedPosts();
       },
       error: (err) => {
         console.error('Lỗi khi tải dữ liệu blog:', err);
@@ -77,7 +87,7 @@ export class BlogComponent implements OnInit {
         publishDate: '2025-02-21T00:00:00.000Z',
         createdAt: '2025-02-21T00:00:00.000Z',
         updatedAt: '2025-02-21T00:00:00.000Z',
-        saved: true
+        saved: false
       },
       {
         _id: '2',
@@ -175,10 +185,58 @@ export class BlogComponent implements OnInit {
     this.filteredBlogPosts = [...this.blogPosts];
     this.updatePagination();
     this.updatePaginatedBlogPosts();
+    this.checkSavedPosts();
   }
 
   toggleSavePost(post: BlogPost): void {
-    post.saved = !post.saved;
+    // Kiểm tra đăng nhập trước khi thực hiện
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+      this.showNotification('Vui lòng đăng nhập để sử dụng tính năng này', 'error');
+      return;
+    }
+
+    // Lưu trữ bản sao an toàn của tiêu đề bài viết (tránh tham chiếu đến object)
+    const postTitle = post.title || 'Bài viết';
+
+    // Gọi FavoritesService để toggle trạng thái lưu
+    this.favoritesService.toggleFavorite(post._id, 'blog', post.saved)
+      .subscribe({
+        next: (response) => {
+          console.log('Kết quả lưu bài viết:', response);
+          if (response.success) {
+            post.saved = !post.saved;
+            
+            // Cập nhật trạng thái trong localStorage cho đồng bộ
+            try {
+              const savedPosts = JSON.parse(localStorage.getItem('savedBlogPosts') || '[]');
+              if (post.saved && !savedPosts.includes(post._id)) {
+                savedPosts.push(post._id);
+              } else if (!post.saved && savedPosts.includes(post._id)) {
+                const index = savedPosts.indexOf(post._id);
+                if (index > -1) {
+                  savedPosts.splice(index, 1);
+                }
+              }
+              localStorage.setItem('savedBlogPosts', JSON.stringify(savedPosts));
+            } catch (error) {
+              console.error('Lỗi khi cập nhật localStorage:', error);
+            }
+            
+            this.showNotification(
+              post.saved ? `Đã lưu bài viết "${postTitle}"` : `Đã bỏ lưu bài viết "${postTitle}"`, 
+              'success'
+            );
+          } else {
+            console.error('Không thể lưu bài viết:', response.message);
+            this.showNotification(response.message || 'Không thể lưu bài viết. Vui lòng thử lại sau.', 'error');
+          }
+        },
+        error: (error) => {
+          console.error('Lỗi khi lưu bài viết:', error);
+          this.showNotification('Đã xảy ra lỗi khi lưu bài viết. Vui lòng thử lại sau.', 'error');
+        }
+      });
   }
 
   likePost(post: BlogPost): void {
@@ -235,5 +293,52 @@ export class BlogComponent implements OnInit {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginatedBlogPosts = this.filteredBlogPosts.slice(startIndex, endIndex);
+  }
+
+  // Hiển thị thông báo
+  showNotification(message: string, type: 'success' | 'error'): void {
+    this.notification = {
+      show: true,
+      message,
+      type
+    };
+
+    // Tự động ẩn thông báo sau 3 giây
+    setTimeout(() => {
+      this.notification = {
+        ...this.notification,
+        show: false
+      };
+    }, 3000);
+  }
+
+  // Kiểm tra danh sách bài viết đã lưu
+  checkSavedPosts(): void {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+      return;
+    }
+
+    try {
+      // Lấy danh sách bài viết đã lưu từ localStorage
+      const savedPosts = JSON.parse(localStorage.getItem('savedBlogPosts') || '[]');
+      
+      // Cập nhật trạng thái saved cho tất cả các bài viết
+      this.blogPosts.forEach(post => {
+        post.saved = savedPosts.includes(post._id);
+      });
+      
+      // Cập nhật trạng thái cho các bài viết đã được lọc
+      this.filteredBlogPosts.forEach(post => {
+        post.saved = savedPosts.includes(post._id);
+      });
+      
+      // Cập nhật trạng thái cho các bài viết đang hiển thị
+      this.paginatedBlogPosts.forEach(post => {
+        post.saved = savedPosts.includes(post._id);
+      });
+    } catch (error) {
+      console.error('Lỗi khi kiểm tra bài viết đã lưu:', error);
+    }
   }
 }

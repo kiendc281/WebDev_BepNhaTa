@@ -175,7 +175,7 @@
 
     <div class="products-grid" *ngIf="!loading">
       <div class="product-card" *ngFor="let product of currentHotProducts">
-        <div class="like-button">
+        <div class="like-button" (click)="toggleSaveProduct($event, product._id)">
           <img
             src="../../assets/san-pham/favourite.svg"
             alt="Lưu vào yêu thích"

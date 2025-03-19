@@ -1,3 +1,24 @@
+<div *ngIf="notification.show" 
+     class="notification" 
+     [ngClass]="{'notification-success': notification.type === 'success', 'notification-error': notification.type === 'error'}">
+  <div class="notification-content">
+    <div *ngIf="notification.type === 'success'" class="notification-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+    </div>
+    <div *ngIf="notification.type === 'error'" class="notification-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12" y2="16"></line>
+      </svg>
+    </div>
+    <span>{{ notification.message }}</span>
+  </div>
+</div>
+
 <div class="blog-detail-container">
   <div class="breadcrumb-container">
     <div class="container">
@@ -103,33 +124,6 @@
             <!-- Thông báo nếu không có nội dung -->
             <div *ngIf="(!blogPost.sections || blogPost.sections.length === 0) && !blogPost.content" class="no-content">
               Bài viết này không có nội dung.
-            </div>
-          </div>
-
-          <!-- Social Share and Actions -->
-          <div class="blog-actions">
-            <div class="social-share">
-              <p>Chia sẻ bài viết:</p>
-              <div class="share-buttons">
-                <a href="javascript:void(0);" class="social-button facebook">
-                  <i class="bi bi-facebook"></i>
-                </a>
-                <a href="javascript:void(0);" class="social-button twitter">
-                  <i class="bi bi-twitter"></i>
-                </a>
-                <a href="javascript:void(0);" class="social-button pinterest">
-                  <i class="bi bi-pinterest"></i>
-                </a>
-              </div>
-            </div>
-            <div class="user-actions">
-              <button (click)="likePost()" class="action-button like-button">
-                <i class="bi bi-heart"></i> Thích bài viết
-              </button>
-              <button (click)="savePost()" class="action-button save-button">
-                <i class="bi" [ngClass]="blogPost.saved ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
-                {{ blogPost.saved ? 'Đã lưu bài viết' : 'Lưu bài viết' }}
-              </button>
             </div>
           </div>
         </article>
