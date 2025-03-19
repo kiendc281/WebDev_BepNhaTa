@@ -275,7 +275,7 @@
 
 .page-number:not([disabled]):hover {
   border-color: var(--color-camdam);
-  color: var(--color-camdam);
+  /* color: var(--color-camdam); */
 }
 
 .product-actions {

@@ -36,11 +36,12 @@ export class CongThucComponent implements OnInit {
   ];
   selectedSort: string = 'default';
   savedRecipes: Set<string> = new Set();
-  notification: { show: boolean; message: string; type: 'success' | 'error' } = {
-    show: false,
-    message: '',
-    type: 'success'
-  };
+  notification: { show: boolean; message: string; type: 'success' | 'error' } =
+    {
+      show: false,
+      message: '',
+      type: 'success',
+    };
 
   constructor(
     private recipeService: RecipeService,
@@ -73,20 +74,20 @@ export class CongThucComponent implements OnInit {
       }
       this.loadRecipes();
     });
-    
+
     // Kiểm tra danh sách công thức đã lưu
     this.checkSavedRecipes();
   }
-  
+
   // Kiểm tra danh sách công thức đã lưu
   checkSavedRecipes(): void {
     this.favoritesService.getFavoritesWithDetails('recipe').subscribe(
       (favorites) => {
         // Xóa danh sách cũ
         this.savedRecipes.clear();
-        
+
         // Thêm các công thức đã lưu vào Set
-        favorites.forEach(item => {
+        favorites.forEach((item) => {
           if (item.targetId) {
             this.savedRecipes.add(item.targetId);
             console.log('Đã đánh dấu công thức đã lưu:', item.targetId);
@@ -104,9 +105,9 @@ export class CongThucComponent implements OnInit {
     this.notification = {
       show: true,
       message,
-      type
+      type,
     };
-    
+
     // Tự động ẩn thông báo sau 3 giây
     setTimeout(() => {
       this.notification.show = false;
@@ -286,32 +287,45 @@ export class CongThucComponent implements OnInit {
     return stars;
   }
 
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updateDisplayedPages();
-      this.updatePaginatedRecipes();
-    }
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.updateDisplayedPages();
-      this.updatePaginatedRecipes();
-    }
-  }
-
+  // Phương thức để di chuyển đến trang cụ thể
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      this.updateDisplayedPages();
       this.updatePaginatedRecipes();
+      this.scrollToTop();
     }
   }
 
+  // Phương thức để quay lại trang trước
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedRecipes();
+      this.scrollToTop();
+    }
+  }
+
+  // Phương thức để tới trang tiếp theo
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePaginatedRecipes();
+      this.scrollToTop();
+    }
+  }
+
+  // Phương thức để cuộn lên đầu trang
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+
   private updatePagination(): void {
-    this.totalPages = Math.ceil(this.filteredRecipes.length / this.itemsPerPage);
+    this.totalPages = Math.ceil(
+      this.filteredRecipes.length / this.itemsPerPage
+    );
     this.updateDisplayedPages();
   }
 
@@ -330,7 +344,7 @@ export class CongThucComponent implements OnInit {
       (_, i) => start + i
     );
   }
-  
+
   // Lưu công thức vào yêu thích
   toggleSaveRecipe(event: Event, recipe: Recipe): void {
     event.preventDefault();
@@ -339,7 +353,10 @@ export class CongThucComponent implements OnInit {
     // Kiểm tra đăng nhập trước khi thực hiện
     const userStr = localStorage.getItem('user');
     if (!userStr) {
-      this.showNotification('Vui lòng đăng nhập để sử dụng tính năng này', 'error');
+      this.showNotification(
+        'Vui lòng đăng nhập để sử dụng tính năng này',
+        'error'
+      );
       return;
     }
 
@@ -348,25 +365,34 @@ export class CongThucComponent implements OnInit {
       id: recipe._id,
       name: recipe.recipeName,
       idType: typeof recipe._id,
-      idLength: recipe._id ? recipe._id.length : 'undefined'
+      idLength: recipe._id ? recipe._id.length : 'undefined',
     });
-    
+
     // Đảm bảo công thức có ID trước khi thực hiện
     if (!recipe._id) {
       console.error('Công thức không có ID', recipe);
-      this.showNotification('Không thể lưu công thức này. Xin vui lòng thử lại sau.', 'error');
+      this.showNotification(
+        'Không thể lưu công thức này. Xin vui lòng thử lại sau.',
+        'error'
+      );
       return;
     }
-    
+
     // Lấy ID của công thức
     const recipeId = recipe._id;
-    
+
     // Kiểm tra xem đã lưu chưa
     const isSaved = this.isRecipeSaved(recipeId);
-    
-    console.log('Đang xử lý lưu công thức:', recipeId, 'trạng thái hiện tại:', isSaved);
-    
-    this.favoritesService.toggleFavorite(recipeId, 'recipe', isSaved)
+
+    console.log(
+      'Đang xử lý lưu công thức:',
+      recipeId,
+      'trạng thái hiện tại:',
+      isSaved
+    );
+
+    this.favoritesService
+      .toggleFavorite(recipeId, 'recipe', isSaved)
       .subscribe({
         next: (response) => {
           console.log('Kết quả lưu công thức:', response);
@@ -374,21 +400,34 @@ export class CongThucComponent implements OnInit {
             if (isSaved) {
               this.savedRecipes.delete(recipeId);
               console.log(`Đã xóa công thức ${recipeId} khỏi danh sách đã lưu`);
-              this.showNotification(`Đã xóa "${recipe.recipeName}" khỏi danh sách yêu thích`, 'success');
+              this.showNotification(
+                `Đã xóa "${recipe.recipeName}" khỏi danh sách yêu thích`,
+                'success'
+              );
             } else {
               this.savedRecipes.add(recipeId);
               console.log(`Đã thêm công thức ${recipeId} vào danh sách đã lưu`);
-              this.showNotification(`Đã thêm "${recipe.recipeName}" vào danh sách yêu thích`, 'success');
+              this.showNotification(
+                `Đã thêm "${recipe.recipeName}" vào danh sách yêu thích`,
+                'success'
+              );
             }
           } else {
             console.error('Không thể lưu công thức:', response.message);
-            this.showNotification(response.message || 'Không thể lưu công thức. Vui lòng thử lại sau.', 'error');
+            this.showNotification(
+              response.message ||
+                'Không thể lưu công thức. Vui lòng thử lại sau.',
+              'error'
+            );
           }
         },
         error: (error) => {
           console.error('Lỗi khi lưu công thức:', error);
-          this.showNotification('Đã xảy ra lỗi khi lưu công thức. Vui lòng thử lại sau.', 'error');
-        }
+          this.showNotification(
+            'Đã xảy ra lỗi khi lưu công thức. Vui lòng thử lại sau.',
+            'error'
+          );
+        },
       });
   }
 
