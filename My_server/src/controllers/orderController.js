@@ -2,6 +2,112 @@ const Order = require('../models/order');
 const mongoose = require('mongoose');
 
 /**
+ * Tạo đơn hàng mới (chung cho cả khách và người dùng đã đăng nhập)
+ */
+exports.createOrder = async (req, res) => {
+    try {
+        console.log('Đang tạo đơn hàng với dữ liệu:', req.body);
+        
+        // Xác định loại đơn hàng dựa vào accountId
+        if (req.body.accountId === 'guest') {
+            console.log('Đơn hàng khách vãng lai, chuyển đến createGuestOrder');
+            return await exports.createGuestOrder(req, res);
+        } else {
+            console.log('Đơn hàng người dùng đã đăng nhập, tiếp tục xử lý');
+            // TODO: Xử lý đơn hàng cho người dùng đã đăng nhập
+            // Hiện tại chuyển đến createGuestOrder để xử lý
+            return await exports.createGuestOrder(req, res);
+        }
+    } catch (error) {
+        console.error('Lỗi khi tạo đơn hàng:', error);
+        return res.status(500).json({
+            status: 'error',
+            message: 'Lỗi khi tạo đơn hàng: ' + error.message
+        });
+    }
+};
+
+/**
+ * Tạo đơn hàng mới cho khách vãng lai
+ */
+exports.createGuestOrder = async (req, res) => {
+    try {
+        const {
+            accountId,
+            itemOrder,
+            prePrice,
+            discount,
+            shippingFee,
+            totalPrice,
+            paymentMethod,
+            status,
+            guestInfo
+        } = req.body;
+
+        console.log('Xử lý đơn hàng khách vãng lai với thông tin:', {
+            itemOrder, prePrice, totalPrice, paymentMethod, guestInfo
+        });
+
+        // Kiểm tra các trường bắt buộc cơ bản
+        if (!itemOrder || !prePrice || !totalPrice || !paymentMethod) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Vui lòng nhập đầy đủ thông tin đơn hàng cơ bản'
+            });
+        }
+
+        // Kiểm tra thông tin khách vãng lai cơ bản - Chỉ yêu cầu tên và số điện thoại
+        if (!guestInfo || !guestInfo.fullName || !guestInfo.phone) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Vui lòng cung cấp họ tên và số điện thoại'
+            });
+        }
+
+        // Xử lý địa chỉ nếu thiếu quận/huyện, phường/xã
+        const address = guestInfo.address || '';
+        // Loại bỏ các phần trống trong địa chỉ (các dấu phẩy liên tiếp)
+        const cleanedAddress = address.replace(/,\s*,+/g, ',').replace(/^,|,$/g, '');
+        
+        // Cập nhật lại địa chỉ đã làm sạch
+        const updatedGuestInfo = {
+            ...guestInfo,
+            address: cleanedAddress || 'Không có địa chỉ cụ thể'
+        };
+
+        // Tạo đơn hàng mới cho khách vãng lai
+        const newOrder = new Order({
+            accountId: accountId || 'guest', // Sử dụng guest làm accountId mặc định
+            itemOrder,
+            prePrice,
+            discount: discount || 0,
+            shippingFee: shippingFee || 0,
+            totalPrice,
+            paymentMethod,
+            status: status || 'Đang xử lý',
+            guestInfo: updatedGuestInfo
+        });
+
+        // Lưu vào database
+        const savedOrder = await newOrder.save();
+        
+        console.log('Đã tạo đơn hàng thành công:', savedOrder._id);
+        
+        return res.status(201).json({
+            status: 'success',
+            message: 'Tạo đơn hàng khách vãng lai thành công',
+            data: savedOrder
+        });
+    } catch (error) {
+        console.error('Lỗi khi tạo đơn hàng khách vãng lai:', error);
+        return res.status(500).json({
+            status: 'error',
+            message: 'Lỗi khi tạo đơn hàng khách vãng lai: ' + error.message
+        });
+    }
+};
+
+/**
  * Lấy tất cả đơn hàng
  */
 exports.getAllOrders = async (req, res) => {
@@ -95,71 +201,6 @@ exports.getOrdersByUser = async (req, res) => {
         return res.status(500).json({
             status: 'error',
             message: 'Lỗi khi lấy danh sách đơn hàng của người dùng: ' + error.message
-        });
-    }
-};
-
-/**
- * Tạo đơn hàng mới
- */
-exports.createOrder = async (req, res) => {
-    try {
-        const {
-            accountId,
-            itemOrder,
-            prePrice,
-            discount,
-            shippingFee,
-            totalPrice,
-            addressId,
-            shipDate,
-            paymentMethod,
-            status
-        } = req.body;
-
-        // Kiểm tra các trường bắt buộc
-        if (!accountId || !itemOrder || !prePrice || !totalPrice || !addressId || !paymentMethod) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Vui lòng nhập đầy đủ thông tin đơn hàng'
-            });
-        }
-
-        // Kiểm tra addressId có hợp lệ không
-        if (!mongoose.Types.ObjectId.isValid(addressId)) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'ID địa chỉ không hợp lệ'
-            });
-        }
-
-        // Tạo đơn hàng mới
-        const newOrder = new Order({
-            accountId,
-            itemOrder,
-            prePrice,
-            discount: discount || 0,
-            shippingFee,
-            totalPrice,
-            addressId,
-            shipDate,
-            paymentMethod,
-            status: status || 'Đang xử lý'
-        });
-
-        // Lưu vào database
-        const savedOrder = await newOrder.save();
-        
-        return res.status(201).json({
-            status: 'success',
-            message: 'Tạo đơn hàng thành công',
-            data: savedOrder
-        });
-    } catch (error) {
-        console.error('Lỗi khi tạo đơn hàng:', error);
-        return res.status(500).json({
-            status: 'error',
-            message: 'Lỗi khi tạo đơn hàng: ' + error.message
         });
     }
 };

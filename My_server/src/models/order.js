@@ -19,11 +19,35 @@ const orderItemSchema = new Schema({
     }
 });
 
+// Schema cho thông tin khách vãng lai
+const guestInfoSchema = new Schema({
+    fullName: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: false
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    note: {
+        type: String,
+        required: false
+    }
+});
+
 // Schema cho đơn hàng
 const orderSchema = new Schema({
     accountId: {
         type: String,
-        required: true
+        required: false // Không bắt buộc để hỗ trợ khách vãng lai
     },
     orderDate: {
         type: Date,
@@ -53,7 +77,14 @@ const orderSchema = new Schema({
     addressId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Address',
-        required: true
+        required: false // Không bắt buộc để hỗ trợ khách vãng lai
+    },
+    // Thông tin khách vãng lai (chỉ yêu cầu khi không có addressId)
+    guestInfo: {
+        type: guestInfoSchema,
+        required: function() {
+            return !this.addressId; // Bắt buộc có guestInfo nếu không có addressId
+        }
     },
     shipDate: {
         type: Date
@@ -61,7 +92,7 @@ const orderSchema = new Schema({
     paymentMethod: {
         type: String,
         required: true,
-        enum: ['COD'] // Có thể thêm các phương thức khác sau
+        enum: ['COD', 'BANK'] // Có thể thêm các phương thức khác sau
     },
     status: {
         type: String,
@@ -81,6 +112,16 @@ const orderSchema = new Schema({
 
 // Tạo index để tìm kiếm nhanh hơn
 orderSchema.index({ accountId: 1, orderDate: -1 });
+orderSchema.index({ 'guestInfo.phone': 1 }); // Thêm index cho số điện thoại khách vãng lai
+
+// Middleware để validate đơn hàng
+orderSchema.pre('save', function(next) {
+    // Kiểm tra phải có ít nhất một trong hai: addressId hoặc guestInfo
+    if (!this.addressId && !this.guestInfo) {
+        next(new Error('Đơn hàng phải có địa chỉ giao hàng hoặc thông tin khách vãng lai'));
+    }
+    next();
+});
 
 // Cập nhật thời gian khi update
 orderSchema.pre('findOneAndUpdate', function() {
