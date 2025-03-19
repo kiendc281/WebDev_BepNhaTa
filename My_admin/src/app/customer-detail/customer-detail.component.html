@@ -33,8 +33,21 @@
       <div class="info-container">
         <div class="avatar-container">
           <img
-            src="assets/customer/default-avatar.jpg"
-            alt="Avatar"
+            *ngIf="customer?.gender === 'Nam'"
+            src="../../assets/customer/boy2.png"
+            alt="Avatar Nam"
+            class="avatar"
+          />
+          <img
+            *ngIf="customer?.gender === 'Nữ'"
+            src="../../assets/customer/virgo.png"
+            alt="Avatar Nữ"
+            class="avatar"
+          />
+          <img
+            *ngIf="customer?.gender === 'Khác' || !customer?.gender"
+            src="../../assets/customer/incognito.png"
+            alt="Avatar Khác"
             class="avatar"
           />
         </div>
