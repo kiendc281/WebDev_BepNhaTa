@@ -10,7 +10,11 @@ import { CartItem } from '../models/cart.interface';
 import { Subscription } from 'rxjs';
 import { RecipeService } from '../services/recipe.service';
 import { Recipe } from '../models/recipe.interface';
-import { FavoritesService, FavoriteResponse } from '../services/favorites.service';
+import {
+  FavoritesService,
+  FavoriteResponse,
+} from '../services/favorites.service';
+import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
 
 interface FAQ {
   question: string;
@@ -21,7 +25,7 @@ interface FAQ {
 @Component({
   selector: 'app-chi-tiet-san-pham',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, BreadcrumbComponent],
   templateUrl: './chi-tiet-san-pham.component.html',
   styleUrls: ['./chi-tiet-san-pham.component.css'],
 })
@@ -79,11 +83,11 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
 
   savedProducts: Set<string> = new Set();
   savedRecipes: Set<string> = new Set();
-  isSavedProduct = false;  // Biến theo dõi trạng thái lưu sản phẩm hiện tại
+  isSavedProduct = false; // Biến theo dõi trạng thái lưu sản phẩm hiện tại
   notification = {
     show: false,
     message: '',
-    type: 'success' as 'success' | 'error'
+    type: 'success' as 'success' | 'error',
   };
 
   constructor(
@@ -180,15 +184,15 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
 
           // Cập nhật giá theo khẩu phần đã chọn
           this.updatePrices();
-          
+
           // Khởi tạo số lượng hiện có cho khẩu phần đã chọn
           this.currentPortionQuantity = this.getPortionQuantity();
 
           // Load related products
           this.loadRelatedProducts();
-          
+
           // Load suggested products
-          this.productService.getProducts().subscribe(products => {
+          this.productService.getProducts().subscribe((products) => {
             this.loadSuggestedProducts(products);
           });
         } else {
@@ -303,7 +307,7 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
 
     // Cập nhật giá ngay khi thay đổi khẩu phần
     this.updatePrices();
-    
+
     // Cập nhật số lượng hiện có cho khẩu phần đã chọn
     this.currentPortionQuantity = this.getPortionQuantity();
   }
@@ -319,24 +323,34 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
       console.log('Selected serving:', this.selectedServing);
       console.log('portionQuantities:', this.product.portionQuantities);
       console.log('pricePerPortionArray:', this.product.pricePerPortionArray);
-      
+
       // 1. Kiểm tra nếu có portionQuantities (dữ liệu đã được xử lý từ ProductService)
-      if (this.product.portionQuantities && 
-          typeof this.product.portionQuantities === 'object' && 
-          this.product.portionQuantities[this.selectedServing] !== undefined) {
-        console.log(`Quantity from portionQuantities:`, this.product.portionQuantities[this.selectedServing]);
+      if (
+        this.product.portionQuantities &&
+        typeof this.product.portionQuantities === 'object' &&
+        this.product.portionQuantities[this.selectedServing] !== undefined
+      ) {
+        console.log(
+          `Quantity from portionQuantities:`,
+          this.product.portionQuantities[this.selectedServing]
+        );
         return this.product.portionQuantities[this.selectedServing];
       }
-      
+
       // 2. Kiểm tra nếu có pricePerPortionArray (dữ liệu gốc từ API)
-      if (this.product.pricePerPortionArray && Array.isArray(this.product.pricePerPortionArray)) {
-        const portion = this.product.pricePerPortionArray.find(p => p.portion === this.selectedServing);
+      if (
+        this.product.pricePerPortionArray &&
+        Array.isArray(this.product.pricePerPortionArray)
+      ) {
+        const portion = this.product.pricePerPortionArray.find(
+          (p) => p.portion === this.selectedServing
+        );
         if (portion && typeof portion.quantity === 'number') {
           console.log(`Quantity from pricePerPortionArray:`, portion.quantity);
           return portion.quantity;
         }
       }
-      
+
       // 3. Nếu không tìm thấy, trả về số lượng chung
       console.log('Using general quantity:', this.product.quantity || 0);
       return this.product.quantity || 0;
@@ -406,34 +420,56 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     // Kiểm tra đăng nhập trước khi thực hiện
     const userStr = localStorage.getItem('user');
     if (!userStr) {
-      this.showNotification('Vui lòng đăng nhập để sử dụng tính năng này', 'error');
+      this.showNotification(
+        'Vui lòng đăng nhập để sử dụng tính năng này',
+        'error'
+      );
       return;
     }
 
     const productId = this.product._id;
-    
-    console.log('Đang xử lý lưu sản phẩm:', productId, 'trạng thái hiện tại:', this.isSavedProduct);
-    
-    this.favoritesService.toggleFavorite(productId, 'product', this.isSavedProduct)
+
+    console.log(
+      'Đang xử lý lưu sản phẩm:',
+      productId,
+      'trạng thái hiện tại:',
+      this.isSavedProduct
+    );
+
+    this.favoritesService
+      .toggleFavorite(productId, 'product', this.isSavedProduct)
       .subscribe({
         next: (response: FavoriteResponse) => {
           console.log('Kết quả lưu sản phẩm:', response);
           if (response.success) {
             this.isSavedProduct = !this.isSavedProduct;
             if (this.isSavedProduct) {
-              this.showNotification(`Đã thêm "${this.product?.ingredientName}" vào danh sách yêu thích`, 'success');
+              this.showNotification(
+                `Đã thêm "${this.product?.ingredientName}" vào danh sách yêu thích`,
+                'success'
+              );
             } else {
-              this.showNotification(`Đã xóa "${this.product?.ingredientName}" khỏi danh sách yêu thích`, 'success');
+              this.showNotification(
+                `Đã xóa "${this.product?.ingredientName}" khỏi danh sách yêu thích`,
+                'success'
+              );
             }
           } else {
             console.error('Không thể lưu sản phẩm:', response.message);
-            this.showNotification(response.message || 'Không thể lưu sản phẩm. Vui lòng thử lại sau.', 'error');
+            this.showNotification(
+              response.message ||
+                'Không thể lưu sản phẩm. Vui lòng thử lại sau.',
+              'error'
+            );
           }
         },
         error: (error: any) => {
           console.error('Lỗi khi lưu sản phẩm:', error);
-          this.showNotification('Đã xảy ra lỗi khi lưu sản phẩm. Vui lòng thử lại sau.', 'error');
-        }
+          this.showNotification(
+            'Đã xảy ra lỗi khi lưu sản phẩm. Vui lòng thử lại sau.',
+            'error'
+          );
+        },
       });
   }
 
@@ -618,7 +654,7 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
       },
       error: (error: any) => {
         console.error('Lỗi khi kiểm tra trạng thái yêu thích:', error);
-      }
+      },
     });
   }
 
@@ -627,14 +663,14 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     this.notification = {
       show: true,
       message,
-      type
+      type,
     };
 
     // Tự động ẩn thông báo sau 3 giây
     setTimeout(() => {
       this.notification = {
         ...this.notification,
-        show: false
+        show: false,
       };
     }, 3000);
   }
@@ -657,14 +693,20 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     // Kiểm tra đăng nhập trước khi thực hiện
     const userStr = localStorage.getItem('user');
     if (!userStr) {
-      this.showNotification('Vui lòng đăng nhập để sử dụng tính năng này', 'error');
+      this.showNotification(
+        'Vui lòng đăng nhập để sử dụng tính năng này',
+        'error'
+      );
       return;
     }
-    
+
     // Đảm bảo recipeId không phải undefined
     if (!recipeId) {
       console.error('ID công thức không được cung cấp');
-      this.showNotification('Không thể lưu công thức này. Xin vui lòng thử lại sau.', 'error');
+      this.showNotification(
+        'Không thể lưu công thức này. Xin vui lòng thử lại sau.',
+        'error'
+      );
       return;
     }
 
@@ -672,34 +714,55 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     console.log('Recipe ID info:', {
       id: recipeId,
       idType: typeof recipeId,
-      idLength: recipeId.length
+      idLength: recipeId.length,
     });
 
     const isSaved = this.isRecipeSaved(recipeId);
-    
-    console.log('Đang lưu công thức:', recipeId, 'loại:', 'recipe', 'trạng thái hiện tại:', isSaved);
-    
-    this.favoritesService.toggleFavorite(recipeId, 'recipe', isSaved)
+
+    console.log(
+      'Đang lưu công thức:',
+      recipeId,
+      'loại:',
+      'recipe',
+      'trạng thái hiện tại:',
+      isSaved
+    );
+
+    this.favoritesService
+      .toggleFavorite(recipeId, 'recipe', isSaved)
       .subscribe({
         next: (response: FavoriteResponse) => {
           console.log('Kết quả lưu:', response);
           if (response.success) {
             if (isSaved) {
               this.savedRecipes.delete(recipeId);
-              this.showNotification('Đã xóa công thức khỏi danh sách yêu thích', 'success');
+              this.showNotification(
+                'Đã xóa công thức khỏi danh sách yêu thích',
+                'success'
+              );
             } else {
               this.savedRecipes.add(recipeId);
-              this.showNotification('Đã thêm công thức vào danh sách yêu thích', 'success');
+              this.showNotification(
+                'Đã thêm công thức vào danh sách yêu thích',
+                'success'
+              );
             }
           } else {
             console.error('Không thể lưu công thức:', response.message);
-            this.showNotification(response.message || 'Không thể lưu công thức. Vui lòng thử lại sau.', 'error');
+            this.showNotification(
+              response.message ||
+                'Không thể lưu công thức. Vui lòng thử lại sau.',
+              'error'
+            );
           }
         },
         error: (error: any) => {
           console.error('Lỗi khi lưu công thức:', error);
-          this.showNotification('Đã xảy ra lỗi khi lưu công thức. Vui lòng thử lại sau.', 'error');
-        }
+          this.showNotification(
+            'Đã xảy ra lỗi khi lưu công thức. Vui lòng thử lại sau.',
+            'error'
+          );
+        },
       });
   }
 }

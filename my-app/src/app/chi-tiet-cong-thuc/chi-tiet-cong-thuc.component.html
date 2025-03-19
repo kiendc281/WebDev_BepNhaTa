@@ -1,16 +1,49 @@
+<!-- Breadcrumb -->
+<app-breadcrumb
+  category="Công thức"
+  categoryLink="/cong-thuc"
+  [currentPage]="recipe?.recipeName || 'Chi tiết công thức'"
+></app-breadcrumb>
+
+<!-- Recipe Detail Section -->
 <!-- Thông báo -->
-<div *ngIf="notification.show" 
-     class="notification" 
-     [ngClass]="{'notification-success': notification.type === 'success', 'notification-error': notification.type === 'error'}">
+<div
+  *ngIf="notification.show"
+  class="notification"
+  [ngClass]="{
+    'notification-success': notification.type === 'success',
+    'notification-error': notification.type === 'error'
+  }"
+>
   <div class="notification-content">
     <div *ngIf="notification.type === 'success'" class="notification-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
       </svg>
     </div>
     <div *ngIf="notification.type === 'error'" class="notification-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <circle cx="12" cy="12" r="10"></circle>
         <line x1="12" y1="8" x2="12" y2="12"></line>
         <line x1="12" y1="16" x2="12" y2="16"></line>
@@ -200,12 +233,20 @@
         <span class="info">{{ recipe.difficulty }}</span>
       </div>
     </div>
-    <button class="button-xam mt-3 w-100" (click)="toggleSaveRecipe()" [class.saved]="isSaved">
+    <button
+      class="button-xam mt-3 w-100"
+      (click)="toggleSaveRecipe()"
+      [class.saved]="isSaved"
+    >
       <img
         class="px-2"
-        [src]="isSaved ? '../../assets/chi-tiet-cong-thuc/heart-fill.svg' : '../../assets/chi-tiet-cong-thuc/dark-heart.svg'"
+        [src]="
+          isSaved
+            ? '../../assets/chi-tiet-cong-thuc/heart-fill.svg'
+            : '../../assets/chi-tiet-cong-thuc/dark-heart.svg'
+        "
         alt=""
-      />{{ isSaved ? 'Đã lưu công thức' : 'Lưu công thức' }}
+      />{{ isSaved ? "Đã lưu công thức" : "Lưu công thức" }}
     </button>
     <button class="button-cam mt-3 w-100" routerLink="/san-pham">
       XEM GÓI NGUYÊN LIỆU

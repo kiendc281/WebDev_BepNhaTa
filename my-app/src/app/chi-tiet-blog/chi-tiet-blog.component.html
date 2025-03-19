@@ -1,15 +1,40 @@
-<div *ngIf="notification.show" 
-     class="notification" 
-     [ngClass]="{'notification-success': notification.type === 'success', 'notification-error': notification.type === 'error'}">
+<div
+  *ngIf="notification.show"
+  class="notification"
+  [ngClass]="{
+    'notification-success': notification.type === 'success',
+    'notification-error': notification.type === 'error'
+  }"
+>
   <div class="notification-content">
     <div *ngIf="notification.type === 'success'" class="notification-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
       </svg>
     </div>
     <div *ngIf="notification.type === 'error'" class="notification-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <circle cx="12" cy="12" r="10"></circle>
         <line x1="12" y1="8" x2="12" y2="12"></line>
         <line x1="12" y1="16" x2="12" y2="16"></line>
@@ -19,19 +44,14 @@
   </div>
 </div>
 
-<div class="blog-detail-container">
-  <div class="breadcrumb-container">
-    <div class="container">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a routerLink="/trang-chu">Trang chủ</a></li>
-          <li class="breadcrumb-item"><a routerLink="/blog">Blog</a></li>
-          <li class="breadcrumb-item active" aria-current="page" *ngIf="blogPost">{{ blogPost.title }}</li>
-        </ol>
-      </nav>
-    </div>
-  </div>
+<!-- Breadcrumb -->
+<app-breadcrumb
+  category="Blog"
+  categoryLink="/blog"
+  [currentPage]="blogPost?.title || 'Chi tiết bài viết'"
+></app-breadcrumb>
 
+<div class="blog-detail-container">
   <div class="container">
     <div class="row">
       <!-- Main Content -->
@@ -63,53 +83,108 @@
 
           <!-- Meta Information -->
           <div class="blog-meta">
-            <span class="author">Đăng bởi: <span class="author-name">{{ blogPost.author?.name || 'Bếp Nhà Ta' }}</span></span>
+            <span class="author"
+              >Đăng bởi:
+              <span class="author-name">{{
+                blogPost.author?.name || "Bếp Nhà Ta"
+              }}</span></span
+            >
             <span class="divider">|</span>
-            <span class="date">{{ blogPost.publishDate | date:'dd/MM/yyyy' }}</span>
+            <span class="date">{{
+              blogPost.publishDate | date : "dd/MM/yyyy"
+            }}</span>
             <span class="divider">|</span>
             <span class="views">{{ blogPost.views }} Lượt xem</span>
             <span class="divider">|</span>
-            <span class="likes">{{ blogPost.likes }} <i class="bi bi-heart-fill text-danger"></i></span>
+            <span class="likes"
+              >{{ blogPost.likes }} <i class="bi bi-heart-fill text-danger"></i
+            ></span>
           </div>
 
           <!-- Featured Image -->
           <div class="featured-image">
-            <img [src]="blogPost.thumbnail" [alt]="blogPost.title" class="img-fluid">
+            <img
+              [src]="blogPost.thumbnail"
+              [alt]="blogPost.title"
+              class="img-fluid"
+            />
           </div>
 
           <!-- Blog Content -->
           <div class="blog-content">
-            <ng-container *ngIf="blogPost.sections && blogPost.sections.length > 0">
-              <div *ngFor="let section of sortSections(blogPost.sections)" class="section-content">
+            <ng-container
+              *ngIf="blogPost.sections && blogPost.sections.length > 0"
+            >
+              <div
+                *ngFor="let section of sortSections(blogPost.sections)"
+                class="section-content"
+              >
                 <ng-container *ngIf="section.content">
                   <!-- Tiêu đề section -->
-                  <h3 *ngIf="section.content.title" class="section-title">{{ section.content.title }}</h3>
-                  
+                  <h3 *ngIf="section.content.title" class="section-title">
+                    {{ section.content.title }}
+                  </h3>
+
                   <!-- Nội dung văn bản -->
                   <ng-container *ngIf="section.content.text">
                     <!-- Nếu text là mảng, hiển thị từng đoạn -->
-                    <ng-container *ngIf="isArray(section.content.text); else textAsHtml">
-                      <p *ngFor="let paragraph of getTextArray(section.content.text)">{{ paragraph }}</p>
+                    <ng-container
+                      *ngIf="isArray(section.content.text); else textAsHtml"
+                    >
+                      <p
+                        *ngFor="
+                          let paragraph of getTextArray(section.content.text)
+                        "
+                      >
+                        {{ paragraph }}
+                      </p>
                     </ng-container>
                     <!-- Nếu text là HTML, hiển thị trực tiếp -->
                     <ng-template #textAsHtml>
                       <div [innerHTML]="section.content.text"></div>
                     </ng-template>
                   </ng-container>
-                  
+
                   <!-- Hình ảnh -->
                   <div *ngIf="section.content.imageUrl" class="section-image">
-                    <img [src]="section.content.imageUrl" [alt]="section.content.imageCaption || ''" class="img-fluid">
-                    <div *ngIf="section.content.imageCaption" class="image-caption">{{ section.content.imageCaption }}</div>
+                    <img
+                      [src]="section.content.imageUrl"
+                      [alt]="section.content.imageCaption || ''"
+                      class="img-fluid"
+                    />
+                    <div
+                      *ngIf="section.content.imageCaption"
+                      class="image-caption"
+                    >
+                      {{ section.content.imageCaption }}
+                    </div>
                   </div>
-                  
+
                   <!-- Hỗ trợ khả năng tương thích với cấu trúc cũ -->
-                  <ng-container *ngIf="!section.content.text && !section.content.imageUrl && section.content.type">
+                  <ng-container
+                    *ngIf="
+                      !section.content.text &&
+                      !section.content.imageUrl &&
+                      section.content.type
+                    "
+                  >
                     <ng-container [ngSwitch]="section.content.type">
-                      <div *ngSwitchCase="'text'" [innerHTML]="section.content.text"></div>
+                      <div
+                        *ngSwitchCase="'text'"
+                        [innerHTML]="section.content.text"
+                      ></div>
                       <div *ngSwitchCase="'image'" class="section-image">
-                        <img [src]="section.content.url" [alt]="section.content.caption || ''" class="img-fluid">
-                        <div *ngIf="section.content.caption" class="image-caption">{{ section.content.caption }}</div>
+                        <img
+                          [src]="section.content.url"
+                          [alt]="section.content.caption || ''"
+                          class="img-fluid"
+                        />
+                        <div
+                          *ngIf="section.content.caption"
+                          class="image-caption"
+                        >
+                          {{ section.content.caption }}
+                        </div>
                       </div>
                       <div *ngSwitchDefault>{{ section.content }}</div>
                     </ng-container>
@@ -117,12 +192,24 @@
                 </ng-container>
               </div>
             </ng-container>
-            
+
             <!-- Hiển thị content nếu không có sections -->
-            <div *ngIf="(!blogPost.sections || blogPost.sections.length === 0) && blogPost.content" [innerHTML]="blogPost.content"></div>
-            
+            <div
+              *ngIf="
+                (!blogPost.sections || blogPost.sections.length === 0) &&
+                blogPost.content
+              "
+              [innerHTML]="blogPost.content"
+            ></div>
+
             <!-- Thông báo nếu không có nội dung -->
-            <div *ngIf="(!blogPost.sections || blogPost.sections.length === 0) && !blogPost.content" class="no-content">
+            <div
+              *ngIf="
+                (!blogPost.sections || blogPost.sections.length === 0) &&
+                !blogPost.content
+              "
+              class="no-content"
+            >
               Bài viết này không có nội dung.
             </div>
           </div>
@@ -141,7 +228,11 @@
               <div class="related-post-item" *ngFor="let post of relatedPosts">
                 <div class="post-image">
                   <a [routerLink]="['/blog', post._id]">
-                    <img [src]="post.thumbnail" [alt]="post.title" class="img-fluid">
+                    <img
+                      [src]="post.thumbnail"
+                      [alt]="post.title"
+                      class="img-fluid"
+                    />
                   </a>
                 </div>
                 <div class="post-info">
@@ -150,7 +241,9 @@
                     <a [routerLink]="['/blog', post._id]">{{ post.title }}</a>
                   </h4>
                   <div class="post-meta">
-                    <span class="date">{{ post.publishDate | date:'dd/MM/yyyy' }}</span>
+                    <span class="date">{{
+                      post.publishDate | date : "dd/MM/yyyy"
+                    }}</span>
                     <span class="divider">|</span>
                     <span class="views">{{ post.views }} lượt xem</span>
                   </div>
@@ -166,10 +259,34 @@
             </h3>
             <ul class="category-list">
               <li><a routerLink="/blog">Tất cả bài viết</a></li>
-              <li><a [routerLink]="['/blog']" [queryParams]="{category: 'dac-san-vung-mien'}">Đặc sản vùng miền</a></li>
-              <li><a [routerLink]="['/blog']" [queryParams]="{category: 'ket-hop-nguyen-lieu'}">Kết hợp nguyên liệu</a></li>
-              <li><a [routerLink]="['/blog']" [queryParams]="{category: 'dinh-duong'}">Dinh dưỡng</a></li>
-              <li><a [routerLink]="['/blog']" [queryParams]="{category: 'meo-nau-an'}">Mẹo nấu ăn</a></li>
+              <li>
+                <a
+                  [routerLink]="['/blog']"
+                  [queryParams]="{ category: 'dac-san-vung-mien' }"
+                  >Đặc sản vùng miền</a
+                >
+              </li>
+              <li>
+                <a
+                  [routerLink]="['/blog']"
+                  [queryParams]="{ category: 'ket-hop-nguyen-lieu' }"
+                  >Kết hợp nguyên liệu</a
+                >
+              </li>
+              <li>
+                <a
+                  [routerLink]="['/blog']"
+                  [queryParams]="{ category: 'dinh-duong' }"
+                  >Dinh dưỡng</a
+                >
+              </li>
+              <li>
+                <a
+                  [routerLink]="['/blog']"
+                  [queryParams]="{ category: 'meo-nau-an' }"
+                  >Mẹo nấu ăn</a
+                >
+              </li>
             </ul>
           </div>
         </div>
