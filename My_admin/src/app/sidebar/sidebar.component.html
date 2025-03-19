@@ -17,11 +17,14 @@
       <div
         class="menu-item with-submenu"
         (click)="toggleSubmenu('product')"
-        [ngClass]="{ open: openSubmenu === 'product' }"
+        [ngClass]="{
+          open: openSubmenu === 'product',
+          active: isActive('/product')
+        }"
       >
         <img src="../../assets/sidebar/product.svg" alt="" />
         <span>Quản lý sản <br />phẩm</span>
-        <img src="../../assets/sidebar/arrow.svg" alt="" />
+        <img src="../../assets/sidebar/arrow.svg" alt="" class="arrow-icon" />
       </div>
       <div class="submenu" [ngClass]="{ open: openSubmenu === 'product' }">
         <div
@@ -31,15 +34,7 @@
         >
           Danh sách sản phẩm
         </div>
-        <div
-          class="submenu-item"
-          routerLink="/nguyen-lieu"
-          routerLinkActive="active"
-        >
-          Quản lý nguyên liệu
-        </div>
         <div class="submenu-item">Thêm sản phẩm mới</div>
-        <div class="submenu-item">Phân loại sản phẩm</div>
       </div>
       <div class="menu-item" routerLink="/recipe" routerLinkActive="active">
         <img src="../../assets/sidebar/recipes.svg" alt="" />
@@ -52,11 +47,14 @@
       <div
         class="menu-item with-submenu"
         (click)="toggleSubmenu('customer')"
-        [ngClass]="{ open: openSubmenu === 'customer' }"
+        [ngClass]="{
+          open: openSubmenu === 'customer',
+          active: isActive('/customer')
+        }"
       >
         <img src="../../assets/sidebar/user.svg" alt="" />
         <span>Quản lý khách hàng</span>
-        <img src="../../assets/sidebar/arrow.svg" alt="" />
+        <img src="../../assets/sidebar/arrow.svg" alt="" class="arrow-icon" />
       </div>
       <div class="submenu" [ngClass]="{ open: openSubmenu === 'customer' }">
         <div
