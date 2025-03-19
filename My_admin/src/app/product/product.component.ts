@@ -55,7 +55,17 @@ export class ProductComponent implements OnInit, OnDestroy {
   constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadProducts();
+    // Kiểm tra nếu vừa cập nhật sản phẩm từ trang chi tiết
+    const needRefresh = localStorage.getItem('productUpdated') === 'true';
+    if (needRefresh) {
+      // Xóa thông tin đã sử dụng
+      localStorage.removeItem('productUpdated');
+      // Làm mới trang để tải lại dữ liệu
+      window.location.reload();
+    } else {
+      // Tải dữ liệu sản phẩm bình thường
+      this.loadProducts();
+    }
 
     // Tạo bound function một lần để tránh vấn đề với việc remove listener
     this.boundCloseDropdownHandler = this.closeDropdownOutside.bind(this);
@@ -100,12 +110,8 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   // Chuyển đổi dữ liệu sản phẩm từ API để phù hợp với giao diện
   transformProducts(): void {
+    // Tạo danh sách sản phẩm đã chuyển đổi
     this.products = this.originalProducts.map((product) => {
-      // Kiểm tra và log dữ liệu để debug
-      // console.log('Original product:', product);
-      // console.log('PricePerPortion:', product.pricePerPortion);
-      // console.log('PortionQuantities:', product['portionQuantities']);
-
       // Lấy giá từ pricePerPortion
       const price = product.pricePerPortion?.['2'] || 0;
       const formattedPrice = price.toLocaleString('vi-VN') + 'đ';
@@ -114,7 +120,18 @@ export class ProductComponent implements OnInit, OnDestroy {
       const quantity2 = product['portionQuantities']?.['2'] || 0;
       const quantity4 = product['portionQuantities']?.['4'] || 0;
 
-      console.log('Processed quantities:', { quantity2, quantity4 });
+      // Tự động cập nhật trạng thái dựa trên số lượng - LUÔN cập nhật trạng thái dựa trên số lượng
+      let status = 'Còn hàng';
+
+      // Nếu cả 2 khẩu phần đều là 0, đặt trạng thái là "Hết hàng"
+      if (quantity2 === 0 && quantity4 === 0) {
+        status = 'Hết hàng';
+      }
+
+      // Ghi log để kiểm tra
+      console.log(
+        `Sản phẩm ${product._id}: số lượng (${quantity2}, ${quantity4}), trạng thái API: ${product.status}, trạng thái hiển thị: ${status}`
+      );
 
       // Tạo ngày từ expirationDate hoặc ngày hiện tại nếu không có
       const date = product.expirationDate
@@ -135,11 +152,20 @@ export class ProductComponent implements OnInit, OnDestroy {
         tags: product.tags || [],
         quantity2,
         quantity4,
+        status: status, // Luôn sử dụng trạng thái được tính toán dựa trên số lượng
       };
     });
 
-    // Log sản phẩm đã được transform để kiểm tra
-    // console.log('Transformed products:', this.products);
+    // Nếu đã áp dụng bộ lọc trạng thái, cần lọc lại dựa trên trạng thái đã được tính toán
+    if (this.filterStatus) {
+      console.log('Lọc theo trạng thái:', this.filterStatus);
+      // Lọc lại sản phẩm dựa trên trạng thái đã tính toán
+      this.products = this.products.filter(
+        (product) => product.status === this.filterStatus
+      );
+      // Cập nhật tổng số sản phẩm sau khi lọc
+      this.totalItems = this.products.length;
+    }
   }
 
   // Hàm xử lý sắp xếp khi click vào header
@@ -273,7 +299,34 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   applyFilter() {
-    this.loadProducts();
+    this.isLoading = true;
+    this.error = null;
+
+    const filters = {
+      category: this.filterCategory,
+      region: this.filterRegion,
+      status: '', // Xóa bỏ lọc trạng thái ban đầu vì sẽ lọc thủ công sau này
+      search: this.searchTerm,
+    };
+
+    console.log('Applying filters:', filters);
+
+    this.productService.getAllProducts(filters).subscribe({
+      next: (data) => {
+        this.originalProducts = data;
+        this.totalItems = data.length;
+        this.transformProducts(); // Phương thức này sẽ lọc lại theo trạng thái
+        this.sortProducts(this.sortColumn, this.sortDirection);
+        this.isLoading = false;
+
+        console.log('Filtered products:', this.products);
+      },
+      error: (err) => {
+        console.error('Lỗi khi tải dữ liệu sản phẩm:', err);
+        this.error = 'Không thể tải dữ liệu sản phẩm. Vui lòng thử lại sau.';
+        this.isLoading = false;
+      },
+    });
   }
 
   search(event: any) {
@@ -523,20 +576,6 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   addNewProduct(): void {
     this.router.navigate(['/san-pham/them-moi']);
-  }
-
-  applyFilters(): void {
-    // Lọc danh sách sản phẩm theo searchTerm
-    if (this.searchTerm.trim() === '') {
-      this.filteredProducts = [...this.products];
-    } else {
-      const term = this.searchTerm.toLowerCase().trim();
-      this.filteredProducts = this.products.filter(
-        (product) =>
-          product.ingredientName.toLowerCase().includes(term) ||
-          product._id.toLowerCase().includes(term)
-      );
-    }
   }
 
   getPortionQuantity(product: Product, portion: string): number {

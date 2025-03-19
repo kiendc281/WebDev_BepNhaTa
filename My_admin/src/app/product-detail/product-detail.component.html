@@ -405,80 +405,10 @@
       </div>
     </div>
 
-    <div class="related-section">
-      <h3>Sản phẩm liên quan</h3>
-      <div class="related-products">
-        <div
-          class="related-list"
-          *ngIf="
-            product.relatedProductIds && product.relatedProductIds.length > 0
-          "
-        >
-          <div
-            class="related-item"
-            *ngFor="let id of product.relatedProductIds; let i = index"
-          >
-            <span>{{ id }}</span>
-            <button class="remove-btn" (click)="removeRelatedProduct(i)">
-              <img src="../../assets/product/delete.svg" alt="Xóa" />
-            </button>
-          </div>
-        </div>
-        <div
-          class="empty-state"
-          *ngIf="
-            !product.relatedProductIds || product.relatedProductIds.length === 0
-          "
-        >
-          <p>Chưa có sản phẩm liên quan nào.</p>
-        </div>
-        <button class="add-related-btn" (click)="openRelatedProductsDialog()">
-          Chọn sản phẩm
-        </button>
-      </div>
+    <!-- Nút lưu -->
+    <div class="save-actions">
+      <button class="button-xam" (click)="cancel()">Hủy</button>
+      <button class="button-cam" (click)="saveProduct()">Lưu thay đổi</button>
     </div>
-
-    <div class="suggested-section">
-      <h3>Công thức gợi ý</h3>
-      <div class="suggested-recipes">
-        <div
-          class="suggested-list"
-          *ngIf="
-            product.suggestedRecipeIds && product.suggestedRecipeIds.length > 0
-          "
-        >
-          <div
-            class="suggested-item"
-            *ngFor="let id of product.suggestedRecipeIds; let i = index"
-          >
-            <span>{{ id }}</span>
-            <button class="remove-btn" (click)="removeSuggestedRecipe(i)">
-              <img src="../../assets/product/delete.svg" alt="Xóa" />
-            </button>
-          </div>
-        </div>
-        <div
-          class="empty-state"
-          *ngIf="
-            !product.suggestedRecipeIds ||
-            product.suggestedRecipeIds.length === 0
-          "
-        >
-          <p>Chưa có công thức gợi ý nào.</p>
-        </div>
-        <button
-          class="add-suggested-btn"
-          (click)="openSuggestedRecipesDialog()"
-        >
-          Chọn công thức
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Nút lưu -->
-  <div class="save-actions">
-    <button class="button-xam" (click)="cancel()">Hủy</button>
-    <button class="button-cam" (click)="saveProduct()">Lưu thay đổi</button>
   </div>
 </div>

@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
   standalone: true,
   imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './product-detail.component.html',
-  styleUrl: './product-detail.component.css',
+  styleUrls: ['./product-detail.component.css'],
 })
 export class ProductDetailComponent implements OnInit {
   // Khởi tạo product với giá trị mặc định rỗng khi tạo mới
@@ -31,8 +31,6 @@ export class ProductDetailComponent implements OnInit {
     storage: '',
     expirationDate: '',
     tags: [],
-    relatedProductIds: [],
-    suggestedRecipeIds: [],
     region: '',
     category: '',
     status: 'Còn hàng',
@@ -61,84 +59,185 @@ export class ProductDetailComponent implements OnInit {
 
   loadProductDetails(id: string): void {
     this.isLoading = true;
+    this.errorMessage = '';
+
     this.productService.getProductById(id).subscribe({
       next: (response) => {
         // Lấy dữ liệu của sản phẩm từ API
         const productData = response.data;
 
-        // Đảm bảo cấu trúc dữ liệu khẩu phần đúng
-        if (!productData.pricePerPortion) {
+        // Log dữ liệu gốc để kiểm tra cấu trúc
+        console.log('Dữ liệu sản phẩm gốc từ server:', productData);
+        console.log('Cấu trúc pricePerPortion:', productData.pricePerPortion);
+        console.log(
+          'Cấu trúc portionQuantities:',
+          productData.portionQuantities
+        );
+
+        // Lưu trữ dữ liệu pricePerPortion gốc
+        productData['originalPricePerPortion'] = [];
+
+        // Xử lý pricePerPortion dựa vào cấu trúc thực tế
+        if (Array.isArray(productData.pricePerPortion)) {
+          // Nếu là mảng (như trong ảnh chụp màn hình)
+          console.log('pricePerPortion là một mảng, đang xử lý...');
+
+          // Sao chép mảng gốc để lưu trữ
+          productData['originalPricePerPortion'] = JSON.parse(
+            JSON.stringify(productData.pricePerPortion)
+          );
+
+          // Tạo object cho binding trong form
+          const priceObj: { [key: string]: number } = {};
+
+          // Xử lý từng mục trong mảng
+          productData.pricePerPortion.forEach((item: any) => {
+            if (item.portion) {
+              console.log(
+                `Xử lý khẩu phần ${item.portion}: giá=${item.price}, số lượng=${item.quantity}`
+              );
+
+              // Lưu giá và tạo trường quantity cho form
+              priceObj[item.portion] = Number(item.price) || 0;
+
+              // Tạo trường quantity và status cho form
+              productData[`quantity${item.portion}`] =
+                Number(item.quantity) || 0;
+
+              // Tạo trường status cho form
+              productData[`status${item.portion}`] =
+                Number(item.quantity) > 0 ? 'Còn hàng' : 'Hết hàng';
+            }
+          });
+
+          // Ghi đè pricePerPortion bằng object mới cho form binding
+          productData.pricePerPortion = priceObj;
+        } else if (
+          typeof productData.pricePerPortion === 'object' &&
+          productData.pricePerPortion !== null
+        ) {
+          // Nếu là object (không phải mảng)
+          console.log('pricePerPortion là một object, đang xử lý...');
+
+          // Xử lý trường hợp đặc biệt nếu là object
+          const portions = Object.keys(productData.pricePerPortion);
+
+          // Tạo mảng originalPricePerPortion từ object
+          portions.forEach((portion) => {
+            // Tìm quantity tương ứng (nếu có)
+            let quantity = 0;
+
+            // Ưu tiên dùng portionQuantities nếu có
+            if (
+              productData.portionQuantities &&
+              typeof productData.portionQuantities === 'object' &&
+              productData.portionQuantities[portion] !== undefined
+            ) {
+              quantity = Number(productData.portionQuantities[portion]) || 0;
+              console.log(
+                `Lấy số lượng từ portionQuantities[${portion}]: ${quantity}`
+              );
+            } else if (productData[`quantity${portion}`] !== undefined) {
+              quantity = Number(productData[`quantity${portion}`]) || 0;
+              console.log(`Lấy số lượng từ quantity${portion}: ${quantity}`);
+            }
+
+            productData['originalPricePerPortion'].push({
+              portion: portion,
+              price: productData.pricePerPortion[portion],
+              quantity: quantity,
+            });
+
+            // Đặt số lượng từ portionQuantities nếu có
+            if (
+              productData.portionQuantities &&
+              typeof productData.portionQuantities === 'object' &&
+              productData.portionQuantities[portion] !== undefined
+            ) {
+              productData[`quantity${portion}`] =
+                Number(productData.portionQuantities[portion]) || 0;
+              productData[`status${portion}`] =
+                Number(productData.portionQuantities[portion]) > 0
+                  ? 'Còn hàng'
+                  : 'Hết hàng';
+              console.log(
+                `Đặt quantity${portion}=${
+                  productData[`quantity${portion}`]
+                } từ portionQuantities`
+              );
+            } else {
+              // Đảm bảo các trường quantity được thiết lập
+              if (productData[`quantity${portion}`] === undefined) {
+                productData[`quantity${portion}`] = 0;
+                productData[`status${portion}`] = 'Hết hàng';
+                console.log(`Khởi tạo quantity${portion}=0 (mặc định)`);
+              }
+            }
+          });
+        } else {
+          // Nếu không có dữ liệu pricePerPortion, tạo mặc định
+          console.log('Không tìm thấy pricePerPortion hợp lệ, tạo mặc định');
+
           productData.pricePerPortion = {
             '2': 0,
             '4': 0,
           };
-        } else {
-          const tempPricePerPortion = {
-            '2': productData.pricePerPortion['2'] || 0,
-            '4': productData.pricePerPortion['4'] || 0,
-          };
-          productData.pricePerPortion = tempPricePerPortion;
+
+          // Kiểm tra và lấy số lượng từ portionQuantities nếu có
+          if (
+            productData.portionQuantities &&
+            typeof productData.portionQuantities === 'object'
+          ) {
+            productData['quantity2'] =
+              Number(productData.portionQuantities['2']) || 0;
+            productData['quantity4'] =
+              Number(productData.portionQuantities['4']) || 0;
+            productData['status2'] =
+              Number(productData.portionQuantities['2']) > 0
+                ? 'Còn hàng'
+                : 'Hết hàng';
+            productData['status4'] =
+              Number(productData.portionQuantities['4']) > 0
+                ? 'Còn hàng'
+                : 'Hết hàng';
+            console.log(
+              `Đặt số lượng từ portionQuantities: quantity2=${productData['quantity2']}, quantity4=${productData['quantity4']}`
+            );
+          } else {
+            productData['quantity2'] = 0;
+            productData['quantity4'] = 0;
+            productData['status2'] = 'Hết hàng';
+            productData['status4'] = 'Hết hàng';
+            console.log('Khởi tạo số lượng mặc định 0');
+          }
         }
 
-        // Lấy số lượng từ portionQuantities
-        if (productData.portionQuantities) {
-          productData['quantity2'] = productData.portionQuantities['2'] || 0;
-          productData['quantity4'] = productData.portionQuantities['4'] || 0;
-        } else {
-          productData['quantity2'] = 0;
-          productData['quantity4'] = 0;
-        }
-
-        // Thiết lập trạng thái mặc định cho từng khẩu phần
-        // Và cập nhật trạng thái dựa trên số lượng
-        if (productData['quantity2'] === 0) {
-          productData['status2'] = 'Hết hàng';
-        } else if (!productData['status2']) {
-          productData['status2'] = 'Còn hàng';
-        }
-
-        if (productData['quantity4'] === 0) {
-          productData['status4'] = 'Hết hàng';
-        } else if (!productData['status4']) {
-          productData['status4'] = 'Còn hàng';
-        }
+        console.log('Dữ liệu sau khi xử lý:', {
+          pricePerPortion: productData.pricePerPortion,
+          quantity2: productData['quantity2'],
+          quantity4: productData['quantity4'],
+          originalPricePerPortion: productData['originalPricePerPortion'],
+        });
 
         // Định dạng ngày hạn sử dụng nếu có
         if (productData.expirationDate) {
-          // Đảm bảo expirationDate ở định dạng YYYY-MM-DD cho thẻ input type="date"
-          const date = new Date(productData.expirationDate);
-          if (!isNaN(date.getTime())) {
-            productData.expirationDate = date.toISOString().split('T')[0];
+          // Chuyển đổi và format ngày tháng cho phù hợp với UI
+          const expirationDate = new Date(productData.expirationDate);
+          if (!isNaN(expirationDate.getTime())) {
+            // Đảm bảo định dạng YYYY-MM-DD cho input type="date"
+            productData.expirationDate = expirationDate
+              .toISOString()
+              .split('T')[0];
           }
         }
 
-        // Xử lý sản phẩm liên quan - đảm bảo là mảng các chuỗi ID
-        if (productData.relatedProductIds) {
-          if (Array.isArray(productData.relatedProductIds)) {
-            // Nếu là mảng, chuyển đổi tất cả thành chuỗi ID
-            productData.relatedProductIds = productData.relatedProductIds.map(
-              (item: any) => {
-                if (typeof item === 'object' && item !== null) {
-                  // Nếu là object, lấy _id hoặc chuyển thành chuỗi
-                  return item._id || JSON.stringify(item);
-                }
-                return String(item); // Đảm bảo là chuỗi
-              }
-            );
-          } else if (typeof productData.relatedProductIds === 'object') {
-            // Nếu là một object, khởi tạo mới thành mảng rỗng
-            productData.relatedProductIds = [];
-          }
-        } else {
-          // Nếu không có, khởi tạo mới
-          productData.relatedProductIds = [];
-        }
-
-        // Đảm bảo các mảng khác có giá trị mặc định
-        if (!productData.components) productData.components = [];
-        if (!productData.tags) productData.tags = [];
-        if (!productData.suggestedRecipeIds)
-          productData.suggestedRecipeIds = [];
+        // Đảm bảo các mảng thuộc tính tồn tại
+        productData.components = Array.isArray(productData.components)
+          ? productData.components
+          : [];
+        productData.tags = Array.isArray(productData.tags)
+          ? productData.tags
+          : [];
 
         this.product = productData;
         this.isLoading = false;
@@ -178,12 +277,90 @@ export class ProductDetailComponent implements OnInit {
     // Tạo bản sao của sản phẩm để xóa các trường không cần thiết
     const productToSend = { ...this.product };
 
-    // Cập nhật portionQuantities từ quantity2 và quantity4
-    if (!productToSend.portionQuantities) {
-      productToSend.portionQuantities = {};
+    console.log('Dữ liệu sản phẩm trước khi gửi:', productToSend);
+    console.log(
+      'originalPricePerPortion:',
+      productToSend['originalPricePerPortion']
+    );
+
+    // Kiểm tra cấu trúc pricePerPortion hiện tại
+    console.log('pricePerPortion hiện tại:', productToSend.pricePerPortion);
+
+    // Tạo mảng mới cho pricePerPortionArray
+    let newPricePerPortionArray: any[] = [];
+
+    // Nếu có mảng originalPricePerPortion, sử dụng nó để tạo mảng mới
+    if (
+      Array.isArray(productToSend['originalPricePerPortion']) &&
+      productToSend['originalPricePerPortion'].length > 0
+    ) {
+      console.log('Sử dụng originalPricePerPortion để tạo mảng mới');
+
+      // Sao chép mảng gốc để lưu trữ
+      newPricePerPortionArray = JSON.parse(
+        JSON.stringify(productToSend['originalPricePerPortion'])
+      );
+
+      // Cập nhật giá và số lượng từ form
+      newPricePerPortionArray.forEach((item) => {
+        if (item.portion) {
+          // Cập nhật giá từ form
+          item.price = Number(productToSend.pricePerPortion[item.portion]) || 0;
+
+          // Cập nhật số lượng từ form
+          item.quantity = Number(productToSend[`quantity${item.portion}`]) || 0;
+
+          console.log(
+            `Cập nhật khẩu phần ${item.portion}: giá=${item.price}, số lượng=${item.quantity}`
+          );
+        }
+      });
+    } else {
+      // Nếu không có originalPricePerPortion, tạo mảng mới từ cấu trúc form
+      console.log('Tạo mảng mới từ cấu trúc form');
+
+      // Lấy các khẩu phần cần xử lý
+      const portions = ['2', '4'];
+
+      // Tạo mảng mới
+      portions.forEach((portion) => {
+        const price = Number(productToSend.pricePerPortion[portion]) || 0;
+        const quantity = Number(productToSend[`quantity${portion}`]) || 0;
+
+        console.log(
+          `Tạo khẩu phần ${portion}: giá=${price}, số lượng=${quantity}`
+        );
+
+        newPricePerPortionArray.push({
+          portion: portion,
+          price: price,
+          quantity: quantity,
+        });
+      });
     }
-    productToSend.portionQuantities['2'] = productToSend['quantity2'] || 0;
-    productToSend.portionQuantities['4'] = productToSend['quantity4'] || 0;
+
+    // Ghi đè pricePerPortion bằng mảng mới
+    productToSend.pricePerPortion = newPricePerPortionArray;
+
+    // Log để kiểm tra
+    console.log(
+      'pricePerPortion trước khi gửi:',
+      productToSend.pricePerPortion
+    );
+
+    // Cập nhật trạng thái chính của sản phẩm dựa trên tổng số lượng
+    const totalQuantity = newPricePerPortionArray.reduce(
+      (sum, item) => sum + (Number(item.quantity) || 0),
+      0
+    );
+
+    if (totalQuantity === 0) {
+      productToSend.status = 'Hết hàng';
+      console.log('-> Đặt trạng thái thành Hết hàng (tổng số lượng = 0)');
+    } else {
+      productToSend.status = 'Còn hàng';
+      console.log('-> Đặt trạng thái thành Còn hàng (tổng số lượng > 0)');
+    }
 
     // Đảm bảo expirationDate được xử lý đúng định dạng
     if (
@@ -198,6 +375,7 @@ export class ProductDetailComponent implements OnInit {
     delete productToSend['quantity4'];
     delete productToSend['status2'];
     delete productToSend['status4'];
+    delete productToSend['originalPricePerPortion'];
 
     return productToSend;
   }
@@ -231,6 +409,12 @@ export class ProductDetailComponent implements OnInit {
           this.isLoading = false;
           alert('Cập nhật sản phẩm thành công!');
           this.pendingChanges = false;
+
+          // Sau khi cập nhật thành công, lưu thông tin vào localStorage để thông báo cần làm mới
+          localStorage.setItem('productUpdated', 'true');
+
+          // Chuyển hướng về trang danh sách sản phẩm
+          this.router.navigate(['/san-pham']);
         },
         error: (error) => {
           this.isLoading = false;
@@ -358,82 +542,27 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  // Xóa sản phẩm liên quan
-  removeRelatedProduct(index: number): void {
-    if (this.product.relatedProductIds) {
-      this.product.relatedProductIds.splice(index, 1);
-      this.pendingChanges = true;
-    }
-  }
-
-  // Xóa công thức gợi ý
-  removeSuggestedRecipe(index: number): void {
-    this.product.suggestedRecipeIds.splice(index, 1);
-    this.pendingChanges = true;
-  }
-
-  // Mở hộp thoại chọn sản phẩm liên quan
-  openRelatedProductsDialog(): void {
-    // Đảm bảo relatedProductIds là mảng chuỗi
-    if (!Array.isArray(this.product.relatedProductIds)) {
-      this.product.relatedProductIds = [];
-    }
-
-    // Chuyển đổi các phần tử thành chuỗi nếu cần
-    this.product.relatedProductIds = this.product.relatedProductIds.map(
-      (item: any) => {
-        if (typeof item === 'object' && item !== null) {
-          return item._id || JSON.stringify(item);
-        }
-        return String(item);
-      }
-    );
-
-    // Tạm thời thêm ID mẫu cho testing
-    const randomId = 'GNL' + Math.floor(Math.random() * 10);
-    this.product.relatedProductIds.push(randomId);
-
-    this.pendingChanges = true;
-
-    // TODO: Triển khai hộp thoại chọn sản phẩm thực tế
-    alert('Chức năng chọn sản phẩm liên quan đang được phát triển!');
-  }
-
-  // Mở hộp thoại chọn công thức gợi ý
-  openSuggestedRecipesDialog(): void {
-    // Đảm bảo suggestedRecipeIds là mảng
-    if (!Array.isArray(this.product.suggestedRecipeIds)) {
-      this.product.suggestedRecipeIds = [];
-    }
-
-    // Tạm thời thêm ID mẫu cho testing
-    const randomId = 'recipe_' + Math.floor(Math.random() * 100);
-    this.product.suggestedRecipeIds.push(randomId);
-    this.pendingChanges = true;
-
-    // TODO: Triển khai hộp thoại chọn công thức thực tế
-    alert('Chức năng chọn công thức gợi ý đang được phát triển!');
-  }
-
   // Phương thức cập nhật trạng thái dựa trên số lượng
   updateStatusBasedOnQuantity(portion: string): void {
     if (portion === '2') {
-      if (this.product['quantity2'] === 0) {
+      // Chuyển đổi quantity2 sang số nguyên
+      const quantity2 = parseInt(this.product['quantity2']) || 0;
+      this.product['quantity2'] = quantity2;
+
+      if (quantity2 === 0) {
         this.product['status2'] = 'Hết hàng';
-      } else if (
-        this.product['status2'] === 'Hết hàng' &&
-        this.product['quantity2'] > 0
-      ) {
+      } else if (this.product['status2'] === 'Hết hàng' && quantity2 > 0) {
         // Nếu số lượng > 0 và đang là 'Hết hàng', chuyển lại thành 'Còn hàng'
         this.product['status2'] = 'Còn hàng';
       }
     } else if (portion === '4') {
-      if (this.product['quantity4'] === 0) {
+      // Chuyển đổi quantity4 sang số nguyên
+      const quantity4 = parseInt(this.product['quantity4']) || 0;
+      this.product['quantity4'] = quantity4;
+
+      if (quantity4 === 0) {
         this.product['status4'] = 'Hết hàng';
-      } else if (
-        this.product['status4'] === 'Hết hàng' &&
-        this.product['quantity4'] > 0
-      ) {
+      } else if (this.product['status4'] === 'Hết hàng' && quantity4 > 0) {
         // Nếu số lượng > 0 và đang là 'Hết hàng', chuyển lại thành 'Còn hàng'
         this.product['status4'] = 'Còn hàng';
       }

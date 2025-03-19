@@ -19,8 +19,6 @@ export interface Product {
   storage: string;
   expirationDate: string;
   tags: string[];
-  relatedProductIds: string[];
-  suggestedRecipeIds: string[];
   region: string;
   category: string;
   quantity?: number;
