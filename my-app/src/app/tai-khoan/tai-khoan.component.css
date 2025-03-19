@@ -414,3 +414,105 @@ input.ng-invalid.ng-touched {
 .toast-fadeout {
   animation: fadeOut 0.3s ease-in forwards;
 }
+
+/* Styles cho trang Sổ địa chỉ */
+.address-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.address-item {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.address-item:last-child {
+  border-bottom: none;
+}
+
+.address-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 15px;
+}
+
+.default-badge {
+  background-color: var(--color-camdam);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.empty-state {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.delete-btn {
+  border-color: #dc3545 !important;
+  color: #dc3545 !important;
+}
+
+.delete-btn:hover {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .flex {
+    flex-direction: column;
+  }
+
+  .address-actions {
+    flex-direction: row;
+    margin-top: 15px;
+    margin-left: 0;
+  }
+
+  .container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .container-rightpanel {
+    width: 100%;
+  }
+}
+
+/* Modal styles */
+.fixed {
+  z-index: 1000;
+}
+
+.form-group {
+  margin-bottom: 0.5rem;
+}
+
+.form-group label {
+  color: var(--text-dark);
+}
+
+.form-group input.ng-invalid.ng-touched {
+  border-color: var(--red-500);
+}
+
+/* Loading spinner */
+.animate-spin {
+  border-color: var(--primary);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

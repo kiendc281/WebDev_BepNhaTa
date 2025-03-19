@@ -4,6 +4,17 @@
       <div class="checkout-info">
         <h2 class="section-title">Thông tin thanh toán</h2>
 
+        <!-- Button hiển thị danh sách địa chỉ, chỉ hiện khi đã đăng nhập -->
+        <div class="address-selection-container mb-3" *ngIf="isLoggedIn">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            (click)="showAddressModal()"
+          >
+            <i class="bi bi-geo-alt"></i> Sổ địa chỉ
+          </button>
+        </div>
+
         <div class="form-group">
           <label for="fullname">Họ và tên</label>
           <input type="text" id="fullname" class="form-control" />
@@ -106,7 +117,13 @@
         </div>
 
         <div class="form-check" *ngIf="isLoggedIn">
-          <input type="checkbox" class="form-check-input" id="saveAddress" />
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="saveAddress"
+            [(ngModel)]="orderFormData.saveAddress"
+            (change)="onSaveAddressChange($event)"
+          />
           <label class="form-check-label" for="saveAddress"
             >Lưu vào sổ địa chỉ để dùng cho lần mua hàng tiếp theo</label
           >
@@ -450,6 +467,88 @@
         </button>
         <button type="button" class="btn btn-primary" (click)="confirmOrder()">
           Xác nhận đặt hàng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Address Selection Modal -->
+<div
+  class="modal fade"
+  id="addressSelectionModal"
+  tabindex="-1"
+  aria-labelledby="addressSelectionModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addressSelectionModalLabel">
+          Chọn địa chỉ giao hàng
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="loadingAddresses" class="text-center p-3">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Đang tải...</span>
+          </div>
+          <p class="mt-2">Đang tải danh sách địa chỉ...</p>
+        </div>
+
+        <div
+          *ngIf="!loadingAddresses && userAddresses.length === 0"
+          class="text-center p-3"
+        >
+          <p>Bạn chưa có địa chỉ nào. Vui lòng nhập thông tin địa chỉ mới.</p>
+        </div>
+
+        <div
+          *ngIf="!loadingAddresses && userAddresses.length > 0"
+          class="address-list"
+        >
+          <div
+            *ngFor="let address of userAddresses"
+            class="address-item"
+            [class.selected]="selectedAddressId === address._id"
+            (click)="selectAddress(address)"
+          >
+            <div class="address-info">
+              <div class="recipient-name">
+                {{ address.recipientName || "Chưa có tên" }}
+              </div>
+              <div class="recipient-phone">
+                {{ address.recipientPhone || "Chưa có SĐT" }}
+              </div>
+              <div class="recipient-email" *ngIf="address.email">
+                {{ address.email }}
+              </div>
+              <div class="address-detail">
+                {{
+                  formatAddressFromParts(
+                    address.address || address.detail || "",
+                    address.ward || "",
+                    address.district || "",
+                    address.province || address.city || ""
+                  )
+                }}
+              </div>
+              <span *ngIf="address.isDefault" class="default-badge"
+                >Mặc định</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Đóng
         </button>
       </div>
     </div>

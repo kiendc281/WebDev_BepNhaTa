@@ -100,10 +100,10 @@ exports.getAddressById = async (req, res) => {
  */
 exports.createAddress = async (req, res) => {
     try {
-        const { accountId, city, district, ward, detail, isDefault } = req.body;
+        const { accountId, recipientName, recipientPhone, city, district, ward, detail, isDefault } = req.body;
         
         // Kiểm tra các trường bắt buộc
-        if (!accountId || !city || !district || !ward || !detail) {
+        if (!accountId || !recipientName || !recipientPhone || !city || !district || !ward || !detail) {
             return res.status(400).json({
                 status: 'error',
                 message: 'Vui lòng nhập đầy đủ thông tin địa chỉ'
@@ -121,6 +121,8 @@ exports.createAddress = async (req, res) => {
         // Tạo địa chỉ mới
         const newAddress = new Address({
             accountId,
+            recipientName,
+            recipientPhone,
             city,
             district,
             ward,
@@ -151,7 +153,7 @@ exports.createAddress = async (req, res) => {
 exports.updateAddress = async (req, res) => {
     try {
         const { id } = req.params;
-        const { city, district, ward, detail, isDefault } = req.body;
+        const { recipientName, recipientPhone, city, district, ward, detail, isDefault } = req.body;
         
         if (!id) {
             return res.status(400).json({
@@ -187,6 +189,8 @@ exports.updateAddress = async (req, res) => {
 
         // Cập nhật địa chỉ
         const updatedAddress = await Address.findByIdAndUpdate(id, {
+            recipientName: recipientName || address.recipientName,
+            recipientPhone: recipientPhone || address.recipientPhone,
             city: city || address.city,
             district: district || address.district,
             ward: ward || address.ward,

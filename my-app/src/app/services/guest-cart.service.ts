@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, throwError, of } from 'rxjs';
 import { Cart, CartItem } from '../models/cart.interface';
 import { Product } from '../models/product.interface';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,7 @@ export class GuestCartService {
   private cartItems = new BehaviorSubject<CartItem[]>([]);
   public cartItems$ = this.cartItems.asObservable();
 
-  constructor() {
+  constructor(private http: HttpClient) {
     console.log('GuestCartService khởi tạo');
     // Khởi tạo giỏ hàng từ localStorage khi khởi động service
     this.loadLocalCart();
@@ -212,5 +215,62 @@ export class GuestCartService {
     }
     
     console.log('===========================');
+  }
+
+  /**
+   * Cập nhật số lượng nguyên liệu sau khi đặt hàng thành công
+   * @param orderId - ID của đơn hàng mới tạo
+   * @param orderItems - Các sản phẩm trong đơn hàng
+   */
+  updateInventoryAfterOrder(orderId: string, orderItems: CartItem[]): Observable<any> {
+    console.log('Cập nhật số lượng nguyên liệu sau khi đặt hàng thành công:', { orderId, orderItems });
+    
+    if (!orderItems || orderItems.length === 0) {
+      console.error('Không có sản phẩm để cập nhật kho!');
+      return of({ status: 'error', message: 'Không có sản phẩm để cập nhật kho' });
+    }
+    
+    // Log chi tiết từng sản phẩm để kiểm tra
+    orderItems.forEach((item, index) => {
+      console.log(`Chi tiết sản phẩm #${index + 1}:`, {
+        productId: item.productId,
+        quantity: item.quantity,
+        servingSize: item.servingSize || 'Không có',
+        price: item.price
+      });
+    });
+    
+    // Chuẩn bị dữ liệu cập nhật kho
+    const inventoryUpdateData = orderItems.map(item => ({
+      productId: item.productId,
+      quantity: item.quantity,
+      servingSize: item.servingSize || '2' // Mặc định là 2 người nếu không có
+    }));
+    
+    console.log('Dữ liệu gửi đi để cập nhật kho:', {
+      orderId,
+      items: inventoryUpdateData
+    });
+    
+    // Gọi API cập nhật kho
+    const endpoint = `${environment.apiUrl}/ingredients/update-inventory`;
+    console.log('Gọi API endpoint:', endpoint);
+    
+    return this.http.post(endpoint, {
+      orderId,
+      items: inventoryUpdateData
+    }).pipe(
+      tap(response => {
+        console.log('Đã cập nhật số lượng nguyên liệu thành công:', response);
+      }),
+      catchError(error => {
+        console.error('Lỗi khi cập nhật số lượng nguyên liệu:', error);
+        if (error.error) {
+          console.error('Chi tiết lỗi:', error.error);
+        }
+        // Không ảnh hưởng đến luồng đặt hàng, chỉ log lỗi
+        return of({ status: 'warning', message: 'Đặt hàng thành công nhưng cập nhật kho thất bại' });
+      })
+    );
   }
 } 

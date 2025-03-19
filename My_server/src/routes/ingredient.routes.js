@@ -20,4 +20,7 @@ router.patch('/ingredients/:id/quantity', IngredientController.updateQuantity);
 // Xóa ingredient
 router.delete('/ingredients/:id', IngredientController.deleteIngredient);
 
+// Cập nhật số lượng nguyên liệu sau khi đặt hàng
+router.post('/ingredients/update-inventory', IngredientController.updateInventoryAfterOrder);
+
 module.exports = router; 

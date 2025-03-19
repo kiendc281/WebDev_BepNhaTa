@@ -7,6 +7,18 @@ const addressSchema = new Schema({
         type: String,
         required: true
     },
+    recipientName: {
+        type: String,
+        required: true
+    },
+    recipientPhone: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: false
+    },
     city: {
         type: String,
         required: true

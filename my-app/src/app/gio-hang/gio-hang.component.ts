@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { OrderService } from '../services/order.service';
 import { Router } from '@angular/router';
+import { Address, AddressService } from '../services/address.service';
 declare var bootstrap: any;
 
 @Component({
@@ -28,7 +29,12 @@ export class GioHangComponent implements OnInit, OnDestroy {
   private authChangeSubscription?: Subscription;
   private previousLoginState: boolean = false;
   private modal: any;
-  private orderFormData: {
+  private addressModal: any;
+  userAddresses: Address[] = [];
+  selectedAddressId: string = '';
+  loadingAddresses: boolean = false;
+  
+  public orderFormData: {
     fullName: string;
     phone: string;
     email: string;
@@ -50,6 +56,7 @@ export class GioHangComponent implements OnInit, OnDestroy {
     private cartService: CartManagerService, 
     private authService: AuthService,
     private orderService: OrderService,
+    private addressService: AddressService,
     private router: Router
   ) {}
 
@@ -59,6 +66,10 @@ export class GioHangComponent implements OnInit, OnDestroy {
     this.previousLoginState = this.authService.isLoggedIn();
     this.isLoggedIn = this.previousLoginState;
     console.log('Trạng thái đăng nhập ban đầu:', this.previousLoginState);
+    
+    // Reset giá trị saveAddress để đảm bảo mặc định là false
+    this.orderFormData.saveAddress = false;
+    console.log('Đặt lại giá trị saveAddress:', this.orderFormData.saveAddress);
     
     // Gọi debug để kiểm tra giỏ hàng hiện tại
     this.cartService.debugCart();
@@ -75,8 +86,16 @@ export class GioHangComponent implements OnInit, OnDestroy {
     // Đăng ký lắng nghe thay đổi trạng thái đăng nhập
     this.setupAuthChangeListener();
     
-    // Initialize Bootstrap modal
-    this.modal = new bootstrap.Modal(document.getElementById('orderConfirmationModal'));
+    // Initialize Bootstrap modals
+    setTimeout(() => {
+      this.modal = new bootstrap.Modal(document.getElementById('orderConfirmationModal'));
+      this.addressModal = new bootstrap.Modal(document.getElementById('addressSelectionModal'));
+      
+      // Nếu người dùng đã đăng nhập, tải danh sách địa chỉ
+      if (this.isLoggedIn) {
+        this.loadUserAddresses();
+      }
+    }, 500);
   }
 
   ngOnDestroy(): void {
@@ -275,6 +294,15 @@ export class GioHangComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Ghi log khi checkbox lưu địa chỉ thay đổi
+   */
+  onSaveAddressChange(event: any): void {
+    console.log('Save address checkbox changed:', event.target.checked);
+    this.orderFormData.saveAddress = event.target.checked;
+    console.log('orderFormData.saveAddress updated:', this.orderFormData.saveAddress);
+  }
+
+  /**
    * Chuẩn bị thanh toán và hiển thị modal xác nhận
    */
   proceedToCheckout(): void {
@@ -288,8 +316,15 @@ export class GioHangComponent implements OnInit, OnDestroy {
     const fullName = (document.getElementById('fullname') as HTMLInputElement)?.value;
     const phone = (document.getElementById('phone') as HTMLInputElement)?.value;
     const email = (document.getElementById('email') as HTMLInputElement)?.value;
-    const address = (document.getElementById('address') as HTMLInputElement)?.value;
+    const addressDetail = (document.getElementById('address') as HTMLInputElement)?.value;
     const saveAddress = (document.getElementById('saveAddress') as HTMLInputElement)?.checked;
+    
+    console.log('Thông tin nhập từ form:');
+    console.log('- Họ tên:', fullName);
+    console.log('- SĐT:', phone);
+    console.log('- Email:', email);
+    console.log('- Địa chỉ:', addressDetail);
+    console.log('- Lưu địa chỉ (checkbox):', saveAddress);
     
     // Lấy giá trị của các select box địa chỉ
     const provinceSelect = document.getElementById('province') as HTMLSelectElement;
@@ -307,7 +342,7 @@ export class GioHangComponent implements OnInit, OnDestroy {
     const note = (document.getElementById('note') as HTMLInputElement)?.value;
     
     // Kiểm tra thông tin bắt buộc
-    if (!fullName || !phone || !address) {
+    if (!fullName || !phone || !addressDetail) {
       alert('Vui lòng nhập đầy đủ thông tin giao hàng (họ tên, số điện thoại và địa chỉ)');
       return;
     }
@@ -330,13 +365,13 @@ export class GioHangComponent implements OnInit, OnDestroy {
     
     // Lấy phương thức thanh toán
     const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked') as HTMLInputElement;
-    const paymentMethodValue = paymentMethod ? paymentMethod.id : 'cod';
+    const paymentMethodValue = paymentMethod ? paymentMethod.id : 'COD';
     
     // Thiết lập dữ liệu cho modal xác nhận
     (document.getElementById('review-fullname') as HTMLElement).innerText = fullName;
     (document.getElementById('review-phone') as HTMLElement).innerText = phone;
     (document.getElementById('review-email') as HTMLElement).innerText = email || 'Không có';
-    (document.getElementById('review-address') as HTMLElement).innerText = address;
+    (document.getElementById('review-address') as HTMLElement).innerText = addressDetail;
     (document.getElementById('review-province') as HTMLElement).innerText = province;
     (document.getElementById('review-district') as HTMLElement).innerText = district || 'Không có';
     (document.getElementById('review-ward') as HTMLElement).innerText = ward || 'Không có';
@@ -360,11 +395,15 @@ export class GioHangComponent implements OnInit, OnDestroy {
       fullName,
       phone,
       email,
-      address: this.formatAddress(address, ward, district, province),
+      address: this.formatAddress(addressDetail, ward, district, province),
       note,
       paymentMethod: paymentMethodValue,
       saveAddress
     };
+    
+    console.log('orderFormData sau khi được lưu:');
+    console.log('- saveAddress:', this.orderFormData.saveAddress);
+    console.log('- Giá trị checkbox gốc:', saveAddress);
     
     // Hiển thị modal xác nhận
     this.modal.show();
@@ -392,98 +431,220 @@ export class GioHangComponent implements OnInit, OnDestroy {
     console.log('Xác nhận đặt hàng với thông tin:', this.orderFormData);
     this.loading = true;
     
-    // Chuẩn bị dữ liệu đơn hàng dựa trên trạng thái đăng nhập
-    let orderData: any;
+    // Kiểm tra và đảm bảo tất cả các sản phẩm có servingSize
+    this.cartItems.forEach((item, index) => {
+      console.log(`Sản phẩm trong giỏ hàng #${index + 1}:`, JSON.stringify(item));
+      if (!item.servingSize) {
+        console.warn(`Sản phẩm ID ${item.productId} không có servingSize, thiết lập mặc định là '2'`);
+        item.servingSize = '2';
+      }
+    });
     
-    if (this.isLoggedIn) {
-      // Người dùng đã đăng nhập
-      const user = this.authService.getCurrentUser();
-      const userId = user?._id || user?.id;
+    // Lấy thông tin người dùng nếu đã đăng nhập
+    const user = this.isLoggedIn ? this.authService.getCurrentUser() : null;
+    const userId = user?._id || user?.id;
+    
+    // Sử dụng accountId là userId nếu đã đăng nhập, ngược lại là "guest"
+    const accountId = this.isLoggedIn && userId ? userId : 'guest';
+    
+    // Lấy email trực tiếp từ form để đảm bảo có giá trị mới nhất
+    const emailValue = (document.getElementById('email') as HTMLInputElement)?.value || '';
+    console.log('Email lấy trực tiếp từ DOM:', emailValue);
+    
+    // Chuẩn bị thông tin khách hàng
+    const guestInfo = {
+      fullName: this.orderFormData.fullName,
+      phone: this.orderFormData.phone,
+      email: emailValue || '', // Sử dụng giá trị email được lấy trực tiếp từ DOM
+      address: this.orderFormData.address
+    };
+    
+    console.log('Thông tin khách hàng (guestInfo):', guestInfo);
+    
+    // Xử lý lưu địa chỉ mới vào sổ địa chỉ (nếu người dùng đã đăng nhập, có tích vào ô lưu địa chỉ, và không dùng địa chỉ có sẵn)
+    console.log('------KỸ THUẬT KỸ THUẬT------');
+    console.log('Trạng thái đăng nhập:', this.isLoggedIn);
+    console.log('User ID:', userId);
+    console.log('Tích lưu địa chỉ:', this.orderFormData.saveAddress);
+    console.log('selectedAddressId:', this.selectedAddressId);
+    console.log('Email hiện tại:', emailValue);
+    
+    // Kiểm tra giá trị checkbox trực tiếp từ DOM
+    const saveAddressElement = document.getElementById('saveAddress') as HTMLInputElement;
+    const isDOMSaveChecked = saveAddressElement?.checked;
+    console.log('Trạng thái checkbox từ DOM:', isDOMSaveChecked);
+    console.log('Trạng thái checkbox từ orderFormData:', this.orderFormData.saveAddress);
+    
+    // Lấy thông tin địa chỉ hiện tại từ form
+    const addressDetail = (document.getElementById('address') as HTMLInputElement)?.value;
+    const provinceSelect = document.getElementById('province') as HTMLSelectElement;
+    const districtSelect = document.getElementById('district') as HTMLSelectElement;
+    const wardSelect = document.getElementById('ward') as HTMLSelectElement;
+    
+    const province = provinceSelect?.options[provinceSelect?.selectedIndex]?.text || '';
+    const district = districtSelect?.selectedIndex > 0 ? districtSelect?.options[districtSelect?.selectedIndex]?.text : '';
+    const ward = wardSelect?.selectedIndex > 0 ? wardSelect?.options[wardSelect?.selectedIndex]?.text : '';
+    
+    console.log('Đang sử dụng địa chỉ:', {
+      detail: addressDetail,
+      province,
+      district,
+      ward,
+      fullAddress: this.orderFormData.address,
+      email: emailValue
+    });
+    console.log('------KỸ THUẬT KỸ THUẬT------');
+    
+    // Kiểm tra xem người dùng có đăng nhập và tích lưu địa chỉ không
+    if (this.isLoggedIn && userId && this.orderFormData.saveAddress) {
+      console.log('Đang xử lý lưu địa chỉ mới...');
       
-      if (!userId) {
-        alert('Không thể xác định ID người dùng. Vui lòng đăng nhập lại!');
-        this.loading = false;
-        return;
-      }
-      
-      // TODO: Lấy addressId từ danh sách địa chỉ của người dùng
-      // Hiện tại đang để trống addressId, bạn cần tích hợp với service quản lý địa chỉ
-      
-      // Nếu người dùng chọn lưu địa chỉ, tạo địa chỉ mới
-      if (this.orderFormData.saveAddress) {
-        // TODO: Lưu địa chỉ mới nếu người dùng chọn lưu
-        // Nên tạo một AddressService riêng để quản lý
-      }
-      
-      // Chuyển đổi paymentMethod thành chữ hoa để phù hợp với enum trong model
-      const paymentMethod = this.orderFormData.paymentMethod === 'cod' ? 'COD' : this.orderFormData.paymentMethod;
-      
-      orderData = this.orderService.prepareUserOrderData(
-        userId,
-        'placeholder-address-id', // Cần thay thế bằng addressId thực tế
-        this.cartItems,
-        this.totalPrice,
-        paymentMethod
-      );
-      
-      // Nếu không có addressId, sử dụng dữ liệu người dùng làm thông tin khách
-      if (!orderData.addressId) {
-        orderData.guestInfo = {
-          fullName: this.orderFormData.fullName,
-          phone: this.orderFormData.phone,
-          email: this.orderFormData.email,
-          address: this.orderFormData.address,
-          note: this.orderFormData.note
+      // Kiểm tra tính đầy đủ
+      if (!addressDetail || !province || !district || !ward) {
+        console.warn('Không thể lưu địa chỉ: Thiếu thông tin bắt buộc:', { 
+          detail: addressDetail, city: province, district, ward 
+        });
+      } else {
+        console.log('Thông tin địa chỉ trích xuất:', { 
+          detail: addressDetail, city: province, district, ward, email: emailValue
+        });
+        
+        // Đảm bảo email từ DOM được lấy mới nhất trước khi tạo đối tượng
+        const formEmail = (document.getElementById('email') as HTMLInputElement)?.value;
+        console.log('Email trước khi lưu địa chỉ (lấy trực tiếp từ form):', formEmail);
+        
+        // Kiểm tra kỹ hơn giá trị email
+        const isEmailEmpty = !formEmail || formEmail.trim() === '';
+        console.log('Email có trống không?', isEmailEmpty);
+        
+        // Đảm bảo email không phải là null hoặc undefined khi chuyển sang JSON
+        const safeEmailValue = formEmail || '';
+        
+        // Tạo đối tượng địa chỉ mới với định dạng rõ ràng
+        const addressObject = {
+          accountId: userId,
+          recipientName: this.orderFormData.fullName,
+          recipientPhone: this.orderFormData.phone,
+          email: safeEmailValue, // Sử dụng biến email đã được kiểm tra
+          detail: addressDetail,
+          ward: ward,
+          district: district,
+          city: province,
+          isDefault: false
         };
-        delete orderData.addressId; // Xóa addressId nếu không có
+
+        // Chuyển đối tượng thành JSON string và log để kiểm tra
+        const addressJSON = JSON.stringify(addressObject);
+        console.log('JSON chuẩn bị gửi đi:', addressJSON);
+        
+        // Parse lại JSON để kiểm tra
+        const parsedAddress = JSON.parse(addressJSON);
+        console.log('Sau khi parse JSON:', parsedAddress);
+        console.log('Email sau khi parse JSON:', parsedAddress.email);
+
+        // Kiểm tra lần cuối tất cả các trường bắt buộc
+        if (!parsedAddress.accountId || !parsedAddress.recipientName || !parsedAddress.recipientPhone || 
+            !parsedAddress.city || !parsedAddress.district || !parsedAddress.ward || !parsedAddress.detail) {
+          console.error('Không thể lưu địa chỉ: Thiếu thông tin bắt buộc trong đối tượng địa chỉ:', parsedAddress);
+        } else {
+          // Sử dụng đối tượng đã được parse lại để gửi lên server
+          this.addressService.addAddress(parsedAddress).subscribe({
+            next: (savedAddress) => {
+              console.log('Đã lưu địa chỉ mới thành công:', savedAddress);
+              
+              // Kiểm tra chi tiết phản hồi từ API
+              console.log('Phân tích chi tiết phản hồi từ API:');
+              console.log('Kiểu dữ liệu phản hồi:', typeof savedAddress);
+              
+              if (savedAddress) {
+                // In ra tất cả các thuộc tính
+                console.log('Tất cả thuộc tính của địa chỉ đã lưu:');
+                for (const [key, value] of Object.entries(savedAddress)) {
+                  console.log(`${key}: "${value}" (kiểu: ${typeof value})`);
+                }
+                
+                // Kiểm tra cụ thể trường email
+                console.log('Email trong địa chỉ đã lưu:', savedAddress.email);
+                console.log('Email gốc đã gửi đi:', parsedAddress.email);
+                console.log('Email có trong yêu cầu?', 'email' in parsedAddress);
+                console.log('Email có trong phản hồi?', 'email' in savedAddress);
+                
+                if (!savedAddress.email && parsedAddress.email) {
+                  console.warn('CHÚ Ý: Email không được lưu trong địa chỉ mới mặc dù đã gửi trong yêu cầu!');
+                  console.warn('Chi tiết của yêu cầu:', parsedAddress);
+                  console.warn('Chi tiết của phản hồi:', savedAddress);
+                }
+              }
+              
+              // Hiển thị thông báo thành công cho người dùng
+              setTimeout(() => {
+                alert('Đã lưu địa chỉ mới vào sổ địa chỉ của bạn!');
+              }, 1000);
+              
+              if (savedAddress && savedAddress._id) {
+                this.selectedAddressId = savedAddress._id;
+              }
+            },
+            error: (error) => {
+              console.error('Lỗi khi lưu địa chỉ mới:', error);
+              if (error.error && error.error.message) {
+                console.error('Chi tiết lỗi:', error.error.message);
+                alert('Không thể lưu địa chỉ: ' + error.error.message);
+              } else {
+                alert('Không thể lưu địa chỉ vào sổ. Vui lòng thử lại sau.');
+              }
+            }
+          });
+        }
       }
     } else {
-      // Khách vãng lai
-      // Chuyển đổi paymentMethod thành chữ hoa để phù hợp với enum trong model
-      const paymentMethod = this.orderFormData.paymentMethod === 'cod' ? 'COD' : this.orderFormData.paymentMethod;
-      
-      orderData = this.orderService.prepareGuestOrderData(
-        this.cartItems,
-        this.totalPrice,
-        this.orderFormData,
-        paymentMethod
-      );
+      console.log('Không lưu địa chỉ mới, kiểm tra điều kiện:');
+      console.log('- Đã đăng nhập:', this.isLoggedIn);
+      console.log('- Có user ID:', !!userId);
+      console.log('- Đã tích lưu địa chỉ:', this.orderFormData.saveAddress);
     }
     
-    // Gửi đơn hàng lên server
+    // Chuẩn bị phương thức thanh toán
+    const paymentMethod = this.orderFormData.paymentMethod.toUpperCase();
+    
+    // Chuẩn bị dữ liệu đơn hàng với cùng một cấu trúc cho cả hai trường hợp
+    const orderData = {
+      accountId: accountId,
+      itemOrder: this.cartItems.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        totalPrice: item.price * item.quantity,
+        servingSize: item.servingSize
+      })),
+      prePrice: this.totalPrice,
+      discount: 0,
+      shippingFee: 0,
+      totalPrice: this.totalPrice,
+      paymentMethod: paymentMethod,
+      guestInfo: guestInfo  // Luôn sử dụng guestInfo, bất kể có đăng nhập hay không
+    };
+
     console.log('Dữ liệu đơn hàng gửi đi:', JSON.stringify(orderData, null, 2));
+
+    // Gửi đơn hàng lên server
     this.orderService.createOrder(orderData).subscribe({
       next: (response) => {
         console.log('Đặt hàng thành công:', response);
-        
-        // Ẩn modal xác nhận
         this.modal.hide();
-        
-        // Xóa giỏ hàng
         this.cartService.clearCart().subscribe();
-        
-        // Hiển thị thông báo thành công
         alert('Đặt hàng thành công! Cảm ơn bạn đã mua hàng.');
-        
-        // Chuyển hướng đến trang chủ hoặc trang cảm ơn
         this.router.navigate(['/trang-chu']);
       },
       error: (error) => {
         console.error('Lỗi khi đặt hàng:', error);
-        
-        // Hiển thị thông tin lỗi chi tiết hơn
         let errorMessage = 'Có lỗi xảy ra khi đặt hàng. ';
-        
-        if (error.status === 0) {
-          errorMessage += 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.';
+        if (error.error?.message) {
+          errorMessage += error.error.message;
         } else if (error.status === 400) {
-          errorMessage += error.error?.message || 'Dữ liệu đơn hàng không hợp lệ.';
-        } else if (error.status === 500) {
-          errorMessage += 'Lỗi máy chủ nội bộ. Vui lòng thử lại sau.';
+          errorMessage += 'Thông tin đơn hàng không hợp lệ.';
         } else {
-          errorMessage += error.error?.message || 'Vui lòng thử lại sau.';
+          errorMessage += 'Vui lòng thử lại sau.';
         }
-        
         alert(errorMessage);
         this.loading = false;
       },
@@ -534,5 +695,143 @@ export class GioHangComponent implements OnInit, OnDestroy {
     selectedItems.forEach(item => {
       this.removeItem(item);
     });
+  }
+
+  /**
+   * Tải địa chỉ của người dùng
+   */
+  loadUserAddresses(): void {
+    if (!this.isLoggedIn) {
+      return;
+    }
+    
+    this.loadingAddresses = true;
+    console.log('Bắt đầu tải danh sách địa chỉ...');
+    
+    this.addressService.getUserAddresses().subscribe({
+      next: (response) => {
+        console.log('Đã tải địa chỉ người dùng thành công:', response);
+        if (response && response.data && Array.isArray(response.data)) {
+          this.userAddresses = response.data;
+          console.log(`Đã tìm thấy ${this.userAddresses.length} địa chỉ`);
+          
+          // Nếu có địa chỉ mặc định, chọn nó
+          const defaultAddress = this.userAddresses.find(addr => addr.isDefault);
+          if (defaultAddress) {
+            this.selectedAddressId = defaultAddress._id;
+            console.log('Đã chọn địa chỉ mặc định:', defaultAddress);
+          }
+        } else {
+          this.userAddresses = [];
+          console.warn('Không tìm thấy địa chỉ nào hoặc dữ liệu không đúng định dạng');
+        }
+        this.loadingAddresses = false;
+      },
+      error: (error) => {
+        console.error('Lỗi khi tải địa chỉ người dùng:', error);
+        // Log thông tin chi tiết hơn về lỗi
+        if (error.error) {
+          console.error('Chi tiết lỗi:', error.error);
+        }
+        if (error.status) {
+          console.error('HTTP Status:', error.status);
+        }
+        alert('Không thể tải danh sách địa chỉ. Vui lòng thử lại sau.');
+        this.loadingAddresses = false;
+      }
+    });
+  }
+
+  /**
+   * Hiển thị modal chọn địa chỉ
+   */
+  showAddressModal(): void {
+    if (!this.isLoggedIn) {
+      return;
+    }
+    
+    if (this.userAddresses.length === 0) {
+      this.loadUserAddresses();
+    }
+    
+    this.addressModal.show();
+  }
+
+  /**
+   * Chọn địa chỉ từ danh sách
+   */
+  selectAddress(address: Address): void {
+    console.log('Đã chọn địa chỉ:', address);
+    
+    // Cập nhật trường nhập liệu với thông tin địa chỉ đã chọn
+    const fullnameInput = document.getElementById('fullname') as HTMLInputElement;
+    const phoneInput = document.getElementById('phone') as HTMLInputElement;
+    const emailInput = document.getElementById('email') as HTMLInputElement;
+    const addressInput = document.getElementById('address') as HTMLInputElement;
+    const provinceSelect = document.getElementById('province') as HTMLSelectElement;
+    const districtSelect = document.getElementById('district') as HTMLSelectElement;
+    const wardSelect = document.getElementById('ward') as HTMLSelectElement;
+    
+    if (fullnameInput) fullnameInput.value = address.recipientName || '';
+    if (phoneInput) phoneInput.value = address.recipientPhone || '';
+    if (emailInput) emailInput.value = address.email || '';
+    
+    // Xác định các thành phần địa chỉ, xử lý cả 2 format của dữ liệu
+    const addressDetail = address.address || address.detail || '';
+    const wardName = address.ward || '';
+    const districtName = address.district || '';
+    const provinceName = address.province || address.city || '';
+    
+    // Cập nhật các select box
+    if (provinceSelect) {
+      // Tìm và chọn tỉnh/thành phố tương ứng
+      for (let i = 0; i < provinceSelect.options.length; i++) {
+        if (provinceSelect.options[i].text === provinceName) {
+          provinceSelect.selectedIndex = i;
+          break;
+        }
+      }
+    }
+
+    if (districtSelect) {
+      // Tìm và chọn quận/huyện tương ứng
+      for (let i = 0; i < districtSelect.options.length; i++) {
+        if (districtSelect.options[i].text === districtName) {
+          districtSelect.selectedIndex = i;
+          break;
+        }
+      }
+    }
+
+    if (wardSelect) {
+      // Tìm và chọn phường/xã tương ứng
+      for (let i = 0; i < wardSelect.options.length; i++) {
+        if (wardSelect.options[i].text === wardName) {
+          wardSelect.selectedIndex = i;
+          break;
+        }
+      }
+    }
+    
+    // Gộp các thành phần địa chỉ
+    const fullAddress = this.formatAddressFromParts(addressDetail, wardName, districtName, provinceName);
+    if (addressInput) addressInput.value = addressDetail; // Chỉ điền phần địa chỉ chi tiết
+    
+    // Ẩn modal
+    this.addressModal.hide();
+    
+    // Lưu ID địa chỉ đã chọn
+    this.selectedAddressId = address._id;
+  }
+
+  /**
+   * Gộp các thành phần địa chỉ thành một chuỗi
+   */
+  public formatAddressFromParts(addressDetail: string, ward: string, district: string, province: string): string {
+    // Filter out empty or undefined values
+    const parts = [addressDetail, ward, district, province].filter(part => part && part.trim() !== '');
+    
+    // Join the parts with commas
+    return parts.join(', ');
   }
 }

@@ -8,7 +8,10 @@
     "detail": "22 Lê Lợi, Tòa nhà Vincom Center",
     "isDefault": true,
     "createdAt": {"$date": "2023-01-15T10:30:00.000Z"},
-    "updatedAt": {"$date": "2023-01-15T10:30:00.000Z"}
+    "updatedAt": {"$date": "2023-01-15T10:30:00.000Z"},
+    "recipientName": "Nguyễn Văn An",
+    "recipientPhone": "0903123456",
+    "email": "nguyenvanan@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8d1"},
@@ -19,7 +22,10 @@
     "detail": "123 Nguyễn Đình Chiểu, Chung cư Central Garden",
     "isDefault": false,
     "createdAt": {"$date": "2023-02-10T14:20:00.000Z"},
-    "updatedAt": {"$date": "2023-02-10T14:20:00.000Z"}
+    "updatedAt": {"$date": "2023-02-10T14:20:00.000Z"},
+    "recipientName": "Nguyễn Văn An",
+    "recipientPhone": "0903123456",
+    "email": "nguyenvanan@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8d2"},
@@ -30,7 +36,10 @@
     "detail": "456 Nguyễn Lương Bằng, Khu đô thị Phú Mỹ Hưng",
     "isDefault": true,
     "createdAt": {"$date": "2023-03-05T09:15:00.000Z"},
-    "updatedAt": {"$date": "2023-03-05T09:15:00.000Z"}
+    "updatedAt": {"$date": "2023-03-05T09:15:00.000Z"},
+    "recipientName": "Trần Thị Bình",
+    "recipientPhone": "0907234567",
+    "email": "tranthib@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8d3"},
@@ -41,7 +50,10 @@
     "detail": "78 Xuân Thủy, Khu biệt thự Thảo Điền",
     "isDefault": true,
     "createdAt": {"$date": "2023-03-20T16:40:00.000Z"},
-    "updatedAt": {"$date": "2023-03-20T16:40:00.000Z"}
+    "updatedAt": {"$date": "2023-03-20T16:40:00.000Z"},
+    "recipientName": "Lê Văn Cường",
+    "recipientPhone": "0909345678",
+    "email": "levanc@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8d4"},
@@ -52,7 +64,10 @@
     "detail": "235 Điện Biên Phủ, Chung cư The Manor",
     "isDefault": true,
     "createdAt": {"$date": "2023-04-12T11:25:00.000Z"},
-    "updatedAt": {"$date": "2023-04-12T11:25:00.000Z"}
+    "updatedAt": {"$date": "2023-04-12T11:25:00.000Z"},
+    "recipientName": "Phạm Thị Dung",
+    "recipientPhone": "0912456789",
+    "email": "phamthid@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8d5"},
@@ -63,7 +78,10 @@
     "detail": "189 Hoàng Văn Thụ, Khu phố 3",
     "isDefault": false,
     "createdAt": {"$date": "2023-04-25T15:10:00.000Z"},
-    "updatedAt": {"$date": "2023-04-25T15:10:00.000Z"}
+    "updatedAt": {"$date": "2023-04-25T15:10:00.000Z"},
+    "recipientName": "Trần Thị Bình",
+    "recipientPhone": "0907234567",
+    "email": "tranthib@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8d6"},
@@ -74,7 +92,10 @@
     "detail": "67 Cộng Hòa, Chung cư Cộng Hòa Plaza",
     "isDefault": true,
     "createdAt": {"$date": "2023-05-18T10:05:00.000Z"},
-    "updatedAt": {"$date": "2023-05-18T10:05:00.000Z"}
+    "updatedAt": {"$date": "2023-05-18T10:05:00.000Z"},
+    "recipientName": "Hoàng Văn Đạt",
+    "recipientPhone": "0918567890",
+    "email": "hoangvd@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8d7"},
@@ -85,7 +106,10 @@
     "detail": "98 Thành Thái, Khu dân cư An Phú",
     "isDefault": false,
     "createdAt": {"$date": "2023-06-02T17:30:00.000Z"},
-    "updatedAt": {"$date": "2023-06-02T17:30:00.000Z"}
+    "updatedAt": {"$date": "2023-06-02T17:30:00.000Z"},
+    "recipientName": "Lê Văn Cường",
+    "recipientPhone": "0909345678",
+    "email": "levanc@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8d8"},
@@ -96,7 +120,10 @@
     "detail": "321 Quang Trung, Khu chung cư Dream Home Residence",
     "isDefault": true,
     "createdAt": {"$date": "2023-06-20T13:45:00.000Z"},
-    "updatedAt": {"$date": "2023-06-20T13:45:00.000Z"}
+    "updatedAt": {"$date": "2023-06-20T13:45:00.000Z"},
+    "recipientName": "Vũ Thị Hoa",
+    "recipientPhone": "0923678901",
+    "email": "vuthih@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8e0"},
@@ -107,7 +134,10 @@
     "detail": "255 Trần Hưng Đạo, Khu dân cư Vạn Xuân",
     "isDefault": false,
     "createdAt": {"$date": "2023-07-08T09:20:00.000Z"},
-    "updatedAt": {"$date": "2023-07-08T09:20:00.000Z"}
+    "updatedAt": {"$date": "2023-07-08T09:20:00.000Z"},
+    "recipientName": "Nguyễn Văn An",
+    "recipientPhone": "0903123456",
+    "email": "nguyenvanan@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8e1"},
@@ -118,7 +148,10 @@
     "detail": "46 Nguyễn Tất Thành, Chung cư Rivergate",
     "isDefault": true,
     "createdAt": {"$date": "2023-07-30T14:50:00.000Z"},
-    "updatedAt": {"$date": "2023-07-30T14:50:00.000Z"}
+    "updatedAt": {"$date": "2023-07-30T14:50:00.000Z"},
+    "recipientName": "Đỗ Thị Hương",
+    "recipientPhone": "0932789012",
+    "email": "dothih@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8e2"},
@@ -129,7 +162,10 @@
     "detail": "125 Kha Vạn Cân, Khu đô thị Hiệp Bình Chánh",
     "isDefault": false,
     "createdAt": {"$date": "2023-08-15T11:10:00.000Z"},
-    "updatedAt": {"$date": "2023-08-15T11:10:00.000Z"}
+    "updatedAt": {"$date": "2023-08-15T11:10:00.000Z"},
+    "recipientName": "Đỗ Thị Hương",
+    "recipientPhone": "0932789012",
+    "email": "dothih@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8e3"},
@@ -140,7 +176,10 @@
     "detail": "78 Phạm Thế Hiển, Khu nhà phố Thiên Phước",
     "isDefault": true,
     "createdAt": {"$date": "2023-09-05T16:25:00.000Z"},
-    "updatedAt": {"$date": "2023-09-05T16:25:00.000Z"}
+    "updatedAt": {"$date": "2023-09-05T16:25:00.000Z"},
+    "recipientName": "Ngô Văn Khang",
+    "recipientPhone": "0945890123",
+    "email": "ngovk@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8e4"},
@@ -151,7 +190,10 @@
     "detail": "145 Tô Ký, Khu dân cư Thăng Long Home",
     "isDefault": false,
     "createdAt": {"$date": "2023-09-28T10:35:00.000Z"},
-    "updatedAt": {"$date": "2023-09-28T10:35:00.000Z"}
+    "updatedAt": {"$date": "2023-09-28T10:35:00.000Z"},
+    "recipientName": "Hoàng Văn Đạt",
+    "recipientPhone": "0918567890",
+    "email": "hoangvd@email.com"
   },
   {
     "_id": {"$oid": "65f1a1b1c2d3e4f5a6b7c8e5"},
@@ -162,6 +204,9 @@
     "detail": "230 Nguyễn Văn Tạo, Khu đô thị Nam Viên",
     "isDefault": true,
     "createdAt": {"$date": "2023-10-12T15:40:00.000Z"},
-    "updatedAt": {"$date": "2023-10-12T15:40:00.000Z"}
+    "updatedAt": {"$date": "2023-10-12T15:40:00.000Z"},
+    "recipientName": "Trương Văn Linh",
+    "recipientPhone": "0950901234",
+    "email": "truongvl@email.com"
   }
 ] 
