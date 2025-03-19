@@ -1,9 +1,19 @@
 import { Routes } from '@angular/router';
 import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
+import { ProductComponent } from './product/product.component';
+import { OrderComponent } from './order/order.component';
+import { CustomerComponent } from './customer/customer.component';
+import { BlogComponent } from './blog/blog.component';
+import { RecipeComponent } from './recipe/recipe.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/trang-chu', pathMatch: 'full' },
   { path: 'login', component: DangNhapComponent },
+  { path: 'product', component: ProductComponent },
+  { path: 'order', component: OrderComponent },
+  { path: 'customer', component: CustomerComponent },
+  { path: 'blog', component: BlogComponent },
+  { path: 'recipe', component: RecipeComponent },
   {
     path: 'trang-chu',
     loadComponent: () =>

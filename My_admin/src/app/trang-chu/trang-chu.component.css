@@ -1,11 +1,11 @@
 /* Main Content Styles */
-.main-content {
+/* .main-content {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
-  min-height: calc(100vh - 70px); /* Trừ đi chiều cao của header */
+  min-height: calc(100vh - 70px);
   margin-left: 250px;
-}
+} */
 
 /* Header styling */
 .header {

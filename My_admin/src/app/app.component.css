@@ -2,3 +2,8 @@
   width: 100%;
   min-height: 100vh;
 }
+.padding {
+  padding: 20px;
+  margin-left: 250px; /* Căn lề trái bằng chiều rộng của sidebar */
+  min-height: calc(100vh - 70px);
+}
