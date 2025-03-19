@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -26,6 +27,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   // API products
   originalProducts: Product[] = [];
   products: Product[] = [];
+  filteredProducts: Product[] = [];
 
   // Trạng thái loading
   isLoading: boolean = false;
@@ -46,7 +48,11 @@ export class ProductComponent implements OnInit, OnDestroy {
   // Quản lý hành động hàng loạt
   selectedAction: string = '';
 
-  constructor(private productService: ProductService) {}
+  // Biến lưu ID của timer để có thể hủy
+  private hideMenuTimer: any;
+  private currentActiveMenu: string | null = null;
+
+  constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -399,6 +405,83 @@ export class ProductComponent implements OnInit, OnDestroy {
         return 'Xóa sản phẩm';
       default:
         return 'Hành động hàng loạt';
+    }
+  }
+
+  // Xử lý các hành động trên sản phẩm
+  editProduct(product: any): void {
+    console.log('Chỉnh sửa sản phẩm:', product);
+    // TODO: Implement edit product logic
+    this.router.navigate(['/san-pham/chinh-sua', product._id]);
+  }
+
+  duplicateProduct(product: any): void {
+    console.log('Nhân đôi sản phẩm:', product);
+    // TODO: Tạo bản sao của sản phẩm với dữ liệu tương tự
+    // Có thể hiển thị form cho phép người dùng chỉnh sửa một số thông tin trước khi tạo bản sao
+  }
+
+  hideProduct(product: any): void {
+    console.log('Ẩn sản phẩm:', product);
+    // TODO: Cập nhật trạng thái ẩn của sản phẩm và làm mới danh sách
+  }
+
+  viewProduct(product: any): void {
+    console.log('Xem sản phẩm:', product);
+    // TODO: Chuyển đến trang chi tiết sản phẩm hoặc mở modal xem chi tiết
+  }
+
+  // Hiển thị menu hành động khi hover vào tên sản phẩm
+  showActionsMenu(product: any): void {
+    // Hủy timer ẩn menu nếu đang chạy
+    if (this.hideMenuTimer) {
+      clearTimeout(this.hideMenuTimer);
+      this.hideMenuTimer = null;
+    }
+
+    // Lưu ID menu đang active
+    this.currentActiveMenu = product.code ? product.code : null;
+  }
+
+  // Ẩn menu hành động với độ trễ khi move chuột ra khỏi tên sản phẩm
+  hideActionsMenuWithDelay(product: any): void {
+    // Đặt timer ẩn menu sau 300ms
+    this.hideMenuTimer = setTimeout(() => {
+      if (this.currentActiveMenu === product.code) {
+        this.currentActiveMenu = null;
+      }
+      this.hideMenuTimer = null;
+    }, 300);
+  }
+
+  // Hủy ẩn menu khi di chuột vào menu
+  cancelHideMenu(): void {
+    if (this.hideMenuTimer) {
+      clearTimeout(this.hideMenuTimer);
+      this.hideMenuTimer = null;
+    }
+  }
+
+  // Ẩn menu ngay lập tức khi di chuột ra khỏi menu
+  hideActionsMenu(): void {
+    this.currentActiveMenu = null;
+  }
+
+  addNewProduct(): void {
+    this.router.navigate(['/san-pham/them-moi']);
+  }
+
+  applyFilters(): void {
+    // Lọc danh sách sản phẩm theo searchTerm
+    if (this.searchTerm.trim() === '') {
+      this.filteredProducts = [...this.products];
+    } else {
+      const term = this.searchTerm.toLowerCase().trim();
+      this.filteredProducts = this.products.filter(
+        (product) =>
+          product.ingredientName.toLowerCase().includes(term) ||
+          product._id.toLowerCase().includes(term)
+      );
     }
   }
 }

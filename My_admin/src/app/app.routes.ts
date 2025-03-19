@@ -16,5 +16,19 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./product/product.component').then((m) => m.ProductComponent),
   },
+  {
+    path: 'san-pham/them-moi',
+    loadComponent: () =>
+      import('./product-detail/product-detail.component').then(
+        (m) => m.ProductDetailComponent
+      ),
+  },
+  {
+    path: 'san-pham/chinh-sua/:id',
+    loadComponent: () =>
+      import('./product-detail/product-detail.component').then(
+        (m) => m.ProductDetailComponent
+      ),
+  },
   { path: '**', redirectTo: '/trang-chu' },
 ];

@@ -1,5 +1,20 @@
 <div class="product-container">
-  <h1>Sản phẩm</h1>
+  <div class="product-header">
+    <h1>Danh sách sản phẩm</h1>
+    <div class="actions">
+      <div class="search-box">
+        <input
+          type="text"
+          placeholder="Tìm kiếm sản phẩm..."
+          [(ngModel)]="searchTerm"
+          (keyup)="applyFilters()"
+        />
+      </div>
+      <button class="add-product-btn" (click)="addNewProduct()">
+        <i class="fas fa-plus"></i> Thêm mới sản phẩm
+      </button>
+    </div>
+  </div>
 
   <!-- Action Buttons -->
   <div class="action-buttons">
@@ -305,7 +320,31 @@
             (change)="product.code && toggleProductSelection(product.code)"
           />
         </td>
-        <td>{{ product.name }}</td>
+        <td>
+          <div
+            class="product-name"
+            (mouseenter)="showActionsMenu(product)"
+            (mouseleave)="hideActionsMenuWithDelay(product)"
+          >
+            {{ product.name }}
+            <div
+              class="product-actions"
+              [id]="'actions-' + product.code"
+              (mouseenter)="cancelHideMenu()"
+              (mouseleave)="hideActionsMenu()"
+            >
+              <a href="javascript:void(0)" (click)="editProduct(product)"
+                >Chỉnh sửa</a
+              >
+              <span class="separator">|</span>
+              <a href="javascript:void(0)" (click)="duplicateProduct(product)"
+                >Nhân đôi</a
+              >
+              <span class="separator">|</span>
+              <a href="javascript:void(0)" (click)="hideProduct(product)">Ẩn</a>
+            </div>
+          </div>
+        </td>
         <td>{{ product.code }}</td>
         <td>
           <span

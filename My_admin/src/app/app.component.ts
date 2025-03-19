@@ -6,6 +6,7 @@ import { ProductComponent } from './product/product.component';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     CommonModule,
     HeaderComponent,
     SidebarComponent,
+    ProductDetailComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

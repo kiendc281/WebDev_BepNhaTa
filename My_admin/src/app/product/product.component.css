@@ -26,7 +26,7 @@ span {
 }
 
 .spinner {
-  border: 4px solid #f3f3f3;
+  border: 4px solid white;
   border-top: 4px solid var(--color-camvua);
   border-radius: 50%;
   width: 30px;
@@ -45,7 +45,7 @@ span {
 }
 
 .error-message {
-  background-color: #ffdddd;
+  background-color: white;
   color: #ff0000;
   padding: 10px;
   border-radius: 4px;
@@ -56,7 +56,7 @@ span {
   text-align: center;
   padding: 40px;
   color: #666;
-  background-color: #f9f9f9;
+  background-color: white;
   border-radius: 4px;
 }
 
@@ -70,21 +70,7 @@ span {
 
 .button-cam {
   padding: 10px 20px;
-}
-
-/* Search box */
-.search-box {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  max-width: 300px;
-}
-
-.search-box input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 25px;
 }
 
 /* Filter dropdowns */
@@ -94,82 +80,89 @@ span {
   flex-wrap: wrap;
 }
 
-.filter-dropdowns select {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 25px;
-  background-color: #ffded1;
-  color: var(--color-camdam);
-  cursor: pointer;
+/* Custom dropdown */
+.custom-dropdown {
+  position: relative;
   min-width: 180px;
-  appearance: none;
-  background-image: url("../../assets/product/arrow-down.svg");
-  background-repeat: no-repeat;
-  background-position: right 15px top 50%;
-  background-size: 10px auto;
+  user-select: none;
+  z-index: 100;
+}
+
+.custom-dropdown.active .dropdown-menu {
+  display: block;
+}
+
+.selected-option {
+  padding: 10px 15px;
+  background-color: var(--color-camnhat);
+  color: var(--color-camdam);
+  border-radius: 25px;
+  cursor: pointer;
   font-weight: 500;
-  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   transition: background-color 0.2s;
 }
 
-.filter-dropdowns select:hover {
+.selected-option:hover {
   background-color: #ffd0bd;
 }
 
-/* Dropdown styling - thêm selector mạnh hơn */
-select option,
-.filter-dropdowns select option,
-select > option {
-  background-color: white !important;
-  color: #333 !important;
-  padding: 12px;
-  font-size: 14px;
-  border: none;
+.selected-option img {
+  width: 10px;
+  height: 10px;
+  margin-left: 10px;
 }
 
-/* Tiêu đề dropdown */
-.filter-dropdowns select option:first-child,
-select option:first-child {
-  background-color: #ff6b35 !important;
-  color: white !important;
-  font-weight: 500;
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-/* Hover và active - thêm selector mạnh hơn */
-select option:hover,
-select option:focus,
-select option:active,
-select option:checked,
-select option.selected,
-option:hover,
-option:focus,
-option[selected],
-option:checked {
-  background-color: #ff6b35 !important;
-  color: white !important;
-  box-shadow: 0 0 10px 100px #ff6b35 inset !important;
-  -webkit-text-fill-color: white !important;
+.dropdown-item {
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #333;
 }
 
-/* Thêm style để ghi đè lên kiểu mặc định của trình duyệt */
-select:focus > option:checked,
-select > option:checked {
-  background: #ff6b35 !important;
-  background-color: #ff6b35 !important;
-  color: white !important;
+.dropdown-item:first-child {
+  background-color: var(--color-camvua);
+  color: white;
 }
 
-/* Sử dụng attribute selector mạnh hơn */
-[role="listbox"] > [role="option"][aria-selected="true"],
-[role="listbox"] > [role="option"]:hover {
-  background-color: #ff6b35 !important;
-  color: white !important;
+.dropdown-item:hover {
+  background-color: var(--color-camvua);
+  color: white;
 }
 
-/* Custom dropdown container */
-.filter-dropdowns select:focus {
-  outline: none;
-  border: 1px solid var(--color-camdam);
+/* Batch actions */
+.batch-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 20px;
+}
+
+.batch-actions .button-cam {
+  height: 38px;
+  padding: 0 20px;
+}
+
+.batch-actions .button-cam:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #999;
 }
 
 /* Product table */
@@ -194,7 +187,7 @@ select > option:checked {
 
 .product-table td {
   padding: 12px 15px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid white;
 }
 
 .product-table tr:last-child td {
@@ -315,7 +308,7 @@ th.sortable {
 .page-button {
   min-width: 32px;
   height: 32px;
-  border: 1px solid #ddd;
+  border: 1px solid white;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -331,7 +324,7 @@ th.sortable {
 }
 
 .page-button:hover:not(.active) {
-  background-color: #f5f5f5;
+  background-color: white;
 }
 
 .page-button:disabled {
@@ -344,11 +337,6 @@ th.sortable {
   .filter-section {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .search-box {
-    max-width: 100%;
-    width: 100%;
   }
 
   .filter-dropdowns {
@@ -367,87 +355,94 @@ th.sortable {
   }
 }
 
-/* Custom dropdown */
-.custom-dropdown {
+/* Product name with hover actions */
+.product-name {
   position: relative;
-  min-width: 180px;
-  user-select: none;
-  z-index: 100;
-}
-
-.custom-dropdown.active .dropdown-menu {
-  display: block;
-}
-
-.selected-option {
-  padding: 10px 15px;
-  background-color: #ffded1;
-  color: #e94e24;
-  border-radius: 25px;
   cursor: pointer;
-  font-weight: 500;
+}
+
+.product-name .product-actions {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 6px 10px;
+  z-index: 10;
+  transition: opacity 0.2s, visibility 0.2s;
+  display: flex;
+}
+
+.product-name:hover .product-actions,
+.product-actions:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.product-actions a {
+  color: #333;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s;
+  padding: 2px 3px;
+}
+
+.product-actions a:hover {
+  color: var(--color-camdam);
+}
+
+.product-actions .separator {
+  margin: 0 6px;
+  color: #ccc;
+}
+
+.product-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background-color 0.2s;
+  margin-bottom: 20px;
 }
 
-.selected-option:hover {
-  background-color: #ffd0bd;
-}
-
-.selected-option img {
-  width: 10px;
-  height: 10px;
-  margin-left: 10px;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: calc(100% + 5px);
-  left: 0;
-  width: 100%;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  overflow: hidden;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.dropdown-item {
-  padding: 12px 15px;
-  cursor: pointer;
-  transition: all 0.2s;
+.product-header h1 {
+  margin: 0;
   color: #333;
+  font-size: 24px;
+  font-weight: 600;
 }
 
-.dropdown-item:first-child {
-  background-color: #ff6b35;
+.actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-box input {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 250px;
+}
+
+.add-product-btn {
+  background-color: #ff9800;
   color: white;
-}
-
-.dropdown-item:hover {
-  background-color: #ff6b35;
-  color: white;
-}
-
-/* Batch actions */
-.batch-actions {
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-right: 20px;
+  gap: 6px;
 }
 
-.batch-actions .button-cam {
-  height: 38px;
-  padding: 0 20px;
+.add-product-btn:hover {
+  background-color: #f57c00;
 }
 
-.batch-actions .button-cam:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background-color: #ccc;
+.add-product-btn i {
+  font-size: 14px;
 }

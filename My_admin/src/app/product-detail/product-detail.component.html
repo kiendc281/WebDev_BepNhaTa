@@ -1,0 +1,364 @@
+<div class="product-container">
+  <div class="page-header">
+    <h1>{{ isEdit ? "Chỉnh sửa sản phẩm" : "Thêm sản phẩm" }}</h1>
+  </div>
+
+  <div class="product-form-container">
+    <!-- Form chính bên trái -->
+    <div class="main-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="product-name">TÊN SẢN PHẨM</label>
+          <input
+            type="text"
+            id="product-name"
+            [(ngModel)]="product.ingredientName"
+            placeholder="Nhập tên sản phẩm"
+            (input)="onInputChange()"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="product-code">MÃ SẢN PHẨM</label>
+          <input
+            type="text"
+            id="product-code"
+            [(ngModel)]="product._id"
+            placeholder="Nhập mã sản phẩm"
+            [disabled]="isEdit"
+            (input)="onInputChange()"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Mô tả sản phẩm</label>
+        <div class="rich-text-editor">
+          <div class="editor-toolbar">
+            <select>
+              <option>Kiểu</option>
+            </select>
+            <button class="bold-btn">B</button>
+            <button class="italic-btn">I</button>
+            <button class="list-btn">•</button>
+            <button class="list-btn">1.</button>
+            <button class="align-btn">≡</button>
+            <button class="align-btn">≡</button>
+            <button class="align-btn">≡</button>
+            <button class="indent-btn">→</button>
+            <button class="indent-btn">←</button>
+          </div>
+          <textarea
+            [(ngModel)]="product.description"
+            placeholder="Mô tả chi tiết sản phẩm"
+            rows="6"
+            (input)="onInputChange()"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Thông tin bán hàng -->
+      <div class="section-header">
+        <h2>Thông tin bán hàng</h2>
+      </div>
+
+      <div class="pricing-section">
+        <div class="styled-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Khẩu phần</th>
+                <th>Giá (VNĐ)</th>
+                <th>Khối lượng</th>
+                <th>SKU</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let portion of getPortions()">
+                <td>{{ portion }} người</td>
+                <td>
+                  <input
+                    type="number"
+                    [(ngModel)]="product.pricePerPortion[portion]"
+                    (input)="onInputChange()"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    [value]="portion === '2' ? '400g' : '800g'"
+                    (input)="onInputChange()"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    [value]="'GNL01-' + portion"
+                    (input)="onInputChange()"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-actions">
+            <button class="add-row-btn" (click)="addPricingRow()">
+              + Thêm khẩu phần
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel bên phải -->
+    <div class="side-panel">
+      <div class="panel-section">
+        <h3>Ảnh sản phẩm</h3>
+        <div class="image-upload">
+          <input
+            type="file"
+            id="product-image"
+            style="display: none"
+            accept="image/*"
+            (change)="uploadImage($event)"
+          />
+          <button class="upload-btn" (click)="triggerFileInput()">
+            Tải ảnh sản phẩm
+          </button>
+          <div class="main-image">
+            <img [src]="product.mainImage" alt="Ảnh sản phẩm" />
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <h3>Danh mục sản phẩm</h3>
+        <div class="category-selection">
+          <div>
+            <input
+              type="radio"
+              id="all-categories"
+              name="category"
+              [checked]="!product.category"
+              (change)="product.category = ''; onInputChange()"
+            />
+            <label for="all-categories">Tất cả</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="category-soup"
+              name="category"
+              [checked]="product.category === 'Nước'"
+              (change)="product.category = 'Nước'; onInputChange()"
+            />
+            <label for="category-soup">Món nước</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="category-stir"
+              name="category"
+              [checked]="product.category === 'Xào'"
+              (change)="product.category = 'Xào'; onInputChange()"
+            />
+            <label for="category-stir">Món xào</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="category-main"
+              name="category"
+              [checked]="product.category === 'Món mặn'"
+              (change)="product.category = 'Món mặn'; onInputChange()"
+            />
+            <label for="category-main">Món mặn</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="category-mix"
+              name="category"
+              [checked]="product.category === 'Trộn'"
+              (change)="product.category = 'Trộn'; onInputChange()"
+            />
+            <label for="category-mix">Trộn</label>
+          </div>
+          <a href="#">Thêm mới</a>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <h3>Thẻ sản phẩm</h3>
+        <div class="tag-input">
+          <input
+            type="text"
+            #tagInput
+            placeholder="Thêm các thẻ tách bằng dấu phẩy"
+          />
+          <button class="button-orange" (click)="addTag($event, tagInput)">
+            Thêm
+          </button>
+        </div>
+        <div class="current-tags">
+          <span class="tag" *ngFor="let tag of product.tags">
+            {{ tag }}
+            <span
+              (click)="removeTag(tag)"
+              style="cursor: pointer; margin-left: 5px"
+              >×</span
+            >
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chi tiết thông tin sản phẩm -->
+  <div class="additional-details">
+    <h2>Thông tin chi tiết sản phẩm</h2>
+
+    <div class="details-row">
+      <div class="form-group">
+        <label>Độ khó</label>
+        <input
+          type="text"
+          [(ngModel)]="product.level"
+          (input)="onInputChange()"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Thời gian nấu</label>
+        <input
+          type="text"
+          [(ngModel)]="product.time"
+          (input)="onInputChange()"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Combo</label>
+        <input
+          type="text"
+          [(ngModel)]="product.combo"
+          (input)="onInputChange()"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Giảm giá (%)</label>
+        <input
+          type="number"
+          [(ngModel)]="product.discount"
+          (input)="onInputChange()"
+        />
+      </div>
+    </div>
+
+    <div class="details-row">
+      <div class="form-group">
+        <label>Hạn sử dụng</label>
+        <input
+          type="date"
+          [(ngModel)]="product.expirationDate"
+          (input)="onInputChange()"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Vùng miền</label>
+        <select [(ngModel)]="product.region" (change)="onInputChange()">
+          <option value="Bắc">Miền Bắc</option>
+          <option value="Trung">Miền Trung</option>
+          <option value="Nam">Miền Nam</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Số lượng</label>
+        <input
+          type="number"
+          [(ngModel)]="product.quantity"
+          (input)="onInputChange()"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Trạng thái</label>
+        <select [(ngModel)]="product.status" (change)="onInputChange()">
+          <option value="Còn hàng">Còn hàng</option>
+          <option value="Hết hàng">Hết hàng</option>
+          <option value="Ngừng kinh doanh">Ngừng kinh doanh</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group full-width">
+      <label>Lưu ý</label>
+      <textarea
+        [(ngModel)]="product.notes"
+        rows="3"
+        (input)="onInputChange()"
+      ></textarea>
+    </div>
+
+    <div class="form-group full-width">
+      <label>Bảo quản</label>
+      <textarea
+        [(ngModel)]="product.storage"
+        rows="3"
+        (input)="onInputChange()"
+      ></textarea>
+    </div>
+
+    <div class="components-section">
+      <h3>Thành phần</h3>
+      <div class="components-list">
+        <div
+          class="component-item"
+          *ngFor="let component of product.components; let i = index"
+        >
+          <input
+            type="text"
+            [(ngModel)]="product.components[i]"
+            (input)="onInputChange()"
+          />
+          <button class="remove-btn" (click)="removeComponent(i)">×</button>
+        </div>
+        <button class="add-component-btn" (click)="addComponent()">
+          + Thêm thành phần
+        </button>
+      </div>
+    </div>
+
+    <div class="related-section">
+      <h3>Sản phẩm liên quan</h3>
+      <div class="related-products">
+        <select multiple (change)="onInputChange()">
+          <option *ngFor="let id of product.relatedProductIds" [value]="id">
+            {{ id }}
+          </option>
+        </select>
+        <button class="add-related-btn">Chọn sản phẩm</button>
+      </div>
+    </div>
+
+    <div class="suggested-section">
+      <h3>Công thức gợi ý</h3>
+      <div class="suggested-recipes">
+        <select multiple (change)="onInputChange()">
+          <option *ngFor="let id of product.suggestedRecipeIds" [value]="id">
+            {{ id }}
+          </option>
+        </select>
+        <button class="add-suggested-btn">Chọn công thức</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nút lưu -->
+  <div class="save-actions">
+    <button class="button-gray" (click)="cancel()">Hủy</button>
+    <button class="button-orange" (click)="saveProduct()">Lưu thay đổi</button>
+  </div>
+</div>
