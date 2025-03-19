@@ -23,30 +23,30 @@ export class GioHangComponent implements OnInit, OnDestroy {
   private loadingSubscription?: Subscription;
   private authChangeSubscription?: Subscription;
   private previousLoginState: boolean = false;
-  
+
   constructor(
-    private cartService: CartManagerService, 
+    private cartService: CartManagerService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     console.log('Khởi tạo component giỏ hàng');
     // Lưu trạng thái đăng nhập ban đầu
     this.previousLoginState = this.authService.isLoggedIn();
     console.log('Trạng thái đăng nhập ban đầu:', this.previousLoginState);
-    
+
     // Gọi debug để kiểm tra giỏ hàng hiện tại
     this.cartService.debugCart();
-    
+
     // Đăng ký lắng nghe sự thay đổi của giỏ hàng
     this.subscribeToCartChanges();
-    
+
     // Đăng ký lắng nghe trạng thái loading
     this.subscribeToLoadingState();
-    
+
     // Tải dữ liệu giỏ hàng
     this.loadCartData();
-    
+
     // Đăng ký lắng nghe thay đổi trạng thái đăng nhập
     this.setupAuthChangeListener();
   }
@@ -57,11 +57,11 @@ export class GioHangComponent implements OnInit, OnDestroy {
       this.cartSubscription.unsubscribe();
       console.log('Đã hủy đăng ký theo dõi giỏ hàng');
     }
-    
+
     if (this.loadingSubscription) {
       this.loadingSubscription.unsubscribe();
     }
-    
+
     if (this.authChangeSubscription) {
       this.authChangeSubscription.unsubscribe();
       console.log('Đã hủy đăng ký theo dõi trạng thái đăng nhập');
@@ -76,15 +76,15 @@ export class GioHangComponent implements OnInit, OnDestroy {
     this.authChangeSubscription = new Subscription();
     const authCheckInterval = setInterval(() => {
       const currentLoginState = this.authService.isLoggedIn();
-      
+
       // Nếu trạng thái đăng nhập thay đổi
       if (currentLoginState !== this.previousLoginState) {
-        console.log('Trạng thái đăng nhập thay đổi:', 
-                   this.previousLoginState ? 'Đăng xuất' : 'Đăng nhập');
-        
+        console.log('Trạng thái đăng nhập thay đổi:',
+          this.previousLoginState ? 'Đăng xuất' : 'Đăng nhập');
+
         // Cập nhật trạng thái đăng nhập
         this.previousLoginState = currentLoginState;
-        
+
         if (currentLoginState) {
           // Người dùng vừa đăng nhập, cần tải lại giỏ hàng từ server
           console.log('Phát hiện đăng nhập mới, đồng bộ giỏ hàng với server');
@@ -106,7 +106,7 @@ export class GioHangComponent implements OnInit, OnDestroy {
         }
       }
     }, 1000);
-    
+
     this.authChangeSubscription.add(() => {
       clearInterval(authCheckInterval);
       console.log('Đã dừng kiểm tra trạng thái đăng nhập');
@@ -121,10 +121,10 @@ export class GioHangComponent implements OnInit, OnDestroy {
       if (cart && Array.isArray(cart.items)) {
         // Lưu trữ ID và servingSize của các sản phẩm hiện có để giữ thứ tự
         const currentItemIds = this.cartItems.map(item => `${item.productId}_${item.servingSize}`);
-        
+
         // Cập nhật các sản phẩm hiện có và thêm các sản phẩm mới
         const updatedItems = [...this.cartItems];
-        
+
         // Cập nhật số lượng, giá và các thuộc tính khác cho các mục hiện có
         updatedItems.forEach((item, index) => {
           const newItem = cart.items.find(
@@ -139,7 +139,7 @@ export class GioHangComponent implements OnInit, OnDestroy {
             };
           }
         });
-        
+
         // Thêm các mục mới
         cart.items.forEach(newItem => {
           const key = `${newItem.productId}_${newItem.servingSize}`;
@@ -150,14 +150,14 @@ export class GioHangComponent implements OnInit, OnDestroy {
             });
           }
         });
-        
+
         // Xóa các mục không còn tồn tại
         const newItemIds = cart.items.map(item => `${item.productId}_${item.servingSize}`);
         const finalItems = updatedItems.filter(item => {
           const key = `${item.productId}_${item.servingSize}`;
           return newItemIds.includes(key);
         });
-        
+
         this.cartItems = finalItems;
         this.totalPrice = cart.totalPrice || 0;
         this.totalQuantity = cart.totalQuantity || 0;
@@ -184,7 +184,7 @@ export class GioHangComponent implements OnInit, OnDestroy {
   private loadCartData(): void {
     this.loading = true;
     console.log('Bắt đầu tải dữ liệu giỏ hàng');
-    
+
     this.cartService.loadCart().subscribe({
       next: (cart) => {
         console.log('Đã tải giỏ hàng thành công:', cart);
@@ -203,14 +203,14 @@ export class GioHangComponent implements OnInit, OnDestroy {
   reloadCart(): void {
     console.log('Tải lại giỏ hàng');
     this.loading = true;
-    
+
     // Đọc dữ liệu từ localStorage trước
     const savedCart = localStorage.getItem('cart');
     console.log('Giỏ hàng trong localStorage trước khi tải lại:', savedCart);
-    
+
     // Tải lại dữ liệu giỏ hàng
     this.cartService.debugCart();
-    
+
     // Tải lại CartService
     this.cartService.loadCart().subscribe({
       next: (cart) => {
@@ -238,14 +238,14 @@ export class GioHangComponent implements OnInit, OnDestroy {
    * Cập nhật số lượng sản phẩm
    */
   updateQuantity(item: CartItem, newQuantity: number | string): void {
-    const quantity = typeof newQuantity === 'string' 
-      ? parseInt(newQuantity, 10) 
+    const quantity = typeof newQuantity === 'string'
+      ? parseInt(newQuantity, 10)
       : newQuantity;
-    
+
     if (isNaN(quantity)) {
       return;
     }
-    
+
     if (quantity <= 0) {
       this.removeItem(item);
     } else {
@@ -260,7 +260,7 @@ export class GioHangComponent implements OnInit, OnDestroy {
     if (!item || !item.productId) {
       return;
     }
-    
+
     this.cartService.removeFromCart(item.productId, item.servingSize).subscribe();
   }
 
@@ -310,9 +310,9 @@ export class GioHangComponent implements OnInit, OnDestroy {
    */
   onItemSelectionChange(): void {
     // Có thể thêm logic xử lý ở đây nếu cần
-    console.log('Đã thay đổi trạng thái chọn sản phẩm:', 
-               this.cartItems.filter(item => item.selected).length, 
-               'sản phẩm được chọn');
+    console.log('Đã thay đổi trạng thái chọn sản phẩm:',
+      this.cartItems.filter(item => item.selected).length,
+      'sản phẩm được chọn');
   }
 
   /**
@@ -320,11 +320,11 @@ export class GioHangComponent implements OnInit, OnDestroy {
    */
   removeSelectedItems(): void {
     const selectedItems = this.cartItems.filter(item => item.selected);
-    
+
     if (selectedItems.length === 0) {
       return;
     }
-    
+
     // Xóa từng sản phẩm đã chọn
     selectedItems.forEach(item => {
       this.removeItem(item);
