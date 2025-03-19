@@ -5,6 +5,7 @@ import { RecipeService } from '../services/recipe.service';
 import { Recipe } from '../models/recipe.interface';
 import { HttpClientModule } from '@angular/common/http';
 import { FavoritesService } from '../services/favorites.service';
+import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
 
 interface IngredientPackage {
   id: string;
@@ -16,7 +17,7 @@ interface IngredientPackage {
 @Component({
   selector: 'app-chi-tiet-cong-thuc',
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule],
+  imports: [CommonModule, RouterModule, HttpClientModule, BreadcrumbComponent],
   templateUrl: './chi-tiet-cong-thuc.component.html',
   styleUrls: ['./chi-tiet-cong-thuc.component.css'],
   providers: [RecipeService],
@@ -33,7 +34,7 @@ export class ChiTietCongThucComponent implements OnInit {
   notification = {
     show: false,
     message: '',
-    type: 'success'
+    type: 'success',
   };
 
   constructor(
@@ -147,14 +148,17 @@ export class ChiTietCongThucComponent implements OnInit {
       },
       error: (error) => {
         console.error('Lỗi khi kiểm tra trạng thái yêu thích:', error);
-      }
+      },
     });
   }
 
   toggleSaveRecipe(): void {
     const userStr = localStorage.getItem('user');
     if (!userStr) {
-      this.showNotification('Vui lòng đăng nhập để sử dụng tính năng này', 'error');
+      this.showNotification(
+        'Vui lòng đăng nhập để sử dụng tính năng này',
+        'error'
+      );
       return;
     }
 
@@ -165,28 +169,47 @@ export class ChiTietCongThucComponent implements OnInit {
 
     const recipeId = this.recipe._id;
 
-    console.log('Đang xử lý lưu công thức:', recipeId, 'trạng thái hiện tại:', this.isSaved);
-    
-    this.favoritesService.toggleFavorite(recipeId, 'recipe', this.isSaved)
+    console.log(
+      'Đang xử lý lưu công thức:',
+      recipeId,
+      'trạng thái hiện tại:',
+      this.isSaved
+    );
+
+    this.favoritesService
+      .toggleFavorite(recipeId, 'recipe', this.isSaved)
       .subscribe({
         next: (response) => {
           console.log('Kết quả lưu công thức:', response);
           if (response.success) {
             this.isSaved = !this.isSaved;
             if (this.isSaved) {
-              this.showNotification(`Đã thêm "${this.recipe?.recipeName}" vào danh sách yêu thích`, 'success');
+              this.showNotification(
+                `Đã thêm "${this.recipe?.recipeName}" vào danh sách yêu thích`,
+                'success'
+              );
             } else {
-              this.showNotification(`Đã xóa "${this.recipe?.recipeName}" khỏi danh sách yêu thích`, 'success');
+              this.showNotification(
+                `Đã xóa "${this.recipe?.recipeName}" khỏi danh sách yêu thích`,
+                'success'
+              );
             }
           } else {
             console.error('Không thể lưu công thức:', response.message);
-            this.showNotification(response.message || 'Không thể lưu công thức. Vui lòng thử lại sau.', 'error');
+            this.showNotification(
+              response.message ||
+                'Không thể lưu công thức. Vui lòng thử lại sau.',
+              'error'
+            );
           }
         },
         error: (error) => {
           console.error('Lỗi khi lưu công thức:', error);
-          this.showNotification('Đã xảy ra lỗi khi lưu công thức. Vui lòng thử lại sau.', 'error');
-        }
+          this.showNotification(
+            'Đã xảy ra lỗi khi lưu công thức. Vui lòng thử lại sau.',
+            'error'
+          );
+        },
       });
   }
 
@@ -194,7 +217,7 @@ export class ChiTietCongThucComponent implements OnInit {
     this.notification = {
       show: true,
       message,
-      type
+      type,
     };
 
     setTimeout(() => {

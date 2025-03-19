@@ -21,6 +21,9 @@
 </div>
 
 <div class="maincontainer">
+  <!-- Thêm link Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
   <div class="banner">
     <img src="../../assets/san-pham/banner.png" alt="" />
   </div>
@@ -88,19 +91,8 @@
 
     <div class="products-grid">
       <div class="product-card" *ngFor="let product of paginatedProducts">
-        <div class="save-button" (click)="toggleSaveProduct($event, product)">
-          <img
-            src="../../assets/san-pham/favourite.svg"
-            alt="Lưu vào yêu thích"
-          />
-        </div>
-        <!-- Indicator đã lưu -->
-        <div *ngIf="isProductSaved(product._id)" class="position-absolute top-0 end-0 mt-2 me-2">
-          <div class="bg-white rounded-circle p-1" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#dc3545" class="bi bi-heart-fill" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-            </svg>
-          </div>
+        <div class="save-button" (click)="toggleSaveProduct($event, product)" [class.active]="isProductSaved(product._id)">
+          <i class="fa-heart" [ngClass]="isProductSaved(product._id) ? 'fas' : 'far'"></i>
         </div>
         <a [routerLink]="['/chi-tiet-san-pham', product._id]">
           <div class="product-image">

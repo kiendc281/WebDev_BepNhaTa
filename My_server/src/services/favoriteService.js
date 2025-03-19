@@ -75,11 +75,58 @@ class FavoriteService {
             // Chuyển đổi accountId sang ObjectId 
             data.accountId = new mongoose.Types.ObjectId(data.accountId);
             
+            // Xử lý targetId tùy theo type
+            let processedTargetId = data.targetId;
+            
+            if (data.type === 'product') {
+                processedTargetId = convertProductId(data.targetId);
+            } else if (data.type === 'recipe') {
+                processedTargetId = convertRecipeId(data.targetId);
+            } else if (data.type === 'blog') {
+                // Kiểm tra nếu targetId là ID ngắn (BLxx), chuyển về MongoDB ID
+                if (/^BL\d+$/.test(data.targetId)) {
+                    const blogIdMap = {
+                        'BL01': '507f1f77bcf86cd799439011',
+                        'BL02': '507f1f77bcf86cd799439012',
+                        'BL03': '507f1f77bcf86cd799439013',
+                        'BL04': '507f1f77bcf86cd799439014',
+                        'BL05': '507f1f77bcf86cd799439015'
+                    };
+                    processedTargetId = blogIdMap[data.targetId] || data.targetId;
+                }
+                // Nếu là MongoDB ID, giữ nguyên
+                else if (mongoose.Types.ObjectId.isValid(data.targetId)) {
+                    processedTargetId = data.targetId;
+                }
+            }
+            
+            console.log(`Adding favorite: accountId=${data.accountId}, targetId=${processedTargetId}, type=${data.type}`);
+            
+            // Cập nhật targetId đã được xử lý
+            data.targetId = processedTargetId;
+            
+            // Kiểm tra xem đã tồn tại chưa
+            const existingFavorite = await Favorite.findOne({
+                accountId: data.accountId,
+                targetId: data.targetId,
+                type: data.type
+            });
+            
+            if (existingFavorite) {
+                console.log('Favorite already exists, skipping insert');
+                return { 
+                    _id: existingFavorite._id,
+                    message: 'Đã tồn tại trong danh sách yêu thích',
+                    alreadyExists: true
+                };
+            }
+            
             const newFavorite = new Favorite(data);
             const savedFavorite = await newFavorite.save();
             return savedFavorite;
         } catch (error) {
-            // ... existing code ...
+            console.error('Error in addFavorite:', error);
+            throw error;
         }
     }
     
@@ -89,10 +136,49 @@ class FavoriteService {
             // Chuyển đổi accountId sang ObjectId
             accountId = new mongoose.Types.ObjectId(accountId);
             
-            const result = await Favorite.deleteOne({ accountId, targetId, type });
+            // Xử lý targetId tùy theo type trước khi xóa
+            let processedTargetId = targetId;
+            
+            if (type === 'product') {
+                processedTargetId = convertProductId(targetId);
+            } else if (type === 'recipe') {
+                processedTargetId = convertRecipeId(targetId);
+            } else if (type === 'blog') {
+                // Kiểm tra nếu targetId là ID ngắn (BLxx), chuyển về MongoDB ID
+                if (/^BL\d+$/.test(targetId)) {
+                    const blogIdMap = {
+                        'BL01': '507f1f77bcf86cd799439011',
+                        'BL02': '507f1f77bcf86cd799439012',
+                        'BL03': '507f1f77bcf86cd799439013',
+                        'BL04': '507f1f77bcf86cd799439014',
+                        'BL05': '507f1f77bcf86cd799439015'
+                    };
+                    processedTargetId = blogIdMap[targetId] || targetId;
+                }
+                // Nếu là MongoDB ID, giữ nguyên
+                else if (mongoose.Types.ObjectId.isValid(targetId)) {
+                    processedTargetId = targetId;
+                }
+            }
+            
+            console.log(`Removing favorite: accountId=${accountId}, targetId=${processedTargetId}, type=${type}`);
+            
+            const result = await Favorite.deleteOne({ 
+                accountId, 
+                targetId: processedTargetId, 
+                type 
+            });
+            
+            console.log(`Delete result:`, result);
+            
+            if (result.deletedCount === 0) {
+                throw new Error('Không tìm thấy mục yêu thích để xóa');
+            }
+            
             return result;
         } catch (error) {
-            // ... existing code ...
+            console.error('Error in removeFavorite:', error);
+            throw error;
         }
     }
     
@@ -121,11 +207,25 @@ class FavoriteService {
                 throw new Error('TargetId không hợp lệ');
             }
         } else if (type === 'blog') {
-            // Kiểm tra blog vẫn yêu cầu ObjectId
-            if (!mongoose.Types.ObjectId.isValid(targetId)) {
-                throw new Error('TargetId không hợp lệ');
+            // Kiểm tra nếu targetId là ID ngắn (BLxx), chuyển về MongoDB ID
+            if (/^BL\d+$/.test(targetId)) {
+                const blogIdMap = {
+                    'BL01': '507f1f77bcf86cd799439011',
+                    'BL02': '507f1f77bcf86cd799439012',
+                    'BL03': '507f1f77bcf86cd799439013',
+                    'BL04': '507f1f77bcf86cd799439014',
+                    'BL05': '507f1f77bcf86cd799439015'
+                };
+                processedTargetId = blogIdMap[targetId] || targetId;
+            }
+            // Kiểm tra MongoDB ID
+            else if (!mongoose.Types.ObjectId.isValid(targetId)) {
+                console.error('TargetId blog không hợp lệ:', targetId);
+                throw new Error('TargetId blog không hợp lệ');
             }
         }
+        
+        console.log(`Checking favorite: accountId=${accountId}, targetId=${processedTargetId}, type=${type}`);
         
         const favorite = await Favorite.findOne({ 
             accountId,
@@ -211,7 +311,38 @@ class FavoriteService {
                 
                 try {
                     if (type === 'blog') {
-                        details = await Blog.findById(favorite.targetId);
+                        let blogId = favorite.targetId;
+                        // Kiểm tra xem targetId có đúng định dạng MongoDB ID không
+                        if (mongoose.Types.ObjectId.isValid(blogId)) {
+                            details = await Blog.findById(blogId);
+                            // Nếu không tìm thấy và có thể là ID dạng ngắn, cần chuyển đổi
+                            if (!details && /^BL\d+$/.test(blogId)) {
+                                const blogIdMap = {
+                                    'BL01': '507f1f77bcf86cd799439011',
+                                    'BL02': '507f1f77bcf86cd799439012',
+                                    'BL03': '507f1f77bcf86cd799439013',
+                                    'BL04': '507f1f77bcf86cd799439014',
+                                    'BL05': '507f1f77bcf86cd799439015'
+                                };
+                                const mongoId = blogIdMap[blogId];
+                                if (mongoId) {
+                                    details = await Blog.findById(mongoId);
+                                }
+                            }
+                        } else if (/^BL\d+$/.test(blogId)) {
+                            // Xử lý targetId đặc biệt cho blog nếu là ID ngắn
+                            const blogIdMap = {
+                                'BL01': '507f1f77bcf86cd799439011',
+                                'BL02': '507f1f77bcf86cd799439012',
+                                'BL03': '507f1f77bcf86cd799439013',
+                                'BL04': '507f1f77bcf86cd799439014',
+                                'BL05': '507f1f77bcf86cd799439015'
+                            };
+                            const mongoId = blogIdMap[blogId];
+                            if (mongoId) {
+                                details = await Blog.findById(mongoId);
+                            }
+                        }
                     } else if (type === 'recipe') {
                         // Xử lý targetId đặc biệt cho công thức
                         let recipeId = favorite.targetId;

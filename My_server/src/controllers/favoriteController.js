@@ -4,11 +4,31 @@ const favoriteController = {
     // Thêm vào yêu thích
     addToFavorites: async (req, res) => {
         try {
+            // Kiểm tra dữ liệu đầu vào
+            const { accountId, targetId, type } = req.body;
+            
+            if (!accountId || !targetId || !type) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Thiếu thông tin cần thiết: accountId, targetId, hoặc type'
+                });
+            }
+            
             const result = await favoriteService.addFavorite(req.body);
+            
+            // Kiểm tra nếu đã tồn tại
+            if (result.alreadyExists) {
+                return res.status(200).json({
+                    success: true,
+                    message: 'Đã tồn tại trong danh sách yêu thích',
+                    favoriteId: result._id
+                });
+            }
+            
             res.status(201).json({
                 success: true,
                 message: 'Đã thêm vào yêu thích',
-                data: result
+                favoriteId: result._id
             });
         } catch (error) {
             console.error('Error in addToFavorites:', error);

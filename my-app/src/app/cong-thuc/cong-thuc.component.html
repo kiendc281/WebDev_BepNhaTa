@@ -20,7 +20,10 @@
   </div>
 </div>
 
-<div class="maincontainer">
+<div class="maincontainer container-fluid">
+  <!-- Thêm link Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
   <div class="banner">
     <img src="../../assets/san-pham/banner.png" alt="" />
   </div>
@@ -66,18 +69,11 @@
     <!-- Main content -->
     <div class="products-grid">
       <div class="product-card" *ngFor="let recipe of paginatedRecipes">
-        <div *ngIf="!isRecipeSaved(recipe._id)" class="save-button" (click)="toggleSaveRecipe($event, recipe)">
-          <img
-            src="../../assets/san-pham/favourite.svg"
-            alt="Lưu vào yêu thích"
-          />
+        <!-- Nút lưu công thức - thay đổi thiết kế -->
+        <div class="save-button" (click)="toggleSaveRecipe($event, recipe)" [class.active]="isRecipeSaved(recipe._id)">
+          <i class="fa-heart" [ngClass]="isRecipeSaved(recipe._id) ? 'fas' : 'far'"></i>
         </div>
-        <!-- Indicator đã lưu -->
-        <div *ngIf="isRecipeSaved(recipe._id)" class="position-absolute top-0 end-0 mt-2 me-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545" class="bi bi-heart-fill" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-          </svg>
-        </div>
+        
         <a [routerLink]="['/cong-thuc', recipe._id]">
           <img
             [src]="recipe.recipeImage"

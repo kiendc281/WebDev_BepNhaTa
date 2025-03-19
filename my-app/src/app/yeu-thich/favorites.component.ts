@@ -128,40 +128,60 @@ export class FavoritesComponent implements OnInit {
     // Tạo các request bổ sung thông tin
     const requests = missingDetailsItems.map(item => {
       let apiUrl = '';
+      let targetId = item.targetId;
+      
+      // Xử lý đặc biệt cho blog với ID MongoDB
+      if (type === 'blog' && /^[0-9a-fA-F]{24}$/.test(item.targetId)) {
+        // Cố gắng chuyển đổi thành ID ngắn (BL01, BL02, ...)
+        const mongoIdMap: {[key: string]: string} = {
+          '507f1f77bcf86cd799439011': 'BL01',
+          '507f1f77bcf86cd799439012': 'BL02',
+          '507f1f77bcf86cd799439013': 'BL03',
+          '507f1f77bcf86cd799439014': 'BL04',
+          '507f1f77bcf86cd799439015': 'BL05'
+        };
+        
+        if (mongoIdMap[item.targetId]) {
+          targetId = mongoIdMap[item.targetId];
+          console.log(`Chuyển đổi MongoDB ID ${item.targetId} sang ID ngắn ${targetId} cho API call`);
+        }
+      }
       
       // Xác định đúng endpoint API dựa vào loại
       if (type === 'product') {
-        apiUrl = `http://localhost:3000/api/ingredients/${item.targetId}`;
+        apiUrl = `http://localhost:3000/api/ingredients/${targetId}`;
       } else if (type === 'recipe') {
         // Đối với công thức, sử dụng chính xác API endpoint
-        apiUrl = `http://localhost:3000/api/recipes/${item.targetId}`;
+        apiUrl = `http://localhost:3000/api/recipes/${targetId}`;
         console.log('Tạo request chi tiết công thức:', apiUrl);
       } else if (type === 'blog') {
-        apiUrl = `http://localhost:3000/api/blogs/${item.targetId}`;
+        apiUrl = `http://localhost:3000/api/blogs/${targetId}`;
+        console.log('Tạo request chi tiết bài viết:', apiUrl);
       }
       
       return this.http.get(apiUrl).pipe(
         catchError(err => {
-          console.error(`Lỗi khi lấy chi tiết cho ${type} ID ${item.targetId}:`, err);
+          console.error(`Lỗi khi lấy chi tiết cho ${type} ID ${targetId}:`, err);
           // Trả về đối tượng mặc định khi lỗi
           if (type === 'product') {
             return of<ProductDetails>({
-              ingredientName: `Sản phẩm ${item.targetId}`,
+              ingredientName: `Sản phẩm ${targetId}`,
               image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22300%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20300%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_18c0f0ef89a%20text%20%7B%20fill%3A%23AAAAAA%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A15pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_18c0f0ef89a%22%3E%3Crect%20width%3D%22300%22%20height%3D%22200%22%20fill%3D%22%23EEEEEE%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22110.0859375%22%20y%3D%22107.2%22%3EHình%20ảnh%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E',
               description: 'Không có mô tả'
             });
           } else if (type === 'recipe') {
             return of<RecipeDetails>({
-              recipeName: `Công thức ${item.targetId}`,
+              recipeName: `Công thức ${targetId}`,
               recipeImage: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22300%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20300%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_18c0f0ef89a%20text%20%7B%20fill%3A%23AAAAAA%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A15pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_18c0f0ef89a%22%3E%3Crect%20width%3D%22300%22%20height%3D%22200%22%20fill%3D%22%23EEEEEE%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22110.0859375%22%20y%3D%22107.2%22%3EHình%20ảnh%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E',
               description: 'Không có mô tả',
               // Đối với frontend, thay đổi tên trường để phù hợp
-              title: `Công thức ${item.targetId}`,
+              title: `Công thức ${targetId}`,
               thumbnail: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22300%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20300%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_18c0f0ef89a%20text%20%7B%20fill%3A%23AAAAAA%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A15pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_18c0f0ef89a%22%3E%3Crect%20width%3D%22300%22%20height%3D%22200%22%20fill%3D%22%23EEEEEE%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22110.0859375%22%20y%3D%22107.2%22%3EHình%20ảnh%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E'
             });
           } else {
+            // Cho blog, luôn trả về placeholder khi lỗi dù ID có định dạng nào
             return of<BlogDetails>({
-              title: `Bài viết ${item.targetId}`,
+              title: `Bài viết ${targetId}`,
               thumbnail: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22300%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20300%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_18c0f0ef89a%20text%20%7B%20fill%3A%23AAAAAA%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A15pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_18c0f0ef89a%22%3E%3Crect%20width%3D%22300%22%20height%3D%22200%22%20fill%3D%22%23EEEEEE%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22110.0859375%22%20y%3D%22107.2%22%3EHình%20ảnh%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E',
               description: 'Không có mô tả',
               author: 'Bếp Nhà Ta'
@@ -250,5 +270,10 @@ export class FavoritesComponent implements OnInit {
         }
       });
     }
+  }
+  
+  // Kiểm tra xem ID có phải định dạng ObjectId (24 ký tự hex) hay không
+  isObjectIdFormat(id: string): boolean {
+    return /^[0-9a-fA-F]{24}$/.test(id);
   }
 } 
