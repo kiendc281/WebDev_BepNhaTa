@@ -13,6 +13,8 @@ const cartRoutes = require('./routes/cart.routes');
 const favoriteRoutes = require('./routes/favorite.routes');
 const passwordResetRoutes = require('./routes/passwordReset.routes');
 const contactRoutes = require('./routes/contactRoutes');
+const addressRoutes = require('./routes/address.routes');
+const orderRoutes = require('./routes/order.routes');
 const cors = require('cors');
 
 // Kiểm tra JWT_SECRET
@@ -40,6 +42,8 @@ app.use('/api', cartRoutes);
 app.use('/api', favoriteRoutes);
 app.use('/api', passwordResetRoutes);
 app.use('/api', contactRoutes);
+app.use('/api', addressRoutes);
+app.use('/api', orderRoutes);
 
 // Connect to DB
 db.connect().then(() => {
