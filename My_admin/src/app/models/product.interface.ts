@@ -10,6 +10,9 @@ export interface Product {
   pricePerPortion: {
     [key: string]: number;
   };
+  portionQuantities: {
+    [key: string]: number;
+  };
   description: string;
   notes?: string;
   components: string[];
@@ -20,7 +23,7 @@ export interface Product {
   suggestedRecipeIds: string[];
   region: string;
   category: string;
-  quantity: number;
+  quantity?: number;
   status: string;
   rating?: {
     rate: number;
@@ -34,5 +37,7 @@ export interface Product {
   numericPrice?: number;
   date?: string;
   timestamp?: number;
+  quantity2?: number;
+  quantity4?: number;
   [key: string]: any; // Index signature cho phép truy cập động
 }

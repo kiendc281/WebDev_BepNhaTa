@@ -101,8 +101,20 @@ export class ProductComponent implements OnInit, OnDestroy {
   // Chuyển đổi dữ liệu sản phẩm từ API để phù hợp với giao diện
   transformProducts(): void {
     this.products = this.originalProducts.map((product) => {
-      const price = product.pricePerPortion['2'] || 0;
+      // Kiểm tra và log dữ liệu để debug
+      // console.log('Original product:', product);
+      // console.log('PricePerPortion:', product.pricePerPortion);
+      // console.log('PortionQuantities:', product['portionQuantities']);
+
+      // Lấy giá từ pricePerPortion
+      const price = product.pricePerPortion?.['2'] || 0;
       const formattedPrice = price.toLocaleString('vi-VN') + 'đ';
+
+      // Lấy số lượng từ portionQuantities
+      const quantity2 = product['portionQuantities']?.['2'] || 0;
+      const quantity4 = product['portionQuantities']?.['4'] || 0;
+
+      console.log('Processed quantities:', { quantity2, quantity4 });
 
       // Tạo ngày từ expirationDate hoặc ngày hiện tại nếu không có
       const date = product.expirationDate
@@ -121,19 +133,32 @@ export class ProductComponent implements OnInit, OnDestroy {
         date: formattedDate,
         timestamp: date.getTime(),
         tags: product.tags || [],
+        quantity2,
+        quantity4,
       };
     });
+
+    // Log sản phẩm đã được transform để kiểm tra
+    // console.log('Transformed products:', this.products);
   }
 
   // Hàm xử lý sắp xếp khi click vào header
-  sort(column: string): void {
+  sort(column: string, event?: MouseEvent): void {
+    // Ngăn sự kiện click lan truyền lên parent elements
+    if (event) {
+      event.stopPropagation();
+    }
+
     // Chuyển đổi tên cột giao diện sang tên cột API
     const apiColumnMap: { [key: string]: string } = {
       name: 'ingredientName',
       code: '_id',
-      price: 'price', // Sử dụng numericPrice trong hàm so sánh
+      price: 'price',
+      price2: 'price2',
+      price4: 'price4',
       date: 'timestamp',
-      quantity: 'quantity',
+      quantity2: 'quantity2',
+      quantity4: 'quantity4',
     };
 
     // Lấy tên cột API tương ứng
@@ -148,8 +173,23 @@ export class ProductComponent implements OnInit, OnDestroy {
       this.sortDirection = 'asc';
     }
 
+    // Nếu cột là price2 hoặc price4, cập nhật sản phẩm với giá tương ứng
+    if (column === 'price2' || column === 'price4') {
+      this.transformProductPrices(column.replace('price', ''));
+    }
+
     // Sắp xếp sản phẩm theo column và direction mới
     this.sortProducts(this.sortColumn, this.sortDirection);
+  }
+
+  // Cập nhật giá theo khẩu phần được chọn
+  transformProductPrices(portion: string): void {
+    this.products = this.products.map((product) => {
+      return {
+        ...product,
+        numericPrice: product.pricePerPortion?.[portion] || 0,
+      };
+    });
   }
 
   // Hàm sắp xếp danh sách sản phẩm
@@ -168,22 +208,25 @@ export class ProductComponent implements OnInit, OnDestroy {
           valueB = b.code || '';
           break;
         case 'price':
-          valueA = a.numericPrice || 0;
-          valueB = b.numericPrice || 0;
+        case 'price2':
+          valueA = a.pricePerPortion?.['2'] || 0;
+          valueB = b.pricePerPortion?.['2'] || 0;
+          break;
+        case 'price4':
+          valueA = a.pricePerPortion?.['4'] || 0;
+          valueB = b.pricePerPortion?.['4'] || 0;
           break;
         case 'timestamp':
           valueA = a.timestamp || 0;
           valueB = b.timestamp || 0;
           break;
-        case 'quantity':
-          valueA =
-            typeof a.quantity === 'string'
-              ? parseInt(a.quantity, 10) || 0
-              : a.quantity || 0;
-          valueB =
-            typeof b.quantity === 'string'
-              ? parseInt(b.quantity, 10) || 0
-              : b.quantity || 0;
+        case 'quantity2':
+          valueA = this.getPortionQuantity(a, '2');
+          valueB = this.getPortionQuantity(b, '2');
+          break;
+        case 'quantity4':
+          valueA = this.getPortionQuantity(a, '4');
+          valueB = this.getPortionQuantity(b, '4');
           break;
         default:
           valueA = a[column] || '';
@@ -494,5 +537,9 @@ export class ProductComponent implements OnInit, OnDestroy {
           product._id.toLowerCase().includes(term)
       );
     }
+  }
+
+  getPortionQuantity(product: Product, portion: string): number {
+    return product['portionQuantities']?.[portion] || 0;
   }
 }
