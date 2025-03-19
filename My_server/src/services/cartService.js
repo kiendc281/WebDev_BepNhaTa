@@ -1,5 +1,6 @@
 const Cart = require('../models/cart');
 const Ingredient = require('../models/ingredient');
+<<<<<<< HEAD
 const mongoose = require('mongoose');
 
 class CartService {
@@ -8,6 +9,10 @@ class CartService {
         return mongoose.Types.ObjectId.isValid(id);
     }
 
+=======
+
+class CartService {
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
     // Lấy tất cả giỏ hàng
     async getAllCarts() {
         try {
@@ -61,6 +66,7 @@ class CartService {
         try {
             console.log(`Lấy giỏ hàng cho user: ${userId}`);
             
+<<<<<<< HEAD
             // Kiểm tra userId có giá trị hợp lệ không
             if (!userId || userId === 'undefined' || userId === 'null') {
                 console.error('ID người dùng không được cung cấp hoặc không hợp lệ:', userId);
@@ -71,10 +77,13 @@ class CartService {
             userId = String(userId);
             console.log(`Tìm giỏ hàng với accountId: ${userId}`);
 
+=======
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
             let cart = await Cart.findOne({ accountId: userId })
                 .populate('items.productId');
             
             if (!cart) {
+<<<<<<< HEAD
                 console.log('Không tìm thấy giỏ hàng, tạo giỏ hàng mới');
                 cart = new Cart({
                     accountId: userId,
@@ -125,6 +134,25 @@ class CartService {
         } catch (error) {
             console.error(`Lỗi khi lấy giỏ hàng cho user ${userId}:`, error);
             throw new Error('Không thể lấy giỏ hàng: ' + error.message);
+=======
+                console.log('Không tìm thấy giỏ hàng, trả về giỏ hàng trống');
+                return { 
+                    items: [], 
+                    totalQuantity: 0, 
+                    totalPrice: 0 
+                };
+            }
+            
+            console.log(`Đã tìm thấy giỏ hàng với ${cart.items.length} sản phẩm`);
+            return { 
+                items: cart.items, 
+                totalQuantity: cart.totalQuantity, 
+                totalPrice: cart.totalPrice 
+            };
+        } catch (error) {
+            console.error(`Lỗi khi lấy giỏ hàng cho user ${userId}:`, error);
+            throw new Error('Không thể lấy giỏ hàng');
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
         }
     }
 
@@ -214,6 +242,7 @@ class CartService {
             console.log(`Thêm sản phẩm vào giỏ hàng cho user: ${userId}`);
             console.log(`Thông tin sản phẩm: productId=${productId}, quantity=${quantity}, servingSize=${servingSize}, price=${price}`);
             
+<<<<<<< HEAD
             // Kiểm tra userId có giá trị hợp lệ không
             if (!userId || userId === 'undefined' || userId === 'null') {
                 console.error('ID người dùng không được cung cấp hoặc không hợp lệ:', userId);
@@ -244,6 +273,14 @@ class CartService {
             
             console.log(`Đã tìm thấy sản phẩm: ${product.ingredientName}`);
             
+=======
+            // Kiểm tra sản phẩm tồn tại
+            const product = await Ingredient.findById(productId);
+            if (!product) {
+                throw new Error(`Không tìm thấy sản phẩm với ID ${productId}`);
+            }
+            
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
             // Tìm hoặc tạo giỏ hàng
             let cart = await Cart.findOne({ accountId: userId });
             
@@ -252,6 +289,7 @@ class CartService {
                 cart = new Cart({
                     accountId: userId,
                     items: [],
+<<<<<<< HEAD
                     listCart: [],
                     totalQuantity: 0,
                     totalPrice: 0
@@ -262,15 +300,24 @@ class CartService {
             // Đảm bảo cart.items là một mảng
             if (!cart.items) {
                 cart.items = [];
+=======
+                    totalQuantity: 0,
+                    totalPrice: 0
+                });
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
             }
             
             // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
             const existingItemIndex = cart.items.findIndex(
+<<<<<<< HEAD
                 item => {
                     // Kiểm tra cả trường hợp productId là ObjectId hoặc string
                     const itemProductId = item.productId ? (typeof item.productId === 'object' ? item.productId.toString() : item.productId) : '';
                     return itemProductId === product._id.toString() && item.servingSize === servingSize;
                 }
+=======
+                item => item.productId.toString() === productId && item.servingSize === servingSize
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
             );
             
             if (existingItemIndex !== -1) {
@@ -314,11 +361,14 @@ class CartService {
             console.log(`Xóa sản phẩm khỏi giỏ hàng cho user: ${userId}`);
             console.log(`Thông tin sản phẩm: productId=${productId}, servingSize=${servingSize}`);
             
+<<<<<<< HEAD
             // Đảm bảo userId là string
             userId = String(userId);
             // Đảm bảo productId là string
             productId = String(productId);
             
+=======
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
             // Tìm giỏ hàng
             const cart = await Cart.findOne({ accountId: userId });
             
@@ -327,11 +377,17 @@ class CartService {
             }
             
             // Tìm vị trí sản phẩm trong giỏ hàng
+<<<<<<< HEAD
             const itemIndex = cart.items.findIndex(item => {
                 // Kiểm tra cả trường hợp productId là ObjectId hoặc string
                 const itemProductId = item.productId ? (typeof item.productId === 'object' ? item.productId.toString() : item.productId) : '';
                 return itemProductId === productId && item.servingSize === servingSize;
             });
+=======
+            const itemIndex = cart.items.findIndex(
+                item => item.productId.toString() === productId && item.servingSize === servingSize
+            );
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
             
             if (itemIndex === -1) {
                 throw new Error('Không tìm thấy sản phẩm trong giỏ hàng');

@@ -8,6 +8,7 @@ const cartSchema = new mongoose.Schema({
     },
     items: [{
         productId: {
+<<<<<<< HEAD
             type: mongoose.Schema.Types.Mixed,
             ref: 'Ingredient',
             required: true
@@ -30,8 +31,18 @@ const cartSchema = new mongoose.Schema({
     }],
     listCart: [{
         ingredientId: {
+=======
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
             type: String,
             ref: 'Ingredient',
+            required: true
+        },
+        ingredientName: {
+            type: String,
+            required: true
+        },
+        mainImage: {
+            type: String,
             required: true
         },
         quantity: {
@@ -39,7 +50,12 @@ const cartSchema = new mongoose.Schema({
             required: true,
             min: 1
         },
-        totalPrice: {
+        servingSize: {
+            type: String,
+            required: true,
+            default: '2'
+        },
+        price: {
             type: Number,
             required: true
         }

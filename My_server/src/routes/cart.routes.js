@@ -12,7 +12,11 @@ router.get('/cart/:id', cartController.getCartById);
 router.get('/cart/account/:accountId', cartController.getCartByAccountId);
 
 // Lấy giỏ hàng người dùng
+<<<<<<< HEAD
 router.get('/cart/user', cartController.getUserCart);
+=======
+router.get('/cart/user/cart', cartController.getUserCart);
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
 
 // Cập nhật giỏ hàng
 router.post('/cart/update', cartController.updateUserCart);

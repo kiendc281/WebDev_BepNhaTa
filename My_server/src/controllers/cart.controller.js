@@ -60,10 +60,69 @@ const cartController = {
             }
             
             const updatedCart = await cartService.updateCart(userId, req.body);
+<<<<<<< HEAD
+=======
             res.json(updatedCart);
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
+    },
+
+    // Xóa giỏ hàng
+    clearUserCart: async (req, res) => {
+        try {
+            // Lấy userId từ request nếu có authentication, hoặc từ query nếu không
+            const userId = req.user?.id || req.query.userId;
+            
+            if (!userId) {
+                return res.status(400).json({ message: 'Cần có userId để xóa giỏ hàng' });
+            }
+            
+            const emptyCart = await cartService.clearCart(userId);
+            res.json(emptyCart);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    // Thêm sản phẩm vào giỏ hàng
+    addToCart: async (req, res) => {
+        try {
+            const { userId, productId, quantity, servingSize, price } = req.body;
+            
+            if (!userId || !productId || !quantity || !servingSize || !price) {
+                return res.status(400).json({ 
+                    message: 'Cần có đầy đủ thông tin: userId, productId, quantity, servingSize, price' 
+                });
+            }
+            
+            const updatedCart = await cartService.addToCart(
+                userId, productId, quantity, servingSize, price
+            );
+            res.json(updatedCart);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    },
+
+    // Xóa sản phẩm khỏi giỏ hàng
+    removeFromCart: async (req, res) => {
+        try {
+            const { userId, productId, servingSize } = req.body;
+            
+            if (!userId || !productId || !servingSize) {
+                return res.status(400).json({ 
+                    message: 'Cần có đầy đủ thông tin: userId, productId, servingSize' 
+                });
+            }
+            
+            const updatedCart = await cartService.removeFromCart(userId, productId, servingSize);
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
+            res.json(updatedCart);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+<<<<<<< HEAD
     },
 
     // Xóa giỏ hàng
@@ -122,6 +181,8 @@ const cartController = {
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
+=======
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
     }
 };
 

@@ -8,7 +8,11 @@ import {
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+<<<<<<< HEAD
 import { CartManagerService } from '../services/cart-manager.service';
+=======
+import { CartService } from '../services/cart.service';
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
 
 @Component({
   selector: 'app-dang-nhap',
@@ -34,7 +38,11 @@ export class DangNhapComponent {
     private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
+<<<<<<< HEAD
     private cartService: CartManagerService
+=======
+    private cartService: CartService
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
   ) {
     this.loginForm = this.fb.group({
       emailOrPhone: ['', [Validators.required, this.emailOrPhoneValidator]],
@@ -76,8 +84,15 @@ export class DangNhapComponent {
       this.authService.login(emailOrPhone, password).subscribe({
         next: (response) => {
           console.log('Đăng nhập thành công:', response);
+<<<<<<< HEAD
           
           // Không cần lưu token và user ở đây vì đã được xử lý trong authService.login
+=======
+          // Lưu thông tin đăng nhập với thời hạn 1 giờ
+          this.authService.saveToken(response.token);
+          localStorage.setItem('user', JSON.stringify(response.account));
+
+>>>>>>> f192f1ed4680c78be1872138c4b836a61327f3f5
           console.log('Token đã được lưu, bắt đầu đồng bộ giỏ hàng...');
           
           // Kiểm tra giỏ hàng hiện tại trong localStorage

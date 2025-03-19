@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { CartManagerService } from '../services/cart-manager.service';
+import { CommonModule } from '@angular/common';
 import { DangNhapComponent } from '../dang-nhap/dang-nhap.component';
 import { DangKyComponent } from '../dang-ky/dang-ky.component';
 import { QuenMatKhauComponent } from '../quen-mat-khau/quen-mat-khau.component';
+import { AuthService } from '../services/auth.service';
+import { CartService } from '../services/cart.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     public authService: AuthService,
-    private cartService: CartManagerService
+    public cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -50,9 +50,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Subscribe to cart changes
-    this.cartSubscription = this.cartService.cartItems$.subscribe((items) => {
-      this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
+    // Subscribe to the cart to update the cart item count
+    this.cartSubscription = this.cartService.cart$.subscribe(cart => {
+      this.cartItemCount = cart.totalQuantity;
     });
   }
 

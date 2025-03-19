@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-dang-ky',
@@ -32,7 +33,8 @@ export class DangKyComponent {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private cartService: CartService
   ) {
     this.registerForm = this.fb.group(
       {
@@ -99,10 +101,22 @@ export class DangKyComponent {
       this.authService.register(userData).subscribe({
         next: (response) => {
           console.log('Đăng ký thành công:', response);
-          localStorage.setItem('token', response.token);
+          // Lưu token và thông tin người dùng
+          this.authService.saveToken(response.token);
           localStorage.setItem('user', JSON.stringify(response.account));
+          
+          // Merge cart from local storage with server cart
+          this.cartService.mergeCartsAfterLogin().subscribe({
+            next: (cart) => {
+              console.log('Giỏ hàng đã được đồng bộ sau đăng ký:', cart);
+            },
+            error: (error) => {
+              console.error('Lỗi khi đồng bộ giỏ hàng sau đăng ký:', error);
+            }
+          });
+          
           this.onClose();
-          this.router.navigate(['/dang-nhap']);
+          this.router.navigate(['/']);
         },
         error: (error) => {
           console.error('Lỗi đăng ký:', error);
