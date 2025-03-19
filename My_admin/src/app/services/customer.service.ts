@@ -25,6 +25,8 @@ export class CustomerService {
             phone: account.phone || 'Chưa cập nhật',
             address: account.address || 'Chưa cập nhật',
             createdAt: account.createdAt,
+            dateOfBirth: account.birthOfDate, // API trả về birthOfDate thay vì dateOfBirth
+            gender: account.gender,
           } as Customer;
         });
       })
@@ -34,6 +36,7 @@ export class CustomerService {
   getCustomer(id: string): Observable<Customer> {
     return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
       map((account) => {
+        console.log('Raw account data:', account);
         return {
           _id: account._id,
           username: account.email, // Sử dụng email làm username
@@ -42,6 +45,8 @@ export class CustomerService {
           phone: account.phone || 'Chưa cập nhật',
           address: account.address || 'Chưa cập nhật',
           createdAt: account.createdAt,
+          dateOfBirth: account.birthOfDate, // API trả về birthOfDate thay vì dateOfBirth
+          gender: account.gender,
         } as Customer;
       })
     );

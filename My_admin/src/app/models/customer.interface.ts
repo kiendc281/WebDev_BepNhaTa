@@ -6,4 +6,6 @@ export interface Customer {
   phone: string;
   address?: string;
   createdAt?: string;
+  dateOfBirth?: string;
+  gender?: string;
 }

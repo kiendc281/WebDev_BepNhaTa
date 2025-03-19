@@ -30,37 +30,64 @@
     *ngIf="!isLoading && !error && customers.length > 0"
   >
     <table class="table table-bordered table-hover">
-      <thead>
+      <thead class="table-light">
         <tr>
           <th>STT</th>
-          <th>Tên đăng nhập</th>
-          <th>Tên khách hàng</th>
-          <th>Số điện thoại</th>
-          <th>Địa chỉ email</th>
-          <th>Địa chỉ</th>
-          <th>Ngày tạo</th>
+          <th class="sortable" (click)="sortBy('username')">
+            <div class="d-flex align-items-center">
+              <span>Tên đăng nhập</span>
+              <i class="bi {{ getSortIcon('username') }} ms-1"></i>
+            </div>
+          </th>
+          <th class="sortable" (click)="sortBy('fullName')">
+            <div class="d-flex align-items-center">
+              <span>Tên khách hàng</span>
+              <i class="bi {{ getSortIcon('fullName') }} ms-1"></i>
+            </div>
+          </th>
+          <th class="sortable" (click)="sortBy('phone')">
+            <div class="d-flex align-items-center">
+              <span>Số điện thoại</span>
+              <i class="bi {{ getSortIcon('phone') }} ms-1"></i>
+            </div>
+          </th>
+          <th class="sortable" (click)="sortBy('email')">
+            <div class="d-flex align-items-center">
+              <span>Địa chỉ email</span>
+              <i class="bi {{ getSortIcon('email') }} ms-1"></i>
+            </div>
+          </th>
+          <th class="sortable" (click)="sortBy('createdAt')">
+            <div class="d-flex align-items-center">
+              <span>Ngày tạo</span>
+              <i class="bi {{ getSortIcon('createdAt') }} ms-1"></i>
+            </div>
+          </th>
           <th>Hành động</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let customer of pagedCustomers; let i = index">
           <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
-          <td>{{ customer.username }}</td>
-          <td>{{ customer.fullName }}</td>
-          <td>{{ customer.phone }}</td>
-          <td>{{ customer.email }}</td>
-          <td>{{ customer.address || "Chưa cập nhật" }}</td>
-          <td>{{ customer.createdAt | date : "dd/MM/yyyy" }}</td>
+          <td [title]="customer.username">{{ customer.username }}</td>
+          <td [title]="customer.fullName">{{ customer.fullName }}</td>
+          <td [title]="customer.phone">{{ customer.phone }}</td>
+          <td [title]="customer.email">{{ customer.email }}</td>
+          <td [title]="customer.createdAt | date : 'dd/MM/yyyy'">
+            {{ customer.createdAt | date : "dd/MM/yyyy" }}
+          </td>
           <td>
             <button
               class="btn btn-sm btn-outline-primary me-2"
               (click)="editCustomer(customer._id)"
+              title="Xem chi tiết"
             >
               <i class="bi bi-eye-fill"></i>
             </button>
             <button
               class="btn btn-sm btn-outline-danger"
               (click)="deleteCustomer(customer._id)"
+              title="Xóa"
             >
               <i class="bi bi-trash"></i>
             </button>

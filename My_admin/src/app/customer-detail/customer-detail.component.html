@@ -1,0 +1,110 @@
+<div class="container-fluid">
+  <div class="mb-3">
+    <button class="button-xam" (click)="goBack()">
+      <i class="bi bi-chevron-left"></i>
+      Trở lại
+    </button>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="text-center my-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Đang tải...</span>
+    </div>
+    <p class="mt-2">Đang tải thông tin khách hàng...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="alert alert-danger my-3" role="alert">
+    {{ error }}
+    <button
+      type="button"
+      class="btn btn-sm btn-outline-danger float-end"
+      (click)="loadCustomerDetails()"
+    >
+      Thử lại
+    </button>
+  </div>
+
+  <div *ngIf="customer && !isLoading && !error" class="customer-info">
+    <!-- Thông tin cá nhân -->
+    <div class="personal-info">
+      <h2>Thông tin cá nhân</h2>
+      <div class="info-container">
+        <div class="avatar-container">
+          <img
+            src="assets/customer/default-avatar.jpg"
+            alt="Avatar"
+            class="avatar"
+          />
+        </div>
+        <div class="details">
+          <div class="info-row">
+            <span class="info-label">Tên khách hàng:</span>
+            <span class="info-value">{{ customer.fullName }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Mã khách hàng:</span>
+            <span class="info-value">{{ customer._id.substring(0, 6) }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Số điện thoại:</span>
+            <span class="info-value">{{ customer.phone }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value">{{ customer.email }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Ngày sinh:</span>
+            <span class="info-value">
+              <ng-container *ngIf="customer.dateOfBirth; else notUpdatedDOB">
+                {{ customer.dateOfBirth | date : "dd/MM/yyyy" }}
+              </ng-container>
+              <ng-template #notUpdatedDOB><em>Chưa cập nhật</em></ng-template>
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Giới tính:</span>
+            <span class="info-value">
+              <ng-container *ngIf="customer.gender; else notUpdatedGender">
+                {{ customer.gender }}
+              </ng-container>
+              <ng-template #notUpdatedGender
+                ><em>Chưa cập nhật</em></ng-template
+              >
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lịch sử mua hàng -->
+    <div class="order-history">
+      <h2>Lịch sử mua hàng</h2>
+
+      <div *ngFor="let order of orders" class="order-item">
+        <div class="order-header">
+          <div class="order-date">
+            <span>Ngày mua hàng: {{ order.orderDate }}</span>
+          </div>
+          <button class="btn btn-view">Xem chi tiết</button>
+        </div>
+        <div class="order-content">
+          <div *ngFor="let item of order.items" class="product-item">
+            <div class="product-image">
+              <img [src]="item.productImage" alt="Product Image" />
+            </div>
+            <div class="product-name">
+              {{ item.productName }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="orders.length === 0" class="no-orders">
+        Khách hàng chưa có đơn hàng nào.
+      </div>
+    </div>
+  </div>
+</div>

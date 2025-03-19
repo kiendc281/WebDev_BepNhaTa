@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Customer } from '../models/customer.interface';
 import { CustomerService } from '../services/customer.service';
 
@@ -22,7 +23,14 @@ export class CustomerComponent implements OnInit {
   totalPages: number = 1;
   pagedCustomers: Customer[] = [];
 
-  constructor(private customerService: CustomerService) {}
+  // Sắp xếp
+  sortColumn: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
+
+  constructor(
+    private customerService: CustomerService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadCustomers();
@@ -41,6 +49,7 @@ export class CustomerComponent implements OnInit {
           console.log('Tên đăng nhập đầu tiên:', data[0].username);
         }
         this.customers = data;
+        this.sortCustomers();
         this.totalPages = Math.ceil(this.customers.length / this.itemsPerPage);
         this.updatePagedCustomers();
         this.isLoading = false;
@@ -87,9 +96,79 @@ export class CustomerComponent implements OnInit {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
+  // Sắp xếp
+  sortBy(column: string): void {
+    if (this.sortColumn === column) {
+      // Nếu đang sắp xếp theo cột này, đảo ngược thứ tự
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Nếu sắp xếp theo cột mới, mặc định là tăng dần
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+
+    this.sortCustomers();
+    this.updatePagedCustomers();
+  }
+
+  sortCustomers(): void {
+    if (!this.sortColumn) return;
+
+    this.customers.sort((a, b) => {
+      let valueA: any;
+      let valueB: any;
+
+      // Lấy giá trị theo cột đang sắp xếp
+      switch (this.sortColumn) {
+        case 'username':
+          valueA = a.username ? a.username.toLowerCase() : '';
+          valueB = b.username ? b.username.toLowerCase() : '';
+          break;
+        case 'fullName':
+          valueA = a.fullName ? a.fullName.toLowerCase() : '';
+          valueB = b.fullName ? b.fullName.toLowerCase() : '';
+          break;
+        case 'phone':
+          valueA = a.phone;
+          valueB = b.phone;
+          break;
+        case 'email':
+          valueA = a.email ? a.email.toLowerCase() : '';
+          valueB = b.email ? b.email.toLowerCase() : '';
+          break;
+        case 'address':
+          valueA = a.address ? a.address.toLowerCase() : '';
+          valueB = b.address ? b.address.toLowerCase() : '';
+          break;
+        case 'createdAt':
+          valueA = new Date(a.createdAt || '');
+          valueB = new Date(b.createdAt || '');
+          break;
+        default:
+          return 0;
+      }
+
+      // So sánh và sắp xếp
+      if (valueA < valueB) {
+        return this.sortDirection === 'asc' ? -1 : 1;
+      }
+      if (valueA > valueB) {
+        return this.sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  }
+
+  getSortIcon(column: string): string {
+    if (this.sortColumn !== column) {
+      return 'bi-arrow-down-up'; // Icon mặc định khi chưa sắp xếp
+    }
+    return this.sortDirection === 'asc' ? 'bi-sort-down-alt' : 'bi-sort-up-alt';
+  }
+
   editCustomer(id: string): void {
     console.log('Edit customer with ID:', id);
-    // Implement edit functionality
+    this.router.navigate(['/customers', id]);
   }
 
   deleteCustomer(id: string): void {
