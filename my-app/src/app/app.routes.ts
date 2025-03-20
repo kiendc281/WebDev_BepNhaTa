@@ -41,6 +41,6 @@ export const routes: Routes = [
   { path: '', component: TrangChuComponent },
   { path: 'gio-hang', component: GioHangComponent },
   { path: 'yeu-thich', component: FavoritesComponent },
-  { path: 'timkiem', component: TimKiemComponent },
+  { path: 'tim-kiem', component: TimKiemComponent },
   // { path: '', redirectTo: '/dang-nhap', pathMatch: 'full' },
 ];

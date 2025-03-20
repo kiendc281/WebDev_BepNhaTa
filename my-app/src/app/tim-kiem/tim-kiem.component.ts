@@ -12,7 +12,7 @@ import { FooterComponent } from '../footer/footer.component';
   template: `
     <div class="container search-results-page">
       <div class="search-header">
-        <h1>Kết quả tìm kiếm cho <span class="search-term">"{{ searchTerm }}"</span></h1>
+        <h1>Xem tất cả kết quả cho <span class="search-term">"{{ searchTerm }}"</span></h1>
         
         <div class="search-stats">
           <span *ngIf="loading">Đang tìm kiếm...</span>
@@ -153,22 +153,24 @@ import { FooterComponent } from '../footer/footer.component';
     
     .search-header {
       margin-bottom: 30px;
-      padding-bottom: 20px;
+      padding-bottom: 15px;
       border-bottom: 1px solid #eee;
     }
     
     .search-header h1 {
-      font-size: 24px;
+      font-size: 28px;
+      color: var(--color-camdam);
       margin-bottom: 10px;
+      text-align: center;
     }
     
     .search-term {
-      color: var(--color-camdam);
+      font-weight: 600;
     }
     
     .search-stats {
       color: #666;
-      font-size: 14px;
+      text-align: center;
     }
     
     .result-section {
