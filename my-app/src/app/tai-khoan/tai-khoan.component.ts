@@ -112,13 +112,16 @@ export class TaiKhoanComponent implements OnInit {
     // Khởi tạo form địa chỉ
     this.addressForm = this.fb.group({
       recipientName: ['', Validators.required],
-      recipientPhone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      email: ['', [Validators.email]],
+      recipientPhone: [
+        '',
+        [Validators.required, Validators.pattern(/^\d{10}$/)],
+      ],
+      email: ['', [Validators.required, Validators.email]],
       province: ['', Validators.required],
       district: ['', Validators.required],
       ward: ['', Validators.required],
       detail: ['', Validators.required],
-      isDefault: [false]
+      isDefault: [false],
     });
   }
 
@@ -211,7 +214,7 @@ export class TaiKhoanComponent implements OnInit {
 
     this.initPasswordForm();
     this.generateDaysInMonth();
-    
+
     // Tải địa chỉ người dùng khi khởi tạo
     this.loadUserAddresses();
 
@@ -470,7 +473,7 @@ export class TaiKhoanComponent implements OnInit {
   loadUserAddresses(): void {
     this.loadingAddresses = true;
     console.log('Bắt đầu tải danh sách địa chỉ...');
-    
+
     this.addressService.getUserAddresses().subscribe({
       next: (response) => {
         console.log('Đã tải địa chỉ người dùng thành công:', response);
@@ -479,7 +482,9 @@ export class TaiKhoanComponent implements OnInit {
           console.log(`Đã tìm thấy ${this.userAddresses.length} địa chỉ`);
         } else {
           this.userAddresses = [];
-          console.warn('Không tìm thấy địa chỉ nào hoặc dữ liệu không đúng định dạng');
+          console.warn(
+            'Không tìm thấy địa chỉ nào hoặc dữ liệu không đúng định dạng'
+          );
         }
         this.loadingAddresses = false;
       },
@@ -492,9 +497,13 @@ export class TaiKhoanComponent implements OnInit {
         if (error.status) {
           console.error('HTTP Status:', error.status);
         }
-        this.showToast('error', 'Lỗi', 'Không thể tải danh sách địa chỉ. Vui lòng thử lại sau.');
+        this.showToast(
+          'error',
+          'Lỗi',
+          'Không thể tải danh sách địa chỉ. Vui lòng thử lại sau.'
+        );
         this.loadingAddresses = false;
-      }
+      },
     });
   }
 
@@ -503,7 +512,7 @@ export class TaiKhoanComponent implements OnInit {
    */
   openAddressModal(): void {
     this.addressForm.reset({
-      isDefault: false
+      isDefault: false,
     });
     this.showAddressModal = true;
   }
@@ -528,7 +537,7 @@ export class TaiKhoanComponent implements OnInit {
       district: address.district || '',
       ward: address.ward || '',
       detail: address.detail || address.address || '',
-      isDefault: address.isDefault
+      isDefault: address.isDefault,
     });
     this.showEditAddressModal = true;
   }
@@ -547,7 +556,7 @@ export class TaiKhoanComponent implements OnInit {
   addNewAddress(): void {
     if (this.addressForm.invalid) {
       // Đánh dấu tất cả các trường là đã chạm để hiển thị lỗi
-      Object.keys(this.addressForm.controls).forEach(key => {
+      Object.keys(this.addressForm.controls).forEach((key) => {
         const control = this.addressForm.get(key);
         control?.markAsTouched();
       });
@@ -558,7 +567,11 @@ export class TaiKhoanComponent implements OnInit {
     const userId = user?._id || user?.id;
 
     if (!userId) {
-      this.showToast('error', 'Lỗi', 'Không thể xác định người dùng. Vui lòng đăng nhập lại.');
+      this.showToast(
+        'error',
+        'Lỗi',
+        'Không thể xác định người dùng. Vui lòng đăng nhập lại.'
+      );
       return;
     }
 
@@ -567,17 +580,21 @@ export class TaiKhoanComponent implements OnInit {
       recipientName: this.addressForm.value.recipientName,
       recipientPhone: this.addressForm.value.recipientPhone,
       email: this.addressForm.value.email || '',
-      city: this.addressForm.value.province,  // Backend yêu cầu city thay vì province
+      city: this.addressForm.value.province, // Backend yêu cầu city thay vì province
       district: this.addressForm.value.district,
       ward: this.addressForm.value.ward,
-      detail: this.addressForm.value.detail,  // Backend yêu cầu detail thay vì address
-      isDefault: this.addressForm.value.isDefault
+      detail: this.addressForm.value.detail, // Backend yêu cầu detail thay vì address
+      isDefault: this.addressForm.value.isDefault,
     };
 
     this.addressService.addAddress(newAddress).subscribe({
       next: (response) => {
         console.log('Thêm địa chỉ thành công:', response);
-        this.showToast('success', 'Thành công', 'Đã thêm địa chỉ mới vào sổ địa chỉ');
+        this.showToast(
+          'success',
+          'Thành công',
+          'Đã thêm địa chỉ mới vào sổ địa chỉ'
+        );
         this.closeAddressModal();
         this.loadUserAddresses(); // Tải lại danh sách địa chỉ
       },
@@ -588,7 +605,7 @@ export class TaiKhoanComponent implements OnInit {
           errorMessage += error.error.message;
         }
         this.showToast('error', 'Lỗi', errorMessage);
-      }
+      },
     });
   }
 
@@ -598,7 +615,7 @@ export class TaiKhoanComponent implements OnInit {
   updateAddress(): void {
     if (this.addressForm.invalid || !this.selectedAddress) {
       // Đánh dấu tất cả các trường là đã chạm để hiển thị lỗi
-      Object.keys(this.addressForm.controls).forEach(key => {
+      Object.keys(this.addressForm.controls).forEach((key) => {
         const control = this.addressForm.get(key);
         control?.markAsTouched();
       });
@@ -609,29 +626,31 @@ export class TaiKhoanComponent implements OnInit {
       recipientName: this.addressForm.value.recipientName,
       recipientPhone: this.addressForm.value.recipientPhone,
       email: this.addressForm.value.email || '',
-      city: this.addressForm.value.province,  // Backend yêu cầu city thay vì province
+      city: this.addressForm.value.province, // Backend yêu cầu city thay vì province
       district: this.addressForm.value.district,
       ward: this.addressForm.value.ward,
-      detail: this.addressForm.value.detail,  // Backend yêu cầu detail thay vì address
-      isDefault: this.addressForm.value.isDefault
+      detail: this.addressForm.value.detail, // Backend yêu cầu detail thay vì address
+      isDefault: this.addressForm.value.isDefault,
     };
 
-    this.addressService.updateAddress(this.selectedAddress._id, updatedAddress).subscribe({
-      next: (response) => {
-        console.log('Cập nhật địa chỉ thành công:', response);
-        this.showToast('success', 'Thành công', 'Đã cập nhật địa chỉ');
-        this.closeEditAddressModal();
-        this.loadUserAddresses(); // Tải lại danh sách địa chỉ
-      },
-      error: (error) => {
-        console.error('Lỗi khi cập nhật địa chỉ:', error);
-        let errorMessage = 'Không thể cập nhật địa chỉ. ';
-        if (error.error?.message) {
-          errorMessage += error.error.message;
-        }
-        this.showToast('error', 'Lỗi', errorMessage);
-      }
-    });
+    this.addressService
+      .updateAddress(this.selectedAddress._id, updatedAddress)
+      .subscribe({
+        next: (response) => {
+          console.log('Cập nhật địa chỉ thành công:', response);
+          this.showToast('success', 'Thành công', 'Đã cập nhật địa chỉ');
+          this.closeEditAddressModal();
+          this.loadUserAddresses(); // Tải lại danh sách địa chỉ
+        },
+        error: (error) => {
+          console.error('Lỗi khi cập nhật địa chỉ:', error);
+          let errorMessage = 'Không thể cập nhật địa chỉ. ';
+          if (error.error?.message) {
+            errorMessage += error.error.message;
+          }
+          this.showToast('error', 'Lỗi', errorMessage);
+        },
+      });
   }
 
   /**
@@ -652,7 +671,7 @@ export class TaiKhoanComponent implements OnInit {
             errorMessage += error.error.message;
           }
           this.showToast('error', 'Lỗi', errorMessage);
-        }
+        },
       });
     }
   }
@@ -674,7 +693,7 @@ export class TaiKhoanComponent implements OnInit {
           errorMessage += error.error.message;
         }
         this.showToast('error', 'Lỗi', errorMessage);
-      }
+      },
     });
   }
 
@@ -686,8 +705,10 @@ export class TaiKhoanComponent implements OnInit {
     const ward = address.ward || '';
     const district = address.district || '';
     const province = address.province || address.city || '';
-    
-    const parts = [detail, ward, district, province].filter(part => part && part.trim() !== '');
+
+    const parts = [detail, ward, district, province].filter(
+      (part) => part && part.trim() !== ''
+    );
     return parts.join(', ');
   }
 }
