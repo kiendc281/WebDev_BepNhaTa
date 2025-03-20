@@ -56,6 +56,24 @@ exports.createGuestOrder = async (req, res) => {
             });
         }
 
+        // Kiểm tra thông tin sản phẩm trong đơn hàng
+        if (!Array.isArray(itemOrder) || itemOrder.length === 0) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Đơn hàng phải có ít nhất một sản phẩm'
+            });
+        }
+
+        // Kiểm tra từng sản phẩm trong đơn hàng có đủ thông tin không
+        for (const item of itemOrder) {
+            if (!item.productId || !item.name || !item.img || !item.quantity || !item.totalPrice || !item.servingSize) {
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'Thông tin sản phẩm trong đơn hàng không đầy đủ'
+                });
+            }
+        }
+
         // Kiểm tra thông tin khách vãng lai cơ bản - Chỉ yêu cầu tên và số điện thoại
         if (!guestInfo || !guestInfo.fullName || !guestInfo.phone) {
             return res.status(400).json({

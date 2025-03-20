@@ -7,6 +7,18 @@ const orderItemSchema = new Schema({
         type: String,
         required: true
     },
+    name: {
+        type: String,
+        required: true
+    },
+    img: {
+        type: String,
+        required: true
+    },
+    servingSize: {
+        type: String,
+        required: true
+    },
     quantity: {
         type: Number,
         required: true,

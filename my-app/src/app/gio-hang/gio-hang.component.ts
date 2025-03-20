@@ -612,6 +612,8 @@ export class GioHangComponent implements OnInit, OnDestroy {
       accountId: accountId,
       itemOrder: this.cartItems.map(item => ({
         productId: item.productId,
+        name: item.productName || item.ingredientName || 'Sản phẩm không tên',
+        img: item.mainImage || '',
         quantity: item.quantity,
         totalPrice: item.price * item.quantity,
         servingSize: item.servingSize

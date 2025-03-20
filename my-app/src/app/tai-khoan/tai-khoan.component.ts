@@ -13,6 +13,10 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { Address, AddressService } from '../services/address.service';
+import { OrderService } from '../services/order.service';
+import { CartManagerService } from '../services/cart-manager.service';
+import { Product } from '../models/product.interface';
+import { Order } from '../models/order.interface';
 
 interface Toast {
   type: 'success' | 'error';
@@ -42,6 +46,12 @@ export class TaiKhoanComponent implements OnInit {
   userAddresses: Address[] = [];
   loadingAddresses: boolean = false;
   selectedAddress: Address | null = null;
+
+  // Quản lý đơn hàng
+  loading = false;
+  userOrders: Order[] = [];
+  showOrderDetailModal = false;
+  selectedOrder: Order | null = null;
 
   // Form địa chỉ
   addressForm: FormGroup;
@@ -77,7 +87,9 @@ export class TaiKhoanComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private fb: FormBuilder,
-    private addressService: AddressService
+    private addressService: AddressService,
+    private orderService: OrderService,
+    private cartService: CartManagerService
   ) {
     // Khởi tạo form thông tin cá nhân
     this.updateForm = this.fb.group({
@@ -220,6 +232,10 @@ export class TaiKhoanComponent implements OnInit {
 
     // Debug info
     console.log('Current user:', this.currentUser);
+
+    if (this.selectedCategory === 'lich-su') {
+      this.loadUserOrders();
+    }
   }
 
   private initPasswordForm(): void {
@@ -242,6 +258,9 @@ export class TaiKhoanComponent implements OnInit {
 
   showContent(category: string): void {
     this.selectedCategory = category;
+    if (category === 'lich-su') {
+      this.loadUserOrders();
+    }
   }
 
   logout(): void {
@@ -710,5 +729,166 @@ export class TaiKhoanComponent implements OnInit {
       (part) => part && part.trim() !== ''
     );
     return parts.join(', ');
+  }
+
+  /**
+   * Tải danh sách đơn hàng của người dùng
+   */
+  async loadUserOrders(): Promise<void> {
+    this.loading = true;
+    try {
+      if (!this.currentUser?.id) {
+        console.error('No user ID found');
+        return;
+      }
+      const response = await this.orderService.getUserOrders(this.currentUser.id).toPromise();
+      console.log('Order response:', response);
+      if (response && response.data) {
+        this.userOrders = response.data;
+        console.log('Processed orders:', this.userOrders);
+      } else {
+        this.userOrders = [];
+      }
+    } catch (error) {
+      console.error('Error loading orders:', error);
+      this.showToast('error', 'Lỗi', 'Không thể tải danh sách đơn hàng. Vui lòng thử lại sau.');
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  /**
+   * Mở modal xem chi tiết đơn hàng
+   */
+  openOrderDetailModal(order: Order): void {
+    this.selectedOrder = order;
+    this.showOrderDetailModal = true;
+  }
+
+  /**
+   * Đóng modal xem chi tiết đơn hàng
+   */
+  closeOrderDetailModal(): void {
+    this.showOrderDetailModal = false;
+    this.selectedOrder = null;
+  }
+
+  getStatusClass(status: string): string {
+    const statusMap: { [key: string]: string } = {
+      'Đang xử lý': 'status-processing',
+      'Đã xác nhận': 'status-confirmed',
+      'Đang giao hàng': 'status-shipping',
+      'Đã giao hàng': 'status-delivered',
+      'Đã hủy': 'status-cancelled'
+    };
+    return statusMap[status] || 'status-processing';
+  }
+
+  formatDate(date: string | Date): string {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    return dateObj.toLocaleDateString('vi-VN', {
+      hour: '2-digit',
+      minute: '2-digit',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  }
+
+  formatPrice(price: number | undefined | null): string {
+    if (price === undefined || price === null) {
+      return '0đ';
+    }
+    return price.toLocaleString('vi-VN') + 'đ';
+  }
+
+  showOrderDetail(order: Order): void {
+    this.selectedOrder = order;
+    this.showOrderDetailModal = true;
+  }
+
+  closeOrderDetail(): void {
+    this.showOrderDetailModal = false;
+    this.selectedOrder = null;
+  }
+
+  calculateOrderTotal(order: Order): number {
+    if (!order.itemOrder || !Array.isArray(order.itemOrder)) {
+      return order.totalPrice || 0;
+    }
+    const subtotal = order.itemOrder.reduce((sum: number, item) => sum + item.totalPrice, 0);
+    const shippingFee = order.shippingFee || 0;
+    return subtotal + shippingFee;
+  }
+
+  // Phương thức điều hướng đến trang liên hệ
+  navigateToContact() {
+    this.router.navigate(['/lien-he']);
+  }
+
+  // Phương thức xử lý mua lại đơn hàng
+  reorderItems(): void {
+    if (!this.selectedOrder || !this.selectedOrder.itemOrder) {
+      this.showToast('error', 'Lỗi', 'Không thể tải thông tin đơn hàng');
+      return;
+    }
+
+    let successCount = 0;
+    const totalItems = this.selectedOrder.itemOrder.length;
+
+    // Thêm từng sản phẩm vào giỏ hàng
+    this.selectedOrder.itemOrder.forEach((item) => {
+      const product: Product = {
+        _id: item.productId,
+        ingredientName: item.name,
+        mainImage: item.img,
+        subImage: '',
+        level: '',
+        time: '',
+        combo: '',
+        discount: 0,
+        pricePerPortion: {
+          [item.servingSize]: item.totalPrice / item.quantity
+        },
+        description: '',
+        notes: '',
+        components: [],
+        storage: '',
+        expirationDate: '',
+        tags: [],
+        relatedProductIds: [],
+        suggestedRecipeIds: [],
+        region: '',
+        category: '',
+        quantity: 0,
+        status: ''
+      };
+
+      this.cartService.addToCart(
+        product,
+        item.quantity,
+        item.servingSize,
+        item.totalPrice / item.quantity
+      ).subscribe({
+        next: () => {
+          successCount++;
+          if (successCount === totalItems) {
+            this.showToast(
+              'success',
+              'Thành công',
+              'Đã thêm tất cả sản phẩm vào giỏ hàng'
+            );
+          }
+        },
+        error: (error) => {
+          console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
+          this.showToast(
+            'error',
+            'Lỗi',
+            'Không thể thêm một số sản phẩm vào giỏ hàng'
+          );
+        },
+      });
+    });
   }
 }
