@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Blog } from '../models/blog.interface';
 import { BlogService } from '../services/blog.service';
 import { Router, RouterModule } from '@angular/router';
@@ -9,13 +10,15 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './blog.component.html',
   styleUrls: ['./blog.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
 })
 export class BlogComponent implements OnInit {
   blogs: Blog[] = [];
+  paginatedBlogs: Blog[] = []; // Blog hiển thị trên trang hiện tại
   currentPage = 1;
-  itemsPerPage = 10;
+  itemsPerPage = 5;
   totalItems = 0;
+  totalPages = 1;
   isLoading = false;
   error: string | null = null;
   sortColumn: string = '';
@@ -35,6 +38,8 @@ export class BlogComponent implements OnInit {
         this.blogs = data;
         this.totalItems = data.length;
         this.sortBlogs(this.sortColumn); // Apply current sorting
+        this.calculateTotalPages();
+        this.updatePaginatedBlogs();
         this.isLoading = false;
       },
       (error) => {
@@ -69,7 +74,71 @@ export class BlogComponent implements OnInit {
   }
 
   onPageChange(page: number): void {
+    if (page < 1 || page > this.totalPages) {
+      return;
+    }
     this.currentPage = page;
+    this.updatePaginatedBlogs();
+  }
+
+  updatePaginatedBlogs(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = Math.min(startIndex + this.itemsPerPage, this.totalItems);
+    this.paginatedBlogs = this.blogs.slice(startIndex, endIndex);
+  }
+
+  calculateTotalPages(): void {
+    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+    if (this.totalPages === 0) {
+      this.totalPages = 1;
+    }
+    // Đảm bảo currentPage không vượt quá totalPages
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages;
+    }
+  }
+
+  onPageSizeChange(): void {
+    this.calculateTotalPages();
+    this.currentPage = 1; // Reset về trang đầu tiên khi thay đổi số mục trên trang
+    this.updatePaginatedBlogs();
+  }
+
+  getPageNumbers(): number[] {
+    const pages: number[] = [];
+
+    // Hiển thị tối đa 5 số trang
+    const maxPagesToShow = 5;
+
+    if (this.totalPages <= maxPagesToShow) {
+      // Nếu tổng số trang ≤ 5, hiển thị tất cả
+      for (let i = 1; i <= this.totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Nếu tổng số trang > 5, tính toán dải số trang hiển thị
+      let startPage = Math.max(
+        1,
+        this.currentPage - Math.floor(maxPagesToShow / 2)
+      );
+      let endPage = startPage + maxPagesToShow - 1;
+
+      if (endPage > this.totalPages) {
+        // Điều chỉnh nếu vượt quá tổng số trang
+        endPage = this.totalPages;
+        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+    }
+
+    return pages;
+  }
+
+  viewBlog(blogId: string): void {
+    this.router.navigate(['/blog/detail', blogId]);
   }
 
   editBlog(blogId: string): void {
@@ -82,6 +151,8 @@ export class BlogComponent implements OnInit {
         () => {
           this.blogs = this.blogs.filter((blog) => blog._id !== blogId);
           this.totalItems = this.blogs.length;
+          this.calculateTotalPages();
+          this.updatePaginatedBlogs();
         },
         (error) => {
           console.error('Error deleting blog:', error);
@@ -135,6 +206,8 @@ export class BlogComponent implements OnInit {
 
       return comparison * direction;
     });
+
+    this.updatePaginatedBlogs(); // Cập nhật lại danh sách blog hiển thị sau khi sắp xếp
   }
 
   getSortIcon(column: string): string {

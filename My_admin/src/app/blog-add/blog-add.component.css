@@ -1,0 +1,47 @@
+.section-item {
+  background-color: #f8f9fa;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.section-item:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+  background-color: #f0f0f0;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.thumbnail-preview,
+.image-preview {
+  border: 1px solid #dee2e6;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+.btn-outline-danger {
+  padding: 0.375rem 0.75rem;
+}
+
+.section-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* Required field indicator */
+.form-label span.text-danger {
+  font-weight: bold;
+}
