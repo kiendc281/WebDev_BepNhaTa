@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { RecipeService } from '../services/recipe.service';
+import { Recipe } from '../models/recipe.interface';
 
 @Component({
   selector: 'app-recipes-detail',
@@ -13,7 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class RecipesDetailComponent implements OnInit {
   // Khởi tạo recipe với giá trị mặc định rỗng khi tạo mới
-  recipe: any = {
+  recipe: Recipe = {
     _id: '',
     recipeName: '',
     recipeImage: '',
@@ -46,7 +48,8 @@ export class RecipesDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private recipeService: RecipeService
   ) {}
 
   ngOnInit(): void {
@@ -62,79 +65,63 @@ export class RecipesDetailComponent implements OnInit {
   // Tải thông tin công thức
   loadRecipe(id: string): void {
     this.isLoading = true;
-    // Giả lập tải dữ liệu
-    setTimeout(() => {
-      // Mẫu dữ liệu công thức
-      this.recipe = {
-        _id: "CT01",
-        recipeName: "Phở bò",
-        recipeImage: "https://res.cloudinary.com/dpfsn7dkf/image/upload/v1741233430/phobohanoi_huh3fe.jpg",
-        servingsOptions: {
-          "2": {
-            ingredients: [
-              { name: "Xương bò", quantity: "500g" },
-              { name: "Thịt bò (thăn hoặc nạm)", quantity: "200g" },
-              { name: "Bánh phở", quantity: "400g" },
-              { name: "Gừng", quantity: "1 củ nhỏ" },
-              { name: "Hành tây", quantity: "1/2 củ" },
-              { name: "Hành lá", quantity: "1 ít" },
-              { name: "Rau mùi", quantity: "1 ít" },
-              { name: "Quế", quantity: "1 thanh nhỏ" },
-              { name: "Hồi", quantity: "2 hoa" },
-              { name: "Nước mắm", quantity: "1 muỗng canh" },
-              { name: "Muối", quantity: "1 muỗng cà phê" },
-              { name: "Đường", quantity: "1 muỗng cà phê" },
-              { name: "Tiêu", quantity: "1/2 muỗng cà phê" }
-            ]
-          },
-          "4": {
-            ingredients: [
-              { name: "Xương bò", quantity: "1kg" },
-              { name: "Thịt bò (thăn hoặc nạm)", quantity: "400g" },
-              { name: "Bánh phở", quantity: "800g" },
-              { name: "Gừng", quantity: "1 củ vừa" },
-              { name: "Hành tây", quantity: "1 củ" },
-              { name: "Hành lá", quantity: "1 ít" },
-              { name: "Rau mùi", quantity: "1 ít" },
-              { name: "Quế", quantity: "2 thanh nhỏ" },
-              { name: "Hồi", quantity: "4 hoa" },
-              { name: "Nước mắm", quantity: "2 muỗng canh" },
-              { name: "Muối", quantity: "2 muỗng cà phê" },
-              { name: "Đường", quantity: "2 muỗng cà phê" },
-              { name: "Tiêu", quantity: "1 muỗng cà phê" }
-            ]
+    this.errorMessage = '';
+    
+    this.recipeService.getRecipeById(id).subscribe({
+      next: (response: any) => {
+        console.log('API response:', response);
+        
+        let recipeData: Recipe;
+        
+        // Xử lý dữ liệu trả về từ API
+        if (response && response.data) {
+          // Nếu API trả về dữ liệu trong trường data
+          recipeData = response.data;
+        } else {
+          // Nếu API trả về dữ liệu trực tiếp
+          recipeData = response as Recipe;
+        }
+        
+        if (recipeData) {
+          this.recipe = recipeData;
+          
+          // Đảm bảo cấu trúc servingsOptions luôn đúng
+          if (!this.recipe.servingsOptions) {
+            this.recipe.servingsOptions = {
+              '2': { ingredients: [] },
+              '4': { ingredients: [] }
+            };
+          } else {
+            if (!this.recipe.servingsOptions['2']) {
+              this.recipe.servingsOptions['2'] = { ingredients: [] };
+            } else if (!this.recipe.servingsOptions['2'].ingredients) {
+              this.recipe.servingsOptions['2'].ingredients = [];
+            }
+            
+            if (!this.recipe.servingsOptions['4']) {
+              this.recipe.servingsOptions['4'] = { ingredients: [] };
+            } else if (!this.recipe.servingsOptions['4'].ingredients) {
+              this.recipe.servingsOptions['4'].ingredients = [];
+            }
           }
-        },
-        time: "3 giờ",
-        difficulty: "Trung bình",
-        description: "Phở bò là món ăn truyền thống của Việt Nam, nổi tiếng với nước dùng thơm ngon và thịt bò mềm.",
-        notes: "Nên hầm xương lâu để nước dùng ngọt tự nhiên.",
-        preparation: [
-          "Rửa sạch xương bò bằng nước muối loãng, sau đó chần qua nước sôi khoảng 5 phút để loại bỏ bọt bẩn và mùi tanh.",
-          "Nướng gừng và hành tây trực tiếp trên lửa hoặc trong lò nướng cho đến khi cháy xém vỏ ngoài, sau đó cạo sạch vỏ cháy và rửa lại.",
-          "Thái mỏng thịt bò (thăn hoặc nạm) thành từng lát mỏng, để riêng trên đĩa sạch.",
-          "Rửa sạch hành lá và rau mùi, cắt nhỏ hành lá, để rau mùi nguyên cọng hoặc cắt khúc tùy ý.",
-          "Chuẩn bị bánh phở: Nếu dùng bánh phở khô thì ngâm nước ấm khoảng 20 phút rồi vớt ra để ráo, nếu dùng bánh phở tươi thì chỉ cần rửa qua nước ấm.",
-          "Rang nhẹ quế và hồi trên chảo nóng (không dầu) khoảng 1-2 phút cho dậy mùi thơm."
-        ],
-        steps: [
-          "Cho xương bò vào nồi lớn, đổ 2 lít nước (cho 2 người) hoặc 4 lít nước (cho 4 người), đun sôi rồi hạ lửa nhỏ, hầm trong 2-3 giờ, thường xuyên vớt bọt để nước dùng trong.",
-          "Sau 1 giờ hầm, thêm gừng nướng, hành tây nướng, quế và hồi đã rang vào nồi, tiếp tục hầm để nước dùng thơm.",
-          "Nêm nước dùng với nước mắm, muối, đường và tiêu, điều chỉnh gia vị cho vừa miệng, đun thêm 10 phút để gia vị thấm đều.",
-          "Trụng bánh phở qua nước sôi khoảng 30 giây, sau đó cho vào tô.",
-          "Xếp thịt bò thái mỏng lên trên bánh phở, nếu thích thịt chín thì trụng sơ qua nước dùng trước khi xếp.",
-          "Đun sôi nước dùng một lần nữa, sau đó chan nóng trực tiếp vào tô phở sao cho ngập bánh phở và thịt bò, thịt sẽ chín tái nhờ nhiệt độ nước.",
-          "Rắc hành lá và rau mùi lên trên cùng, thêm một chút tiêu xay nếu thích."
-        ],
-        servingSuggestion: "Dùng nóng ngay sau khi chế biến, kèm theo đĩa rau sống (húng quế, giá đỗ, rau thơm), chanh tươi, ớt tươi, tương đen và tương ớt để chấm hoặc thêm tùy khẩu vị.",
-        tips: "Nên chọn thịt bò tươi và thái thật mỏng để thịt chín tái ngon hơn. Nếu nước dùng bị đục, có thể lọc qua vải mùng trước khi chan.",
-        tags: ["phở", "món nước", "truyền thống", "bò"],
-        likes: 0,
-        region: "Bắc",
-        category: "Nước"
-      };
-      this.isLoading = false;
-    }, 1000);
+          
+          // Đảm bảo các trường khác có giá trị mặc định
+          if (!this.recipe.preparation) this.recipe.preparation = [];
+          if (!this.recipe.steps) this.recipe.steps = [];
+          if (!this.recipe.tags) this.recipe.tags = [];
+          
+          console.log('Recipe data processed:', this.recipe);
+        } else {
+          this.errorMessage = 'Không tìm thấy công thức';
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Lỗi khi tải công thức:', error);
+        this.errorMessage = 'Đã xảy ra lỗi khi tải dữ liệu công thức';
+        this.isLoading = false;
+      }
+    });
   }
 
   // Xử lý khi có thay đổi trong form
@@ -247,23 +234,80 @@ export class RecipesDetailComponent implements OnInit {
   // Lưu công thức
   saveRecipe(): void {
     this.isLoading = true;
+    this.errorMessage = '';
     
-    // Giả lập lưu dữ liệu
-    setTimeout(() => {
-      this.isLoading = false;
-      this.pendingChanges = false;
-      this.router.navigate(['/recipes']);
-    }, 1000);
+    // Kiểm tra và làm sạch dữ liệu trước khi gửi
+    this.validateRecipeData();
+    
+    if (this.isEdit) {
+      // Cập nhật công thức hiện có
+      this.recipeService.updateRecipe(this.recipe._id, this.recipe).subscribe({
+        next: (response) => {
+          if (response.status === 'success') {
+            this.pendingChanges = false;
+            this.router.navigate(['/cong-thuc']);
+          } else {
+            this.errorMessage = 'Không thể cập nhật công thức';
+          }
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Lỗi khi cập nhật công thức:', error);
+          this.errorMessage = 'Đã xảy ra lỗi khi cập nhật công thức';
+          this.isLoading = false;
+        }
+      });
+    } else {
+      // Tạo công thức mới
+      this.recipeService.createRecipe(this.recipe).subscribe({
+        next: (response) => {
+          if (response.status === 'success') {
+            this.pendingChanges = false;
+            this.router.navigate(['/cong-thuc']);
+          } else {
+            this.errorMessage = 'Không thể tạo công thức mới';
+          }
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Lỗi khi tạo công thức mới:', error);
+          this.errorMessage = 'Đã xảy ra lỗi khi tạo công thức mới';
+          this.isLoading = false;
+        }
+      });
+    }
+  }
+
+  // Kiểm tra và làm sạch dữ liệu
+  private validateRecipeData(): void {
+    // Loại bỏ các nguyên liệu trống
+    if (this.recipe.servingsOptions['2'] && this.recipe.servingsOptions['2'].ingredients) {
+      this.recipe.servingsOptions['2'].ingredients = this.recipe.servingsOptions['2'].ingredients.filter(
+        ingredient => ingredient.name.trim() !== '' || ingredient.quantity.trim() !== ''
+      );
+    }
+    
+    if (this.recipe.servingsOptions['4'] && this.recipe.servingsOptions['4'].ingredients) {
+      this.recipe.servingsOptions['4'].ingredients = this.recipe.servingsOptions['4'].ingredients.filter(
+        ingredient => ingredient.name.trim() !== '' || ingredient.quantity.trim() !== ''
+      );
+    }
+    
+    // Loại bỏ các bước chuẩn bị trống
+    this.recipe.preparation = this.recipe.preparation.filter(step => step.trim() !== '');
+    
+    // Loại bỏ các bước thực hiện trống
+    this.recipe.steps = this.recipe.steps.filter(step => step.trim() !== '');
   }
 
   // Hủy và quay lại
   cancel(): void {
     if (this.pendingChanges) {
       if (confirm('Bạn có chắc muốn hủy các thay đổi?')) {
-        this.router.navigate(['/recipes']);
+        this.router.navigate(['/cong-thuc']);
       }
     } else {
-      this.router.navigate(['/recipes']);
+      this.router.navigate(['/cong-thuc']);
     }
   }
 }
