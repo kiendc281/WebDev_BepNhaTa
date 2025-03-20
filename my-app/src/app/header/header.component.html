@@ -143,7 +143,114 @@
         <!-- Search and Icons - Always visible -->
         <div class="col-auto ml-auto d-flex align-items-center nav-right">
           <div class="search-container">
-            <input type="text" placeholder="Tìm kiếm" />
+            <button class="search-button" (click)="search()">
+              <img
+                src="../../assets/header/ic-round-search.svg"
+                alt="Tìm kiếm"
+              />
+            </button>
+            <input
+              type="text"
+              [(ngModel)]="searchTerm"
+              (input)="onSearchInput()"
+              (focus)="onSearchFocus()"
+              (keyup.enter)="search()"
+              placeholder="Tìm kiếm..."
+            />
+
+            <!-- Container hiển thị gợi ý tìm kiếm -->
+            <div class="search-results-container" *ngIf="showSearchResults">
+              <!-- Thông báo không tìm thấy kết quả nào -->
+              <div
+                class="no-search-results"
+                *ngIf="
+                  searchTerm.trim().length >= 2 &&
+                  (!searchResults.recipes ||
+                    searchResults.recipes.length === 0) &&
+                  (!searchResults.products ||
+                    searchResults.products.length === 0) &&
+                  (!searchResults.blogs || searchResults.blogs.length === 0)
+                "
+              >
+                <p>Không tìm thấy kết quả nào cho "{{ searchTerm }}"</p>
+              </div>
+
+              <!-- Phần cuộn cho kết quả tìm kiếm -->
+              <div class="search-results-scroll">
+                <!-- Công thức -->
+                <div
+                  class="search-result-group"
+                  *ngIf="
+                    searchResults.recipes && searchResults.recipes.length > 0
+                  "
+                >
+                  <div class="search-result-header">
+                    <span>Công thức</span>
+                  </div>
+                  <div
+                    class="search-result-item"
+                    *ngFor="let recipe of searchResults.recipes"
+                    (click)="selectSearchResult('recipe', recipe)"
+                  >
+                    <div class="search-result-image">
+                      <img
+                        [src]="recipe.recipeImage"
+                        [alt]="recipe.recipeName"
+                        onerror="this.src='../../assets/default-image.jpg'"
+                      />
+                    </div>
+                    <div class="search-result-content">
+                      <div class="search-result-title">
+                        {{ recipe.recipeName }}
+                      </div>
+                      <div class="search-result-details">
+                        <span>{{ recipe.time }}</span> •
+                        <span>{{ recipe.difficulty }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Nguyên liệu -->
+                <div
+                  class="search-result-group"
+                  *ngIf="
+                    searchResults.products && searchResults.products.length > 0
+                  "
+                >
+                  <div class="search-result-header">
+                    <span>Nguyên liệu</span>
+                  </div>
+                  <div
+                    class="search-result-item"
+                    *ngFor="let product of searchResults.products"
+                    (click)="selectSearchResult('product', product)"
+                  >
+                    <div class="search-result-image">
+                      <img
+                        [src]="product.mainImage"
+                        [alt]="product.ingredientName"
+                        onerror="this.src='../../assets/default-image.jpg'"
+                      />
+                    </div>
+                    <div class="search-result-content">
+                      <div class="search-result-title">
+                        {{ product.ingredientName }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Nút xem tất cả kết quả - hiển thị dù có kết quả hay không, nằm ngoài phần cuộn -->
+              <div
+                class="view-all-results"
+                (click)="search()"
+                *ngIf="searchTerm.trim().length > 0"
+              >
+                <span>Xem tất cả kết quả cho "{{ searchTerm }}"</span>
+              </div>
+            </div>
           </div>
           <a routerLink="/gio-hang" class="cart-icon position-relative">
             <img
