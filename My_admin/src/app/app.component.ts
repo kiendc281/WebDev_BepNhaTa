@@ -9,6 +9,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { OrderComponent } from './order/order.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { RecipeComponent } from './recipe/recipe.component';
+import { RecipesDetailComponent } from './recipes-detail/recipes-detail.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -23,6 +25,8 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
     ProductDetailComponent,
     OrderComponent,
     OrderDetailComponent,
+    RecipeComponent,
+    RecipesDetailComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

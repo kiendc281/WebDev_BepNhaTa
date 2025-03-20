@@ -1,1 +1,247 @@
-<p>recipe works!</p>
+<div class="recipe-container">
+  <h1>Quản lý công thức</h1>
+
+  <!-- Filter Tabs -->
+  <div class="filter-tabs">
+    <strong>
+      <span>Tất cả ({{ totalItems }}) | </span>
+      <span>Miền Bắc ({{ getRecipeCountByRegion("Miền Bắc") }}) | </span>
+      <span>Miền Trung ({{ getRecipeCountByRegion("Miền Trung") }}) | </span>
+      <span>Miền Nam ({{ getRecipeCountByRegion("Miền Nam") }})</span>
+    </strong>
+  </div>
+
+  <!-- Hiển thị lỗi -->
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <!-- Loading indicator -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Đang tải dữ liệu...</p>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls-row" *ngIf="!isLoading">
+    <!-- Hành động hàng loạt dropdown -->
+    <div class="custom-dropdown" [class.active]="openDropdown === 'actions'">
+      <div class="selected-option" (click)="toggleDropdown('actions', $event)">
+        Hành động hàng loạt
+        <img src="../../assets/recipes/arrow-down.svg" alt="dropdown" />
+      </div>
+      <div
+        class="dropdown-menu"
+        *ngIf="openDropdown === 'actions'"
+        (click)="$event.stopPropagation()"
+      >
+        <div
+          class="dropdown-item"
+          (click)="selectAction('delete'); closeDropdown()"
+        >
+          Xóa công thức
+        </div>
+      </div>
+    </div>
+
+    <!-- Button Áp dụng -->
+    <button class="button-gray" (click)="applyBatchAction()">Áp dụng</button>
+
+    <!-- Dropdown danh mục -->
+    <div class="custom-dropdown" [class.active]="openDropdown === 'category'">
+      <div class="selected-option" (click)="toggleDropdown('category', $event)">
+        {{ filterCategory ? filterCategory : "Tất cả danh mục" }}
+        <img src="../../assets/recipes/arrow-down.svg" alt="dropdown" />
+      </div>
+      <div
+        class="dropdown-menu"
+        *ngIf="openDropdown === 'category'"
+        (click)="$event.stopPropagation()"
+      >
+        <div
+          class="dropdown-item"
+          (click)="selectCategory(''); closeDropdown()"
+        >
+          Tất cả danh mục
+        </div>
+        <div
+          class="dropdown-item"
+          (click)="selectCategory('Món mặn'); closeDropdown()"
+        >
+          Món mặn
+        </div>
+        <div
+          class="dropdown-item"
+          (click)="selectCategory('Món xào'); closeDropdown()"
+        >
+          Món xào
+        </div>
+        <div
+          class="dropdown-item"
+          (click)="selectCategory('Món trộn'); closeDropdown()"
+        >
+          Món trộn
+        </div>
+        <div
+          class="dropdown-item"
+          (click)="selectCategory('Món nước'); closeDropdown()"
+        >
+          Món nước
+        </div>
+      </div>
+    </div>
+
+    <!-- Dropdown vùng miền -->
+    <div class="custom-dropdown" [class.active]="openDropdown === 'region'">
+      <div class="selected-option" (click)="toggleDropdown('region', $event)">
+        {{ filterRegion ? "Miền " + filterRegion : "Tất cả vùng miền" }}
+        <img src="../../assets/recipes/arrow-down.svg" alt="dropdown" />
+      </div>
+      <div
+        class="dropdown-menu"
+        *ngIf="openDropdown === 'region'"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="dropdown-item" (click)="selectRegion(''); closeDropdown()">
+          Tất cả vùng miền
+        </div>
+        <div
+          class="dropdown-item"
+          (click)="selectRegion('Bắc'); closeDropdown()"
+        >
+          Miền Bắc
+        </div>
+        <div
+          class="dropdown-item"
+          (click)="selectRegion('Trung'); closeDropdown()"
+        >
+          Miền Trung
+        </div>
+        <div
+          class="dropdown-item"
+          (click)="selectRegion('Nam'); closeDropdown()"
+        >
+          Miền Nam
+        </div>
+      </div>
+    </div>
+
+    <!-- Thêm công thức button -->
+    <button class="add-recipe-button" routerLink="/recipe/them-moi">
+      Thêm công thức
+    </button>
+  </div>
+
+  <!-- Recipe Table -->
+  <table class="data-table" *ngIf="!isLoading && recipes.length > 0">
+    <thead>
+      <tr>
+        <th class="checkbox-column">
+          <input
+            type="checkbox"
+            [checked]="allRecipesSelected"
+            (change)="toggleAllRecipes()"
+          />
+        </th>
+        <th
+          class="sortable recipe-name-column"
+          (click)="sort('recipeName', $event)"
+        >
+          TÊN CÔNG THỨC
+          <img
+            src="../../assets/recipes/sort.svg"
+            alt="sort"
+            class="sort-icon"
+            [class.active]="sortColumn === 'recipeName'"
+            [class.desc]="
+              sortColumn === 'recipeName' && sortDirection === 'desc'
+            "
+          />
+        </th>
+        <th class="sortable id-column" (click)="sort('_id', $event)">
+          MÃ CÔNG THỨC
+          <img
+            src="../../assets/recipes/sort.svg"
+            alt="sort"
+            class="sort-icon"
+            [class.active]="sortColumn === '_id'"
+            [class.desc]="sortColumn === '_id' && sortDirection === 'desc'"
+          />
+        </th>
+        <th class="category-column">DANH MỤC</th>
+        <th class="sortable likes-column" (click)="sort('likes', $event)">
+          LƯỢT THÍCH
+          <img
+            src="../../assets/recipes/sort.svg"
+            alt="sort"
+            class="sort-icon"
+            [class.active]="sortColumn === 'likes'"
+            [class.desc]="sortColumn === 'likes' && sortDirection === 'desc'"
+          />
+        </th>
+        <th class="tags-column">THẺ</th>
+        <th class="actions-column">THAO TÁC</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let recipe of getPaginatedRecipes()">
+        <td class="checkbox-column">
+          <input
+            type="checkbox"
+            [checked]="selectedRecipeIds.includes(recipe._id || '')"
+            (change)="toggleRecipeSelection(recipe._id || '')"
+          />
+        </td>
+        <td class="recipe-info">
+          <div class="recipe-cell">
+            <img
+              [src]="recipe.recipeImage || '/assets/recipe-placeholder.jpg'"
+              alt="Recipe thumbnail"
+            />
+            <div class="recipe-name" [title]="recipe.recipeName">
+              {{ recipe.recipeName }}
+            </div>
+          </div>
+        </td>
+        <td>{{ recipe._id }}</td>
+        <td>{{ displayCategory(recipe.category) }}</td>
+        <td>{{ recipe.likes }}</td>
+        <td class="tags-cell">
+          <span class="tag" *ngFor="let tag of recipe.tags">{{ tag }}</span>
+        </td>
+        <td class="actions">
+          <button routerLink="/recipe/{{ recipe._id }}">
+            <img src="../../assets/recipes/edit.svg" alt="Chỉnh sửa" />
+          </button>
+          <button (click)="deleteRecipe(recipe._id || '')">
+            <img src="../../assets/recipes/trashbin.svg" alt="Xóa" />
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="!isLoading && totalPages > 1">
+    <button
+      class="pagination-button"
+      [disabled]="currentPage === 1"
+      (click)="prevPage()"
+    >
+      <img src="../../assets/recipes/arrow-left.svg" alt="Trang trước" />
+    </button>
+    <span class="page-info">Trang {{ currentPage }} / {{ totalPages }}</span>
+    <button
+      class="pagination-button"
+      [disabled]="currentPage === totalPages"
+      (click)="nextPage()"
+    >
+      <img src="../../assets/recipes/arrow-right.svg" alt="Trang sau" />
+    </button>
+  </div>
+
+  <!-- No recipes message -->
+  <div class="no-data" *ngIf="!isLoading && recipes.length === 0">
+    <p>Không có công thức nào.</p>
+  </div>
+</div>
