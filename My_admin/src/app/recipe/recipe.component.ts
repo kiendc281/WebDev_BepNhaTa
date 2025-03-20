@@ -291,8 +291,13 @@ export class RecipeComponent implements OnInit, OnDestroy {
   }
 
   // Tính tổng số trang
-  get totalPages(): number {
+  getTotalPages(): number {
     return Math.ceil(this.filteredCount / this.itemsPerPage);
+  }
+
+  // Helper method để tạo mảng số trang
+  getPageArray(): number[] {
+    return Array.from({ length: this.getTotalPages() }, (_, i) => i + 1);
   }
 
   // Chuyển đến trang trước
@@ -304,7 +309,7 @@ export class RecipeComponent implements OnInit, OnDestroy {
 
   // Chuyển đến trang tiếp theo
   nextPage(): void {
-    if (this.currentPage < this.totalPages) {
+    if (this.currentPage < this.getTotalPages()) {
       this.currentPage++;
     }
   }

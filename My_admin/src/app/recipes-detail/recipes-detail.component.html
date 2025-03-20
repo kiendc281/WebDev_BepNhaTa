@@ -1,1 +1,352 @@
-<p>recipes-detail works!</p>
+<div class="recipe-container">
+  <div class="page-header">
+    <h1>{{ isEdit ? "Chỉnh sửa công thức" : "Thêm công thức mới" }}</h1>
+  </div>
+
+  <!-- Loading indicator -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="loading-spinner"></div>
+    <p>Đang xử lý...</p>
+  </div>
+
+  <!-- Error message -->
+  <div class="error-message" *ngIf="errorMessage">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div class="recipe-form-container">
+    <!-- Form chính bên trái -->
+    <div class="main-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="recipe-name">TÊN CÔNG THỨC</label>
+          <input
+            type="text"
+            id="recipe-name"
+            [(ngModel)]="recipe.recipeName"
+            placeholder="Nhập tên công thức"
+            (input)="onInputChange()"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="recipe-code">MÃ CÔNG THỨC</label>
+          <input
+            type="text"
+            id="recipe-code"
+            [(ngModel)]="recipe._id"
+            placeholder="Nhập mã công thức"
+            [disabled]="isEdit"
+            (input)="onInputChange()"
+          />
+        </div>
+      </div>
+
+      <!-- Mô tả công thức -->
+      <div class="form-group">
+        <label>Mô tả công thức</label>
+        <textarea
+          class="description-textarea"
+          [(ngModel)]="recipe.description"
+          rows="6"
+          (input)="onInputChange()"
+          placeholder="Nhập mô tả công thức"
+        ></textarea>
+      </div>
+
+      <!-- Thông tin nguyên liệu -->
+      <div class="section-header">
+        <h2>Thông tin nguyên liệu</h2>
+      </div>
+
+      <div class="ingredients-section">
+        <div class="styled-table">
+          <h3>Khẩu phần 2 người</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Nguyên liệu</th>
+                <th>Số lượng</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let ingredient of recipe.servingsOptions['2'].ingredients;
+                  let i = index
+                "
+              >
+                <td>
+                  <input
+                    type="text"
+                    [(ngModel)]="ingredient.name"
+                    (input)="onInputChange()"
+                    placeholder="Tên nguyên liệu"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    [(ngModel)]="ingredient.quantity"
+                    (input)="onInputChange()"
+                    placeholder="Số lượng"
+                  />
+                </td>
+                <td>
+                  <button class="remove-btn" (click)="removeIngredient2(i)">
+                    <img src="../../assets/product/delete.svg" alt="Xóa" />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="add-ingredient-btn" (click)="addIngredient2()">
+            + Thêm nguyên liệu
+          </button>
+
+          <h3>Khẩu phần 4 người</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Nguyên liệu</th>
+                <th>Số lượng</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let ingredient of recipe.servingsOptions['4'].ingredients;
+                  let i = index
+                "
+              >
+                <td>
+                  <input
+                    type="text"
+                    [(ngModel)]="ingredient.name"
+                    (input)="onInputChange()"
+                    placeholder="Tên nguyên liệu"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    [(ngModel)]="ingredient.quantity"
+                    (input)="onInputChange()"
+                    placeholder="Số lượng"
+                  />
+                </td>
+                <td>
+                  <button class="remove-btn" (click)="removeIngredient4(i)">
+                    <img src="../../assets/product/delete.svg" alt="Xóa" />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="add-ingredient-btn" (click)="addIngredient4()">
+            + Thêm nguyên liệu
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel bên phải -->
+    <div class="side-panel">
+      <div class="panel-section">
+        <h3>Ảnh công thức</h3>
+        <div class="image-upload">
+          <input
+            type="file"
+            id="recipe-image"
+            style="display: none"
+            accept="image/*"
+            (change)="uploadImage($event)"
+          />
+          <button class="upload-btn" (click)="triggerFileInput()">
+            Tải ảnh công thức
+          </button>
+          <div class="main-image">
+            <img [src]="recipe.recipeImage" alt="Ảnh công thức" />
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <h3>Danh mục công thức</h3>
+        <div class="category-selection">
+          <div>
+            <input
+              type="radio"
+              id="category-soup"
+              name="category"
+              [checked]="recipe.category === 'Nước'"
+              (change)="recipe.category = 'Nước'; onInputChange()"
+            />
+            <label for="category-soup">Món nước</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="category-stir"
+              name="category"
+              [checked]="recipe.category === 'Xào'"
+              (change)="recipe.category = 'Xào'; onInputChange()"
+            />
+            <label for="category-stir">Món xào</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="category-main"
+              name="category"
+              [checked]="recipe.category === 'Món mặn'"
+              (change)="recipe.category = 'Món mặn'; onInputChange()"
+            />
+            <label for="category-main">Món mặn</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="category-mix"
+              name="category"
+              [checked]="recipe.category === 'Trộn'"
+              (change)="recipe.category = 'Trộn'; onInputChange()"
+            />
+            <label for="category-mix">Trộn</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <h3>Thẻ công thức</h3>
+        <div class="tag-input">
+          <input type="text" #tagInput />
+          <button class="button-cam" (click)="addTag($event, tagInput)">
+            Thêm
+          </button>
+        </div>
+        <p class="input-hint">Thêm các thẻ tách bằng dấu phẩy</p>
+        <div class="current-tags-wrapper">
+          <div class="current-tags">
+            <span class="tag" *ngFor="let tag of recipe.tags">
+              {{ tag }}
+              <span (click)="removeTag(tag)" class="tag-remove">
+                <img src="../../assets/product/delete.svg" alt="Xóa" />
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chi tiết thông tin công thức -->
+  <div class="additional-details">
+    <h2>Thông tin chi tiết công thức</h2>
+
+    <div class="details-row">
+      <div class="form-group">
+        <label>Độ khó</label>
+        <select [(ngModel)]="recipe.difficulty" (change)="onInputChange()">
+          <option value="Dễ">Dễ</option>
+          <option value="Trung bình">Trung bình</option>
+          <option value="Khó">Khó</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Thời gian nấu</label>
+        <input
+          type="text"
+          [(ngModel)]="recipe.time"
+          (input)="onInputChange()"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Vùng miền</label>
+        <select [(ngModel)]="recipe.region" (change)="onInputChange()">
+          <option value="Bắc">Miền Bắc</option>
+          <option value="Trung">Miền Trung</option>
+          <option value="Nam">Miền Nam</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group full-width">
+      <label>Lưu ý</label>
+      <textarea
+        [(ngModel)]="recipe.notes"
+        rows="3"
+        (input)="onInputChange()"
+      ></textarea>
+    </div>
+
+    <div class="form-group full-width">
+      <label>Cách dùng</label>
+      <textarea
+        [(ngModel)]="recipe.servingSuggestion"
+        rows="3"
+        (input)="onInputChange()"
+      ></textarea>
+    </div>
+
+    <div class="form-group full-width">
+      <label>Mách nhỏ</label>
+      <textarea
+        [(ngModel)]="recipe.tips"
+        rows="3"
+        (input)="onInputChange()"
+      ></textarea>
+    </div>
+
+    <div class="preparation-section">
+      <h3>Các bước chuẩn bị</h3>
+      <div class="preparation-list">
+        <div
+          class="preparation-item"
+          *ngFor="let prep of recipe.preparation; let i = index"
+        >
+          <textarea
+            [(ngModel)]="recipe.preparation[i]"
+            rows="2"
+            (input)="onInputChange()"
+          ></textarea>
+          <button class="remove-btn" (click)="removePreparation(i)">
+            <img src="../../assets/product/delete.svg" alt="Xóa" />
+          </button>
+        </div>
+        <button class="add-preparation-btn" (click)="addPreparation()">
+          + Thêm bước chuẩn bị
+        </button>
+      </div>
+    </div>
+
+    <div class="steps-section">
+      <h3>Các bước thực hiện</h3>
+      <div class="steps-list">
+        <div class="step-item" *ngFor="let step of recipe.steps; let i = index">
+          <textarea
+            [(ngModel)]="recipe.steps[i]"
+            rows="2"
+            (input)="onInputChange()"
+          ></textarea>
+          <button class="remove-btn" (click)="removeStep(i)">
+            <img src="../../assets/product/delete.svg" alt="Xóa" />
+          </button>
+        </div>
+        <button class="add-step-btn" (click)="addStep()">
+          + Thêm bước thực hiện
+        </button>
+      </div>
+    </div>
+
+    <!-- Nút lưu -->
+    <div class="save-actions">
+      <button class="button-xam" (click)="cancel()">Hủy</button>
+      <button class="button-cam" (click)="saveRecipe()">Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
