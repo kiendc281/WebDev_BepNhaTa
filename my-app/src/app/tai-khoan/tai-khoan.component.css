@@ -107,33 +107,40 @@ h1 {
 
 .modal-container {
   background-color: white;
-  border-radius: 12px;
+  border-radius: 10px;
   width: 90%;
-  max-width: 500px;
+  max-width: 600px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  position: relative;
 }
 
 .modal-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 15px;
   border-bottom: 1px solid #f0f0f0;
+  position: relative;
 }
 
 .modal-header h4 {
-  margin-top: 10px;
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
   color: black !important;
+  text-align: center;
 }
 
 .close-button {
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 5px;
+  padding: 0;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .close-button img {
@@ -298,9 +305,12 @@ input.ng-invalid.ng-touched {
 }
 
 .validation-error {
-  color: #e53935;
-  font-size: 0.85rem;
-  margin-top: 5px;
+  color: #ff5252;
+  font-size: 12px;
+  margin-top: 2px;
+  margin-bottom: 5px;
+  padding-left: 40px;
+  display: block;
 }
 
 .validation-error span {
@@ -423,20 +433,34 @@ input.ng-invalid.ng-touched {
 }
 
 .address-item {
-  border-bottom: 1px solid #eee;
-  padding-bottom: 15px;
+  border: 1px solid #ff6633;
+  border-radius: 8px;
+  padding: 20px;
   margin-bottom: 15px;
+  background-color: white;
 }
 
 .address-item:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
 }
 
-.address-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-left: 15px;
+.address-item .thong-tin-tai-khoan-item {
+  margin-bottom: 8px;
+}
+
+.thong-tin-tai-khoan-item-label {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.address-info span {
+  font-size: 15px;
+  color: #333;
+}
+
+.cta-button {
+  text-align: right;
+  margin-bottom: 20px;
 }
 
 .default-badge {
@@ -448,19 +472,85 @@ input.ng-invalid.ng-touched {
   margin-left: 10px;
 }
 
-.empty-state {
-  padding: 2rem 0;
-  text-align: center;
+.address-button {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.address-button a {
+  cursor: pointer;
+  color: var(--color-camdam);
+  /* text-decoration: underline; */
+}
+
+.address-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: end;
+}
+
+.address-actions .lines {
+  cursor: default;
+}
+
+.address-actions button {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 80px;
 }
 
 .delete-btn {
-  border-color: #dc3545 !important;
-  color: #dc3545 !important;
+  border-color: red !important;
+  color: red !important;
 }
 
 .delete-btn:hover {
-  background-color: #dc3545 !important;
+  background-color: red !important;
   color: white !important;
+}
+
+.cta-button {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.button-cam {
+  background-color: var(--color-camdam);
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.button-cam:hover {
+  background-color: var(--color-camvua);
+}
+
+.flex-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* Actions for mobile */
+@media (max-width: 768px) {
+  .flex-row {
+    flex-direction: column;
+  }
+
+  .address-actions {
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  .address-actions button {
+    flex: 1;
+  }
 }
 
 /* Responsive styles */
@@ -515,4 +605,302 @@ input.ng-invalid.ng-touched {
   to {
     transform: rotate(360deg);
   }
+}
+
+.empty-state {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+/* Address book specific styles */
+.address-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.address-item {
+  border: 1px solid #ff6633;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  background-color: white;
+}
+
+.address-item:last-child {
+  margin-bottom: 0;
+}
+
+.address-item .thong-tin-tai-khoan-item {
+  margin-bottom: 8px;
+}
+
+.thong-tin-tai-khoan-item-label {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.address-info span {
+  font-size: 15px;
+  color: #333;
+}
+
+.cta-button {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.default-badge {
+  background-color: var(--color-camdam);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.address-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.address-actions button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 80px;
+}
+
+.delete-btn {
+  border-color: #dc3545 !important;
+  color: #dc3545 !important;
+}
+
+.delete-btn:hover {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
+
+.address-actions a {
+  cursor: pointer;
+  color: var(--color-camdam);
+  text-decoration: none;
+  position: relative;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding-bottom: 2px;
+}
+
+.address-actions a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--color-camdam);
+  transition: width 0.3s ease;
+}
+
+.address-actions a:hover {
+  color: var(--color-camdam);
+  transform: translateY(-2px);
+}
+
+.address-actions a:hover::after {
+  width: 100%;
+}
+
+.address-actions a:active {
+  transform: translateY(0);
+}
+
+.address-actions .lines {
+  color: #888;
+  cursor: default;
+}
+
+/* Modal Address Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: white;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  position: relative;
+}
+
+.modal-header h4 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff6633;
+  text-align: center;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.close-button img {
+  width: 20px;
+  height: 20px;
+  color: #ff6633;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+/* Form input styles for address modal */
+.address-form-group {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.address-form-group input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  font-size: 15px;
+}
+
+.address-form-group input::placeholder {
+  color: #999;
+}
+
+.address-form-group .input-icon {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  width: 20px;
+  height: 20px;
+  color: #ff6633;
+}
+
+.address-location-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.address-location-col {
+  flex: 1;
+  position: relative;
+}
+
+.address-location-col input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  font-size: 15px;
+}
+
+.address-location-col .input-icon {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  width: 20px;
+  height: 20px;
+  color: #ff6633;
+}
+
+.address-action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-submit {
+  background-color: #ff6633;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #e55a2d;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.checkbox-container input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #ff6633;
+}
+
+.checkbox-container label {
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Style for validation errors */
+.address-form-group.has-error input,
+.address-location-col.has-error input {
+  border-color: #ff5252;
+}
+
+.validation-error {
+  color: #ff5252;
+  font-size: 12px;
+  margin-top: 2px;
+  margin-bottom: 5px;
+  padding-left: 40px;
+  display: block;
 }

@@ -100,7 +100,7 @@ exports.getAddressById = async (req, res) => {
  */
 exports.createAddress = async (req, res) => {
     try {
-        const { accountId, recipientName, recipientPhone, city, district, ward, detail, isDefault } = req.body;
+        const { accountId, recipientName, recipientPhone, city, district, ward, detail, isDefault, email } = req.body;
         
         // Kiểm tra các trường bắt buộc
         if (!accountId || !recipientName || !recipientPhone || !city || !district || !ward || !detail) {
@@ -123,6 +123,7 @@ exports.createAddress = async (req, res) => {
             accountId,
             recipientName,
             recipientPhone,
+            email,
             city,
             district,
             ward,
@@ -153,7 +154,7 @@ exports.createAddress = async (req, res) => {
 exports.updateAddress = async (req, res) => {
     try {
         const { id } = req.params;
-        const { recipientName, recipientPhone, city, district, ward, detail, isDefault } = req.body;
+        const { recipientName, recipientPhone, city, district, ward, detail, isDefault, email } = req.body;
         
         if (!id) {
             return res.status(400).json({
@@ -191,6 +192,7 @@ exports.updateAddress = async (req, res) => {
         const updatedAddress = await Address.findByIdAndUpdate(id, {
             recipientName: recipientName || address.recipientName,
             recipientPhone: recipientPhone || address.recipientPhone,
+            email: email !== undefined ? email : address.email,
             city: city || address.city,
             district: district || address.district,
             ward: ward || address.ward,

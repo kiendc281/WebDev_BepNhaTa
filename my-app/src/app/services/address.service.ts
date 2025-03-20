@@ -69,7 +69,7 @@ export class AddressService {
    */
   updateAddress(addressId: string, addressData: any): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.patch(`${this.apiUrl}/addresses/${addressId}`, addressData, { headers });
+    return this.http.put(`${this.apiUrl}/addresses/${addressId}`, addressData, { headers });
   }
 
   /**
@@ -85,7 +85,7 @@ export class AddressService {
    */
   setDefaultAddress(addressId: string): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.patch(`${this.apiUrl}/addresses/${addressId}/default`, {}, { headers });
+    return this.http.put(`${this.apiUrl}/addresses/${addressId}/default`, {}, { headers });
   }
 
   /**

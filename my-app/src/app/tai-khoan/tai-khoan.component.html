@@ -204,8 +204,9 @@
 
     <!-- Tab Sổ địa chỉ -->
     <div *ngIf="selectedCategory === 'so-dia-chi'" class="container-rightpanel">
-      <h1>SỔ ĐỊA CHỈ</h1>
-      <div class="my-4">
+      <h1>Địa chỉ của tôi</h1>
+
+      <div class="cta-button">
         <button (click)="openAddressModal()" class="button-cam">
           THÊM ĐỊA CHỈ MỚI
         </button>
@@ -235,21 +236,18 @@
         *ngIf="!loadingAddresses && userAddresses.length > 0"
         class="address-list"
       >
-        <div
-          *ngFor="let address of userAddresses"
-          class="address-item thong-tin-tai-khoan"
-        >
-          <div class="flex items-start justify-between">
-            <div class="flex-1">
+        <div *ngFor="let address of userAddresses" class="address-item">
+          <div class="flex-row">
+            <div class="address-info">
               <div class="thong-tin-tai-khoan-item">
-                <div class="thong-tin-tai-khoan-item-label">Họ tên:</div>
-                <span>{{ address.recipientName }}</span>
+                <div class="thong-tin-tai-khoan-item-label">
+                  {{ address.recipientName }}
+                </div>
                 <span *ngIf="address.isDefault" class="default-badge"
                   >Mặc định</span
                 >
               </div>
               <div class="thong-tin-tai-khoan-item">
-                <div class="thong-tin-tai-khoan-item-label">Số điện thoại:</div>
                 <span>{{ address.recipientPhone }}</span>
               </div>
               <div class="thong-tin-tai-khoan-item" *ngIf="address.email">
@@ -257,30 +255,24 @@
                 <span>{{ address.email }}</span>
               </div>
               <div class="thong-tin-tai-khoan-item">
-                <div class="thong-tin-tai-khoan-item-label">Địa chỉ:</div>
                 <span>{{ formatAddress(address) }}</span>
               </div>
             </div>
-            <div class="address-actions">
-              <button
-                *ngIf="!address.isDefault"
-                (click)="setDefaultAddress(address._id)"
-                class="button-trang"
-              >
-                ĐẶT MẶC ĐỊNH
-              </button>
-              <button
-                (click)="openEditAddressModal(address)"
-                class="button-trang"
-              >
-                CHỈNH SỬA
-              </button>
-              <button
-                (click)="deleteAddress(address._id)"
-                class="button-trang delete-btn"
-              >
-                XÓA
-              </button>
+            <div class="address-button">
+              <div class="address-actions">
+                <a (click)="openEditAddressModal(address)"> Cập nhật </a>
+                <div class="lines">||</div>
+                <a (click)="deleteAddress(address._id)"> Xóa </a>
+              </div>
+              <div>
+                <button
+                  *ngIf="!address.isDefault"
+                  (click)="setDefaultAddress(address._id)"
+                  class="button-trang"
+                >
+                  Đặt làm địa chỉ mặc định
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -674,23 +666,24 @@
 
     <div class="modal-body">
       <form [formGroup]="addressForm" (ngSubmit)="addNewAddress()">
-        <!-- Tên người nhận -->
+        <!-- Họ và tên -->
         <div
-          class="form-group"
+          class="address-form-group"
           [ngClass]="{
             'has-error':
               addressForm.get('recipientName')?.invalid &&
               addressForm.get('recipientName')?.touched
           }"
         >
-          <label>
-            <img src="../../assets/tai-khoan/hovaten.svg" alt="User" />
-            Họ tên người nhận:
-          </label>
+          <img
+            class="input-icon"
+            src="../../assets/tai-khoan/hovaten.svg"
+            alt="User"
+          />
           <input
             type="text"
             formControlName="recipientName"
-            placeholder="Nhập họ tên người nhận"
+            placeholder="Họ và tên của bạn (*)"
           />
           <div
             *ngIf="
@@ -700,28 +693,29 @@
             class="validation-error"
           >
             <span *ngIf="addressForm.get('recipientName')?.hasError('required')"
-              >Vui lòng nhập họ tên người nhận</span
+              >Vui lòng nhập họ tên</span
             >
           </div>
         </div>
 
         <!-- Số điện thoại -->
         <div
-          class="form-group"
+          class="address-form-group"
           [ngClass]="{
             'has-error':
               addressForm.get('recipientPhone')?.invalid &&
               addressForm.get('recipientPhone')?.touched
           }"
         >
-          <label>
-            <img src="../../assets/tai-khoan/phone.svg" alt="Phone" />
-            Số điện thoại:
-          </label>
+          <img
+            class="input-icon"
+            src="../../assets/tai-khoan/phone.svg"
+            alt="Phone"
+          />
           <input
             type="tel"
             formControlName="recipientPhone"
-            placeholder="Nhập số điện thoại"
+            placeholder="Số điện thoại (*)"
           />
           <div
             *ngIf="
@@ -742,21 +736,22 @@
 
         <!-- Email -->
         <div
-          class="form-group"
+          class="address-form-group"
           [ngClass]="{
             'has-error':
               addressForm.get('email')?.invalid &&
               addressForm.get('email')?.touched
           }"
         >
-          <label>
-            <img src="../../assets/tai-khoan/email.svg" alt="Email" />
-            Email:
-          </label>
+          <img
+            class="input-icon"
+            src="../../assets/tai-khoan/email.svg"
+            alt="Email"
+          />
           <input
             type="email"
             formControlName="email"
-            placeholder="Nhập email"
+            placeholder="Nhập email (*)"
           />
           <div
             *ngIf="
@@ -765,122 +760,132 @@
             "
             class="validation-error"
           >
-            <span *ngIf="addressForm.get('email')?.hasError('email')"
-              >Vui lòng nhập email hợp lệ</span
-            >
+            <span *ngIf="addressForm.get('email')?.hasError('required')">
+              Vui lòng nhập email
+            </span>
+            <span *ngIf="addressForm.get('email')?.hasError('email')">
+              Vui lòng nhập email hợp lệ
+            </span>
           </div>
         </div>
 
-        <!-- Tỉnh/Thành phố -->
-        <div
-          class="form-group"
-          [ngClass]="{
-            'has-error':
-              addressForm.get('province')?.invalid &&
-              addressForm.get('province')?.touched
-          }"
-        >
-          <label>
-            <img src="../../assets/tai-khoan/location-cam.svg" alt="Location" />
-            Tỉnh/Thành phố:
-          </label>
-          <input
-            type="text"
-            formControlName="province"
-            placeholder="Nhập tỉnh/thành phố"
-          />
+        <!-- Địa chỉ (3 cột) -->
+        <div class="address-location-row">
+          <!-- Tỉnh/Thành phố -->
           <div
-            *ngIf="
-              addressForm.get('province')?.invalid &&
-              addressForm.get('province')?.touched
-            "
-            class="validation-error"
+            class="address-location-col"
+            [ngClass]="{
+              'has-error':
+                addressForm.get('province')?.invalid &&
+                addressForm.get('province')?.touched
+            }"
           >
-            <span *ngIf="addressForm.get('province')?.hasError('required')"
-              >Vui lòng nhập tỉnh/thành phố</span
+            <img
+              class="input-icon"
+              src="../../assets/tai-khoan/location-cam.svg"
+              alt="Location"
+            />
+            <input
+              type="text"
+              formControlName="province"
+              placeholder="Tỉnh/Thành phố (*)"
+            />
+            <div
+              *ngIf="
+                addressForm.get('province')?.invalid &&
+                addressForm.get('province')?.touched
+              "
+              class="validation-error"
             >
+              <span *ngIf="addressForm.get('province')?.hasError('required')"
+                >Nhập đầy đủ thông tin</span
+              >
+            </div>
           </div>
-        </div>
 
-        <!-- Quận/Huyện -->
-        <div
-          class="form-group"
-          [ngClass]="{
-            'has-error':
-              addressForm.get('district')?.invalid &&
-              addressForm.get('district')?.touched
-          }"
-        >
-          <label>
-            <img src="../../assets/tai-khoan/location-cam.svg" alt="Location" />
-            Quận/Huyện:
-          </label>
-          <input
-            type="text"
-            formControlName="district"
-            placeholder="Nhập quận/huyện"
-          />
+          <!-- Quận/Huyện -->
           <div
-            *ngIf="
-              addressForm.get('district')?.invalid &&
-              addressForm.get('district')?.touched
-            "
-            class="validation-error"
+            class="address-location-col"
+            [ngClass]="{
+              'has-error':
+                addressForm.get('district')?.invalid &&
+                addressForm.get('district')?.touched
+            }"
           >
-            <span *ngIf="addressForm.get('district')?.hasError('required')"
-              >Vui lòng nhập quận/huyện</span
+            <img
+              class="input-icon"
+              src="../../assets/tai-khoan/location-cam.svg"
+              alt="Location"
+            />
+            <input
+              type="text"
+              formControlName="district"
+              placeholder="Quận/Huyện (*)"
+            />
+            <div
+              *ngIf="
+                addressForm.get('district')?.invalid &&
+                addressForm.get('district')?.touched
+              "
+              class="validation-error"
             >
+              <span *ngIf="addressForm.get('district')?.hasError('required')"
+                >Nhập đầy đủ thông tin</span
+              >
+            </div>
           </div>
-        </div>
 
-        <!-- Phường/Xã -->
-        <div
-          class="form-group"
-          [ngClass]="{
-            'has-error':
-              addressForm.get('ward')?.invalid &&
-              addressForm.get('ward')?.touched
-          }"
-        >
-          <label>
-            <img src="../../assets/tai-khoan/location-cam.svg" alt="Location" />
-            Phường/Xã:
-          </label>
-          <input
-            type="text"
-            formControlName="ward"
-            placeholder="Nhập phường/xã"
-          />
+          <!-- Phường/Xã -->
           <div
-            *ngIf="
-              addressForm.get('ward')?.invalid &&
-              addressForm.get('ward')?.touched
-            "
-            class="validation-error"
+            class="address-location-col"
+            [ngClass]="{
+              'has-error':
+                addressForm.get('ward')?.invalid &&
+                addressForm.get('ward')?.touched
+            }"
           >
-            <span *ngIf="addressForm.get('ward')?.hasError('required')"
-              >Vui lòng nhập phường/xã</span
+            <img
+              class="input-icon"
+              src="../../assets/tai-khoan/location-cam.svg"
+              alt="Location"
+            />
+            <input
+              type="text"
+              formControlName="ward"
+              placeholder="Phường/Xã (*)"
+            />
+            <div
+              *ngIf="
+                addressForm.get('ward')?.invalid &&
+                addressForm.get('ward')?.touched
+              "
+              class="validation-error"
             >
+              <span *ngIf="addressForm.get('ward')?.hasError('required')"
+                >Nhập đầy đủ thông tin</span
+              >
+            </div>
           </div>
         </div>
 
         <!-- Địa chỉ cụ thể -->
         <div
-          class="form-group"
+          class="address-form-group"
           [ngClass]="{
             'has-error':
               addressForm.get('detail')?.invalid &&
               addressForm.get('detail')?.touched
           }"
         >
-          <label>
-            <img src="../../assets/tai-khoan/location-cam.svg" alt="Location" />
-            Địa chỉ cụ thể:
-          </label>
+          <img
+            class="input-icon"
+            src="../../assets/tai-khoan/location-cam.svg"
+            alt="Location"
+          />
           <input
             type="text"
             formControlName="detail"
-            placeholder="Nhập số nhà, tên đường,..."
+            placeholder="Địa chỉ cụ thể (*)"
           />
           <div
             *ngIf="
@@ -896,17 +901,24 @@
         </div>
 
         <!-- Đặt làm mặc định -->
-        <div class="form-group">
-          <div class="gender-options">
-            <label class="radio-container">
-              <input type="checkbox" formControlName="isDefault" />
-              <span class="radio-label">Đặt làm địa chỉ mặc định</span>
-            </label>
+        <div class="address-form-group">
+          <div class="checkbox-container">
+            <input type="checkbox" id="isDefault" formControlName="isDefault" />
+            <label for="isDefault">Đặt làm địa chỉ mặc định</label>
           </div>
         </div>
 
-        <!-- Nút thêm -->
-        <button type="submit" class="button-cam">THÊM ĐỊA CHỈ</button>
+        <!-- Buttons -->
+        <div class="address-action-buttons">
+          <button
+            type="button"
+            class="btn-cancel"
+            (click)="closeAddressModal()"
+          >
+            Hủy
+          </button>
+          <button type="submit" class="btn-submit">Thêm</button>
+        </div>
       </form>
     </div>
   </div>
@@ -929,21 +941,22 @@
       <form [formGroup]="addressForm" (ngSubmit)="updateAddress()">
         <!-- Tên người nhận -->
         <div
-          class="form-group"
+          class="address-form-group"
           [ngClass]="{
             'has-error':
               addressForm.get('recipientName')?.invalid &&
               addressForm.get('recipientName')?.touched
           }"
         >
-          <label>
-            <img src="../../assets/tai-khoan/hovaten.svg" alt="User" />
-            Họ tên người nhận:
-          </label>
+          <img
+            class="input-icon"
+            src="../../assets/tai-khoan/hovaten.svg"
+            alt="User"
+          />
           <input
             type="text"
             formControlName="recipientName"
-            placeholder="Nhập họ tên người nhận"
+            placeholder="Họ và tên của bạn (*)"
           />
           <div
             *ngIf="
@@ -953,28 +966,29 @@
             class="validation-error"
           >
             <span *ngIf="addressForm.get('recipientName')?.hasError('required')"
-              >Vui lòng nhập họ tên người nhận</span
+              >Vui lòng nhập họ tên</span
             >
           </div>
         </div>
 
         <!-- Số điện thoại -->
         <div
-          class="form-group"
+          class="address-form-group"
           [ngClass]="{
             'has-error':
               addressForm.get('recipientPhone')?.invalid &&
               addressForm.get('recipientPhone')?.touched
           }"
         >
-          <label>
-            <img src="../../assets/tai-khoan/phone.svg" alt="Phone" />
-            Số điện thoại:
-          </label>
+          <img
+            class="input-icon"
+            src="../../assets/tai-khoan/phone.svg"
+            alt="Phone"
+          />
           <input
             type="tel"
             formControlName="recipientPhone"
-            placeholder="Nhập số điện thoại"
+            placeholder="Số điện thoại (*)"
           />
           <div
             *ngIf="
@@ -995,21 +1009,22 @@
 
         <!-- Email -->
         <div
-          class="form-group"
+          class="address-form-group"
           [ngClass]="{
             'has-error':
               addressForm.get('email')?.invalid &&
               addressForm.get('email')?.touched
           }"
         >
-          <label>
-            <img src="../../assets/tai-khoan/email.svg" alt="Email" />
-            Email:
-          </label>
+          <img
+            class="input-icon"
+            src="../../assets/tai-khoan/email.svg"
+            alt="Email"
+          />
           <input
             type="email"
             formControlName="email"
-            placeholder="Nhập email"
+            placeholder="Nhập email (*)"
           />
           <div
             *ngIf="
@@ -1018,122 +1033,132 @@
             "
             class="validation-error"
           >
-            <span *ngIf="addressForm.get('email')?.hasError('email')"
-              >Vui lòng nhập email hợp lệ</span
-            >
+            <span *ngIf="addressForm.get('email')?.hasError('required')">
+              Vui lòng nhập email
+            </span>
+            <span *ngIf="addressForm.get('email')?.hasError('email')">
+              Vui lòng nhập email hợp lệ
+            </span>
           </div>
         </div>
 
-        <!-- Tỉnh/Thành phố -->
-        <div
-          class="form-group"
-          [ngClass]="{
-            'has-error':
-              addressForm.get('province')?.invalid &&
-              addressForm.get('province')?.touched
-          }"
-        >
-          <label>
-            <img src="../../assets/tai-khoan/location-cam.svg" alt="Location" />
-            Tỉnh/Thành phố:
-          </label>
-          <input
-            type="text"
-            formControlName="province"
-            placeholder="Nhập tỉnh/thành phố"
-          />
+        <!-- Địa chỉ (3 cột) -->
+        <div class="address-location-row">
+          <!-- Tỉnh/Thành phố -->
           <div
-            *ngIf="
-              addressForm.get('province')?.invalid &&
-              addressForm.get('province')?.touched
-            "
-            class="validation-error"
+            class="address-location-col"
+            [ngClass]="{
+              'has-error':
+                addressForm.get('province')?.invalid &&
+                addressForm.get('province')?.touched
+            }"
           >
-            <span *ngIf="addressForm.get('province')?.hasError('required')"
-              >Vui lòng nhập tỉnh/thành phố</span
+            <img
+              class="input-icon"
+              src="../../assets/tai-khoan/location-cam.svg"
+              alt="Location"
+            />
+            <input
+              type="text"
+              formControlName="province"
+              placeholder="Tỉnh/Thành phố (*)"
+            />
+            <div
+              *ngIf="
+                addressForm.get('province')?.invalid &&
+                addressForm.get('province')?.touched
+              "
+              class="validation-error"
             >
+              <span *ngIf="addressForm.get('province')?.hasError('required')"
+                >Nhập đầy đủ thông tin</span
+              >
+            </div>
           </div>
-        </div>
 
-        <!-- Quận/Huyện -->
-        <div
-          class="form-group"
-          [ngClass]="{
-            'has-error':
-              addressForm.get('district')?.invalid &&
-              addressForm.get('district')?.touched
-          }"
-        >
-          <label>
-            <img src="../../assets/tai-khoan/location-cam.svg" alt="Location" />
-            Quận/Huyện:
-          </label>
-          <input
-            type="text"
-            formControlName="district"
-            placeholder="Nhập quận/huyện"
-          />
+          <!-- Quận/Huyện -->
           <div
-            *ngIf="
-              addressForm.get('district')?.invalid &&
-              addressForm.get('district')?.touched
-            "
-            class="validation-error"
+            class="address-location-col"
+            [ngClass]="{
+              'has-error':
+                addressForm.get('district')?.invalid &&
+                addressForm.get('district')?.touched
+            }"
           >
-            <span *ngIf="addressForm.get('district')?.hasError('required')"
-              >Vui lòng nhập quận/huyện</span
+            <img
+              class="input-icon"
+              src="../../assets/tai-khoan/location-cam.svg"
+              alt="Location"
+            />
+            <input
+              type="text"
+              formControlName="district"
+              placeholder="Quận/Huyện (*)"
+            />
+            <div
+              *ngIf="
+                addressForm.get('district')?.invalid &&
+                addressForm.get('district')?.touched
+              "
+              class="validation-error"
             >
+              <span *ngIf="addressForm.get('district')?.hasError('required')"
+                >Nhập đầy đủ thông tin</span
+              >
+            </div>
           </div>
-        </div>
 
-        <!-- Phường/Xã -->
-        <div
-          class="form-group"
-          [ngClass]="{
-            'has-error':
-              addressForm.get('ward')?.invalid &&
-              addressForm.get('ward')?.touched
-          }"
-        >
-          <label>
-            <img src="../../assets/tai-khoan/location-cam.svg" alt="Location" />
-            Phường/Xã:
-          </label>
-          <input
-            type="text"
-            formControlName="ward"
-            placeholder="Nhập phường/xã"
-          />
+          <!-- Phường/Xã -->
           <div
-            *ngIf="
-              addressForm.get('ward')?.invalid &&
-              addressForm.get('ward')?.touched
-            "
-            class="validation-error"
+            class="address-location-col"
+            [ngClass]="{
+              'has-error':
+                addressForm.get('ward')?.invalid &&
+                addressForm.get('ward')?.touched
+            }"
           >
-            <span *ngIf="addressForm.get('ward')?.hasError('required')"
-              >Vui lòng nhập phường/xã</span
+            <img
+              class="input-icon"
+              src="../../assets/tai-khoan/location-cam.svg"
+              alt="Location"
+            />
+            <input
+              type="text"
+              formControlName="ward"
+              placeholder="Phường/Xã (*)"
+            />
+            <div
+              *ngIf="
+                addressForm.get('ward')?.invalid &&
+                addressForm.get('ward')?.touched
+              "
+              class="validation-error"
             >
+              <span *ngIf="addressForm.get('ward')?.hasError('required')"
+                >Nhập đầy đủ thông tin</span
+              >
+            </div>
           </div>
         </div>
 
         <!-- Địa chỉ cụ thể -->
         <div
-          class="form-group"
+          class="address-form-group"
           [ngClass]="{
             'has-error':
               addressForm.get('detail')?.invalid &&
               addressForm.get('detail')?.touched
           }"
         >
-          <label>
-            <img src="../../assets/tai-khoan/location-cam.svg" alt="Location" />
-            Địa chỉ cụ thể:
-          </label>
+          <img
+            class="input-icon"
+            src="../../assets/tai-khoan/location-cam.svg"
+            alt="Location"
+          />
           <input
             type="text"
             formControlName="detail"
-            placeholder="Nhập số nhà, tên đường,..."
+            placeholder="Địa chỉ cụ thể (*)"
           />
           <div
             *ngIf="
@@ -1149,17 +1174,26 @@
         </div>
 
         <!-- Đặt làm mặc định -->
-        <div class="form-group">
-          <div class="gender-options">
-            <label class="radio-container">
-              <input type="checkbox" formControlName="isDefault" />
-              <span class="radio-label">Đặt làm địa chỉ mặc định</span>
-            </label>
-          </div>
+        <div class="checkbox-container">
+          <input
+            type="checkbox"
+            id="isDefaultEdit"
+            formControlName="isDefault"
+          />
+          <label for="isDefaultEdit">Đặt làm địa chỉ mặc định</label>
         </div>
 
-        <!-- Nút cập nhật -->
-        <button type="submit" class="button-cam">CẬP NHẬT</button>
+        <!-- Buttons -->
+        <div class="address-action-buttons">
+          <button
+            type="button"
+            class="btn-cancel"
+            (click)="closeEditAddressModal()"
+          >
+            Hủy
+          </button>
+          <button type="submit" class="btn-submit">Cập nhật</button>
+        </div>
       </form>
     </div>
   </div>
