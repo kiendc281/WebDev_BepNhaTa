@@ -1,3 +1,6 @@
+h1 {
+  color: var(--color-camdam);
+}
 .section-item {
   background-color: #f8f9fa;
   position: relative;

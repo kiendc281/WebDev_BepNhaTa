@@ -17,12 +17,14 @@ import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
 import { TaiKhoanComponent } from './tai-khoan/tai-khoan.component';
 import { GioHangComponent } from './gio-hang/gio-hang.component';
 import { FavoritesComponent } from './yeu-thich/favorites.component';
+import { TimKiemComponent } from './tim-kiem/tim-kiem.component';
 
 export const routes: Routes = [
   { path: 'trang-chu', component: TrangChuComponent },
   { path: 'cong-thuc', component: CongThucComponent },
   { path: 'cong-thuc/:id', component: ChiTietCongThucComponent },
   { path: 'san-pham', component: SanPhamComponent },
+  { path: 'san-pham/:id', component: ChiTietSanPhamComponent },
   { path: 'chi-tiet-san-pham/:id', component: ChiTietSanPhamComponent },
   { path: 'len-thuc-don', component: LenThucDonComponent },
   { path: 'blog', component: BlogComponent },
@@ -39,5 +41,6 @@ export const routes: Routes = [
   { path: '', component: TrangChuComponent },
   { path: 'gio-hang', component: GioHangComponent },
   { path: 'yeu-thich', component: FavoritesComponent },
+  { path: 'timkiem', component: TimKiemComponent },
   // { path: '', redirectTo: '/dang-nhap', pathMatch: 'full' },
 ];
