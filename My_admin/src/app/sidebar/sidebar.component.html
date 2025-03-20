@@ -29,22 +29,49 @@
       <div class="submenu" [ngClass]="{ open: openSubmenu === 'product' }">
         <div
           class="submenu-item"
-          routerLink="/product"
-          routerLinkActive="active"
+          routerLink="/san-pham"
+          [ngClass]="{ active: isSubmenuItemActive('/san-pham') }"
         >
           Danh sách sản phẩm
         </div>
         <div
           class="submenu-item"
           routerLink="/san-pham/them-moi"
-          routerLinkActive="active"
+          [ngClass]="{ active: isSubmenuItemActive('/san-pham/them-moi') }"
         >
           Thêm sản phẩm mới
         </div>
       </div>
-      <div class="menu-item" routerLink="/recipe" routerLinkActive="active">
+      <div
+        class="menu-item with-submenu"
+        (click)="toggleSubmenu('recipe')"
+        [ngClass]="{
+          open: openSubmenu === 'recipe',
+          active: isActive('/recipe')
+        }"
+      >
         <img src="../../assets/sidebar/recipes.svg" alt="" />
-        <span>Quản lý công thức</span>
+        <span
+          >Quản lý công <br />
+          thức</span
+        >
+        <img src="../../assets/sidebar/arrow.svg" alt="" class="arrow-icon" />
+      </div>
+      <div class="submenu" [ngClass]="{ open: openSubmenu === 'recipe' }">
+        <div
+          class="submenu-item"
+          routerLink="/cong-thuc"
+          [ngClass]="{ active: isSubmenuItemActive('/cong-thuc') }"
+        >
+          Danh sách công thức
+        </div>
+        <div
+          class="submenu-item"
+          routerLink="/cong-thuc/them-moi"
+          [ngClass]="{ active: isSubmenuItemActive('/cong-thuc/them-moi') }"
+        >
+          Thêm công thức mới
+        </div>
       </div>
       <div class="menu-item" routerLink="/blog" routerLinkActive="active">
         <img src="../../assets/sidebar/blog.svg" alt="" />

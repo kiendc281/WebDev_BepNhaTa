@@ -31,22 +31,77 @@ export class SidebarComponent {
       }
       // Nếu không, điều hướng đến trang mục đầu tiên tương ứng
       else if (menuName === 'product') {
-        this.router.navigate(['/product']);
+        this.router.navigate(['/san-pham']);
+      } else if (menuName === 'recipe') {
+        this.router.navigate(['/cong-thuc']);
       } else if (menuName === 'customer') {
         this.router.navigate(['/customer']);
       }
     }
   }
 
-  // Kiểm tra xem URL hiện tại có thuộc về route cụ thể không
+  // Kiểm tra xem URL hiện tại có thuộc về route chính không (cho menu item chính)
   isActive(route: string): boolean {
     if (route === '/product') {
-      // Trường hợp đặc biệt cho trang product
       return (
         this.router.url.includes('/product') ||
         this.router.url.includes('/san-pham')
       );
     }
+    if (route === '/recipe') {
+      return (
+        this.router.url.includes('/recipe') ||
+        this.router.url.includes('/cong-thuc')
+      );
+    }
     return this.router.url.includes(route);
+  }
+
+  // Kiểm tra xem URL hiện tại có khớp chính xác với submenu item không
+  isSubmenuItemActive(route: string): boolean {
+    const currentUrl = this.router.url;
+
+    // Phần công thức
+    if (
+      route === '/cong-thuc' &&
+      (currentUrl === '/cong-thuc' || currentUrl === '/recipe')
+    ) {
+      return true;
+    }
+
+    if (route === '/cong-thuc/them-moi' && currentUrl.includes('/them-moi')) {
+      return true;
+    }
+
+    if (
+      route === '/cong-thuc' &&
+      currentUrl.match(/\/cong-thuc\/[^\/]+$/) &&
+      !currentUrl.includes('/them-moi')
+    ) {
+      return false;
+    }
+
+    // Phần sản phẩm
+    if (
+      route === '/san-pham' &&
+      (currentUrl === '/san-pham' || currentUrl === '/product')
+    ) {
+      return true;
+    }
+
+    if (route === '/san-pham/them-moi' && currentUrl.includes('/them-moi')) {
+      return true;
+    }
+
+    if (
+      route === '/san-pham' &&
+      currentUrl.match(/\/san-pham\/chinh-sua\/[^\/]+$/) &&
+      !currentUrl.includes('/them-moi')
+    ) {
+      return false;
+    }
+
+    // Các trường hợp khác, sử dụng exact matching
+    return currentUrl === route;
   }
 }
