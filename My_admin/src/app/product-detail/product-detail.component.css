@@ -936,3 +936,21 @@
   margin: 0;
   font-style: italic;
 }
+
+.description-textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 15px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.description-textarea:focus {
+  border-color: #ff9800;
+  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.25);
+  outline: none;
+}

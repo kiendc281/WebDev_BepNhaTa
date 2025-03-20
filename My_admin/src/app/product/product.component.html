@@ -1,22 +1,15 @@
 <div class="product-container">
   <h1>Quản lý sản phẩm</h1>
 
-  <!-- Action Buttons -->
-  <div class="action-buttons">
-    <button class="button-camnhat" (click)="addProduct()">Thêm sản phẩm</button>
-    <button class="button-trang" (click)="batchImport()">Nhập hàng loạt</button>
-    <button class="button-trang" (click)="batchExport()">Xuất hàng loạt</button>
-  </div>
-
   <!-- Filter Tabs -->
-  <div>
+  <div class="filter-tabs">
     <strong>
       <span>Tất cả ({{ totalItems }}) | </span>
-      <span>Còn hàng ({{ getProductCountByStatus("Còn hàng") }}) | </span>
-      <span>Hết hàng ({{ getProductCountByStatus("Hết hàng") }}) | </span>
+      <span>Còn hàng ({{ getProductCountByStatus("Còn hàng", true) }}) | </span>
+      <span>Hết hàng ({{ getProductCountByStatus("Hết hàng", true) }}) | </span>
       <span
         >Ngừng kinh doanh ({{
-          getProductCountByStatus("Ngừng kinh doanh")
+          getProductCountByStatus("Ngừng kinh doanh", true)
         }})</span
       >
     </strong>
@@ -35,145 +28,172 @@
 
   <!-- Filters -->
   <div class="filter-section" *ngIf="!isLoading">
-    <div class="batch-actions">
-      <!-- Custom dropdown for batch actions -->
-      <div class="custom-dropdown" [class.active]="openDropdown === 'actions'">
+    <div class="filter-row">
+      <div class="batch-actions">
+        <!-- Custom dropdown for batch actions -->
         <div
-          class="selected-option"
-          (click)="toggleDropdown('actions', $event)"
+          class="custom-dropdown"
+          [class.active]="openDropdown === 'actions'"
         >
-          {{
-            selectedAction
-              ? getActionName(selectedAction)
-              : "Hành động hàng loạt"
-          }}
-          <img src="../../assets/product/arrow-down.svg" alt="dropdown" />
+          <div
+            class="selected-option"
+            (click)="toggleDropdown('actions', $event)"
+          >
+            {{
+              selectedAction
+                ? getActionName(selectedAction)
+                : "Hành động hàng loạt"
+            }}
+            <img src="../../assets/product/arrow-down.svg" alt="dropdown" />
+          </div>
+          <div
+            class="dropdown-menu"
+            *ngIf="openDropdown === 'actions'"
+            (click)="$event.stopPropagation()"
+          >
+            <div
+              class="dropdown-item"
+              (click)="selectAction(''); closeDropdown()"
+            >
+              Hành động hàng loạt
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectAction('hide'); closeDropdown()"
+            >
+              Ẩn sản phẩm
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectAction('unhide'); closeDropdown()"
+            >
+              Bỏ ẩn sản phẩm
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectAction('price'); closeDropdown()"
+            >
+              Thay đổi giá
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectAction('stock'); closeDropdown()"
+            >
+              Cập nhật tồn kho
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectAction('delete'); closeDropdown()"
+            >
+              Xóa sản phẩm
+            </div>
+          </div>
         </div>
+        <button
+          class="button-cam apply-button"
+          [disabled]="!hasSelectedProducts || !selectedAction"
+          (click)="applyBatchAction()"
+        >
+          Áp dụng
+        </button>
+      </div>
+
+      <div class="filter-dropdowns">
+        <!-- Custom dropdown for categories -->
         <div
-          class="dropdown-menu"
-          *ngIf="openDropdown === 'actions'"
-          (click)="$event.stopPropagation()"
+          class="custom-dropdown"
+          [class.active]="openDropdown === 'category'"
         >
           <div
-            class="dropdown-item"
-            (click)="selectAction(''); closeDropdown()"
+            class="selected-option"
+            (click)="toggleDropdown('category', $event)"
           >
-            Hành động hàng loạt
+            {{ filterCategory || "Tất cả danh mục" }}
+            <img src="../../assets/product/arrow-down.svg" alt="dropdown" />
           </div>
           <div
-            class="dropdown-item"
-            (click)="selectAction('hide'); closeDropdown()"
+            class="dropdown-menu"
+            *ngIf="openDropdown === 'category'"
+            (click)="$event.stopPropagation()"
           >
-            Ẩn sản phẩm
+            <div
+              class="dropdown-item"
+              (click)="selectCategory(''); closeDropdown()"
+            >
+              Tất cả danh mục
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectCategory('Xào'); closeDropdown()"
+            >
+              Xào
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectCategory('Nước'); closeDropdown()"
+            >
+              Nước
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectCategory('Món mặn'); closeDropdown()"
+            >
+              Món mặn
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectCategory('Trộn'); closeDropdown()"
+            >
+              Trộn
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom dropdown for status -->
+        <div class="custom-dropdown" [class.active]="openDropdown === 'status'">
+          <div
+            class="selected-option"
+            (click)="toggleDropdown('status', $event)"
+          >
+            {{ filterStatus || "Tất cả trạng thái" }}
+            <img src="../../assets/product/arrow-down.svg" alt="dropdown" />
           </div>
           <div
-            class="dropdown-item"
-            (click)="selectAction('price'); closeDropdown()"
+            class="dropdown-menu"
+            *ngIf="openDropdown === 'status'"
+            (click)="$event.stopPropagation()"
           >
-            Thay đổi giá
-          </div>
-          <div
-            class="dropdown-item"
-            (click)="selectAction('stock'); closeDropdown()"
-          >
-            Cập nhật tồn kho
+            <div
+              class="dropdown-item"
+              (click)="selectStatus(''); closeDropdown()"
+            >
+              Tất cả trạng thái
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectStatus('Còn hàng'); closeDropdown()"
+            >
+              Còn hàng
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectStatus('Hết hàng'); closeDropdown()"
+            >
+              Hết hàng
+            </div>
+            <div
+              class="dropdown-item"
+              (click)="selectStatus('Ngừng kinh doanh'); closeDropdown()"
+            >
+              Ngừng kinh doanh
+            </div>
           </div>
         </div>
       </div>
-      <button
-        class="button-cam"
-        [disabled]="!hasSelectedProducts || !selectedAction"
-        (click)="applyBatchAction()"
-      >
-        Áp dụng
+
+      <button class="button-cam" routerLink="/san-pham/them-moi">
+        Thêm sản phẩm
       </button>
-    </div>
-
-    <div class="filter-dropdowns">
-      <!-- Custom dropdown for categories -->
-      <div class="custom-dropdown" [class.active]="openDropdown === 'category'">
-        <div
-          class="selected-option"
-          (click)="toggleDropdown('category', $event)"
-        >
-          {{ filterCategory || "Tất cả danh mục" }}
-          <img src="../../assets/product/arrow-down.svg" alt="dropdown" />
-        </div>
-        <div
-          class="dropdown-menu"
-          *ngIf="openDropdown === 'category'"
-          (click)="$event.stopPropagation()"
-        >
-          <div
-            class="dropdown-item"
-            (click)="selectCategory(''); closeDropdown()"
-          >
-            Tất cả danh mục
-          </div>
-          <div
-            class="dropdown-item"
-            (click)="selectCategory('Xào'); closeDropdown()"
-          >
-            Xào
-          </div>
-          <div
-            class="dropdown-item"
-            (click)="selectCategory('Nước'); closeDropdown()"
-          >
-            Nước
-          </div>
-          <div
-            class="dropdown-item"
-            (click)="selectCategory('Món mặn'); closeDropdown()"
-          >
-            Món mặn
-          </div>
-          <div
-            class="dropdown-item"
-            (click)="selectCategory('Trộn'); closeDropdown()"
-          >
-            Trộn
-          </div>
-        </div>
-      </div>
-
-      <!-- Custom dropdown for status -->
-      <div class="custom-dropdown" [class.active]="openDropdown === 'status'">
-        <div class="selected-option" (click)="toggleDropdown('status', $event)">
-          {{ filterStatus || "Tất cả trạng thái" }}
-          <img src="../../assets/product/arrow-down.svg" alt="dropdown" />
-        </div>
-        <div
-          class="dropdown-menu"
-          *ngIf="openDropdown === 'status'"
-          (click)="$event.stopPropagation()"
-        >
-          <div
-            class="dropdown-item"
-            (click)="selectStatus(''); closeDropdown()"
-          >
-            Tất cả trạng thái
-          </div>
-          <div
-            class="dropdown-item"
-            (click)="selectStatus('Còn hàng'); closeDropdown()"
-          >
-            Còn hàng
-          </div>
-          <div
-            class="dropdown-item"
-            (click)="selectStatus('Hết hàng'); closeDropdown()"
-          >
-            Hết hàng
-          </div>
-          <div
-            class="dropdown-item"
-            (click)="selectStatus('Ngừng kinh doanh'); closeDropdown()"
-          >
-            Ngừng kinh doanh
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -325,7 +345,23 @@
                 >Nhân đôi</a
               >
               <span class="separator">|</span>
-              <a href="javascript:void(0)" (click)="hideProduct(product)">Ẩn</a>
+              <a
+                href="javascript:void(0)"
+                (click)="
+                  product.status === 'Ngừng kinh doanh'
+                    ? unhideProduct(product)
+                    : hideProduct(product)
+                "
+              >
+                {{ product.status === "Ngừng kinh doanh" ? "Bỏ ẩn" : "Ẩn" }}
+              </a>
+              <span class="separator">|</span>
+              <a
+                href="javascript:void(0)"
+                (click)="deleteProduct(product)"
+                class="delete-action"
+                >Xóa</a
+              >
             </div>
           </div>
         </td>
@@ -369,7 +405,7 @@
   </div>
 
   <!-- Pagination -->
-  <div class="pagination" *ngIf="!isLoading && totalItems > 0">
+  <div class="pagination" *ngIf="!isLoading && filteredCount > 0">
     <button
       [disabled]="currentPage === 1"
       (click)="currentPage = currentPage - 1"

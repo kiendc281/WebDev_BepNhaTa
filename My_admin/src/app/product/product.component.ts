@@ -4,12 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product.interface';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, FormsModule],
+  imports: [CommonModule, HttpClientModule, FormsModule, RouterModule],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
 })
@@ -37,6 +37,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   itemsPerPage: number = 8;
   totalItems: number = 0;
+  filteredCount: number = 0;
 
   // Biến quản lý dropdown đang mở
   openDropdown: string | null = null;
@@ -95,8 +96,9 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.productService.getAllProducts(filters).subscribe({
       next: (data) => {
         this.originalProducts = data;
-        this.totalItems = data.length;
+        this.totalItems = data.length; // Lưu tổng số sản phẩm ban đầu
         this.transformProducts();
+        this.filteredCount = this.products.length; // Lưu số lượng sau khi lọc
         this.sortProducts(this.sortColumn, this.sortDirection);
         this.isLoading = false;
       },
@@ -110,6 +112,31 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   // Chuyển đổi dữ liệu sản phẩm từ API để phù hợp với giao diện
   transformProducts(): void {
+    // Cập nhật trạng thái trong originalProducts trước
+    this.originalProducts = this.originalProducts.map((product) => {
+      // Lấy số lượng từ portionQuantities
+      const quantity2 = product['portionQuantities']?.['2'] || 0;
+      const quantity4 = product['portionQuantities']?.['4'] || 0;
+
+      // Cập nhật trạng thái dựa trên số lượng, nhưng giữ nguyên trạng thái "Ngừng kinh doanh"
+      let status = product.status;
+
+      // Chỉ áp dụng logic tính toán trạng thái nếu sản phẩm không ở trạng thái "Ngừng kinh doanh"
+      if (status !== 'Ngừng kinh doanh') {
+        // Nếu cả 2 khẩu phần đều là 0, đặt trạng thái là "Hết hàng"
+        if (quantity2 === 0 && quantity4 === 0) {
+          status = 'Hết hàng';
+        } else {
+          status = 'Còn hàng';
+        }
+      }
+
+      return {
+        ...product,
+        status, // Cập nhật trạng thái
+      };
+    });
+
     // Tạo danh sách sản phẩm đã chuyển đổi
     this.products = this.originalProducts.map((product) => {
       // Lấy giá từ pricePerPortion
@@ -119,19 +146,6 @@ export class ProductComponent implements OnInit, OnDestroy {
       // Lấy số lượng từ portionQuantities
       const quantity2 = product['portionQuantities']?.['2'] || 0;
       const quantity4 = product['portionQuantities']?.['4'] || 0;
-
-      // Tự động cập nhật trạng thái dựa trên số lượng - LUÔN cập nhật trạng thái dựa trên số lượng
-      let status = 'Còn hàng';
-
-      // Nếu cả 2 khẩu phần đều là 0, đặt trạng thái là "Hết hàng"
-      if (quantity2 === 0 && quantity4 === 0) {
-        status = 'Hết hàng';
-      }
-
-      // Ghi log để kiểm tra
-      console.log(
-        `Sản phẩm ${product._id}: số lượng (${quantity2}, ${quantity4}), trạng thái API: ${product.status}, trạng thái hiển thị: ${status}`
-      );
 
       // Tạo ngày từ expirationDate hoặc ngày hiện tại nếu không có
       const date = product.expirationDate
@@ -152,19 +166,20 @@ export class ProductComponent implements OnInit, OnDestroy {
         tags: product.tags || [],
         quantity2,
         quantity4,
-        status: status, // Luôn sử dụng trạng thái được tính toán dựa trên số lượng
       };
     });
 
-    // Nếu đã áp dụng bộ lọc trạng thái, cần lọc lại dựa trên trạng thái đã được tính toán
+    // Nếu đã áp dụng bộ lọc trạng thái, cần lọc lại
     if (this.filterStatus) {
       console.log('Lọc theo trạng thái:', this.filterStatus);
-      // Lọc lại sản phẩm dựa trên trạng thái đã tính toán
+      // Lọc lại sản phẩm dựa trên trạng thái
       this.products = this.products.filter(
         (product) => product.status === this.filterStatus
       );
-      // Cập nhật tổng số sản phẩm sau khi lọc
-      this.totalItems = this.products.length;
+      // Cập nhật số lượng sản phẩm được lọc
+      this.filteredCount = this.products.length;
+    } else {
+      this.filteredCount = this.products.length;
     }
   }
 
@@ -272,7 +287,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   // Tính tổng số trang
   getTotalPages(): number {
-    return Math.ceil(this.totalItems / this.itemsPerPage);
+    return Math.ceil(this.filteredCount / this.itemsPerPage);
   }
 
   // Helper method để tạo mảng số trang
@@ -281,13 +296,28 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   // Đếm số lượng sản phẩm theo từng trạng thái
-  getProductCountByStatus(status: string): number {
-    return this.originalProducts.filter((p) => p.status === status).length;
+  getProductCountByStatus(
+    status: string,
+    forceOriginal: boolean = false
+  ): number {
+    // Nếu forceOriginal = true hoặc không có bộ lọc trạng thái, đếm từ originalProducts
+    if (forceOriginal || !this.filterStatus) {
+      return this.originalProducts.filter((p) => p.status === status).length;
+    } else {
+      // Nếu đang lọc theo trạng thái, sử dụng danh sách products đã được lọc
+      // Nếu trạng thái đang lọc trùng với trạng thái cần đếm, trả về tổng số sản phẩm
+      if (this.filterStatus === status) {
+        return this.products.length;
+      } else {
+        // Nếu không phải trạng thái đang lọc, trả về 0
+        return 0;
+      }
+    }
   }
 
   // Actions
   addProduct() {
-    console.log('Add product clicked');
+    this.router.navigate(['/san-pham/them-moi']);
   }
 
   batchImport() {
@@ -459,6 +489,35 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.selectedAction = action;
   }
 
+  // Reset lựa chọn sản phẩm
+  resetSelection(): void {
+    this.selectedProductIds = [];
+    this.selectedAction = '';
+    this.allProductsSelected = false;
+  }
+
+  // Xóa một sản phẩm
+  deleteProduct(product: any): void {
+    const confirmation = confirm(
+      `Bạn có chắc chắn muốn xóa sản phẩm "${product.name}" không?`
+    );
+    if (confirmation) {
+      this.isLoading = true;
+      this.productService.deleteProduct(product._id).subscribe({
+        next: (response) => {
+          console.log('Sản phẩm đã được xóa:', response);
+          alert(`Đã xóa sản phẩm "${product.name}" thành công`);
+          this.loadProducts();
+        },
+        error: (error) => {
+          console.error('Lỗi khi xóa sản phẩm:', error);
+          alert(`Xóa sản phẩm thất bại: ${error.message || 'Đã xảy ra lỗi'}`);
+          this.isLoading = false;
+        },
+      });
+    }
+  }
+
   // Áp dụng hành động hàng loạt cho các sản phẩm đã chọn
   applyBatchAction(): void {
     if (!this.selectedAction || this.selectedProductIds.length === 0) {
@@ -475,28 +534,189 @@ export class ProductComponent implements OnInit, OnDestroy {
     switch (this.selectedAction) {
       case 'hide':
         console.log('Ẩn sản phẩm:', selectedProducts);
-        // TODO: Implement hide product logic
+        // Cập nhật trạng thái của tất cả sản phẩm đã chọn thành "Ngừng kinh doanh"
+        this.isLoading = true;
+
+        let completedCount = 0;
+        let errorCount = 0;
+        const totalProducts = selectedProducts.length;
+
+        // Xử lý từng sản phẩm
+        selectedProducts.forEach((product) => {
+          this.productService
+            .updateProduct(product._id, {
+              status: 'Ngừng kinh doanh',
+            })
+            .subscribe({
+              next: () => {
+                completedCount++;
+                // Kiểm tra nếu đã hoàn tất tất cả các sản phẩm
+                if (completedCount + errorCount === totalProducts) {
+                  this.isLoading = false;
+                  alert(
+                    `Đã ẩn ${completedCount} sản phẩm thành công${
+                      errorCount > 0 ? `, ${errorCount} sản phẩm thất bại` : ''
+                    }`
+                  );
+
+                  // Tải lại dữ liệu từ API để cập nhật chính xác trạng thái
+                  this.loadProducts();
+                  this.resetSelection();
+                }
+              },
+              error: (error) => {
+                console.error(`Lỗi khi ẩn sản phẩm ${product._id}:`, error);
+                errorCount++;
+                // Kiểm tra nếu đã hoàn tất tất cả các sản phẩm
+                if (completedCount + errorCount === totalProducts) {
+                  this.isLoading = false;
+                  alert(
+                    `Đã ẩn ${completedCount} sản phẩm thành công${
+                      errorCount > 0 ? `, ${errorCount} sản phẩm thất bại` : ''
+                    }`
+                  );
+
+                  // Tải lại dữ liệu từ API để cập nhật chính xác trạng thái
+                  this.loadProducts();
+                  this.resetSelection();
+                }
+              },
+            });
+        });
+        break;
+      case 'unhide':
+        console.log('Bỏ ẩn sản phẩm:', selectedProducts);
+        // Cập nhật trạng thái của tất cả sản phẩm đã chọn thành "Còn hàng"
+        this.isLoading = true;
+
+        let completedUnhideCount = 0;
+        let errorUnhideCount = 0;
+        const totalUnhideProducts = selectedProducts.length;
+
+        // Xử lý từng sản phẩm
+        selectedProducts.forEach((product) => {
+          this.productService
+            .updateProduct(product._id, {
+              status: 'Còn hàng',
+            })
+            .subscribe({
+              next: () => {
+                completedUnhideCount++;
+                // Kiểm tra nếu đã hoàn tất tất cả các sản phẩm
+                if (
+                  completedUnhideCount + errorUnhideCount ===
+                  totalUnhideProducts
+                ) {
+                  this.isLoading = false;
+                  alert(
+                    `Đã bỏ ẩn ${completedUnhideCount} sản phẩm thành công${
+                      errorUnhideCount > 0
+                        ? `, ${errorUnhideCount} sản phẩm thất bại`
+                        : ''
+                    }`
+                  );
+
+                  // Tải lại dữ liệu từ API để cập nhật chính xác trạng thái
+                  this.loadProducts();
+                  this.resetSelection();
+                }
+              },
+              error: (error) => {
+                console.error(`Lỗi khi bỏ ẩn sản phẩm ${product._id}:`, error);
+                errorUnhideCount++;
+                // Kiểm tra nếu đã hoàn tất tất cả các sản phẩm
+                if (
+                  completedUnhideCount + errorUnhideCount ===
+                  totalUnhideProducts
+                ) {
+                  this.isLoading = false;
+                  alert(
+                    `Đã bỏ ẩn ${completedUnhideCount} sản phẩm thành công${
+                      errorUnhideCount > 0
+                        ? `, ${errorUnhideCount} sản phẩm thất bại`
+                        : ''
+                    }`
+                  );
+
+                  // Tải lại dữ liệu từ API để cập nhật chính xác trạng thái
+                  this.loadProducts();
+                  this.resetSelection();
+                }
+              },
+            });
+        });
         break;
       case 'price':
         console.log('Thay đổi giá:', selectedProducts);
         // TODO: Implement price change logic
+        this.resetSelection();
         break;
       case 'stock':
         console.log('Cập nhật tồn kho:', selectedProducts);
         // TODO: Implement stock update logic
+        this.resetSelection();
         break;
       case 'delete':
         console.log('Xóa sản phẩm:', selectedProducts);
-        // TODO: Implement delete products logic
+        // Hiển thị xác nhận xóa
+        const confirmation = confirm(
+          `Bạn có chắc chắn muốn xóa ${selectedProducts.length} sản phẩm đã chọn không?`
+        );
+        if (confirmation) {
+          this.isLoading = true;
+
+          let completedCount = 0;
+          let errorCount = 0;
+          const totalProducts = selectedProducts.length;
+
+          // Xử lý từng sản phẩm
+          selectedProducts.forEach((product) => {
+            this.productService.deleteProduct(product._id).subscribe({
+              next: () => {
+                completedCount++;
+                // Kiểm tra nếu đã hoàn tất tất cả các sản phẩm
+                if (completedCount + errorCount === totalProducts) {
+                  this.isLoading = false;
+                  alert(
+                    `Đã xóa ${completedCount} sản phẩm thành công${
+                      errorCount > 0 ? `, ${errorCount} sản phẩm thất bại` : ''
+                    }`
+                  );
+
+                  // Tải lại dữ liệu từ API
+                  this.loadProducts();
+                  this.resetSelection();
+                }
+              },
+              error: (error) => {
+                console.error(`Lỗi khi xóa sản phẩm ${product._id}:`, error);
+                errorCount++;
+                // Kiểm tra nếu đã hoàn tất tất cả các sản phẩm
+                if (completedCount + errorCount === totalProducts) {
+                  this.isLoading = false;
+                  alert(
+                    `Đã xóa ${completedCount} sản phẩm thành công${
+                      errorCount > 0 ? `, ${errorCount} sản phẩm thất bại` : ''
+                    }`
+                  );
+
+                  // Tải lại dữ liệu từ API
+                  this.loadProducts();
+                  this.resetSelection();
+                }
+              },
+            });
+          });
+        } else {
+          this.resetSelection();
+        }
         break;
       default:
+        this.resetSelection();
         break;
     }
 
-    // Reset sau khi áp dụng
-    // this.selectedProductIds = [];
-    // this.selectedAction = '';
-    // this.allProductsSelected = false;
+    // Không cần reset ở đây vì đã được xử lý trong từng case
   }
 
   // Lấy tên hiển thị của hành động dựa trên giá trị
@@ -504,6 +724,8 @@ export class ProductComponent implements OnInit, OnDestroy {
     switch (actionValue) {
       case 'hide':
         return 'Ẩn sản phẩm';
+      case 'unhide':
+        return 'Bỏ ẩn sản phẩm';
       case 'price':
         return 'Thay đổi giá';
       case 'stock':
@@ -524,13 +746,87 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   duplicateProduct(product: any): void {
     console.log('Nhân đôi sản phẩm:', product);
-    // TODO: Tạo bản sao của sản phẩm với dữ liệu tương tự
-    // Có thể hiển thị form cho phép người dùng chỉnh sửa một số thông tin trước khi tạo bản sao
+
+    // Tạo bản sao của sản phẩm
+    const duplicatedProduct = { ...product };
+
+    // Xóa ID để tạo mới sản phẩm
+    delete duplicatedProduct._id;
+
+    // Tạo ID mới hoặc để trống để server tự sinh
+    duplicatedProduct._id = `${product._id}_copy`;
+
+    // Thêm "(Bản sao)" vào tên sản phẩm
+    duplicatedProduct.ingredientName = `${product.ingredientName} (Bản sao)`;
+
+    // Gọi API để tạo sản phẩm mới
+    this.isLoading = true;
+    this.productService.createProduct(duplicatedProduct).subscribe({
+      next: () => {
+        this.isLoading = false;
+        alert('Nhân đôi sản phẩm thành công');
+
+        // Làm mới danh sách sản phẩm
+        this.loadProducts();
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Lỗi khi nhân đôi sản phẩm:', error);
+        alert('Không thể nhân đôi sản phẩm. Vui lòng thử lại sau.');
+      },
+    });
   }
 
+  // Bỏ ẩn sản phẩm (chuyển từ "Ngừng kinh doanh" sang "Còn hàng")
+  unhideProduct(product: any): void {
+    console.log('Bỏ ẩn sản phẩm:', product);
+
+    // Cập nhật trạng thái thành "Còn hàng"
+    this.isLoading = true;
+    this.productService
+      .updateProduct(product._id, {
+        status: 'Còn hàng',
+      })
+      .subscribe({
+        next: () => {
+          this.isLoading = false;
+          alert('Đã bỏ ẩn sản phẩm thành công');
+
+          // Tải lại danh sách sản phẩm để cập nhật đúng trạng thái
+          this.loadProducts();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Lỗi khi bỏ ẩn sản phẩm:', error);
+          alert('Không thể bỏ ẩn sản phẩm. Vui lòng thử lại sau.');
+        },
+      });
+  }
+
+  // Ẩn sản phẩm (chuyển trạng thái thành "Ngừng kinh doanh")
   hideProduct(product: any): void {
     console.log('Ẩn sản phẩm:', product);
-    // TODO: Cập nhật trạng thái ẩn của sản phẩm và làm mới danh sách
+
+    // Cập nhật trạng thái thành "Ngừng kinh doanh"
+    this.isLoading = true;
+    this.productService
+      .updateProduct(product._id, {
+        status: 'Ngừng kinh doanh',
+      })
+      .subscribe({
+        next: () => {
+          this.isLoading = false;
+          alert('Đã ẩn sản phẩm thành công');
+
+          // Tải lại danh sách sản phẩm để cập nhật đúng trạng thái
+          this.loadProducts();
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Lỗi khi ẩn sản phẩm:', error);
+          alert('Không thể ẩn sản phẩm. Vui lòng thử lại sau.');
+        },
+      });
   }
 
   viewProduct(product: any): void {

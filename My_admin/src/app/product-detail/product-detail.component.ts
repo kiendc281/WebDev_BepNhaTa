@@ -515,33 +515,6 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  // Thêm phương thức để cập nhật mô tả từ WYSIWYG editor
-  updateDescription(event: Event): void {
-    const target = event.target as HTMLDivElement;
-    if (target && target.innerHTML !== undefined) {
-      this.product.description = target.innerHTML;
-      this.pendingChanges = true;
-    }
-  }
-
-  // Thêm các phương thức để điều khiển định dạng văn bản
-  executeCommand(command: string, value?: string): void {
-    document.execCommand(command, false, value || '');
-  }
-
-  // Phương thức này có thể được gọi từ template để áp dụng định dạng
-  applyFormat(format: string, value?: string): void {
-    this.executeCommand(format, value);
-  }
-
-  // Handle format block change from select element
-  handleFormatBlockChange(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    if (selectElement && selectElement.value) {
-      this.applyFormat('formatBlock', selectElement.value);
-    }
-  }
-
   // Phương thức cập nhật trạng thái dựa trên số lượng
   updateStatusBasedOnQuantity(portion: string): void {
     if (portion === '2') {

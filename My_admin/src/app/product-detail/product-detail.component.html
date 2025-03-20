@@ -42,91 +42,16 @@
         </div>
       </div>
 
+      <!-- Mô tả sản phẩm -->
       <div class="form-group">
         <label>Mô tả sản phẩm</label>
-        <div class="wysiwyg-editor">
-          <div class="editor-toolbar">
-            <select
-              class="style-selector"
-              (change)="handleFormatBlockChange($event)"
-            >
-              <option value="p">Kiểu</option>
-              <option value="h1">Tiêu đề 1</option>
-              <option value="h2">Tiêu đề 2</option>
-              <option value="h3">Tiêu đề 3</option>
-              <option value="blockquote">Trích dẫn</option>
-            </select>
-            <button
-              class="format-btn bold-btn"
-              title="In đậm"
-              (click)="applyFormat('bold')"
-            >
-              B
-            </button>
-            <button
-              class="format-btn italic-btn"
-              title="In nghiêng"
-              (click)="applyFormat('italic')"
-            >
-              I
-            </button>
-            <button
-              class="format-btn list-btn"
-              title="Danh sách"
-              (click)="applyFormat('insertUnorderedList')"
-            >
-              •
-            </button>
-            <button
-              class="format-btn numbered-list-btn"
-              title="Danh sách có số"
-              (click)="applyFormat('insertOrderedList')"
-            >
-              1.
-            </button>
-            <button
-              class="format-btn align-left-btn"
-              title="Canh trái"
-              (click)="applyFormat('justifyLeft')"
-            >
-              ≡
-            </button>
-            <button
-              class="format-btn align-center-btn"
-              title="Canh giữa"
-              (click)="applyFormat('justifyCenter')"
-            >
-              ≡
-            </button>
-            <button
-              class="format-btn align-right-btn"
-              title="Canh phải"
-              (click)="applyFormat('justifyRight')"
-            >
-              ≡
-            </button>
-            <button
-              class="format-btn indent-btn"
-              title="Thụt lề"
-              (click)="applyFormat('indent')"
-            >
-              →
-            </button>
-            <button
-              class="format-btn outdent-btn"
-              title="Giảm lề"
-              (click)="applyFormat('outdent')"
-            >
-              ←
-            </button>
-          </div>
-          <div
-            class="wysiwyg-content"
-            contenteditable="true"
-            [innerHTML]="product.description"
-            (input)="updateDescription($event)"
-          ></div>
-        </div>
+        <textarea
+          class="description-textarea"
+          [(ngModel)]="product.description"
+          rows="6"
+          (input)="pendingChanges = true"
+          placeholder="Nhập mô tả sản phẩm"
+        ></textarea>
       </div>
 
       <!-- Thông tin bán hàng -->
