@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 import { Product } from '../models/product.interface';
 
 @Injectable({
@@ -8,6 +9,7 @@ import { Product } from '../models/product.interface';
 })
 export class ProductService {
   private apiUrl = 'http://localhost:3000/api/ingredients';
+  private requestTimeout = 120000; // 2 phút
 
   constructor(private http: HttpClient) {}
 
@@ -27,24 +29,37 @@ export class ProductService {
       if (filters.search) params = params.set('search', filters.search);
     }
 
-    return this.http.get<Product[]>(this.apiUrl, { params });
+    return this.http
+      .get<Product[]>(this.apiUrl, { params })
+      .pipe(timeout(this.requestTimeout));
   }
 
   // Lấy sản phẩm theo ID
   getProductById(id: string): Observable<{ status: string; data: Product }> {
-    return this.http.get<{ status: string; data: Product }>(
-      `${this.apiUrl}/${id}`
-    );
+    return this.http
+      .get<{ status: string; data: Product }>(`${this.apiUrl}/${id}`)
+      .pipe(timeout(this.requestTimeout));
   }
 
   // Tạo sản phẩm mới
   createProduct(
     product: Partial<Product>
   ): Observable<{ status: string; data: Product }> {
-    return this.http.post<{ status: string; data: Product }>(
-      this.apiUrl,
-      product
-    );
+    if (!product) {
+      throw new Error('Dữ liệu sản phẩm không được để trống');
+    }
+
+    // Sử dụng JSON trực tiếp thay vì FormData
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    });
+
+    return this.http
+      .post<{ status: string; data: Product }>(this.apiUrl, product, {
+        headers,
+      })
+      .pipe(timeout(this.requestTimeout));
   }
 
   // Cập nhật sản phẩm
@@ -52,10 +67,27 @@ export class ProductService {
     id: string,
     product: Partial<Product>
   ): Observable<{ status: string; data: Product }> {
-    return this.http.patch<{ status: string; data: Product }>(
-      `${this.apiUrl}/${id}`,
-      product
-    );
+    if (!id) {
+      throw new Error('ID sản phẩm không được để trống');
+    }
+
+    if (!product) {
+      throw new Error('Dữ liệu sản phẩm không được để trống');
+    }
+
+    // Sử dụng JSON trực tiếp thay vì FormData
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    });
+
+    return this.http
+      .patch<{ status: string; data: Product }>(
+        `${this.apiUrl}/${id}`,
+        product,
+        { headers }
+      )
+      .pipe(timeout(this.requestTimeout));
   }
 
   // Cập nhật số lượng sản phẩm

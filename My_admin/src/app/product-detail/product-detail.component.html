@@ -164,16 +164,6 @@
           <div>
             <input
               type="radio"
-              id="all-categories"
-              name="category"
-              [checked]="!product.category"
-              (change)="product.category = ''; onInputChange()"
-            />
-            <label for="all-categories">Tất cả</label>
-          </div>
-          <div>
-            <input
-              type="radio"
               id="category-soup"
               name="category"
               [checked]="product.category === 'Nước'"

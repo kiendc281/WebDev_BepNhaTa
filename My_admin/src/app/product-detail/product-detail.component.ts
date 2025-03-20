@@ -17,7 +17,6 @@ export class ProductDetailComponent implements OnInit {
   product: any = {
     ingredientName: '',
     mainImage: '',
-    subImage: [],
     level: 'Trung bình',
     time: '',
     discount: 0,
@@ -252,6 +251,19 @@ export class ProductDetailComponent implements OnInit {
   }
 
   saveProduct(): void {
+    console.log(
+      'Dữ liệu sản phẩm trước khi validate:',
+      JSON.stringify(this.product, null, 2)
+    );
+
+    // Kiểm tra dữ liệu của category
+    console.log('Category value:', this.product.category);
+    console.log('Category type:', typeof this.product.category);
+
+    // Kiểm tra giá khẩu phần
+    console.log('Price for portion 2:', this.product.pricePerPortion['2']);
+    console.log('Price for portion 4:', this.product.pricePerPortion['4']);
+
     if (!this.validateForm()) {
       return;
     }
@@ -264,11 +276,49 @@ export class ProductDetailComponent implements OnInit {
   }
 
   validateForm(): boolean {
-    // Validate các trường bắt buộc
-    if (!this.product.ingredientName || !this.product.category) {
-      alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+    // Danh sách các trường bắt buộc và thông báo tương ứng
+    const requiredFields = [
+      { field: 'ingredientName', name: 'Tên sản phẩm' },
+      { field: 'category', name: 'Danh mục' },
+      { field: 'region', name: 'Vùng miền' },
+      { field: 'expirationDate', name: 'Hạn sử dụng' },
+      { field: 'storage', name: 'Bảo quản' },
+      { field: 'description', name: 'Mô tả' },
+      { field: 'mainImage', name: 'Hình ảnh chính' },
+    ];
+
+    let missingFields = [];
+
+    // Kiểm tra từng trường bắt buộc
+    for (const field of requiredFields) {
+      if (
+        !this.product[field.field] ||
+        (typeof this.product[field.field] === 'string' &&
+          this.product[field.field].trim() === '')
+      ) {
+        missingFields.push(field.name);
+      }
+    }
+
+    // Kiểm tra giá cho khẩu phần
+    const price2 = parseFloat(this.product.pricePerPortion['2']) || 0;
+    const price4 = parseFloat(this.product.pricePerPortion['4']) || 0;
+
+    if (!this.product.pricePerPortion || (price2 <= 0 && price4 <= 0)) {
+      missingFields.push('Giá cho ít nhất một khẩu phần');
+    }
+
+    // Hiển thị thông báo lỗi cụ thể nếu có trường thiếu
+    if (missingFields.length > 0) {
+      const errorMessage = `Vui lòng điền đầy đủ thông tin bắt buộc: ${missingFields.join(
+        ', '
+      )}`;
+      alert(errorMessage);
+      console.log('Validation failed:', errorMessage);
+      console.log('Current product data:', this.product);
       return false;
     }
+
     return true;
   }
 
@@ -278,75 +328,86 @@ export class ProductDetailComponent implements OnInit {
     const productToSend = { ...this.product };
 
     console.log('Dữ liệu sản phẩm trước khi gửi:', productToSend);
-    console.log(
-      'originalPricePerPortion:',
-      productToSend['originalPricePerPortion']
-    );
 
-    // Kiểm tra cấu trúc pricePerPortion hiện tại
-    console.log('pricePerPortion hiện tại:', productToSend.pricePerPortion);
+    // Đảm bảo không gửi trường subImage nếu tồn tại
+    delete productToSend.subImage;
+
+    // Đảm bảo các trường bắt buộc không rỗng
+    if (!productToSend.category || productToSend.category.trim() === '') {
+      console.log('Lỗi: Category rỗng hoặc không hợp lệ');
+      return null;
+    }
+
+    if (!productToSend.region || productToSend.region.trim() === '') {
+      console.log('Lỗi: Region rỗng hoặc không hợp lệ');
+      return null;
+    }
+
+    if (!productToSend.expirationDate) {
+      console.log('Lỗi: expirationDate rỗng hoặc không hợp lệ');
+      return null;
+    }
+
+    if (!productToSend.storage || productToSend.storage.trim() === '') {
+      console.log('Lỗi: storage rỗng hoặc không hợp lệ');
+      return null;
+    }
+
+    if (!productToSend.description || productToSend.description.trim() === '') {
+      console.log('Lỗi: description rỗng hoặc không hợp lệ');
+      return null;
+    }
+
+    if (!productToSend.mainImage || productToSend.mainImage.trim() === '') {
+      console.log('Lỗi: mainImage rỗng hoặc không hợp lệ');
+      return null;
+    }
+
+    if (
+      !productToSend.ingredientName ||
+      productToSend.ingredientName.trim() === ''
+    ) {
+      console.log('Lỗi: ingredientName rỗng hoặc không hợp lệ');
+      return null;
+    }
+
+    // Xử lý ảnh nếu là data URL (base64) quá lớn
+    if (
+      productToSend.mainImage &&
+      productToSend.mainImage.startsWith('data:image') &&
+      productToSend.mainImage.length > 500000
+    ) {
+      try {
+        console.log('Ảnh quá lớn, đang cố gắng giảm kích thước...');
+        productToSend.mainImage =
+          'https://via.placeholder.com/300x300?text=Product+Image';
+      } catch (err) {
+        console.error('Lỗi khi xử lý ảnh:', err);
+        productToSend.mainImage =
+          'https://via.placeholder.com/300x300?text=Error+Processing+Image';
+      }
+    }
 
     // Tạo mảng mới cho pricePerPortionArray
-    let newPricePerPortionArray: any[] = [];
+    const newPricePerPortionArray: any[] = [];
 
-    // Nếu có mảng originalPricePerPortion, sử dụng nó để tạo mảng mới
-    if (
-      Array.isArray(productToSend['originalPricePerPortion']) &&
-      productToSend['originalPricePerPortion'].length > 0
-    ) {
-      console.log('Sử dụng originalPricePerPortion để tạo mảng mới');
+    // Lấy các khẩu phần cần xử lý
+    const portions = ['2', '4'];
 
-      // Sao chép mảng gốc để lưu trữ
-      newPricePerPortionArray = JSON.parse(
-        JSON.stringify(productToSend['originalPricePerPortion'])
-      );
+    // Tạo mảng mới
+    portions.forEach((portion) => {
+      const price = Number(productToSend.pricePerPortion[portion]) || 0;
+      const quantity = Number(productToSend[`quantity${portion}`]) || 0;
 
-      // Cập nhật giá và số lượng từ form
-      newPricePerPortionArray.forEach((item) => {
-        if (item.portion) {
-          // Cập nhật giá từ form
-          item.price = Number(productToSend.pricePerPortion[item.portion]) || 0;
-
-          // Cập nhật số lượng từ form
-          item.quantity = Number(productToSend[`quantity${item.portion}`]) || 0;
-
-          console.log(
-            `Cập nhật khẩu phần ${item.portion}: giá=${item.price}, số lượng=${item.quantity}`
-          );
-        }
+      newPricePerPortionArray.push({
+        portion: portion,
+        price: price,
+        quantity: quantity,
       });
-    } else {
-      // Nếu không có originalPricePerPortion, tạo mảng mới từ cấu trúc form
-      console.log('Tạo mảng mới từ cấu trúc form');
-
-      // Lấy các khẩu phần cần xử lý
-      const portions = ['2', '4'];
-
-      // Tạo mảng mới
-      portions.forEach((portion) => {
-        const price = Number(productToSend.pricePerPortion[portion]) || 0;
-        const quantity = Number(productToSend[`quantity${portion}`]) || 0;
-
-        console.log(
-          `Tạo khẩu phần ${portion}: giá=${price}, số lượng=${quantity}`
-        );
-
-        newPricePerPortionArray.push({
-          portion: portion,
-          price: price,
-          quantity: quantity,
-        });
-      });
-    }
+    });
 
     // Ghi đè pricePerPortion bằng mảng mới
     productToSend.pricePerPortion = newPricePerPortionArray;
-
-    // Log để kiểm tra
-    console.log(
-      'pricePerPortion trước khi gửi:',
-      productToSend.pricePerPortion
-    );
 
     // Cập nhật trạng thái chính của sản phẩm dựa trên tổng số lượng
     const totalQuantity = newPricePerPortionArray.reduce(
@@ -354,13 +415,7 @@ export class ProductDetailComponent implements OnInit {
       0
     );
 
-    if (totalQuantity === 0) {
-      productToSend.status = 'Hết hàng';
-      console.log('-> Đặt trạng thái thành Hết hàng (tổng số lượng = 0)');
-    } else {
-      productToSend.status = 'Còn hàng';
-      console.log('-> Đặt trạng thái thành Còn hàng (tổng số lượng > 0)');
-    }
+    productToSend.status = totalQuantity > 0 ? 'Còn hàng' : 'Hết hàng';
 
     // Đảm bảo expirationDate được xử lý đúng định dạng
     if (
@@ -377,12 +432,24 @@ export class ProductDetailComponent implements OnInit {
     delete productToSend['status4'];
     delete productToSend['originalPricePerPortion'];
 
+    console.log('Dữ liệu sản phẩm đã chuẩn bị:', productToSend);
     return productToSend;
   }
 
   createProduct(): void {
     this.isLoading = true;
     const productToSend = this.prepareProductData();
+
+    // Kiểm tra nếu dữ liệu không hợp lệ thì dừng và báo lỗi
+    if (!productToSend) {
+      this.isLoading = false;
+      alert(
+        'Dữ liệu sản phẩm không hợp lệ. Vui lòng kiểm tra lại các trường bắt buộc.'
+      );
+      return;
+    }
+
+    console.log('Gửi dữ liệu sản phẩm tới server:', productToSend);
 
     this.productService.createProduct(productToSend).subscribe({
       next: (response) => {
@@ -393,7 +460,23 @@ export class ProductDetailComponent implements OnInit {
       error: (error) => {
         this.isLoading = false;
         console.error('Lỗi khi tạo sản phẩm:', error);
-        alert('Không thể tạo sản phẩm. Vui lòng thử lại sau.');
+
+        let errorMessage = 'Không thể tạo sản phẩm. ';
+
+        // Xử lý các trường hợp lỗi cụ thể
+        if (error.status === 0) {
+          errorMessage +=
+            'Không thể kết nối tới server. Vui lòng kiểm tra kết nối mạng.';
+        } else if (error.status === 413) {
+          errorMessage +=
+            'Dữ liệu gửi đi quá lớn. Vui lòng giảm kích thước ảnh sản phẩm.';
+        } else if (error.status === 500) {
+          errorMessage += 'Lỗi server (500). Vui lòng thử lại sau.';
+        } else if (error.error && error.error.message) {
+          errorMessage += error.error.message;
+        }
+
+        alert(errorMessage);
       },
     });
   }
@@ -401,6 +484,17 @@ export class ProductDetailComponent implements OnInit {
   updateProduct(): void {
     this.isLoading = true;
     const productToSend = this.prepareProductData();
+
+    // Kiểm tra nếu dữ liệu không hợp lệ thì dừng và báo lỗi
+    if (!productToSend) {
+      this.isLoading = false;
+      alert(
+        'Dữ liệu sản phẩm không hợp lệ. Vui lòng kiểm tra lại các trường bắt buộc.'
+      );
+      return;
+    }
+
+    console.log('Gửi dữ liệu cập nhật sản phẩm tới server:', productToSend);
 
     this.productService
       .updateProduct(productToSend._id, productToSend)
@@ -419,7 +513,23 @@ export class ProductDetailComponent implements OnInit {
         error: (error) => {
           this.isLoading = false;
           console.error('Lỗi khi cập nhật sản phẩm:', error);
-          alert('Không thể cập nhật sản phẩm. Vui lòng thử lại sau.');
+
+          let errorMessage = 'Không thể cập nhật sản phẩm. ';
+
+          // Xử lý các trường hợp lỗi cụ thể
+          if (error.status === 0) {
+            errorMessage +=
+              'Không thể kết nối tới server. Vui lòng kiểm tra kết nối mạng.';
+          } else if (error.status === 413) {
+            errorMessage +=
+              'Dữ liệu gửi đi quá lớn. Vui lòng giảm kích thước ảnh sản phẩm.';
+          } else if (error.status === 500) {
+            errorMessage += 'Lỗi server (500). Vui lòng thử lại sau.';
+          } else if (error.error && error.error.message) {
+            errorMessage += error.error.message;
+          }
+
+          alert(errorMessage);
         },
       });
   }
@@ -480,12 +590,26 @@ export class ProductDetailComponent implements OnInit {
 
     const file = fileInput.files[0];
     if (file) {
+      // Kiểm tra kích thước tệp (giới hạn 2MB)
+      const maxSizeInBytes = 2 * 1024 * 1024;
+      if (file.size > maxSizeInBytes) {
+        alert('Ảnh quá lớn. Vui lòng chọn ảnh có kích thước nhỏ hơn 2MB.');
+        return;
+      }
+
       // TODO: Implement actual image upload to server
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         if (e.target && e.target.result) {
           this.product.mainImage = e.target.result as string;
           this.pendingChanges = true;
+
+          // Ghi log kích thước
+          console.log(
+            'Kích thước ảnh đã chọn:',
+            Math.round(file.size / 1024),
+            'KB'
+          );
         }
       };
       reader.readAsDataURL(file);
