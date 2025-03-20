@@ -127,7 +127,7 @@
     </div>
 
     <!-- Thêm công thức button -->
-    <button class="add-recipe-button" routerLink="/recipe/them-moi">
+    <button class="add-recipe-button" routerLink="/cong-thuc/them-moi">
       Thêm công thức
     </button>
   </div>
@@ -210,7 +210,7 @@
           <span class="tag" *ngFor="let tag of recipe.tags">{{ tag }}</span>
         </td>
         <td class="actions">
-          <button routerLink="/recipe/{{ recipe._id }}">
+          <button routerLink="/cong-thuc/{{ recipe._id }}">
             <img src="../../assets/recipes/edit.svg" alt="Chỉnh sửa" />
           </button>
           <button (click)="deleteRecipe(recipe._id || '')">

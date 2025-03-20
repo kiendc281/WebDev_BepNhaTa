@@ -6,6 +6,7 @@ import { CustomerComponent } from './customer/customer.component';
 import { BlogComponent } from './blog/blog.component';
 import { RecipeComponent } from './recipe/recipe.component';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
+import { RecipesDetailComponent } from './recipes-detail/recipes-detail.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/trang-chu', pathMatch: 'full' },
@@ -40,6 +41,25 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./product-detail/product-detail.component').then(
         (m) => m.ProductDetailComponent
+      ),
+  },
+  {
+    path: 'cong-thuc',
+    loadComponent: () =>
+      import('./recipe/recipe.component').then((m) => m.RecipeComponent),
+  },
+  {
+    path: 'cong-thuc/them-moi',
+    loadComponent: () =>
+      import('./recipes-detail/recipes-detail.component').then(
+        (m) => m.RecipesDetailComponent
+      ),
+  },
+  {
+    path: 'cong-thuc/:id',
+    loadComponent: () =>
+      import('./recipes-detail/recipes-detail.component').then(
+        (m) => m.RecipesDetailComponent
       ),
   },
   { path: '**', redirectTo: '/trang-chu' },
