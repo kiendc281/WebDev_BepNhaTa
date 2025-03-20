@@ -71,45 +71,12 @@ export class RecipesDetailComponent implements OnInit {
       next: (response: any) => {
         console.log('API response:', response);
         
-        let recipeData: Recipe;
-        
         // Xử lý dữ liệu trả về từ API
-        if (response && response.data) {
-          // Nếu API trả về dữ liệu trong trường data
-          recipeData = response.data;
-        } else {
-          // Nếu API trả về dữ liệu trực tiếp
-          recipeData = response as Recipe;
-        }
+        const recipeData = response?.data || response;
         
         if (recipeData) {
           this.recipe = recipeData;
-          
-          // Đảm bảo cấu trúc servingsOptions luôn đúng
-          if (!this.recipe.servingsOptions) {
-            this.recipe.servingsOptions = {
-              '2': { ingredients: [] },
-              '4': { ingredients: [] }
-            };
-          } else {
-            if (!this.recipe.servingsOptions['2']) {
-              this.recipe.servingsOptions['2'] = { ingredients: [] };
-            } else if (!this.recipe.servingsOptions['2'].ingredients) {
-              this.recipe.servingsOptions['2'].ingredients = [];
-            }
-            
-            if (!this.recipe.servingsOptions['4']) {
-              this.recipe.servingsOptions['4'] = { ingredients: [] };
-            } else if (!this.recipe.servingsOptions['4'].ingredients) {
-              this.recipe.servingsOptions['4'].ingredients = [];
-            }
-          }
-          
-          // Đảm bảo các trường khác có giá trị mặc định
-          if (!this.recipe.preparation) this.recipe.preparation = [];
-          if (!this.recipe.steps) this.recipe.steps = [];
-          if (!this.recipe.tags) this.recipe.tags = [];
-          
+          this.initializeRecipeStructure();
           console.log('Recipe data processed:', this.recipe);
         } else {
           this.errorMessage = 'Không tìm thấy công thức';
@@ -124,38 +91,48 @@ export class RecipesDetailComponent implements OnInit {
     });
   }
 
+  // Khởi tạo cấu trúc dữ liệu cho recipe
+  private initializeRecipeStructure(): void {
+    // Đảm bảo cấu trúc servingsOptions luôn đúng
+    if (!this.recipe.servingsOptions) {
+      this.recipe.servingsOptions = {
+        '2': { ingredients: [] },
+        '4': { ingredients: [] }
+      };
+    } else {
+      if (!this.recipe.servingsOptions['2']) {
+        this.recipe.servingsOptions['2'] = { ingredients: [] };
+      } else if (!this.recipe.servingsOptions['2'].ingredients) {
+        this.recipe.servingsOptions['2'].ingredients = [];
+      }
+      
+      if (!this.recipe.servingsOptions['4']) {
+        this.recipe.servingsOptions['4'] = { ingredients: [] };
+      } else if (!this.recipe.servingsOptions['4'].ingredients) {
+        this.recipe.servingsOptions['4'].ingredients = [];
+      }
+    }
+    
+    // Đảm bảo các trường khác có giá trị mặc định
+    if (!this.recipe.preparation) this.recipe.preparation = [];
+    if (!this.recipe.steps) this.recipe.steps = [];
+    if (!this.recipe.tags) this.recipe.tags = [];
+  }
+
   // Xử lý khi có thay đổi trong form
   onInputChange(): void {
     this.pendingChanges = true;
   }
 
-  // Thêm nguyên liệu mới cho khẩu phần 2 người
-  addIngredient2(): void {
-    if (!this.recipe.servingsOptions['2'].ingredients) {
-      this.recipe.servingsOptions['2'].ingredients = [];
-    }
-    this.recipe.servingsOptions['2'].ingredients.push({ name: '', quantity: '' });
+  // Thêm nguyên liệu mới cho khẩu phần
+  addIngredient(portion: '2' | '4'): void {
+    this.recipe.servingsOptions[portion].ingredients.push({ name: '', quantity: '' });
     this.onInputChange();
   }
 
-  // Xóa nguyên liệu cho khẩu phần 2 người
-  removeIngredient2(index: number): void {
-    this.recipe.servingsOptions['2'].ingredients.splice(index, 1);
-    this.onInputChange();
-  }
-
-  // Thêm nguyên liệu mới cho khẩu phần 4 người
-  addIngredient4(): void {
-    if (!this.recipe.servingsOptions['4'].ingredients) {
-      this.recipe.servingsOptions['4'].ingredients = [];
-    }
-    this.recipe.servingsOptions['4'].ingredients.push({ name: '', quantity: '' });
-    this.onInputChange();
-  }
-
-  // Xóa nguyên liệu cho khẩu phần 4 người
-  removeIngredient4(index: number): void {
-    this.recipe.servingsOptions['4'].ingredients.splice(index, 1);
+  // Xóa nguyên liệu cho khẩu phần
+  removeIngredient(portion: '2' | '4', index: number): void {
+    this.recipe.servingsOptions[portion].ingredients.splice(index, 1);
     this.onInputChange();
   }
 
@@ -239,64 +216,41 @@ export class RecipesDetailComponent implements OnInit {
     // Kiểm tra và làm sạch dữ liệu trước khi gửi
     this.validateRecipeData();
     
-    if (this.isEdit) {
-      // Cập nhật công thức hiện có
-      this.recipeService.updateRecipe(this.recipe._id, this.recipe).subscribe({
-        next: (response) => {
-          if (response.status === 'success') {
-            this.pendingChanges = false;
-            this.router.navigate(['/cong-thuc']);
-          } else {
-            this.errorMessage = 'Không thể cập nhật công thức';
-          }
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Lỗi khi cập nhật công thức:', error);
-          this.errorMessage = 'Đã xảy ra lỗi khi cập nhật công thức';
-          this.isLoading = false;
+    const saveObservable = this.isEdit
+      ? this.recipeService.updateRecipe(this.recipe._id, this.recipe)
+      : this.recipeService.createRecipe(this.recipe);
+
+    saveObservable.subscribe({
+      next: (response) => {
+        if (response.status === 'success' || response.data) {
+          this.pendingChanges = false;
+          this.router.navigate(['/cong-thuc']);
+        } else {
+          this.errorMessage = `Không thể ${this.isEdit ? 'cập nhật' : 'tạo'} công thức`;
         }
-      });
-    } else {
-      // Tạo công thức mới
-      this.recipeService.createRecipe(this.recipe).subscribe({
-        next: (response) => {
-          if (response.status === 'success') {
-            this.pendingChanges = false;
-            this.router.navigate(['/cong-thuc']);
-          } else {
-            this.errorMessage = 'Không thể tạo công thức mới';
-          }
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Lỗi khi tạo công thức mới:', error);
-          this.errorMessage = 'Đã xảy ra lỗi khi tạo công thức mới';
-          this.isLoading = false;
-        }
-      });
-    }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error(`Lỗi khi ${this.isEdit ? 'cập nhật' : 'tạo'} công thức:`, error);
+        this.errorMessage = `Đã xảy ra lỗi khi ${this.isEdit ? 'cập nhật' : 'tạo'} công thức`;
+        this.isLoading = false;
+      }
+    });
   }
 
   // Kiểm tra và làm sạch dữ liệu
   private validateRecipeData(): void {
     // Loại bỏ các nguyên liệu trống
-    if (this.recipe.servingsOptions['2'] && this.recipe.servingsOptions['2'].ingredients) {
-      this.recipe.servingsOptions['2'].ingredients = this.recipe.servingsOptions['2'].ingredients.filter(
-        ingredient => ingredient.name.trim() !== '' || ingredient.quantity.trim() !== ''
-      );
-    }
+    ['2', '4'].forEach(portion => {
+      if (this.recipe.servingsOptions[portion] && this.recipe.servingsOptions[portion].ingredients) {
+        this.recipe.servingsOptions[portion].ingredients = this.recipe.servingsOptions[portion].ingredients.filter(
+          ingredient => ingredient.name.trim() !== '' || ingredient.quantity.trim() !== ''
+        );
+      }
+    });
     
-    if (this.recipe.servingsOptions['4'] && this.recipe.servingsOptions['4'].ingredients) {
-      this.recipe.servingsOptions['4'].ingredients = this.recipe.servingsOptions['4'].ingredients.filter(
-        ingredient => ingredient.name.trim() !== '' || ingredient.quantity.trim() !== ''
-      );
-    }
-    
-    // Loại bỏ các bước chuẩn bị trống
+    // Loại bỏ các bước chuẩn bị và thực hiện trống
     this.recipe.preparation = this.recipe.preparation.filter(step => step.trim() !== '');
-    
-    // Loại bỏ các bước thực hiện trống
     this.recipe.steps = this.recipe.steps.filter(step => step.trim() !== '');
   }
 

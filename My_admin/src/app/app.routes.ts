@@ -5,6 +5,7 @@ import { OrderComponent } from './order/order.component';
 import { CustomerComponent } from './customer/customer.component';
 import { BlogComponent } from './blog/blog.component';
 import { RecipeComponent } from './recipe/recipe.component';
+import { RecipesDetailComponent } from './recipes-detail/recipes-detail.component';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 import { BlogDetailComponent } from './blog-detail/blog-detail.component';
 import { BlogEditComponent } from './blog-edit/blog-edit.component';
@@ -41,6 +42,26 @@ export const routes: Routes = [
         (m) => m.ProductDetailComponent
       ),
   },
+  {
+    path: 'cong-thuc',
+    loadComponent: () =>
+      import('./recipe/recipe.component').then((m) => m.RecipeComponent),
+  },
+  {
+    path: 'cong-thuc/them-moi',
+    loadComponent: () =>
+      import('./recipes-detail/recipes-detail.component').then(
+        (m) => m.RecipesDetailComponent
+      ),
+  },
+  {
+    path: 'cong-thuc/:id',
+    loadComponent: () =>
+      import('./recipes-detail/recipes-detail.component').then(
+        (m) => m.RecipesDetailComponent
+      ),
+  },
+
   {
     path: 'san-pham/chinh-sua/:id',
     loadComponent: () =>
