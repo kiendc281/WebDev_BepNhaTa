@@ -6,15 +6,21 @@ import { CustomerComponent } from './customer/customer.component';
 import { BlogComponent } from './blog/blog.component';
 import { RecipeComponent } from './recipe/recipe.component';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
+import { BlogDetailComponent } from './blog-detail/blog-detail.component';
+import { BlogEditComponent } from './blog-edit/blog-edit.component';
+import { BlogAddComponent } from './blog-add/blog-add.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/trang-chu', pathMatch: 'full' },
   { path: 'login', component: DangNhapComponent },
   { path: 'product', component: ProductComponent },
-  { path: 'order', component: OrderComponent },
+  { path: 'orders', component: OrderComponent },
   { path: 'customers', component: CustomerComponent },
   { path: 'customers/:id', component: CustomerDetailComponent },
   { path: 'blog', component: BlogComponent },
+  { path: 'blog/detail/:id', component: BlogDetailComponent },
+  { path: 'blog/edit/:id', component: BlogEditComponent },
+  { path: 'blog/add', component: BlogAddComponent },
   { path: 'recipe', component: RecipeComponent },
   {
     path: 'trang-chu',
