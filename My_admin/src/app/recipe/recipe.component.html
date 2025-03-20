@@ -24,28 +24,50 @@
 
   <!-- Controls -->
   <div class="controls-row" *ngIf="!isLoading">
-    <!-- Hành động hàng loạt dropdown -->
-    <div class="custom-dropdown" [class.active]="openDropdown === 'actions'">
-      <div class="selected-option" (click)="toggleDropdown('actions', $event)">
-        Hành động hàng loạt
-        <img src="../../assets/recipes/arrow-down.svg" alt="dropdown" />
-      </div>
+    <div class="batch-actions">
+      <!-- Custom dropdown for batch actions -->
       <div
-        class="dropdown-menu"
-        *ngIf="openDropdown === 'actions'"
-        (click)="$event.stopPropagation()"
+        class="custom-dropdown"
+        [class.active]="openDropdown === 'actions'"
       >
         <div
-          class="dropdown-item"
-          (click)="selectAction('delete'); closeDropdown()"
+          class="selected-option"
+          (click)="toggleDropdown('actions', $event)"
         >
-          Xóa công thức
+          {{
+            selectedAction
+              ? getActionName(selectedAction)
+              : "Hành động hàng loạt"
+          }}
+          <img src="../../assets/recipes/arrow-down.svg" alt="dropdown" />
+        </div>
+        <div
+          class="dropdown-menu"
+          *ngIf="openDropdown === 'actions'"
+          (click)="$event.stopPropagation()"
+        >
+          <div
+            class="dropdown-item"
+            (click)="selectAction(''); closeDropdown()"
+          >
+            Hành động hàng loạt
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectAction('delete'); closeDropdown()"
+          >
+            Xóa công thức
+          </div>
         </div>
       </div>
+      <button
+        class="button-cam apply-button"
+        [disabled]="!hasSelectedRecipes || !selectedAction"
+        (click)="applyBatchAction()"
+      >
+        Áp dụng
+      </button>
     </div>
-
-    <!-- Button Áp dụng -->
-    <button class="button-gray" (click)="applyBatchAction()">Áp dụng</button>
 
     <!-- Dropdown danh mục -->
     <div class="custom-dropdown" [class.active]="openDropdown === 'category'">
@@ -127,7 +149,7 @@
     </div>
 
     <!-- Thêm công thức button -->
-    <button class="add-recipe-button" routerLink="/cong-thuc/them-moi">
+    <button class="button-cam" routerLink="/cong-thuc/them-moi">
       Thêm công thức
     </button>
   </div>
@@ -184,7 +206,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let recipe of getPaginatedRecipes()">
+      <tr *ngFor="let recipe of recipes | slice: (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage">
         <td class="checkbox-column">
           <input
             type="checkbox"
@@ -222,21 +244,30 @@
   </table>
 
   <!-- Pagination -->
-  <div class="pagination" *ngIf="!isLoading && totalPages > 1">
+  <div class="pagination" *ngIf="!isLoading && filteredCount > 0">
     <button
-      class="pagination-button"
       [disabled]="currentPage === 1"
-      (click)="prevPage()"
+      (click)="currentPage = currentPage - 1"
+      class="page-button"
     >
-      <img src="../../assets/recipes/arrow-left.svg" alt="Trang trước" />
+      <img src="../../assets/sidebar/arrow.svg" alt="" class="back" />
     </button>
-    <span class="page-info">Trang {{ currentPage }} / {{ totalPages }}</span>
-    <button
-      class="pagination-button"
-      [disabled]="currentPage === totalPages"
-      (click)="nextPage()"
+
+    <div
+      *ngFor="let page of getPageArray()"
+      class="page-button"
+      [class.active]="currentPage === page"
+      (click)="currentPage = page"
     >
-      <img src="../../assets/recipes/arrow-right.svg" alt="Trang sau" />
+      {{ page }}
+    </div>
+
+    <button
+      [disabled]="currentPage === getTotalPages()"
+      (click)="currentPage = currentPage + 1"
+      class="page-button"
+    >
+      <img src="../../assets/sidebar/arrow.svg" alt="" />
     </button>
   </div>
 

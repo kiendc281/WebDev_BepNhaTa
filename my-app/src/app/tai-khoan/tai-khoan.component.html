@@ -188,7 +188,90 @@
       *ngIf="selectedCategory === 'lich-su'"
       id="lich-su"
     >
-      <h1>LỊCH SỬ ĐƠN HÀNG</h1>
+      <div class="content-container">
+        <div class="content-header">
+          <h2>Lịch sử đơn hàng</h2>
+        </div>
+        <div class="content-body">
+          <div *ngIf="loading" class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Đang tải dữ liệu...</p>
+          </div>
+
+          <div
+            *ngIf="!loading && (!userOrders || userOrders.length === 0)"
+            class="empty-state"
+          >
+            <img src="assets/tai-khoan/empty-orders.svg" alt="No orders" />
+            <p>Bạn chưa có đơn hàng nào</p>
+          </div>
+
+          <div
+            *ngIf="!loading && userOrders && userOrders.length > 0"
+            class="order-list"
+          >
+            <div *ngFor="let order of userOrders" class="order-item">
+              <div class="order-header">
+                <div class="order-info">
+                  <div class="order-date">
+                    Ngày đặt hàng: {{ formatDate(order.createdAt) }}
+                  </div>
+                  <div class="order-id">Đơn hàng #{{ order._id }}</div>
+                </div>
+                <span [class]="'order-status ' + getStatusClass(order.status)">
+                  {{ order.status }}
+                </span>
+              </div>
+
+              <div class="order-products">
+                <div
+                  *ngFor="let item of order.itemOrder"
+                  class="order-product-item"
+                >
+                  <div class="product-image">
+                    <img [src]="item.img" [alt]="item.name" />
+                  </div>
+                  <div class="product-details">
+                    <div class="product-name">{{ item.name }}</div>
+                    <div class="product-serving" *ngIf="item.servingSize">
+                      Khẩu phần: {{ item.servingSize }} người
+                    </div>
+                  </div>
+                  <div class="product-quantity">x{{ item.quantity }}</div>
+                  <div class="product-price">
+                    {{ formatPrice(item.totalPrice || 0) }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-footer">
+                <div class="total-section">
+                  <div class="subtotal">
+                    <span>Tạm tính:</span>
+                    <span>{{ formatPrice(order.prePrice || 0) }}</span>
+                  </div>
+                  <div class="shipping-fee">
+                    <span>Phí vận chuyển:</span>
+                    <span>{{ formatPrice(order.shippingFee || 0) }}</span>
+                  </div>
+                  <div class="total-price">
+                    <span>Tổng tiền:</span>
+                    <span class="price">{{
+                      formatPrice(order.totalPrice || 0)
+                    }}</span>
+                  </div>
+                </div>
+                <button
+                  class="view-detail-btn"
+                  (click)="showOrderDetail(order)"
+                >
+                  Xem chi tiết
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- MỤC YÊU THÍCH -->
@@ -1224,5 +1307,88 @@
       <div class="toast-body">{{ toast.message }}</div>
     </div>
     <button class="toast-close" (click)="removeToast(i)">×</button>
+  </div>
+</div>
+
+<!-- Modal Chi tiết đơn hàng -->
+<div class="modal-overlay" *ngIf="showOrderDetailModal">
+  <div class="order-detail-modal">
+    <div class="modal-header">
+      <h4>Chi tiết đơn hàng</h4>
+      <button class="close-button" (click)="closeOrderDetailModal()">
+        <img
+          src="../../assets/tai-khoan/zondicons-close-outline.svg"
+          alt="Đóng"
+        />
+      </button>
+    </div>
+    <div class="modal-body" *ngIf="selectedOrder">
+      <div class="order-header-info">
+        <div class="order-id-status">
+          <div class="order-id">MÃ ĐƠN HÀNG: {{ selectedOrder._id }}</div>
+          <div [class]="'order-status ' + getStatusClass(selectedOrder.status)">
+            {{ selectedOrder.status }}
+          </div>
+        </div>
+      </div>
+
+      <div class="order-detail-layout">
+        <div class="recipient-info">
+          <h3>Địa chỉ nhận hàng</h3>
+          <div class="recipient-name">
+            {{ selectedOrder.guestInfo?.fullName }}
+          </div>
+          <div class="recipient-phone">
+            {{ selectedOrder.guestInfo?.phone }}
+          </div>
+          <div class="recipient-address">
+            {{ selectedOrder.guestInfo?.address }}
+          </div>
+        </div>
+
+        <div class="order-actions">
+          <button class="contact-btn" (click)="navigateToContact()">
+            Liên Hệ Bếp Nhà Ta
+          </button>
+          <button class="reorder-btn" (click)="reorderItems()">Mua Lại</button>
+        </div>
+      </div>
+
+      <div class="order-products">
+        <div
+          *ngFor="let item of selectedOrder.itemOrder"
+          class="order-product-item"
+        >
+          <div class="product-image">
+            <img [src]="item.img" [alt]="item.name" />
+          </div>
+          <div class="product-details">
+            <div class="product-name">{{ item.name }}</div>
+            <div class="product-serving" *ngIf="item.servingSize">
+              Khẩu phần: {{ item.servingSize }} người
+            </div>
+          </div>
+          <div class="product-quantity">x{{ item.quantity }}</div>
+          <div class="product-price">
+            {{ formatPrice(item.totalPrice || 0) }}
+          </div>
+        </div>
+      </div>
+
+      <div class="order-summary">
+        <div class="summary-row">
+          <span>Tạm tính:</span>
+          <span>{{ formatPrice(selectedOrder.prePrice || 0) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Phí vận chuyển:</span>
+          <span>{{ formatPrice(selectedOrder.shippingFee || 0) }}</span>
+        </div>
+        <div class="summary-row total">
+          <span>Thành tiền:</span>
+          <span>{{ formatPrice(selectedOrder.totalPrice || 0) }}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

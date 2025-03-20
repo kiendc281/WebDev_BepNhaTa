@@ -85,7 +85,7 @@ h1 {
 }
 
 .selected-option {
-  padding: 8px 15px;
+  padding: 10px 15px;
   background-color: var(--color-camnhat);
   color: var(--color-camdam);
   border-radius: 25px;
@@ -95,7 +95,6 @@ h1 {
   justify-content: space-between;
   align-items: center;
   transition: background-color 0.2s;
-  height: 36px;
   box-sizing: border-box;
 }
 
@@ -187,24 +186,14 @@ h1 {
   background-color: #e0e0e0;
 }
 
-.add-recipe-button {
-  background-color: var(--color-camvua);
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 20px;
-  cursor: pointer;
+.button-cam {
+  border-radius: 25px;
+  padding: 10px 20px;
   transition: background-color 0.2s;
-  font-weight: 500;
-  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-left: auto;
-}
-
-.add-recipe-button:hover {
-  background-color: #e25500;
 }
 
 /* Table styles */
@@ -225,9 +214,8 @@ h1 {
   text-align: left;
   font-weight: 500;
   position: relative;
-  font-size: 13px;
+  font-size: 14px;
   vertical-align: middle;
-  line-height: 1.2;
 }
 
 .data-table th img.sort-icon {
@@ -238,7 +226,7 @@ h1 {
 
 .data-table td {
   padding: 12px 10px;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid white;
 }
 
 .data-table tr:last-child td {
@@ -293,7 +281,7 @@ h1 {
 }
 
 .tags-cell::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: white;
 }
 
 .tags-cell::-webkit-scrollbar-thumb {
@@ -307,7 +295,7 @@ h1 {
 
 .tag {
   display: inline-block;
-  background-color: #f0f0f0;
+  background-color: white;
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 12px;
@@ -398,29 +386,75 @@ th.sortable {
   opacity: 1;
 }
 
-/* Pagination */
-.pagination {
+/* Batch actions */
+.batch-actions {
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  gap: 10px;
 }
 
-.pagination-button {
-  background: none;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
+.apply-button {
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 20px;
+  font-weight: 500;
 }
 
-.pagination-button:disabled {
-  opacity: 0.5;
+.apply-button:disabled {
+  background-color: #999;
+  color: white;
   cursor: not-allowed;
 }
 
-.page-info {
-  margin: 0 15px;
+.batch-actions .dropdown-item:first-child {
+  background-color: var(--color-camvua);
+  color: white;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+.page-button {
+  min-width: 32px;
+  height: 32px;
+  border: 1px solid white;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+}
+
+.page-button.active {
+  background-color: var(--color-camvua);
+  color: white;
+  border-color: var(--color-camvua);
+}
+
+.page-button:not(.active) {
+  background-color: #999;
+}
+
+.page-button:hover:not(.active) {
+  background-color: #666;
+  color: white;
+}
+
+.page-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #999;
+}
+
+.page-button img.back {
+  transform: rotate(180deg);
 }
 
 /* No data message */

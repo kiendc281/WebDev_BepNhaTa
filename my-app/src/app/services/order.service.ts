@@ -36,6 +36,22 @@ export class OrderService {
     const endpoint = 'orders';
     const isGuestOrder = orderData.accountId === 'guest';
     
+    // Đảm bảo mỗi item trong đơn hàng đều có đủ các trường bắt buộc
+    if (orderData.itemOrder && Array.isArray(orderData.itemOrder)) {
+      orderData.itemOrder = orderData.itemOrder.map((item: any) => {
+        // Nếu item chưa có name hoặc img, thêm vào
+        if (!item.name || !item.img) {
+          return {
+            ...item,
+            name: item.name || item.productName || 'Sản phẩm không tên',
+            img: item.img || item.mainImage || '',
+            servingSize: item.servingSize || '2'
+          };
+        }
+        return item;
+      });
+    }
+    
     console.log('Đang gửi đơn hàng tới endpoint:', `${environment.apiUrl}/${endpoint}`);
     console.log('Dữ liệu đơn hàng:', JSON.stringify(orderData));
     
@@ -103,9 +119,21 @@ export class OrderService {
     // Đảm bảo paymentMethod là chữ hoa để phù hợp với enum trong model
     const upperCasePaymentMethod = paymentMethod.toUpperCase();
     
+    // Đảm bảo mỗi item đều có đủ thông tin theo schema mới
+    const itemsWithDetails = cartItems.map(item => {
+      return {
+        productId: item.productId,
+        name: item.productName || item.ingredientName || 'Sản phẩm không tên',
+        img: item.mainImage || '',
+        servingSize: item.servingSize || '2',
+        quantity: item.quantity,
+        totalPrice: item.price * item.quantity
+      };
+    });
+    
     return {
       accountId: 'guest', // Add a dummy accountId for guest users
-      itemOrder: this.formatCartItemsForOrder(cartItems),
+      itemOrder: itemsWithDetails,
       prePrice: totalPrice,
       discount: 0,
       shippingFee: 0,
@@ -139,10 +167,22 @@ export class OrderService {
     // Đảm bảo paymentMethod là chữ hoa để phù hợp với enum trong model
     const upperCasePaymentMethod = paymentMethod.toUpperCase();
     
+    // Đảm bảo mỗi item đều có đủ thông tin theo schema mới
+    const itemsWithDetails = cartItems.map(item => {
+      return {
+        productId: item.productId,
+        name: item.productName || item.ingredientName || 'Sản phẩm không tên',
+        img: item.mainImage || '',
+        servingSize: item.servingSize || '2',
+        quantity: item.quantity,
+        totalPrice: item.price * item.quantity
+      };
+    });
+    
     // Dữ liệu cơ bản của đơn hàng
     const orderData = {
       accountId,
-      itemOrder: this.formatCartItemsForOrder(cartItems),
+      itemOrder: itemsWithDetails,
       prePrice: totalPrice,
       discount: 0,
       shippingFee: 0,
@@ -174,23 +214,6 @@ export class OrderService {
     
     // Trường hợp không có đủ thông tin
     return orderData;
-  }
-
-  /**
-   * Chuyển đổi định dạng CartItem sang định dạng itemOrder cho API
-   */
-  private formatCartItemsForOrder(cartItems: CartItem[]): any[] {
-    console.log('Chuyển đổi định dạng giỏ hàng cho đơn hàng, số lượng sản phẩm:', cartItems.length);
-    
-    return cartItems.map(item => {
-      console.log('Chi tiết sản phẩm trong giỏ hàng:', item);
-      return {
-        productId: item.productId,
-        quantity: item.quantity,
-        totalPrice: item.price * item.quantity,
-        servingSize: item.servingSize || '2' // Lưu kích thước phần ăn để cập nhật kho
-      };
-    });
   }
 
   /**
@@ -251,8 +274,8 @@ export class OrderService {
         quantity: item.quantity,
         servingSize: item.servingSize || '2', // Mặc định là 2 người nếu không có thông tin
         price: item.totalPrice / item.quantity,
-        productName: item.productName || '',
-        mainImage: item.mainImage || '',
+        productName: item.name || '',
+        mainImage: item.img || '',
         selected: false
       } as CartItem;
     });
