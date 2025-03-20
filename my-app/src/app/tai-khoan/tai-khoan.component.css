@@ -144,8 +144,8 @@ h1 {
 }
 
 .close-button img {
-  width: 32px;
-  height: 32px;
+  width: 32px !important;
+  height: 32px !important;
 }
 
 .modal-body {
@@ -239,24 +239,6 @@ h1 {
 }
 
 /* Button */
-.button-cam {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  background-color: var(--color-camdam);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin-top: 10px;
-  text-transform: uppercase;
-}
-
-.button-cam:hover {
-  background-color: var(--color-camvua);
-}
 
 /* Password Field Styles */
 .password-field {
@@ -433,7 +415,7 @@ input.ng-invalid.ng-touched {
 }
 
 .address-item {
-  border: 1px solid #ff6633;
+  border: 1px solid var(--color-camdam);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 15px;
@@ -475,7 +457,7 @@ input.ng-invalid.ng-touched {
 .address-button {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 40px;
 }
 
 .address-button a {
@@ -515,20 +497,6 @@ input.ng-invalid.ng-touched {
 .cta-button {
   text-align: right;
   margin-bottom: 20px;
-}
-
-.button-cam {
-  background-color: var(--color-camdam);
-  color: white;
-  border: none;
-  font-weight: 600;
-  padding: 8px 20px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.button-cam:hover {
-  background-color: var(--color-camvua);
 }
 
 .flex-row {
@@ -818,8 +786,9 @@ input.ng-invalid.ng-touched {
 }
 
 .address-location-col {
-  flex: 1;
   position: relative;
+  flex: 1;
+  min-width: 30%;
 }
 
 .address-location-col input {
@@ -838,6 +807,10 @@ input.ng-invalid.ng-touched {
   width: 20px;
   height: 20px;
   color: #ff6633;
+}
+
+.address-location-col .validation-error {
+  margin-top: 10px !important;
 }
 
 .address-action-buttons {
@@ -897,12 +870,17 @@ input.ng-invalid.ng-touched {
 }
 
 .validation-error {
-  color: #ff5252;
-  font-size: 12px;
+  color: var(--color-camdam);
+  font-size: 13px;
   margin-top: 2px;
   margin-bottom: 5px;
   padding-left: 40px;
   display: block;
+}
+
+.content-container h1 {
+  color: black !important;
+  margin-bottom: 20px !important;
 }
 
 /* Order List Styles */
@@ -913,8 +891,8 @@ input.ng-invalid.ng-touched {
 }
 
 .order-item {
-  background: #ffffff;
-  border: 1px solid #ff6633;
+  background-color: white;
+  /* border: 1px solid #ff6633; */
   border-radius: 8px;
   padding: 20px;
 }
@@ -925,7 +903,7 @@ input.ng-invalid.ng-touched {
   align-items: center;
   margin-bottom: 20px;
   padding-bottom: 15px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--color-xamdam);
 }
 
 .order-info {
@@ -989,7 +967,7 @@ input.ng-invalid.ng-touched {
   align-items: center;
   gap: 15px;
   padding: 15px;
-  border: 1px solid #eee;
+  border: 1px solid black !important;
   border-radius: 8px;
   margin-bottom: 10px;
 }
@@ -1015,27 +993,27 @@ input.ng-invalid.ng-touched {
 }
 
 .product-name {
-  font-weight: 500;
-  color: #333;
-  font-size: 15px;
+  font-weight: bold;
+  color: black;
+  font-size: 16px;
 }
 
 .product-serving {
-  color: #666;
-  font-size: 13px;
+  color: var(--color-xamdam);
+  font-size: 14px !important;
 }
 
 .product-quantity {
-  color: #666;
+  color: black !important;
   font-size: 14px;
   font-weight: 500;
   min-width: 40px;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .product-price {
-  color: #ff6633;
-  font-weight: 600;
+  color: var(--color-camdam);
+  font-weight: 700;
   font-size: 15px;
   min-width: 100px;
   text-align: right;
@@ -1044,9 +1022,10 @@ input.ng-invalid.ng-touched {
 .order-footer {
   display: flex;
   justify-content: space-between;
+  /* justify-content: flex-end; */
   align-items: flex-end;
   padding-top: 15px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--color-xamdam);
 }
 
 .total-section {
@@ -1062,17 +1041,18 @@ input.ng-invalid.ng-touched {
   justify-content: space-between;
   gap: 40px;
   font-size: 14px;
-  color: #4a4a4a;
+  color: black;
 }
 
 .total-price {
   font-weight: 600;
-  color: #1a1a1a;
+  color: black;
 }
 
 .total-price .price {
-  color: #ff6633;
+  color: var(--color-camdam);
   font-size: 18px;
+  font-weight: 700;
 }
 
 .view-detail-btn {
@@ -1354,4 +1334,86 @@ input.ng-invalid.ng-touched {
   color: #666;
   font-size: 14px;
   margin-bottom: 5px;
+}
+
+/* Form select styles */
+.form-select {
+  display: block;
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-image: url("../../assets/tai-khoan/icon-down.svg");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  appearance: none;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-select:focus {
+  border-color: #fc8e22;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(252, 142, 34, 0.25);
+}
+
+.form-select:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.form-select option {
+  padding: 10px;
+  font-size: 0.95rem;
+}
+
+/* Address location row styles */
+.address-location-row {
+  display: flex;
+  /* flex-wrap: wrap; */
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.address-location-col {
+  position: relative;
+  flex: 1;
+  /* min-width: 30%; */
+}
+
+.address-location-col .input-icon {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  width: 20px;
+  height: 20px;
+  color: #ff6633;
+}
+
+.address-location-col .form-select {
+  padding-left: 2.5rem;
+}
+
+.address-location-col .validation-error {
+  margin-top: 0.25rem;
+  font-size: 13px;
+  padding: 0 !important;
+  color: #ff5252;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .address-location-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .address-location-col {
+    width: 100%;
+  }
 }

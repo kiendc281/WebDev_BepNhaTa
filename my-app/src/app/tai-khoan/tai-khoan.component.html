@@ -130,7 +130,7 @@
       *ngIf="selectedCategory === 'thong-tin'"
       id="thong-tin"
     >
-      <h1>THÔNG TIN TÀI KHOẢN</h1>
+      <h1>Thông tin tài khoản</h1>
       <div class="thong-tin-tai-khoan">
         <div class="thong-tin-tai-khoan-item">
           <div class="thong-tin-tai-khoan-item-label">Họ và tên:</div>
@@ -166,7 +166,7 @@
           CẬP NHẬT
         </button>
       </div>
-      <h1>THÔNG TIN ĐĂNG NHẬP</h1>
+      <h1>Thông tin đăng nhập</h1>
       <div class="thong-tin-tai-khoan-item">
         <div class="thong-tin-tai-khoan-item-label">Email:</div>
         <span [ngClass]="{ 'not-updated': !currentUser?.email }">{{
@@ -190,7 +190,7 @@
     >
       <div class="content-container">
         <div class="content-header">
-          <h2>Lịch sử đơn hàng</h2>
+          <h1>Lịch sử đơn hàng</h1>
         </div>
         <div class="content-body">
           <div *ngIf="loading" class="loading-spinner">
@@ -212,15 +212,22 @@
           >
             <div *ngFor="let order of userOrders" class="order-item">
               <div class="order-header">
-                <div class="order-info">
-                  <div class="order-date">
-                    Ngày đặt hàng: {{ formatDate(order.createdAt) }}
+                <div class="d-flex gap-3 align-items-end">
+                  <div class="order-info">
+                    <div class="order-date">
+                      Ngày đặt hàng: {{ formatDate(order.createdAt) }}
+                    </div>
+                    <div class="order-id">Đơn hàng #{{ order._id }}</div>
                   </div>
-                  <div class="order-id">Đơn hàng #{{ order._id }}</div>
+                  <span
+                    [class]="'order-status ' + getStatusClass(order.status)"
+                  >
+                    {{ order.status }}
+                  </span>
                 </div>
-                <span [class]="'order-status ' + getStatusClass(order.status)">
-                  {{ order.status }}
-                </span>
+                <!-- <button class="button-cam" (click)="showOrderDetail(order)">
+                  Xem chi tiết
+                </button> -->
               </div>
 
               <div class="order-products">
@@ -236,8 +243,8 @@
                     <div class="product-serving" *ngIf="item.servingSize">
                       Khẩu phần: {{ item.servingSize }} người
                     </div>
+                    <div class="product-quantity">x{{ item.quantity }}</div>
                   </div>
-                  <div class="product-quantity">x{{ item.quantity }}</div>
                   <div class="product-price">
                     {{ formatPrice(item.totalPrice || 0) }}
                   </div>
@@ -245,6 +252,10 @@
               </div>
 
               <div class="order-footer">
+                <div class="d-flex gap-3">
+                  <button class="button-trang">Liên hệ Bếp Nhà Ta</button>
+                  <button class="button-cam">Mua Lại</button>
+                </div>
                 <div class="total-section">
                   <div class="subtotal">
                     <span>Tạm tính:</span>
@@ -261,12 +272,6 @@
                     }}</span>
                   </div>
                 </div>
-                <button
-                  class="view-detail-btn"
-                  (click)="showOrderDetail(order)"
-                >
-                  Xem chi tiết
-                </button>
               </div>
             </div>
           </div>
@@ -287,13 +292,20 @@
 
     <!-- Tab Sổ địa chỉ -->
     <div *ngIf="selectedCategory === 'so-dia-chi'" class="container-rightpanel">
-      <h1>Địa chỉ của tôi</h1>
-
-      <div class="cta-button">
+      <div
+        class="d-flex justify-content-between align-items-center align-self-stretch text-center"
+      >
+        <h1>Địa chỉ của tôi</h1>
         <button (click)="openAddressModal()" class="button-cam">
           THÊM ĐỊA CHỈ MỚI
         </button>
       </div>
+
+      <!-- <div class="cta-button">
+        <button (click)="openAddressModal()" class="button-cam">
+          THÊM ĐỊA CHỈ MỚI
+        </button>
+      </div> -->
 
       <!-- Danh sách địa chỉ -->
       <div *ngIf="loadingAddresses" class="flex justify-center my-8">
@@ -309,10 +321,7 @@
         <div class="text-gray-400 mb-4">
           <i class="fa fa-map-marker-alt text-4xl"></i>
         </div>
-        <p class="text-gray-600">Bạn chưa có địa chỉ nào trong sổ địa chỉ</p>
-        <button (click)="openAddressModal()" class="mt-4 button-cam">
-          THÊM ĐỊA CHỈ MỚI
-        </button>
+        <p class="text-gray-600">Bạn chưa có địa chỉ nào trong sổ địa chỉ.</p>
       </div>
 
       <div
@@ -326,7 +335,7 @@
                 <div class="thong-tin-tai-khoan-item-label">
                   {{ address.recipientName }}
                 </div>
-                <span *ngIf="address.isDefault" class="default-badge"
+                <span *ngIf="address.isDefault" class="default-badge fw-bold"
                   >Mặc định</span
                 >
               </div>
@@ -868,11 +877,19 @@
               src="../../assets/tai-khoan/location-cam.svg"
               alt="Location"
             />
-            <input
-              type="text"
+            <select
               formControlName="province"
-              placeholder="Tỉnh/Thành phố (*)"
-            />
+              (change)="onProvinceChange()"
+              class="form-select"
+            >
+              <option value="">Chọn Tỉnh/Thành phố (*)</option>
+              <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+              <option value="Hà Nội">Hà Nội</option>
+              <option value="Đà Nẵng">Đà Nẵng</option>
+              <option value="Cần Thơ">Cần Thơ</option>
+              <option value="Hải Phòng">Hải Phòng</option>
+              <option value="Tỉnh/Thành phố khác">Tỉnh/Thành phố khác</option>
+            </select>
             <div
               *ngIf="
                 addressForm.get('province')?.invalid &&
@@ -900,11 +917,38 @@
               src="../../assets/tai-khoan/location-cam.svg"
               alt="Location"
             />
-            <input
-              type="text"
+            <select
               formControlName="district"
-              placeholder="Quận/Huyện (*)"
-            />
+              (change)="onDistrictChange()"
+              class="form-select"
+              [disabled]="!addressForm.get('province')?.value"
+            >
+              <option value="">Chọn Quận/Huyện (*)</option>
+              <option value="Quận 1">Quận 1</option>
+              <option value="Quận 2 (Thủ Đức)">Quận 2 (Thủ Đức)</option>
+              <option value="Quận 3">Quận 3</option>
+              <option value="Quận 4">Quận 4</option>
+              <option value="Quận 5">Quận 5</option>
+              <option value="Quận 6">Quận 6</option>
+              <option value="Quận 7">Quận 7</option>
+              <option value="Quận 8">Quận 8</option>
+              <option value="Quận 9">Quận 9</option>
+              <option value="Quận 10">Quận 10</option>
+              <option value="Quận 11">Quận 11</option>
+              <option value="Quận 12">Quận 12</option>
+              <option value="Quận Bình Tân">Quận Bình Tân</option>
+              <option value="Quận Bình Thạnh">Quận Bình Thạnh</option>
+              <option value="Quận Gò Vấp">Quận Gò Vấp</option>
+              <option value="Quận Phú Nhuận">Quận Phú Nhuận</option>
+              <option value="Quận Tân Bình">Quận Tân Bình</option>
+              <option value="Quận Tân Phú">Quận Tân Phú</option>
+              <option value="Quận Thủ Đức">Quận Thủ Đức</option>
+              <option value="Huyện Bình Chánh">Huyện Bình Chánh</option>
+              <option value="Huyện Cần Giờ">Huyện Cần Giờ</option>
+              <option value="Huyện Củ Chi">Huyện Củ Chi</option>
+              <option value="Huyện Hóc Môn">Huyện Hóc Môn</option>
+              <option value="Huyện Nhà Bè">Huyện Nhà Bè</option>
+            </select>
             <div
               *ngIf="
                 addressForm.get('district')?.invalid &&
@@ -932,11 +976,41 @@
               src="../../assets/tai-khoan/location-cam.svg"
               alt="Location"
             />
-            <input
-              type="text"
+            <select
               formControlName="ward"
-              placeholder="Phường/Xã (*)"
-            />
+              class="form-select"
+              [disabled]="!addressForm.get('district')?.value"
+            >
+              <option value="">Chọn Phường/Xã (*)</option>
+              <option value="Phường 1">Phường 1</option>
+              <option value="Phường 2">Phường 2</option>
+              <option value="Phường 3">Phường 3</option>
+              <option value="Phường 4">Phường 4</option>
+              <option value="Phường 5">Phường 5</option>
+              <option value="Phường 6">Phường 6</option>
+              <option value="Phường 7">Phường 7</option>
+              <option value="Phường 8">Phường 8</option>
+              <option value="Phường 9">Phường 9</option>
+              <option value="Phường 10">Phường 10</option>
+              <option value="Phường 11">Phường 11</option>
+              <option value="Phường 12">Phường 12</option>
+              <option value="Phường 13">Phường 13</option>
+              <option value="Phường 14">Phường 14</option>
+              <option value="Phường 15">Phường 15</option>
+              <option value="Phường Bến Nghé">Phường Bến Nghé</option>
+              <option value="Phường Bến Thành">Phường Bến Thành</option>
+              <option value="Phường Đa Kao">Phường Đa Kao</option>
+              <option value="Phường Cầu Kho">Phường Cầu Kho</option>
+              <option value="Phường Cô Giang">Phường Cô Giang</option>
+              <option value="Phường Nguyễn Cư Trinh">
+                Phường Nguyễn Cư Trinh
+              </option>
+              <option value="Phường Nguyễn Thái Bình">
+                Phường Nguyễn Thái Bình
+              </option>
+              <option value="Phường Phạm Ngũ Lão">Phường Phạm Ngũ Lão</option>
+              <option value="Phường Tân Định">Phường Tân Định</option>
+            </select>
             <div
               *ngIf="
                 addressForm.get('ward')?.invalid &&
@@ -962,7 +1036,7 @@
         >
           <img
             class="input-icon"
-            src="../../assets/tai-khoan/location-cam.svg"
+            src="../../assets/tai-khoan/akar-icons_location.svg"
             alt="Location"
           />
           <input
@@ -1141,11 +1215,19 @@
               src="../../assets/tai-khoan/location-cam.svg"
               alt="Location"
             />
-            <input
-              type="text"
+            <select
               formControlName="province"
-              placeholder="Tỉnh/Thành phố (*)"
-            />
+              (change)="onProvinceChange()"
+              class="form-select"
+            >
+              <option value="0">Chọn Tỉnh/Thành phố (*)</option>
+              <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+              <option value="Hà Nội">Hà Nội</option>
+              <option value="Đà Nẵng">Đà Nẵng</option>
+              <option value="Cần Thơ">Cần Thơ</option>
+              <option value="Hải Phòng">Hải Phòng</option>
+              <option value="Tỉnh/Thành phố khác">Tỉnh/Thành phố khác</option>
+            </select>
             <div
               *ngIf="
                 addressForm.get('province')?.invalid &&
@@ -1173,11 +1255,38 @@
               src="../../assets/tai-khoan/location-cam.svg"
               alt="Location"
             />
-            <input
-              type="text"
+            <select
               formControlName="district"
-              placeholder="Quận/Huyện (*)"
-            />
+              (change)="onDistrictChange()"
+              class="form-select"
+              [disabled]="!addressForm.get('province')?.value"
+            >
+              <option value="">Chọn Quận/Huyện (*)</option>
+              <option value="Quận 1">Quận 1</option>
+              <option value="Quận 2 (Thủ Đức)">Quận 2 (Thủ Đức)</option>
+              <option value="Quận 3">Quận 3</option>
+              <option value="Quận 4">Quận 4</option>
+              <option value="Quận 5">Quận 5</option>
+              <option value="Quận 6">Quận 6</option>
+              <option value="Quận 7">Quận 7</option>
+              <option value="Quận 8">Quận 8</option>
+              <option value="Quận 9">Quận 9</option>
+              <option value="Quận 10">Quận 10</option>
+              <option value="Quận 11">Quận 11</option>
+              <option value="Quận 12">Quận 12</option>
+              <option value="Quận Bình Tân">Quận Bình Tân</option>
+              <option value="Quận Bình Thạnh">Quận Bình Thạnh</option>
+              <option value="Quận Gò Vấp">Quận Gò Vấp</option>
+              <option value="Quận Phú Nhuận">Quận Phú Nhuận</option>
+              <option value="Quận Tân Bình">Quận Tân Bình</option>
+              <option value="Quận Tân Phú">Quận Tân Phú</option>
+              <option value="Quận Thủ Đức">Quận Thủ Đức</option>
+              <option value="Huyện Bình Chánh">Huyện Bình Chánh</option>
+              <option value="Huyện Cần Giờ">Huyện Cần Giờ</option>
+              <option value="Huyện Củ Chi">Huyện Củ Chi</option>
+              <option value="Huyện Hóc Môn">Huyện Hóc Môn</option>
+              <option value="Huyện Nhà Bè">Huyện Nhà Bè</option>
+            </select>
             <div
               *ngIf="
                 addressForm.get('district')?.invalid &&
@@ -1205,11 +1314,41 @@
               src="../../assets/tai-khoan/location-cam.svg"
               alt="Location"
             />
-            <input
-              type="text"
+            <select
               formControlName="ward"
-              placeholder="Phường/Xã (*)"
-            />
+              class="form-select"
+              [disabled]="!addressForm.get('district')?.value"
+            >
+              <option value="">Chọn Phường/Xã (*)</option>
+              <option value="Phường 1">Phường 1</option>
+              <option value="Phường 2">Phường 2</option>
+              <option value="Phường 3">Phường 3</option>
+              <option value="Phường 4">Phường 4</option>
+              <option value="Phường 5">Phường 5</option>
+              <option value="Phường 6">Phường 6</option>
+              <option value="Phường 7">Phường 7</option>
+              <option value="Phường 8">Phường 8</option>
+              <option value="Phường 9">Phường 9</option>
+              <option value="Phường 10">Phường 10</option>
+              <option value="Phường 11">Phường 11</option>
+              <option value="Phường 12">Phường 12</option>
+              <option value="Phường 13">Phường 13</option>
+              <option value="Phường 14">Phường 14</option>
+              <option value="Phường 15">Phường 15</option>
+              <option value="Phường Bến Nghé">Phường Bến Nghé</option>
+              <option value="Phường Bến Thành">Phường Bến Thành</option>
+              <option value="Phường Đa Kao">Phường Đa Kao</option>
+              <option value="Phường Cầu Kho">Phường Cầu Kho</option>
+              <option value="Phường Cô Giang">Phường Cô Giang</option>
+              <option value="Phường Nguyễn Cư Trinh">
+                Phường Nguyễn Cư Trinh
+              </option>
+              <option value="Phường Nguyễn Thái Bình">
+                Phường Nguyễn Thái Bình
+              </option>
+              <option value="Phường Phạm Ngũ Lão">Phường Phạm Ngũ Lão</option>
+              <option value="Phường Tân Định">Phường Tân Định</option>
+            </select>
             <div
               *ngIf="
                 addressForm.get('ward')?.invalid &&
@@ -1235,7 +1374,7 @@
         >
           <img
             class="input-icon"
-            src="../../assets/tai-khoan/location-cam.svg"
+            src="../../assets/tai-khoan/akar-icons_location.svg"
             alt="Location"
           />
           <input

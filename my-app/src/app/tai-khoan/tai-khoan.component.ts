@@ -47,6 +47,14 @@ export class TaiKhoanComponent implements OnInit {
   loadingAddresses: boolean = false;
   selectedAddress: Address | null = null;
 
+  // // Danh sách địa chỉ cho dropdown
+  // provinces: any[] = [];
+  // districts: any[] = [];
+  // wards: any[] = [];
+  // selectedProvince: string = '';
+  // selectedDistrict: string = '';
+  // selectedWard: string = '';
+
   // Quản lý đơn hàng
   loading = false;
   userOrders: Order[] = [];
@@ -527,6 +535,27 @@ export class TaiKhoanComponent implements OnInit {
   }
 
   /**
+   * Xử lý sự kiện khi chọn tỉnh/thành phố
+   */
+  onProvinceChange(): void {
+    // Reset các giá trị của quận/huyện và phường/xã khi thay đổi tỉnh/thành phố
+    this.addressForm.patchValue({
+      district: '',
+      ward: '',
+    });
+  }
+
+  /**
+   * Xử lý sự kiện khi chọn quận/huyện
+   */
+  onDistrictChange(): void {
+    // Reset giá trị của phường/xã khi thay đổi quận/huyện
+    this.addressForm.patchValue({
+      ward: '',
+    });
+  }
+
+  /**
    * Mở modal thêm địa chỉ mới
    */
   openAddressModal(): void {
@@ -741,7 +770,9 @@ export class TaiKhoanComponent implements OnInit {
         console.error('No user ID found');
         return;
       }
-      const response = await this.orderService.getUserOrders(this.currentUser.id).toPromise();
+      const response = await this.orderService
+        .getUserOrders(this.currentUser.id)
+        .toPromise();
       console.log('Order response:', response);
       if (response && response.data) {
         this.userOrders = response.data;
@@ -751,7 +782,11 @@ export class TaiKhoanComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error loading orders:', error);
-      this.showToast('error', 'Lỗi', 'Không thể tải danh sách đơn hàng. Vui lòng thử lại sau.');
+      this.showToast(
+        'error',
+        'Lỗi',
+        'Không thể tải danh sách đơn hàng. Vui lòng thử lại sau.'
+      );
     } finally {
       this.loading = false;
     }
@@ -779,7 +814,7 @@ export class TaiKhoanComponent implements OnInit {
       'Đã xác nhận': 'status-confirmed',
       'Đang giao hàng': 'status-shipping',
       'Đã giao hàng': 'status-delivered',
-      'Đã hủy': 'status-cancelled'
+      'Đã hủy': 'status-cancelled',
     };
     return statusMap[status] || 'status-processing';
   }
@@ -791,7 +826,7 @@ export class TaiKhoanComponent implements OnInit {
       minute: '2-digit',
       day: '2-digit',
       month: '2-digit',
-      year: 'numeric'
+      year: 'numeric',
     });
   }
 
@@ -816,7 +851,10 @@ export class TaiKhoanComponent implements OnInit {
     if (!order.itemOrder || !Array.isArray(order.itemOrder)) {
       return order.totalPrice || 0;
     }
-    const subtotal = order.itemOrder.reduce((sum: number, item) => sum + item.totalPrice, 0);
+    const subtotal = order.itemOrder.reduce(
+      (sum: number, item) => sum + item.totalPrice,
+      0
+    );
     const shippingFee = order.shippingFee || 0;
     return subtotal + shippingFee;
   }
@@ -848,7 +886,7 @@ export class TaiKhoanComponent implements OnInit {
         combo: '',
         discount: 0,
         pricePerPortion: {
-          [item.servingSize]: item.totalPrice / item.quantity
+          [item.servingSize]: item.totalPrice / item.quantity,
         },
         description: '',
         notes: '',
@@ -861,34 +899,36 @@ export class TaiKhoanComponent implements OnInit {
         region: '',
         category: '',
         quantity: 0,
-        status: ''
+        status: '',
       };
 
-      this.cartService.addToCart(
-        product,
-        item.quantity,
-        item.servingSize,
-        item.totalPrice / item.quantity
-      ).subscribe({
-        next: () => {
-          successCount++;
-          if (successCount === totalItems) {
+      this.cartService
+        .addToCart(
+          product,
+          item.quantity,
+          item.servingSize,
+          item.totalPrice / item.quantity
+        )
+        .subscribe({
+          next: () => {
+            successCount++;
+            if (successCount === totalItems) {
+              this.showToast(
+                'success',
+                'Thành công',
+                'Đã thêm tất cả sản phẩm vào giỏ hàng'
+              );
+            }
+          },
+          error: (error) => {
+            console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
             this.showToast(
-              'success',
-              'Thành công',
-              'Đã thêm tất cả sản phẩm vào giỏ hàng'
+              'error',
+              'Lỗi',
+              'Không thể thêm một số sản phẩm vào giỏ hàng'
             );
-          }
-        },
-        error: (error) => {
-          console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
-          this.showToast(
-            'error',
-            'Lỗi',
-            'Không thể thêm một số sản phẩm vào giỏ hàng'
-          );
-        },
-      });
+          },
+        });
     });
   }
 }
