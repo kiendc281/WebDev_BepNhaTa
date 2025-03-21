@@ -2,14 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
   padding: 15px;
-}
-
-.dashboard-date {
-  font-size: 14px;
-  font-weight: 500;
-  color: #666;
 }
 
 .dashboard-row {
@@ -61,14 +54,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid white;
 }
 
 .card-title {
   font-size: 16px;
   font-weight: 600;
-  color: #333;
-  margin: 0;
 }
 
 /* Card content */
@@ -105,7 +96,6 @@
 .stat-value {
   font-size: 26px;
   font-weight: 700;
-  color: #333;
   margin-bottom: 5px;
 }
 
@@ -136,22 +126,13 @@
   margin-bottom: 0;
 }
 
-.stat-label {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 3px;
-}
-
 .stat-number {
-  font-size: 18px;
   font-weight: 600;
-  color: #333;
 }
 
 .big-stat {
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 700;
-  color: #333;
   margin-bottom: 10px;
 }
 
@@ -178,7 +159,6 @@
   flex-direction: column;
   width: 100%;
   margin-top: 15px;
-  border-top: 1px solid #f0f0f0;
   padding-top: 10px;
 }
 
@@ -190,13 +170,7 @@
   font-size: 13px;
 }
 
-.detail-label {
-  color: #666;
-  font-weight: 400;
-}
-
 .detail-value {
-  color: #333;
   font-weight: 600;
 }
 
@@ -206,14 +180,19 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 10px;
-}
-
-.stat-header .big-stat {
-  margin-bottom: 0;
 }
 
 /* Responsive adjustments */
+@media (max-width: 1200px) {
+  .dashboard-row {
+    flex-wrap: wrap;
+  }
+
+  .dashboard-card {
+    min-width: 250px;
+  }
+}
+
 @media (max-width: 992px) {
   .dashboard-row {
     flex-direction: column;
@@ -268,66 +247,6 @@
   .dashboard-stats-column .small-card {
     width: 100%;
   }
-}
-
-/* Admin area styling */
-.avatar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.notification-bell {
-  position: relative;
-}
-
-.notification-bell img {
-  width: 22px;
-  height: 22px;
-  cursor: pointer;
-}
-
-/* Add notification dot */
-.notification-bell::after {
-  content: "";
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 8px;
-  height: 8px;
-  background-color: #f07335;
-  border-radius: 50%;
-  border: 1px solid #fff;
-}
-
-.admin-label {
-  font-weight: 500;
-  color: #333;
-  font-size: 15px;
-  margin-right: 2px;
-}
-
-.admin-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .avatar {
-    gap: 10px;
-  }
-
-  .admin-label {
-    font-size: 14px;
-  }
-
-  .admin-avatar {
-    width: 28px;
-    height: 28px;
-  }
 
   .dashboard-container {
     flex-direction: column;
@@ -335,15 +254,5 @@
 
   .main-content {
     margin-left: 0;
-  }
-}
-
-@media (max-width: 1200px) {
-  .dashboard-row {
-    flex-wrap: wrap;
-  }
-
-  .dashboard-card {
-    min-width: 250px;
   }
 }

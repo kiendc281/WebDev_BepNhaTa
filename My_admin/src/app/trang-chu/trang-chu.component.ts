@@ -12,10 +12,10 @@ export class TrangChuComponent implements OnInit {
   // Dashboard data
   dashboardStats = {
     revenue: '123.456.789 VNĐ',
-    totalOrders: '1.234',
-    productsSold: '5.678',
-    totalWebVisits: '123.789 truy cập',
-    dailyVisits: '16.789 truy cập',
+    totalOrders: '1.234 đơn hàng',
+    productsSold: '5.678 sản phẩm',
+    totalWebVisits: '123.789',
+    dailyVisits: '16.789',
     catalogueViews: '1.789 lượt xem',
     articleViews: '123.789 lượt xem',
   };
@@ -35,7 +35,7 @@ export class TrangChuComponent implements OnInit {
   ngOnInit(): void {
     // Load Font Awesome dynamically
     this.loadFontAwesome();
-    
+
     // Format current date
     this.formatCurrentDate();
   }
