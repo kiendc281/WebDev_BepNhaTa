@@ -429,8 +429,14 @@ export class TaiKhoanComponent implements OnInit {
             this.showToast(
               'success',
               'Thành công!',
-              'Mật khẩu đã được cập nhật'
+              'Mật khẩu đã được cập nhật. Vui lòng đăng nhập lại.'
             );
+
+            // Đăng xuất và chuyển hướng người dùng đến trang đăng nhập sau 2 giây
+            setTimeout(() => {
+              this.authService.logout();
+              this.router.navigate(['/dang-nhap']);
+            }, 2000);
           },
           error: (error) => {
             console.error('Lỗi khi cập nhật mật khẩu:', error);

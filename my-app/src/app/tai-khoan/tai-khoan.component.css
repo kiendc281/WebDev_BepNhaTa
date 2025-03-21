@@ -1417,3 +1417,24 @@ input.ng-invalid.ng-touched {
     width: 100%;
   }
 }
+
+/* Ẩn biểu tượng con mắt mặc định của Microsoft Edge trong trường nhập mật khẩu */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+/* Đảm bảo biểu tượng con mắt tùy chỉnh vẫn hiển thị đúng */
+.password-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 10;
+}
