@@ -100,7 +100,7 @@ export class DangNhapComponent {
               setTimeout(() => {
                 this.onClose();
                 // Tải lại trang để đảm bảo giỏ hàng được cập nhật đúng
-                window.location.href = '/';
+                window.location.href = '/trang-chu';
               }, 1500);
             },
             error: (error) => {
