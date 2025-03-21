@@ -101,8 +101,9 @@ export class DangKyComponent {
           console.log('Đăng ký thành công:', response);
           localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(response.account));
-          this.onClose();
-          this.router.navigate(['/dang-nhap']);
+          
+          // Thay vì chuyển hướng đến trang đăng nhập, emit sự kiện để chuyển sang popup đăng nhập
+          this.switchToLogin.emit();
         },
         error: (error) => {
           console.error('Lỗi đăng ký:', error);
