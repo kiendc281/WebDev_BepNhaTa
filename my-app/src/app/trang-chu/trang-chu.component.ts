@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
 import { Recipe } from '../models/recipe.interface';
 import { FavoritesService } from '../services/favorites.service';
+import { BlogService } from '../services/blog.service';
+import { BlogPost } from '../models/blog.interface';
 
 @Component({
   selector: 'app-trang-chu',
@@ -38,19 +40,27 @@ export class TrangChuComponent implements OnInit, OnDestroy {
   isLoadingRecipes = false;
   savedRecipes: Set<string> = new Set();
   savedProducts: Set<string> = new Set();
-  
+
   // Notification
-  notification: { show: boolean; message: string; type: 'success' | 'error' } = {
-    show: false,
-    message: '',
-    type: 'success'
-  };
+  notification: { show: boolean; message: string; type: 'success' | 'error' } =
+    {
+      show: false,
+      message: '',
+      type: 'success',
+    };
+
+  // Cooking Tips Blog Posts
+  tipBlogs: BlogPost[] = [];
+  currentTipPage = 0;
+  tipsPerPage = 3;
+  isLoadingTips = false;
 
   constructor(
     private router: Router,
     private productService: ProductService,
     private recipeService: RecipeService,
-    private favoritesService: FavoritesService
+    private favoritesService: FavoritesService,
+    private blogService: BlogService
   ) {}
 
   ngOnInit() {
@@ -58,6 +68,7 @@ export class TrangChuComponent implements OnInit, OnDestroy {
     this.loadHotProducts();
     this.loadTrendingRecipes();
     this.loadSavedItems();
+    this.loadCookingTips();
   }
 
   ngOnDestroy() {
@@ -252,7 +263,7 @@ export class TrangChuComponent implements OnInit, OnDestroy {
       alert('Vui lòng đăng nhập để sử dụng tính năng này');
       return;
     }
-    
+
     // Đảm bảo recipe._id không phải undefined
     if (!recipe || !recipe._id) {
       console.error('ID công thức không được cung cấp');
@@ -261,9 +272,9 @@ export class TrangChuComponent implements OnInit, OnDestroy {
 
     const user = JSON.parse(userStr);
     const recipeId = recipe._id;
-    
+
     console.log('Toggle save recipe:', recipeId);
-    
+
     if (this.isRecipeSaved(recipeId)) {
       // Nếu công thức đã được lưu, xóa khỏi danh sách yêu thích
       this.favoritesService.removeFromFavorites(recipeId, 'recipe').subscribe({
@@ -272,14 +283,14 @@ export class TrangChuComponent implements OnInit, OnDestroy {
           this.savedRecipes.delete(recipeId);
           // Force change detection
           this.savedRecipes = new Set(this.savedRecipes);
-          
+
           // Hiển thị thông báo
           this.showNotification('Đã xóa khỏi danh sách yêu thích', 'success');
         },
         error: (error) => {
           console.error('Lỗi khi xóa khỏi yêu thích:', error);
           this.showNotification('Lỗi khi xóa khỏi yêu thích', 'error');
-        }
+        },
       });
     } else {
       // Nếu công thức chưa được lưu, thêm vào danh sách yêu thích
@@ -289,20 +300,24 @@ export class TrangChuComponent implements OnInit, OnDestroy {
           this.savedRecipes.add(recipeId);
           // Force change detection
           this.savedRecipes = new Set(this.savedRecipes);
-          
+
           // Hiển thị thông báo
           this.showNotification('Đã thêm vào danh sách yêu thích', 'success');
         },
         error: (error) => {
           console.error('Lỗi khi thêm vào yêu thích:', error);
           this.showNotification('Lỗi khi thêm vào yêu thích', 'error');
-        }
+        },
       });
     }
   }
 
   isRecipeSaved(recipeId: string): boolean {
-    console.log('Checking if recipe is saved:', recipeId, this.savedRecipes.has(recipeId));
+    console.log(
+      'Checking if recipe is saved:',
+      recipeId,
+      this.savedRecipes.has(recipeId)
+    );
     return this.savedRecipes.has(recipeId);
   }
 
@@ -330,7 +345,7 @@ export class TrangChuComponent implements OnInit, OnDestroy {
       alert('Vui lòng đăng nhập để sử dụng tính năng này');
       return;
     }
-    
+
     // Đảm bảo product._id không phải undefined
     if (!product || !product._id) {
       console.error('ID sản phẩm không được cung cấp');
@@ -339,26 +354,28 @@ export class TrangChuComponent implements OnInit, OnDestroy {
 
     const user = JSON.parse(userStr);
     const productId = product._id;
-    
+
     console.log('Toggle save product:', productId);
-    
+
     if (this.isProductSaved(productId)) {
       // Nếu sản phẩm đã được lưu, xóa khỏi danh sách yêu thích
-      this.favoritesService.removeFromFavorites(productId, 'product').subscribe({
-        next: (response) => {
-          console.log('Remove from favorites response:', response);
-          this.savedProducts.delete(productId);
-          // Force change detection
-          this.savedProducts = new Set(this.savedProducts);
-          
-          // Hiển thị thông báo
-          this.showNotification('Đã xóa khỏi danh sách yêu thích', 'success');
-        },
-        error: (error) => {
-          console.error('Lỗi khi xóa khỏi yêu thích:', error);
-          this.showNotification('Lỗi khi xóa khỏi yêu thích', 'error');
-        }
-      });
+      this.favoritesService
+        .removeFromFavorites(productId, 'product')
+        .subscribe({
+          next: (response) => {
+            console.log('Remove from favorites response:', response);
+            this.savedProducts.delete(productId);
+            // Force change detection
+            this.savedProducts = new Set(this.savedProducts);
+
+            // Hiển thị thông báo
+            this.showNotification('Đã xóa khỏi danh sách yêu thích', 'success');
+          },
+          error: (error) => {
+            console.error('Lỗi khi xóa khỏi yêu thích:', error);
+            this.showNotification('Lỗi khi xóa khỏi yêu thích', 'error');
+          },
+        });
     } else {
       // Nếu sản phẩm chưa được lưu, thêm vào danh sách yêu thích
       this.favoritesService.addToFavorites(productId, 'product').subscribe({
@@ -367,20 +384,24 @@ export class TrangChuComponent implements OnInit, OnDestroy {
           this.savedProducts.add(productId);
           // Force change detection
           this.savedProducts = new Set(this.savedProducts);
-          
+
           // Hiển thị thông báo
           this.showNotification('Đã thêm vào danh sách yêu thích', 'success');
         },
         error: (error) => {
           console.error('Lỗi khi thêm vào yêu thích:', error);
           this.showNotification('Lỗi khi thêm vào yêu thích', 'error');
-        }
+        },
       });
     }
   }
 
   isProductSaved(productId: string): boolean {
-    console.log('Checking if product is saved:', productId, this.savedProducts.has(productId));
+    console.log(
+      'Checking if product is saved:',
+      productId,
+      this.savedProducts.has(productId)
+    );
     return this.savedProducts.has(productId);
   }
 
@@ -392,11 +413,11 @@ export class TrangChuComponent implements OnInit, OnDestroy {
       this.favoritesService.getFavorites().subscribe({
         next: (favorites: any) => {
           console.log('Favorites loaded:', favorites);
-          
+
           // Khởi tạo bộ danh sách mới
           this.savedRecipes = new Set();
           this.savedProducts = new Set();
-          
+
           // Xử lý mỗi mục yêu thích và phân loại theo type
           favorites.forEach((item: any) => {
             if (item.type === 'recipe') {
@@ -405,13 +426,13 @@ export class TrangChuComponent implements OnInit, OnDestroy {
               this.savedProducts.add(item.targetId);
             }
           });
-          
+
           console.log('Saved recipes:', Array.from(this.savedRecipes));
           console.log('Saved products:', Array.from(this.savedProducts));
         },
         error: (error) => {
           console.error('Lỗi khi tải danh sách yêu thích:', error);
-        }
+        },
       });
     }
   }
@@ -421,12 +442,83 @@ export class TrangChuComponent implements OnInit, OnDestroy {
     this.notification = {
       show: true,
       message,
-      type
+      type,
     };
-    
+
     // Tự động ẩn thông báo sau 3 giây
     setTimeout(() => {
       this.notification.show = false;
     }, 3000);
+  }
+
+  // Cooking Tips Methods
+  loadCookingTips() {
+    this.isLoadingTips = true;
+    this.blogService.getBlogs().subscribe({
+      next: (blogs) => {
+        // Lọc blog với danh mục "tips" hoặc "cooking-tips" nếu có
+        this.tipBlogs = blogs
+          .filter(
+            (blog) =>
+              blog.category?.slug === 'tips' ||
+              blog.category?.slug === 'cooking-tips' ||
+              blog.category?.name.toLowerCase().includes('tip')
+          )
+          .slice(0, 9); // Giới hạn 9 bài viết
+
+        if (this.tipBlogs.length === 0) {
+          // Nếu không có blog phù hợp, lấy 9 bài viết đầu tiên
+          this.tipBlogs = blogs.slice(0, 9);
+        }
+
+        this.isLoadingTips = false;
+      },
+      error: (error) => {
+        console.error('Error loading cooking tips:', error);
+        this.isLoadingTips = false;
+      },
+    });
+  }
+
+  get currentTipBlogs(): BlogPost[] {
+    const start = this.currentTipPage * this.tipsPerPage;
+    return this.tipBlogs.slice(start, start + this.tipsPerPage);
+  }
+
+  get totalTipPages(): number {
+    return Math.ceil(this.tipBlogs.length / this.tipsPerPage);
+  }
+
+  get tipDotsArray(): number[] {
+    return Array(this.totalTipPages)
+      .fill(0)
+      .map((_, i) => i);
+  }
+
+  nextTipPage(): void {
+    if (this.currentTipPage < this.totalTipPages - 1) {
+      this.currentTipPage++;
+    }
+  }
+
+  previousTipPage(): void {
+    if (this.currentTipPage > 0) {
+      this.currentTipPage--;
+    }
+  }
+
+  goToTipPage(index: number): void {
+    if (index >= 0 && index < this.totalTipPages) {
+      this.currentTipPage = index;
+    }
+  }
+
+  navigateToBlogDetail(blogId: string): void {
+    this.router.navigate(['/chi-tiet-blog', blogId]);
+  }
+
+  getFormattedDate(dateString: string): string {
+    const date = new Date(dateString);
+    return `${date.getDate()} TH${date.getMonth() + 1}`;
   }
 }

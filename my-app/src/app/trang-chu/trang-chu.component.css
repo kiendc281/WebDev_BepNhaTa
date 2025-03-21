@@ -908,12 +908,12 @@
     width: 35px;
     height: 35px;
   }
-  
+
   .banner-nav img {
     width: 15px;
     height: 15px;
   }
-  
+
   .banner-slide img {
     object-fit: contain;
   }
@@ -923,16 +923,16 @@
   .banner-container {
     height: auto;
   }
-  
+
   .banner-nav {
     width: 30px;
     height: 30px;
   }
-  
+
   .banner-dots {
     bottom: 5px;
   }
-  
+
   .banner-dot {
     width: 8px;
     height: 8px;

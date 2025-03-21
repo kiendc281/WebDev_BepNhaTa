@@ -292,85 +292,47 @@
     </div>
 
     <div class="tips-slider">
-      <button class="nav-button prev">
+      <button class="nav-button prev" (click)="previousTipPage()">
         <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
       </button>
 
       <div class="tips-container">
-        <div class="tip-card">
+        <div
+          class="tip-card"
+          *ngFor="let blog of currentTipBlogs"
+          (click)="navigateToBlogDetail(blog._id)"
+        >
           <div class="tip-image">
-            <img src="../../assets/trang-chu/tips.png" alt="Mì trộn" />
-            <div class="date-tag">20 TH 2</div>
+            <img [src]="blog.thumbnail" [alt]="blog.title" />
+            <div class="date-tag">{{ getFormattedDate(blog.publishDate) }}</div>
           </div>
           <div class="tip-content">
             <div class="author">
               <img src="../../assets/trang-chu/author.svg" alt="Author" />
-              <span>Bếp Nhà Ta</span>
+              <span>{{ blog.author?.name || "Bếp Nhà Ta" }}</span>
             </div>
             <div class="tip-title">
-              Top 5 Món Mì "Vạn Người Mê" Của Trung Quốc
+              {{ blog.title }}
             </div>
             <p class="tip-description">
-              Mì trộn là món ăn đang được rất nhiều người yêu thích, bởi sự đa
-              dạng từ sợi mì, nước sốt đậm đà cùng với nhiều loại topping trộn
-              hấp dẫn.
-            </p>
-          </div>
-        </div>
-
-        <div class="tip-card">
-          <div class="tip-image">
-            <img src="../../assets/trang-chu/tips.png" alt="Mì trộn" />
-            <div class="date-tag">20 TH 2</div>
-          </div>
-          <div class="tip-content">
-            <div class="author">
-              <img src="../../assets/trang-chu/author.svg" alt="Author" />
-              <span>Bếp Nhà Ta</span>
-            </div>
-            <div class="tip-title">
-              Top 5 Món Mì "Vạn Người Mê" Của Trung Quốc
-            </div>
-            <p class="tip-description">
-              Mì trộn là món ăn đang được rất nhiều người yêu thích, bởi sự đa
-              dạng từ sợi mì, nước sốt đậm đà cùng với nhiều loại topping trộn
-              hấp dẫn.
-            </p>
-          </div>
-        </div>
-
-        <div class="tip-card">
-          <div class="tip-image">
-            <img src="../../assets/trang-chu/tips.png" alt="Mì trộn" />
-            <div class="date-tag">20 TH 2</div>
-          </div>
-          <div class="tip-content">
-            <div class="author">
-              <img src="../../assets/trang-chu/author.svg" alt="Author" />
-              <span>Bếp Nhà Ta</span>
-            </div>
-            <div class="tip-title">
-              Top 5 Món Mì "Vạn Người Mê" Của Trung Quốc
-            </div>
-            <p class="tip-description">
-              Mì trộn là món ăn đang được rất nhiều người yêu thích, bởi sự đa
-              dạng từ sợi mì, nước sốt đậm đà cùng với nhiều loại topping trộn
-              hấp dẫn.
+              {{ blog.description }}
             </p>
           </div>
         </div>
       </div>
 
-      <button class="nav-button next">
+      <button class="nav-button next" (click)="nextTipPage()">
         <img src="../../assets/trang-chu/slider.svg" alt="Next" />
       </button>
     </div>
 
     <div class="dots-navigation">
-      <div class="dot active"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
+      <div
+        class="dot"
+        *ngFor="let dot of tipDotsArray; let i = index"
+        [class.active]="currentTipPage === i"
+        (click)="goToTipPage(i)"
+      ></div>
     </div>
 
     <button class="button-cam" (click)="navigateToBlog()">
