@@ -810,11 +810,11 @@ export class TaiKhoanComponent implements OnInit {
 
   getStatusClass(status: string): string {
     const statusMap: { [key: string]: string } = {
-      'Đang xử lý': 'status-processing',
-      'Đã xác nhận': 'status-confirmed',
-      'Đang giao hàng': 'status-shipping',
-      'Đã giao hàng': 'status-delivered',
-      'Đã hủy': 'status-cancelled',
+      'Đang xử lý': 'bg-secondary text-white',
+      'Đã xác nhận': 'bg-warning text-white',
+      'Đang giao hàng': 'bg-info text-white',
+      'Đã giao hàng': 'bg-success text-white',
+      'Đã hủy': 'bg-danger text-white',
     };
     return statusMap[status] || 'status-processing';
   }
@@ -868,7 +868,7 @@ export class TaiKhoanComponent implements OnInit {
   reorderItems(order?: Order): void {
     // Sử dụng order (tham số) nếu được truyền vào, nếu không thì dùng selectedOrder
     const orderToUse = order || this.selectedOrder;
-    
+
     if (!orderToUse || !orderToUse.itemOrder) {
       this.showToast('error', 'Lỗi', 'Không thể tải thông tin đơn hàng');
       return;
@@ -889,7 +889,7 @@ export class TaiKhoanComponent implements OnInit {
         combo: '',
         discount: 0,
         pricePerPortion: {
-          [item.servingSize]: item.totalPrice / item.quantity
+          [item.servingSize]: item.totalPrice / item.quantity,
         },
         description: '',
         notes: '',
@@ -902,34 +902,36 @@ export class TaiKhoanComponent implements OnInit {
         region: '',
         category: '',
         quantity: 0,
-        status: ''
+        status: '',
       };
 
-      this.cartService.addToCart(
-        product,
-        item.quantity,
-        item.servingSize,
-        item.totalPrice / item.quantity
-      ).subscribe({
-        next: () => {
-          successCount++;
-          if (successCount === totalItems) {
+      this.cartService
+        .addToCart(
+          product,
+          item.quantity,
+          item.servingSize,
+          item.totalPrice / item.quantity
+        )
+        .subscribe({
+          next: () => {
+            successCount++;
+            if (successCount === totalItems) {
+              this.showToast(
+                'success',
+                'Thành công',
+                'Đã thêm tất cả sản phẩm vào giỏ hàng'
+              );
+            }
+          },
+          error: (error) => {
+            console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
             this.showToast(
-              'success',
-              'Thành công',
-              'Đã thêm tất cả sản phẩm vào giỏ hàng'
+              'error',
+              'Lỗi',
+              'Không thể thêm một số sản phẩm vào giỏ hàng'
             );
-          }
-        },
-        error: (error) => {
-          console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
-          this.showToast(
-            'error',
-            'Lỗi',
-            'Không thể thêm một số sản phẩm vào giỏ hàng'
-          );
-        },
-      });
+          },
+        });
     });
   }
 }
