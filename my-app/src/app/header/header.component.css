@@ -240,12 +240,12 @@
 
 .search-container {
   position: relative;
-  width: 250px;
+  width: 180px;
   margin-right: 15px;
 }
 
 .search-container input {
-  width: 100%;
+  width: 180px;
   height: 40px;
   background-color: #ffd2bc !important;
   border: none;
@@ -620,12 +620,6 @@
     height: 45px;
   }
 
-  .slogan {
-    font-size: 14px;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
   .info {
     gap: 20px;
     justify-content: center;
@@ -701,7 +695,6 @@
   .slogan {
     font-size: 14px;
     text-align: center;
-    margin-bottom: 10px;
   }
 
   .info {
@@ -781,10 +774,6 @@
 @media (max-width: 576px) {
   .header-right {
     gap: 10px;
-  }
-
-  .slogan {
-    max-width: 200px;
   }
 }
 

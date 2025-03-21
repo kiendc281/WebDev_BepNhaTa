@@ -89,7 +89,7 @@
       <div class="title-wrapper">
         <div class="line"></div>
         <img
-          src="../../assets/trang-chu/best-seller.png"
+          src="../../assets/trang-chu/home-tim-png-1.png"
           alt="heart"
           class="heart-icon"
         />
@@ -98,11 +98,24 @@
       <h2><span class="first-word">Món Ngon</span> Xu Hướng</h2>
     </div>
 
-    <div class="notification" *ngIf="notification.show" [ngClass]="{'notification-success': notification.type === 'success', 'notification-error': notification.type === 'error'}">
+    <div
+      class="notification"
+      *ngIf="notification.show"
+      [ngClass]="{
+        'notification-success': notification.type === 'success',
+        'notification-error': notification.type === 'error'
+      }"
+    >
       <div class="notification-content">
         <div class="notification-icon">
-          <i *ngIf="notification.type === 'success'" class="fas fa-check-circle"></i>
-          <i *ngIf="notification.type === 'error'" class="fas fa-exclamation-circle"></i>
+          <i
+            *ngIf="notification.type === 'success'"
+            class="fas fa-check-circle"
+          ></i>
+          <i
+            *ngIf="notification.type === 'error'"
+            class="fas fa-exclamation-circle"
+          ></i>
         </div>
         <div>{{ notification.message }}</div>
       </div>
@@ -110,8 +123,15 @@
 
     <div class="products-grid" *ngIf="!isLoadingRecipes">
       <div class="product-card" *ngFor="let recipe of currentTrendingRecipes">
-        <div class="save-button" (click)="toggleSaveRecipe($event, recipe)" [class.active]="isRecipeSaved(recipe._id)">
-          <i class="fa-heart" [ngClass]="isRecipeSaved(recipe._id) ? 'fas' : 'far'"></i>
+        <div
+          class="save-button"
+          (click)="toggleSaveRecipe($event, recipe)"
+          [class.active]="isRecipeSaved(recipe._id)"
+        >
+          <i
+            class="fa-heart"
+            [ngClass]="isRecipeSaved(recipe._id) ? 'fas' : 'far'"
+          ></i>
         </div>
         <a [routerLink]="['/cong-thuc', recipe._id]">
           <div class="product-image">
@@ -180,8 +200,15 @@
 
     <div class="products-grid" *ngIf="!loading">
       <div class="product-card" *ngFor="let product of currentHotProducts">
-        <div class="save-button" (click)="toggleSaveProduct($event, product)" [class.active]="isProductSaved(product._id)">
-          <i class="fa-heart" [ngClass]="isProductSaved(product._id) ? 'fas' : 'far'"></i>
+        <div
+          class="save-button"
+          (click)="toggleSaveProduct($event, product)"
+          [class.active]="isProductSaved(product._id)"
+        >
+          <i
+            class="fa-heart"
+            [ngClass]="isProductSaved(product._id) ? 'fas' : 'far'"
+          ></i>
         </div>
         <a [routerLink]="['/chi-tiet-san-pham', product._id]">
           <div class="product-image">
