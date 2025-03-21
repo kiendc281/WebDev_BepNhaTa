@@ -184,10 +184,14 @@
   display: flex;
   /* padding: 10px 30px; */
   border-radius: 10px;
-  background: #ea5c2b;
+  background: var(--color-camdam);
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  width: fit-content;
   align-self: stretch;
 }
 .quantity-control {
@@ -198,26 +202,43 @@
 }
 
 .quantity-control button {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #ddd;
-  background: white;
-  border-radius: 4px;
+  width: 36px;
+  height: 36px;
+  background: #f8f8f8;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
 .quantity-control button:hover {
-  background-color: #f0f0f0;
+  background-color: var(--color-camdam);
+  color: white;
 }
 
 .quantity-control input {
   width: 50px;
-  height: 30px;
+  height: 36px;
   text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  /* padding: 0.3rem; */
+  border: none;
+  border-left: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0;
+}
+
+/* Ẩn nút tăng giảm mặc định của input number */
+.quantity-control input::-webkit-outer-spin-button,
+.quantity-control input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .add-to-wishlist {
