@@ -225,9 +225,9 @@
                     {{ order.status }}
                   </span>
                 </div>
-                <!-- <button class="button-cam" (click)="showOrderDetail(order)">
+                <button class="button-cam" (click)="showOrderDetail(order)">
                   Xem chi tiết
-                </button> -->
+                </button>
               </div>
 
               <div class="order-products">
@@ -253,8 +253,12 @@
 
               <div class="order-footer">
                 <div class="d-flex gap-3">
-                  <button class="button-trang">Liên hệ Bếp Nhà Ta</button>
-                  <button class="button-cam">Mua Lại</button>
+                  <button class="button-trang" (click)="navigateToContact()">
+                    Liên hệ Bếp Nhà Ta
+                  </button>
+                  <button class="button-cam" (click)="reorderItems(order)">
+                    Mua Lại
+                  </button>
                 </div>
                 <div class="total-section">
                   <div class="subtotal">
@@ -1489,12 +1493,12 @@
           </div>
         </div>
 
-        <div class="order-actions">
+        <!-- <div class="order-actions">
           <button class="contact-btn" (click)="navigateToContact()">
             Liên Hệ Bếp Nhà Ta
           </button>
           <button class="reorder-btn" (click)="reorderItems()">Mua Lại</button>
-        </div>
+        </div> -->
       </div>
 
       <div class="order-products">
