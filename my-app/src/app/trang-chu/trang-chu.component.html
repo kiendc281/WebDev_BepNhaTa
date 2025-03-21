@@ -121,47 +121,60 @@
       </div>
     </div>
 
-    <div class="products-grid" *ngIf="!isLoadingRecipes">
-      <div class="product-card" *ngFor="let recipe of currentTrendingRecipes">
-        <div
-          class="save-button"
-          (click)="toggleSaveRecipe($event, recipe)"
-          [class.active]="isRecipeSaved(recipe._id)"
-        >
-          <i
-            class="fa-heart"
-            [ngClass]="isRecipeSaved(recipe._id) ? 'fas' : 'far'"
-          ></i>
+    <div class="tips-slider">
+      <button class="nav-button prev" (click)="previousTrendingPage()">
+        <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
+      </button>
+
+      <div class="products-grid" *ngIf="!isLoadingRecipes">
+        <div class="product-card" *ngFor="let recipe of currentTrendingRecipes">
+          <div
+            class="save-button"
+            (click)="toggleSaveRecipe($event, recipe)"
+            [class.active]="isRecipeSaved(recipe._id)"
+          >
+            <i
+              class="fa-heart"
+              [ngClass]="isRecipeSaved(recipe._id) ? 'fas' : 'far'"
+            ></i>
+          </div>
+          <a [routerLink]="['/cong-thuc', recipe._id]">
+            <div class="product-image">
+              <img [src]="recipe.recipeImage" [alt]="recipe.recipeName" />
+            </div>
+            <div class="product-content">
+              <h5 class="product-title">{{ recipe.recipeName }}</h5>
+              <div class="product-info">
+                <div class="info-item">
+                  <img
+                    src="../../assets/san-pham/khauphan.svg"
+                    alt="category"
+                  />
+                  <span>{{ getServingSize(recipe) }} người</span>
+                </div>
+                <div class="info-item">
+                  <img src="../../assets/san-pham/dokho.svg" alt="difficulty" />
+                  <span>{{ recipe.difficulty }}</span>
+                </div>
+                <div class="info-item">
+                  <img
+                    src="../../assets/san-pham/ph-cooking-pot.svg"
+                    alt="time"
+                  />
+                  <span>{{ recipe.time }}</span>
+                </div>
+              </div>
+              <div class="product-actions">
+                <button class="button-camnhat">XEM CHI TIẾT</button>
+              </div>
+            </div>
+          </a>
         </div>
-        <a [routerLink]="['/cong-thuc', recipe._id]">
-          <div class="product-image">
-            <img [src]="recipe.recipeImage" [alt]="recipe.recipeName" />
-          </div>
-          <div class="product-content">
-            <h5 class="product-title">{{ recipe.recipeName }}</h5>
-            <div class="product-info">
-              <div class="info-item">
-                <img src="../../assets/san-pham/khauphan.svg" alt="category" />
-                <span>{{ getServingSize(recipe) }} người</span>
-              </div>
-              <div class="info-item">
-                <img src="../../assets/san-pham/dokho.svg" alt="difficulty" />
-                <span>{{ recipe.difficulty }}</span>
-              </div>
-              <div class="info-item">
-                <img
-                  src="../../assets/san-pham/ph-cooking-pot.svg"
-                  alt="time"
-                />
-                <span>{{ recipe.time }}</span>
-              </div>
-            </div>
-            <div class="product-actions">
-              <button class="button-camnhat">XEM CHI TIẾT</button>
-            </div>
-          </div>
-        </a>
       </div>
+
+      <button class="nav-button next" (click)="nextTrendingPage()">
+        <img src="../../assets/trang-chu/slider.svg" alt="Next" />
+      </button>
     </div>
 
     <!-- Loading State -->
@@ -198,72 +211,84 @@
       <h2><span class="first-word">Sản Phẩm</span> Hot Nhất</h2>
     </div>
 
-    <div class="products-grid" *ngIf="!loading">
-      <div class="product-card" *ngFor="let product of currentHotProducts">
-        <div
-          class="save-button"
-          (click)="toggleSaveProduct($event, product)"
-          [class.active]="isProductSaved(product._id)"
-        >
-          <i
-            class="fa-heart"
-            [ngClass]="isProductSaved(product._id) ? 'fas' : 'far'"
-          ></i>
-        </div>
-        <a [routerLink]="['/chi-tiet-san-pham', product._id]">
-          <div class="product-image">
-            <img [src]="product.mainImage" [alt]="product.ingredientName" />
+    <div class="tips-slider">
+      <button class="nav-button prev" (click)="previousHotProductsPage()">
+        <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
+      </button>
+
+      <div class="products-grid" *ngIf="!loading">
+        <div class="product-card" *ngFor="let product of currentHotProducts">
+          <div
+            class="save-button"
+            (click)="toggleSaveProduct($event, product)"
+            [class.active]="isProductSaved(product._id)"
+          >
+            <i
+              class="fa-heart"
+              [ngClass]="isProductSaved(product._id) ? 'fas' : 'far'"
+            ></i>
           </div>
-          <div class="product-content">
-            <h5 class="product-title">{{ product.ingredientName }}</h5>
-            <div class="product-info">
-              <div class="info-item">
-                <img
-                  src="../../assets/san-pham/ri-bowl-line.svg"
-                  alt="people"
-                />
-                <span>{{ product.category }}</span>
-              </div>
-              <div class="info-item">
-                <img src="../../assets/san-pham/dokho.svg" alt="difficulty" />
-                <span>{{ product.level }}</span>
-              </div>
-              <div class="info-item">
-                <img
-                  src="../../assets/san-pham/ph-cooking-pot.svg"
-                  alt="time"
-                />
-                <span>{{ product.time }}</span>
-              </div>
+          <a [routerLink]="['/chi-tiet-san-pham', product._id]">
+            <div class="product-image">
+              <img [src]="product.mainImage" [alt]="product.ingredientName" />
             </div>
-            <div class="product-actions">
-              <div class="price-container">
-                <div class="price-info">
-                  <div class="price">
-                    <span class="old-price" *ngIf="hasDiscount(product)"
-                      >{{ getOriginalPrice(product) | number : "1.0-0" }}đ</span
-                    >
-                    <span class="new-price"
-                      >{{
-                        getDiscountedPrice(product) | number : "1.0-0"
-                      }}đ</span
-                    >
+            <div class="product-content">
+              <h5 class="product-title">{{ product.ingredientName }}</h5>
+              <div class="product-info">
+                <div class="info-item">
+                  <img
+                    src="../../assets/san-pham/ri-bowl-line.svg"
+                    alt="people"
+                  />
+                  <span>{{ product.category }}</span>
+                </div>
+                <div class="info-item">
+                  <img src="../../assets/san-pham/dokho.svg" alt="difficulty" />
+                  <span>{{ product.level }}</span>
+                </div>
+                <div class="info-item">
+                  <img
+                    src="../../assets/san-pham/ph-cooking-pot.svg"
+                    alt="time"
+                  />
+                  <span>{{ product.time }}</span>
+                </div>
+              </div>
+              <div class="product-actions">
+                <div class="price-container">
+                  <div class="price-info">
+                    <div class="price">
+                      <span class="old-price" *ngIf="hasDiscount(product)"
+                        >{{
+                          getOriginalPrice(product) | number : "1.0-0"
+                        }}đ</span
+                      >
+                      <span class="new-price"
+                        >{{
+                          getDiscountedPrice(product) | number : "1.0-0"
+                        }}đ</span
+                      >
+                    </div>
+                  </div>
+                  <div class="discount-tag" *ngIf="hasDiscount(product)">
+                    -{{ product.discount }}%
                   </div>
                 </div>
-                <div class="discount-tag" *ngIf="hasDiscount(product)">
-                  -{{ product.discount }}%
-                </div>
+                <button
+                  class="button-camnhat"
+                  (click)="navigateToProductDetail(product._id)"
+                >
+                  XEM CHI TIẾT
+                </button>
               </div>
-              <button
-                class="button-camnhat"
-                (click)="navigateToProductDetail(product._id)"
-              >
-                XEM CHI TIẾT
-              </button>
             </div>
-          </div>
-        </a>
+          </a>
+        </div>
       </div>
+
+      <button class="nav-button next" (click)="nextHotProductsPage()">
+        <img src="../../assets/trang-chu/slider.svg" alt="Next" />
+      </button>
     </div>
 
     <div class="dots-navigation">
