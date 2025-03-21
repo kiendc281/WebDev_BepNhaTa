@@ -92,6 +92,14 @@ h2 {
   color: #555;
 }
 
+.status-badge {
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
 .btn-view {
   background-color: #ea5c2b;
   color: white;
@@ -113,6 +121,14 @@ h2 {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #eee;
+}
+
+.product-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .product-image {
@@ -129,9 +145,39 @@ h2 {
   border-radius: 4px;
 }
 
+.product-info {
+  flex-grow: 1;
+}
+
 .product-name {
   font-weight: 500;
   color: #333;
+  margin-bottom: 5px;
+}
+
+.product-details {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.no-items {
+  padding: 10px;
+  text-align: center;
+  font-style: italic;
+  color: #999;
+}
+
+.order-footer {
+  padding: 10px 15px;
+  border-top: 1px solid #ffdfd2;
+  text-align: right;
+  background-color: #fff6f0;
+}
+
+.total-amount {
+  font-weight: 700;
+  color: #ea5c2b;
+  font-size: 1.1rem;
 }
 
 .no-orders {
@@ -139,4 +185,44 @@ h2 {
   text-align: center;
   color: #777;
   font-style: italic;
+}
+
+.order-products {
+  padding: 0;
+  background-color: #fff;
+}
+
+.product-table {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.product-table thead {
+  background-color: #f8f8f8;
+}
+
+.product-table th {
+  padding: 8px 15px;
+  border-top: none;
+  border-bottom: 1px solid #eee;
+  font-weight: 600;
+  color: #555;
+}
+
+.product-table td {
+  padding: 8px 15px;
+  border-top: none;
+  border-bottom: 1px solid #f3f3f3;
+  vertical-align: middle;
+}
+
+.product-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.product-thumbnail {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
 }

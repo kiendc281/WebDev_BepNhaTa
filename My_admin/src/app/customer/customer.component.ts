@@ -161,7 +161,7 @@ export class CustomerComponent implements OnInit {
 
   getSortIcon(column: string): string {
     if (this.sortColumn !== column) {
-      return 'bi-arrow-down-up'; // Icon mặc định khi chưa sắp xếp
+      return 'bi bi-filter'; // Icon mặc định khi chưa sắp xếp
     }
     return this.sortDirection === 'asc' ? 'bi-sort-down-alt' : 'bi-sort-up-alt';
   }

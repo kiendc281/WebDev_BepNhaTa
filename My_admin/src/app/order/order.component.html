@@ -1,103 +1,15 @@
-<div class="container-fluid">
-  <h1 class="text-primary">Quản lý đơn hàng</h1>
-  <p class="mb-4">Tất cả ({{ orders.length }}) | Lọc</p>
+<div class="container mt-4">
+  <h2 class="mb-4">Quản lý đơn hàng</h2>
 
-  <!-- Thanh công cụ và bộ lọc -->
-  <div class="action-toolbar mb-4">
-    <div class="filter-buttons">
-      <div class="dropdown">
-        <button
-          class="btn btn-outline-secondary dropdown-toggle"
-          type="button"
-          (click)="toggleStatusFilter()"
-        >
-          Hành động hàng loạt
-          <i class="bi bi-chevron-down ms-1"></i>
-        </button>
-        <div class="dropdown-menu" [class.show]="showStatusFilter">
-          <a class="dropdown-item" href="#">Đánh dấu là đã xử lý</a>
-          <a class="dropdown-item" href="#">Đánh dấu là đã hủy</a>
-          <a class="dropdown-item text-danger" href="#">Xóa đơn hàng</a>
-        </div>
-      </div>
-
-      <button class="btn btn-primary" (click)="loadOrders()">Áp dụng</button>
-
-      <div class="dropdown mx-2">
-        <button
-          class="btn btn-outline-secondary dropdown-toggle"
-          type="button"
-          (click)="toggleStatusFilter()"
-        >
-          Lọc theo trạng thái
-          <i class="bi bi-chevron-down ms-1"></i>
-        </button>
-        <div class="dropdown-menu" [class.show]="showStatusFilter">
-          <a class="dropdown-item" (click)="applyStatusFilter('')">Tất cả</a>
-          <a
-            class="dropdown-item"
-            *ngFor="let status of statusOptions"
-            (click)="applyStatusFilter(status)"
-          >
-            {{ status }}
-          </a>
-        </div>
-      </div>
-
-      <div class="dropdown">
-        <button
-          class="btn btn-outline-secondary dropdown-toggle"
-          type="button"
-          (click)="togglePriceFilter()"
-        >
-          Lọc theo giá trị
-          <i class="bi bi-chevron-down ms-1"></i>
-        </button>
-        <div
-          class="dropdown-menu p-3"
-          [class.show]="showPriceFilter"
-          style="min-width: 250px"
-        >
-          <div class="mb-3">
-            <label for="minPrice" class="form-label">Giá trị từ:</label>
-            <input
-              type="number"
-              class="form-control"
-              id="minPrice"
-              [(ngModel)]="priceRangeFilter.min"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="maxPrice" class="form-label">Đến:</label>
-            <input
-              type="number"
-              class="form-control"
-              id="maxPrice"
-              [(ngModel)]="priceRangeFilter.max"
-            />
-          </div>
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-sm btn-primary" (click)="applyPriceFilter()">
-              Áp dụng
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <button class="btn btn-danger ms-2" (click)="resetFilters()">Lọc</button>
-    </div>
-  </div>
-
-  <!-- Loading indicator -->
+  <!-- Thông báo lỗi và đang tải -->
   <div *ngIf="isLoading" class="text-center my-4">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Đang tải...</span>
     </div>
-    <p class="mt-2">Đang tải danh sách đơn hàng...</p>
+    <p class="mt-2">Đang tải dữ liệu đơn hàng...</p>
   </div>
 
-  <!-- Error message -->
-  <div *ngIf="error" class="alert alert-danger my-3" role="alert">
+  <div *ngIf="error" class="alert alert-danger" role="alert">
     {{ error }}
     <button
       type="button"
@@ -108,105 +20,213 @@
     </button>
   </div>
 
-  <!-- Orders table -->
-  <div
-    class="table-responsive"
-    *ngIf="!isLoading && !error && pagedOrders.length > 0"
-  >
-    <table class="table table-bordered table-hover">
+  <!-- Thanh công cụ lọc -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex gap-2">
+      <!-- Lọc theo trạng thái -->
+      <div class="dropdown">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          (click)="toggleStatusFilter()"
+        >
+          {{ selectedStatusFilter || "Trạng thái" }}
+        </button>
+        <div class="dropdown-menu" [class.show]="showStatusFilter">
+          <a
+            class="dropdown-item"
+            (click)="applyStatusFilter('')"
+            [class.active]="selectedStatusFilter === ''"
+          >
+            Tất cả
+          </a>
+          <a
+            *ngFor="let status of statusOptions"
+            class="dropdown-item"
+            (click)="applyStatusFilter(status)"
+            [class.active]="selectedStatusFilter === status"
+          >
+            {{ status }}
+          </a>
+        </div>
+      </div>
+
+      <!-- Lọc theo giá tiền -->
+      <div class="dropdown">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          (click)="togglePriceFilter()"
+        >
+          Giá tiền
+        </button>
+        <div
+          class="dropdown-menu p-3"
+          style="width: 300px"
+          [class.show]="showPriceFilter"
+        >
+          <div class="mb-3">
+            <label for="minPrice" class="form-label">Giá từ</label>
+            <input
+              type="number"
+              class="form-control"
+              id="minPrice"
+              placeholder="Nhập giá tối thiểu"
+              [(ngModel)]="priceRangeFilter.min"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="maxPrice" class="form-label">Đến</label>
+            <input
+              type="number"
+              class="form-control"
+              id="maxPrice"
+              placeholder="Nhập giá tối đa"
+              [(ngModel)]="priceRangeFilter.max"
+            />
+          </div>
+          <div class="d-flex justify-content-end gap-2">
+            <button
+              class="btn btn-outline-secondary"
+              (click)="showPriceFilter = false"
+            >
+              Hủy
+            </button>
+            <button class="btn btn-primary" (click)="applyPriceFilter()">
+              Áp dụng
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nút đặt lại bộ lọc -->
+      <button
+        class="btn btn-secondary"
+        (click)="resetFilters()"
+        *ngIf="
+          selectedStatusFilter || priceRangeFilter.min || priceRangeFilter.max
+        "
+      >
+        Đặt lại bộ lọc
+      </button>
+    </div>
+
+    <!-- Nút làm mới -->
+    <button class="btn btn-outline-primary" (click)="loadOrders()">
+      <i class="bi bi-arrow-clockwise me-1"></i> Làm mới
+    </button>
+  </div>
+
+  <!-- Bảng đơn hàng -->
+  <div class="table-responsive">
+    <table class="table table-hover">
       <thead class="table-light">
         <tr>
-          <th>STT</th>
-          <th>Mã đơn hàng</th>
-          <th>Tên khách hàng</th>
-          <th>Ngày đặt</th>
-          <th>Giá trị</th>
-          <th>Trạng thái</th>
-          <th>Hành động</th>
+          <th scope="col">#</th>
+          <th scope="col" class="sortable" (click)="onSort('_id')">
+            Mã đơn hàng
+            <i class="text-white" [ngClass]="getSortIcon('_id')"></i>
+          </th>
+          <th scope="col" class="sortable" (click)="onSort('orderDate')">
+            Ngày đặt
+            <i class="text-white" [ngClass]="getSortIcon('orderDate')"></i>
+          </th>
+          <th scope="col">Khách hàng</th>
+          <th scope="col">Số sản phẩm</th>
+          <th scope="col" class="sortable" (click)="onSort('totalPrice')">
+            Tổng tiền
+            <i class="text-white" [ngClass]="getSortIcon('totalPrice')"></i>
+          </th>
+          <th scope="col" class="sortable" (click)="onSort('status')">
+            Trạng thái
+            <i class="text-white" [ngClass]="getSortIcon('status')"></i>
+          </th>
+          <th scope="col">Thao tác</th>
         </tr>
       </thead>
       <tbody>
+        <tr *ngIf="pagedOrders.length === 0">
+          <td colspan="8" class="text-center py-4">
+            Không tìm thấy đơn hàng nào phù hợp với điều kiện lọc
+          </td>
+        </tr>
         <tr *ngFor="let order of pagedOrders; let i = index">
           <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
-          <td>{{ order.orderCode }}</td>
-          <td>{{ order.customerName }}</td>
-          <td>{{ order.orderDate }}</td>
-          <td>{{ order.totalAmount | number }}</td>
+          <td>{{ order._id }}</td>
+          <td>{{ formatDate(order.orderDate) }}</td>
+          <td>{{ getCustomerName(order) }}</td>
+          <td>{{ order.itemOrder?.length || 0 }}</td>
+          <td>{{ order.totalPrice | currency : "VND" : "" }}đ</td>
           <td>
             <span
-              class="status-badge"
+              class="badge"
               [ngClass]="{
-                'badge-cancelled': order.status === 'Đã hủy',
-                'badge-completed': order.status === 'Hoàn thành',
-                'badge-delivering': order.status === 'Đang giao hàng',
-                'badge-awaiting': order.status === 'Chờ lấy hàng',
-                'badge-pending': order.status === 'Chờ xác nhận'
+                'bg-secondary': order.status === 'Đang xử lý',
+                'bg-warning': order.status === 'Đã xác nhận',
+                'bg-success': order.status === 'Đã giao hàng',
+                'bg-danger': order.status === 'Đã hủy',
+                'bg-info': order.status === 'Đang giao hàng'
               }"
             >
-              {{ order.status }}
+              {{ order.status || "N/A" }}
             </span>
           </td>
           <td>
-            <button
-              class="btn btn-sm btn-outline-primary me-2"
-              (click)="viewOrderDetails(order._id)"
-              title="Xem chi tiết"
-            >
-              <i class="bi bi-eye-fill"></i>
-            </button>
-            <button
-              class="btn btn-sm btn-outline-danger"
-              (click)="deleteOrder(order._id)"
-              title="Xóa"
-            >
-              <i class="bi bi-trash"></i>
-            </button>
+            <div class="d-flex gap-2">
+              <button
+                class="btn btn-sm btn-outline-primary"
+                (click)="viewOrderDetails(order._id)"
+                title="Xem chi tiết"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-outline-danger"
+                (click)="deleteOrder(order._id)"
+                title="Xóa"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
-
-    <!-- Pagination -->
-    <div class="d-flex justify-content-between align-items-center mt-3">
-      <div>
-        <span class="me-2">Trang {{ currentPage }}/{{ totalPages }}</span>
-        <span class="me-2">|</span>
-        <span
-          >Hiển thị {{ pagedOrders.length }} trên tổng số
-          {{ filteredOrders.length }} đơn hàng</span
-        >
-      </div>
-      <nav aria-label="Page navigation">
-        <ul class="pagination mb-0">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-            <button class="page-link" (click)="goToPage(currentPage - 1)">
-              <i class="bi bi-chevron-left"></i>
-            </button>
-          </li>
-          <li
-            *ngFor="let page of getPageNumbers()"
-            class="page-item"
-            [class.active]="page === currentPage"
-          >
-            <button class="page-link" (click)="goToPage(page)">
-              {{ page }}
-            </button>
-          </li>
-          <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <button class="page-link" (click)="goToPage(currentPage + 1)">
-              <i class="bi bi-chevron-right"></i>
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
   </div>
 
-  <!-- No data message -->
+  <!-- Phân trang -->
   <div
-    *ngIf="!isLoading && !error && pagedOrders.length === 0"
-    class="alert alert-info my-3"
+    class="d-flex justify-content-between align-items-center mt-3"
+    *ngIf="filteredOrders.length > 0"
   >
-    Không có dữ liệu đơn hàng.
+    <div>
+      <span class="me-2">Trang {{ currentPage }}/{{ totalPages }}</span>
+      <span class="me-2">|</span>
+      <span
+        >Hiển thị {{ pagedOrders.length }} trên tổng số
+        {{ filteredOrders.length }} đơn hàng</span
+      >
+    </div>
+    <nav aria-label="Page navigation" *ngIf="totalPages > 1">
+      <ul class="pagination mb-0">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="goToPage(currentPage - 1)">
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        </li>
+        <li
+          *ngFor="let page of getPageNumbers()"
+          class="page-item"
+          [class.active]="page === currentPage"
+        >
+          <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="goToPage(currentPage + 1)">
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>

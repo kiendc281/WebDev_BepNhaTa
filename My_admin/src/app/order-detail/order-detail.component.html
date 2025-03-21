@@ -1,110 +1,286 @@
-<div class="container-fluid">
-  <!-- Tiêu đề và nút trở lại -->
-  <div class="header-section">
-    <h1>Chi tiết đơn hàng</h1>
-    <button class="button-xam" (click)="goBack()">
-      <i class="bi bi-arrow-left"></i> Trở lại
-    </button>
+<div class="container my-4">
+  <h2 class="text-primary mb-4">Chi tiết đơn hàng</h2>
+
+  <button class="btn btn-light mb-4" (click)="goBack()">
+    <i class="bi bi-arrow-left me-2"></i>Trở lại
+  </button>
+
+  <!-- Thông báo lỗi và loading -->
+  <div *ngIf="isLoading" class="text-center my-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Đang tải...</span>
+    </div>
+    <p class="mt-2">Đang tải thông tin đơn hàng...</p>
   </div>
 
-  <div class="row">
-    <!-- Thông tin đơn hàng - Cột trái -->
-    <div class="col-lg-8">
-      <div class="order-info-section">
-        <div class="order-info-grid">
-          <div class="order-info-item">
-            <div class="info-label">Mã đơn hàng</div>
-            <div class="info-value">{{ orderId }}</div>
-          </div>
-          <div class="order-info-item">
-            <div class="info-label">Ngày đặt hàng</div>
-            <div class="info-value">{{ orderDate }}</div>
-          </div>
-          <div class="order-info-item">
-            <div class="info-label">Phương thức thanh toán</div>
-            <div class="info-value">{{ paymentMethod }}</div>
-          </div>
-          <div class="order-info-item">
-            <div class="info-label">Trạng thái</div>
-            <div class="info-value status-completed">{{ status }}</div>
-          </div>
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <!-- Chi tiết đơn hàng -->
+  <div *ngIf="order && !isLoading" class="order-detail-container">
+    <!-- Thông tin cơ bản đơn hàng -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="order-info-item">
+          <div class="info-label">Mã đơn hàng</div>
+          <div class="info-value">{{ order?._id || "N/A" }}</div>
         </div>
       </div>
-
-      <!-- Bảng sản phẩm -->
-      <div class="products-table-section">
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th class="col-stt">STT</th>
-              <th class="col-product">Tên sản phẩm</th>
-              <th class="col-quantity">Số lượng</th>
-              <th class="col-price">Giá thành</th>
-              <th class="col-total">Thành tiền</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of orderItems">
-              <td>{{ item.id }}</td>
-              <td>{{ item.name }}</td>
-              <td>{{ item.quantity }}</td>
-              <td>{{ item.price | number }}đ</td>
-              <td>{{ item.total | number }}đ</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Tổng kết -->
-      <div class="order-summary-section">
-        <div class="summary-item">
-          <div class="summary-label">Tổng tiền hàng:</div>
-          <div class="summary-value">{{ subtotal | number }}đ</div>
-        </div>
-        <div class="summary-item">
-          <div class="summary-label">Phí vận chuyển:</div>
-          <div class="summary-value">{{ shippingFee | number }}đ</div>
-        </div>
-        <div class="summary-item">
-          <div class="summary-label">Giảm giá phí vận chuyển:</div>
-          <div class="summary-value">{{ shippingDiscount }}đ</div>
-        </div>
-        <div class="summary-item total">
-          <div class="summary-label">Thành tiền:</div>
-          <div class="summary-value total-value">{{ total | number }}đ</div>
+      <div class="col-md-3">
+        <div class="order-info-item">
+          <div class="info-label">Ngày đặt hàng</div>
+          <div class="info-value">{{ formatDate(order?.orderDate) }}</div>
         </div>
       </div>
-
-      <!-- Các nút hành động -->
-      <div class="action-buttons">
-        <button class="btn-action btn-confirm">Xác nhận</button>
-        <button class="btn-action btn-awaiting">Chờ lấy hàng</button>
-        <button class="btn-action btn-delivering">Đang giao hàng</button>
-        <button class="btn-action btn-completed">Hoàn thành</button>
+      <div class="col-md-3">
+        <div class="order-info-item">
+          <div class="info-label">Phương thức thanh toán</div>
+          <div class="info-value">{{ order?.paymentMethod || "N/A" }}</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="order-info-item">
+          <div class="info-label">Trạng thái</div>
+          <div class="info-value">
+            <span
+              class="status-badge"
+              [ngClass]="getStatusClass(order?.status)"
+            >
+              {{ getStatusText(order?.status) }}
+            </span>
+            <!-- <button
+              *ngIf="!isEditing"
+              class="btn btn-sm btn-outline-primary ms-2"
+              (click)="enableEditing()"
+            >
+              <i class="bi bi-pencil-fill"></i>
+            </button> -->
+          </div>
+          <div *ngIf="isEditing" class="mt-2">
+            <select
+              class="form-select form-select-sm"
+              [(ngModel)]="selectedStatus"
+            >
+              <option *ngFor="let status of statusOptions" [value]="status">
+                {{ status }}
+              </option>
+            </select>
+            <div class="d-flex gap-2 mt-2">
+              <button
+                class="btn btn-sm btn-success"
+                (click)="saveStatus()"
+                [disabled]="isLoading"
+              >
+                <span *ngIf="!isLoading">Lưu</span>
+                <span
+                  *ngIf="isLoading"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              </button>
+              <button
+                class="btn btn-sm btn-secondary"
+                (click)="cancelEditing()"
+                [disabled]="isLoading"
+              >
+                Hủy
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Thông tin khách hàng - Cột phải -->
-    <div class="col-lg-4">
-      <div class="customer-info-section">
-        <h3>Thông tin khách hàng</h3>
-        <div class="customer-info-item">
-          <div class="customer-label">Tên khách hàng:</div>
-          <div class="customer-value">{{ customer.name }}</div>
+    <div class="row">
+      <!-- Chi tiết sản phẩm -->
+      <div class="col-md-8">
+        <!-- Bảng sản phẩm -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Danh sách sản phẩm</h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table mb-0">
+                <thead class="order-table-header">
+                  <tr>
+                    <th class="text-center">STT</th>
+                    <th>Tên sản phẩm</th>
+                    <th class="text-center">Số lượng</th>
+                    <th class="text-end">Giá thành</th>
+                    <th class="text-end">Thành tiền</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of order.itemOrder; let i = index">
+                    <td class="text-center">{{ i + 1 }}</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="product-img me-2">
+                          <img
+                            [src]="item.img || 'assets/images/no-image.png'"
+                            alt="{{ item.name }}"
+                            class="product-thumb"
+                          />
+                        </div>
+                        <div>{{ item.name || "N/A" }}</div>
+                      </div>
+                    </td>
+                    <td class="text-center">{{ item.quantity || 0 }}</td>
+                    <td class="text-end">
+                      {{ item.totalPrice / item.quantity | number : "1.0-0" }}đ
+                    </td>
+                    <td class="text-end">
+                      {{ item.totalPrice | number : "1.0-0" }}đ
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        <div class="customer-info-item">
-          <div class="customer-label">Số điện thoại:</div>
-          <div class="customer-value">{{ customer.phone }}</div>
-        </div>
-        <div class="customer-info-item">
-          <div class="customer-label">Địa chỉ:</div>
-          <div class="customer-value">{{ customer.address }}</div>
-        </div>
-        <div class="customer-info-item">
-          <div class="customer-label">Ghi chú</div>
-          <div class="customer-value">{{ customer.note }}</div>
+
+        <!-- Tổng kết đơn hàng -->
+        <div class="card order-summary">
+          <div class="card-body">
+            <div class="d-flex justify-content-end">
+              <div class="summary-container">
+                <div class="summary-row">
+                  <div class="summary-label">Tổng tiền hàng:</div>
+                  <div class="summary-value">
+                    {{ order?.prePrice | number : "1.0-0" }}đ
+                  </div>
+                </div>
+                <div class="summary-row">
+                  <div class="summary-label">Phí vận chuyển:</div>
+                  <div class="summary-value">
+                    {{ order?.shippingFee | number : "1.0-0" }}đ
+                  </div>
+                </div>
+                <div class="summary-row">
+                  <div class="summary-label">Giảm giá phí vận chuyển:</div>
+                  <div class="summary-value">
+                    {{ order?.discount | number : "1.0-0" }}đ
+                  </div>
+                </div>
+                <div class="summary-row total">
+                  <div class="summary-label">Thành tiền:</div>
+                  <div class="summary-value total-amount">
+                    {{ order?.totalPrice | number : "1.0-0" }}đ
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- Thông tin khách hàng -->
+      <div class="col-md-4">
+        <div class="card customer-info-card">
+          <div class="card-header">
+            <h5 class="mb-0">Thông tin khách hàng</h5>
+          </div>
+          <div class="card-body">
+            <div *ngIf="order?.guestInfo">
+              <div class="customer-info-item">
+                <div class="info-label">Tên khách hàng:</div>
+                <div class="info-value">
+                  {{ order.guestInfo?.fullName || "N/A" }}
+                </div>
+              </div>
+              <div class="customer-info-item">
+                <div class="info-label">Số điện thoại:</div>
+                <div class="info-value">
+                  {{ order.guestInfo?.phone || "N/A" }}
+                </div>
+              </div>
+              <div class="customer-info-item">
+                <div class="info-label">Email:</div>
+                <div class="info-value">
+                  {{ order.guestInfo?.email || "N/A" }}
+                </div>
+              </div>
+              <div class="customer-info-item">
+                <div class="info-label">Địa chỉ:</div>
+                <div class="info-value">
+                  {{ order.guestInfo?.address || "N/A" }}
+                </div>
+              </div>
+            </div>
+
+            <div class="customer-info-item">
+              <div class="info-label">Ghi chú:</div>
+              <!-- <div class="info-value note">{{ order.note || "Không có" }}</div> -->
+              <div class="info-value note">Không có</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Các nút hành động -->
+    <div class="action-buttons mt-4">
+      <button
+        class="btn btn-outline-danger"
+        [disabled]="order.status === 'Đã hủy' || isLoading"
+        (click)="updateStatus('Đã hủy')"
+      >
+        <span *ngIf="!isLoading || order.status !== 'Đã hủy'">Hủy đơn</span>
+        <span
+          *ngIf="isLoading && order.status === 'Đã hủy'"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </button>
+      <button
+        class="btn btn-outline-warning"
+        [disabled]="order.status === 'Đã xác nhận' || isLoading"
+        (click)="updateStatus('Đã xác nhận')"
+      >
+        <span *ngIf="!isLoading || order.status !== 'Đã xác nhận'"
+          >Xác nhận</span
+        >
+        <span
+          *ngIf="isLoading && order.status === 'Đã xác nhận'"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </button>
+      <button
+        class="btn btn-outline-primary"
+        [disabled]="order.status === 'Đang giao hàng' || isLoading"
+        (click)="updateStatus('Đang giao hàng')"
+      >
+        <span *ngIf="!isLoading || order.status !== 'Đang giao hàng'"
+          >Đang giao hàng</span
+        >
+        <span
+          *ngIf="isLoading && order.status === 'Đang giao hàng'"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </button>
+      <button
+        class="btn btn-outline-success"
+        [disabled]="order.status === 'Đã giao hàng' || isLoading"
+        (click)="updateStatus('Đã giao hàng')"
+      >
+        <span *ngIf="!isLoading || order.status !== 'Đã giao hàng'"
+          >Hoàn thành</span
+        >
+        <span
+          *ngIf="isLoading && order.status === 'Đã giao hàng'"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </button>
     </div>
   </div>
 </div>

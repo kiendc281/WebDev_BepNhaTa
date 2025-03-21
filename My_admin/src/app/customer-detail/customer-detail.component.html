@@ -96,27 +96,88 @@
     <div class="order-history">
       <h2>Lịch sử mua hàng</h2>
 
+      <div *ngIf="isLoading" class="text-center my-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Đang tải...</span>
+        </div>
+        <p class="mt-2">Đang tải lịch sử đơn hàng...</p>
+      </div>
+
+      <div *ngIf="orders.length === 0 && !isLoading" class="no-orders">
+        Khách hàng chưa có đơn hàng nào.
+      </div>
+
       <div *ngFor="let order of orders" class="order-item">
         <div class="order-header">
           <div class="order-date">
-            <span>Ngày mua hàng: {{ order.orderDate }}</span>
+            <span>Mã đơn hàng: {{ order._id }}</span>
+            <span class="ms-3"
+              >Ngày mua: {{ formatDate(order.orderDate) }}</span
+            >
+            <span
+              class="ms-3 status-badge"
+              [ngClass]="'bg-' + getStatusClass(order.status)"
+              >{{ order.status || "N/A" }}</span
+            >
           </div>
-          <button class="btn btn-view">Xem chi tiết</button>
+          <button class="btn btn-view" (click)="viewOrderDetails(order._id)">
+            Xem chi tiết
+          </button>
         </div>
-        <div class="order-content">
-          <div *ngFor="let item of order.items" class="product-item">
-            <div class="product-image">
-              <img [src]="item.productImage" alt="Product Image" />
-            </div>
-            <div class="product-name">
-              {{ item.productName }}
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div *ngIf="orders.length === 0" class="no-orders">
-        Khách hàng chưa có đơn hàng nào.
+        <!-- Danh sách sản phẩm -->
+        <div class="order-products">
+          <div class="table-responsive">
+            <table class="table table-sm product-table">
+              <thead>
+                <tr>
+                  <th class="text-center">STT</th>
+                  <th>Tên sản phẩm</th>
+                  <th class="text-center">Số lượng</th>
+                  <th class="text-end">Giá thành</th>
+                  <th class="text-end">Thành tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of getOrderItems(order); let i = index">
+                  <td class="text-center">{{ i + 1 }}</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img
+                        [src]="
+                          item.img || item.image || 'assets/images/no-image.png'
+                        "
+                        class="product-thumbnail me-2"
+                        alt="Sản phẩm"
+                      />
+                      <span>{{
+                        item.name || item.name || "Không có tên"
+                      }}</span>
+                    </div>
+                  </td>
+                  <td class="text-center">{{ item.quantity }}</td>
+                  <td class="text-end">
+                    {{ getUnitPrice(item) | number : "1.0-0" }}đ
+                  </td>
+                  <td class="text-end">
+                    {{ item.totalPrice | number : "1.0-0" }}đ
+                  </td>
+                </tr>
+                <tr *ngIf="!getOrderItems(order)?.length">
+                  <td colspan="5" class="text-center text-muted">
+                    Không có thông tin sản phẩm
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="order-footer">
+          <div class="total-amount">
+            Tổng tiền: {{ order.totalPrice | number : "1.0-0" }}đ
+          </div>
+        </div>
       </div>
     </div>
   </div>

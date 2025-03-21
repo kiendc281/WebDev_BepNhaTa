@@ -212,7 +212,7 @@ export class BlogComponent implements OnInit {
 
   getSortIcon(column: string): string {
     if (this.sortColumn !== column) {
-      return 'bi bi-arrow-down-up'; // Default unsorted icon
+      return 'bi bi-filter'; // Default unsorted icon
     }
     return this.sortDirection === 'asc'
       ? 'bi bi-sort-down-alt'

@@ -10,12 +10,15 @@ import { CustomerDetailComponent } from './customer-detail/customer-detail.compo
 import { BlogDetailComponent } from './blog-detail/blog-detail.component';
 import { BlogEditComponent } from './blog-edit/blog-edit.component';
 import { BlogAddComponent } from './blog-add/blog-add.component';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/trang-chu', pathMatch: 'full' },
   { path: 'login', component: DangNhapComponent },
   { path: 'product', component: ProductComponent },
   { path: 'orders', component: OrderComponent },
+  { path: 'order', component: OrderComponent },
+  { path: 'order-detail/:id', component: OrderDetailComponent },
   { path: 'customers', component: CustomerComponent },
   { path: 'customers/:id', component: CustomerDetailComponent },
   { path: 'blog', component: BlogComponent },
