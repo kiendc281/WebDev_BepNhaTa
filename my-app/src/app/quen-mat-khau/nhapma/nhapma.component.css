@@ -46,21 +46,22 @@ p {
 
 input {
   width: 100%;
-  height: 48px;
-  padding: 12px;
-  border: 1px solid #cccccc;
-  border-radius: 8px;
+  padding: 12px 40px 12px 15px;
+  border-radius: 15px;
   font-size: 16px;
-  outline: none;
-  transition: border-color 0.3s;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 2px solid transparent !important;
+  transition: all 0.3s ease;
 }
 
 input:focus {
-  border-color: #f15a24;
+  outline: none;
+  background-color: white;
+  border: 2px solid var(--color-camvua) !important;
 }
 
 input.submitted.ng-invalid {
-  border-color: #ff0000;
+  border: 2px solid red !important;
 }
 
 .timer-resend {
@@ -78,7 +79,7 @@ input.submitted.ng-invalid {
 .resend-button {
   background: none;
   border: none;
-  color: #f15a24;
+  color: var(--color-camvua);
   cursor: pointer;
   font-size: 14px;
   padding: 0;
@@ -90,26 +91,14 @@ input.submitted.ng-invalid {
 }
 
 .error-message {
-  color: #ff0000;
+  color: red;
+  font-style: italic;
   font-size: 14px;
-  margin-top: 4px;
+  margin-top: 5px;
 }
 
 .button-cam {
   width: 100%;
-  height: 48px;
-  background: #f15a24;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.button-cam:hover {
-  background: #d64a1a;
 }
 
 .button-cam:disabled {
@@ -123,10 +112,9 @@ input.submitted.ng-invalid {
 }
 
 .back-link a {
-  color: #f15a24;
+  color: var(--color-camdam);
   text-decoration: none;
-  cursor: pointer;
-  font-size: 14px;
+  font-weight: 500;
 }
 
 .back-link a:hover {

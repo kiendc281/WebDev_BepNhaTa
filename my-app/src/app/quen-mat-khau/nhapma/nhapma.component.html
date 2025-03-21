@@ -1,6 +1,9 @@
 <div class="container">
   <button class="close-button" (click)="onClose()">
-    <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="Đóng" />
+    <img
+      src="../../../assets/sign in up/zondicons-close-outline.svg"
+      alt="Đóng"
+    />
   </button>
 
   <div class="title">Nhập mã xác thực</div>
@@ -31,12 +34,14 @@
           </button>
         </div>
       </div>
-      <div
-        class="error-message"
-        *ngIf="submitted && f['otp'].errors"
-      >
-        <span *ngIf="f['otp'].errors?.['required']">(*) Vui lòng nhập mã xác thực</span>
-        <span *ngIf="f['otp'].errors?.['minlength'] || f['otp'].errors?.['maxlength']">(*) Mã xác thực phải có 6 số</span>
+      <div class="error-message" *ngIf="submitted && f['otp'].errors">
+        <span *ngIf="f['otp'].errors?.['required']"
+          >(*) Vui lòng nhập mã xác thực</span
+        >
+        <span
+          *ngIf="f['otp'].errors?.['minlength'] || f['otp'].errors?.['maxlength']"
+          >(*) Mã xác thực phải có 6 số</span
+        >
       </div>
       <div class="error-message" *ngIf="errorMessage">
         {{ errorMessage }}
@@ -50,6 +55,6 @@
   </form>
 
   <div class="back-link">
-    <a (click)="onBack()">Quay lại đăng nhập</a>
+    <a (click)="onBack()">Quay lại</a>
   </div>
 </div>
