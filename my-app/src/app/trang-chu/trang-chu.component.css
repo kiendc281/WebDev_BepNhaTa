@@ -148,7 +148,7 @@
   align-items: center;
   justify-content: center;
   gap: 56px;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   position: relative;
 }
 
@@ -254,7 +254,7 @@
 /* Common styles for product sections */
 .trending-dishes,
 .hot-products {
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 }
 
 .trending-dishes .section-header,
@@ -516,73 +516,12 @@
   font-size: 0.9em;
 }
 
-/* Common responsive styles */
-@media (max-width: 1024px) {
-  .trending-dishes .products-grid,
-  .hot-products .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .trending-dishes .product-card,
-  .hot-products .product-card {
-    width: auto;
-    min-width: 0;
-  }
-
-  .trending-dishes .product-image,
-  .hot-products .product-image {
-    height: 180px;
-  }
-
-  .trending-dishes .product-info,
-  .hot-products .product-info {
-    gap: 8px;
-  }
-
-  .trending-dishes .info-item,
-  .hot-products .info-item {
-    font-size: 0.8em;
-    padding: 4px;
-  }
-}
-
-@media (max-width: 576px) {
-  .trending-dishes .products-grid,
-  .hot-products .products-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  .trending-dishes .product-card,
-  .hot-products .product-card {
-    width: 100%;
-  }
-
-  .trending-dishes .product-image,
-  .hot-products .product-image {
-    height: 200px;
-  }
-
-  .hot-products .product-actions {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-
-  .hot-products .price-container {
-    width: 100%;
-  }
-}
-
 /* Dots Navigation */
 .dots-navigation {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
 .dot {
@@ -614,7 +553,7 @@
 
 /* Tips Nấu Ăn Section */
 .cooking-tips {
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 }
 
 .tips-slider {
@@ -630,7 +569,7 @@
   gap: 24px;
   overflow: hidden;
   max-width: 1200px;
-  padding: 10px 0;
+  padding-bottom: 40px;
 }
 
 .tip-card {
@@ -748,66 +687,6 @@
   box-shadow: 0 0 10px 4px var(--color-camvua);
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .categories-slider {
-    gap: 30px;
-  }
-
-  .category-card {
-    width: 220px;
-  }
-
-  .category-card img {
-    height: 220px;
-  }
-}
-
-@media (max-width: 768px) {
-  .categories-slider {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 56px;
-  }
-
-  .category-card {
-    width: calc(50% - 10px);
-    max-width: 220px;
-  }
-
-  .category-card img {
-    height: 180px;
-  }
-
-  .category-card::before {
-    height: 180px;
-  }
-}
-
-@media (max-width: 576px) {
-  .categories-slider {
-    gap: 52px;
-  }
-
-  .category-card {
-    width: calc(50% - 8px);
-    max-width: 160px;
-  }
-
-  .category-card img {
-    height: 160px;
-  }
-
-  .category-card::before {
-    height: 160px;
-  }
-
-  .category-name {
-    font-size: 14px;
-    padding: 6px 10px;
-  }
-}
-
 /* Xóa các style cũ không cần thiết */
 .like-button {
   display: none;
@@ -902,8 +781,69 @@
   overflow: hidden;
 }
 
-/* Banner Responsive Styles */
+/* Common responsive styles */
+@media (max-width: 1024px) {
+  .trending-dishes .products-grid,
+  .hot-products .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .categories-slider {
+    gap: 30px;
+  }
+
+  .category-card {
+    width: 220px;
+  }
+
+  .category-card img {
+    height: 220px;
+  }
+}
+
 @media (max-width: 768px) {
+  .trending-dishes .product-card,
+  .hot-products .product-card {
+    width: auto;
+    min-width: 0;
+  }
+
+  .trending-dishes .product-image,
+  .hot-products .product-image {
+    height: 180px;
+  }
+
+  .trending-dishes .product-info,
+  .hot-products .product-info {
+    gap: 8px;
+  }
+
+  .trending-dishes .info-item,
+  .hot-products .info-item {
+    font-size: 0.8em;
+    padding: 4px;
+  }
+
+  .categories-slider {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 56px;
+  }
+
+  .category-card {
+    width: calc(50% - 10px);
+    max-width: 220px;
+  }
+
+  .category-card img {
+    height: 180px;
+  }
+
+  .category-card::before {
+    height: 180px;
+  }
+
   .banner-nav {
     width: 35px;
     height: 35px;
@@ -920,6 +860,54 @@
 }
 
 @media (max-width: 576px) {
+  .trending-dishes .products-grid,
+  .hot-products .products-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .trending-dishes .product-card,
+  .hot-products .product-card {
+    width: 100%;
+  }
+
+  .trending-dishes .product-image,
+  .hot-products .product-image {
+    height: 200px;
+  }
+
+  .hot-products .product-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .hot-products .price-container {
+    width: 100%;
+  }
+
+  .categories-slider {
+    gap: 52px;
+  }
+
+  .category-card {
+    width: calc(50% - 8px);
+    max-width: 160px;
+  }
+
+  .category-card img {
+    height: 160px;
+  }
+
+  .category-card::before {
+    height: 160px;
+  }
+
+  .category-name {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
   .banner-container {
     height: auto;
   }
