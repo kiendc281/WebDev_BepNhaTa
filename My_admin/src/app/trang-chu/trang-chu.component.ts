@@ -11,13 +11,13 @@ import { CommonModule } from '@angular/common';
 export class TrangChuComponent implements OnInit {
   // Dashboard data
   dashboardStats = {
-    revenue: '123.456.789 VNĐ',
-    totalOrders: '1.234 đơn hàng',
-    productsSold: '5.678 sản phẩm',
-    totalWebVisits: '123.789',
-    dailyVisits: '16.789',
-    catalogueViews: '1.789 lượt xem',
-    articleViews: '123.789 lượt xem',
+    revenue: '243.520.000 VNĐ',
+    totalOrders: '1.015 đơn hàng',
+    productsSold: '3.054 sản phẩm',
+    totalWebVisits: '30.000',
+    dailyVisits: '1.050',
+    catalogueViews: '2.120 lượt xem',
+    articleViews: '50.450 lượt xem',
   };
 
   orderStatus = [
