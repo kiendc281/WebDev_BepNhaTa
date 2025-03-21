@@ -1,16 +1,41 @@
 <!-- Thông báo -->
-<div *ngIf="notification.show" 
-     class="notification" 
-     [ngClass]="{'notification-success': notification.type === 'success', 'notification-error': notification.type === 'error'}">
+<div
+  *ngIf="notification.show"
+  class="notification"
+  [ngClass]="{
+    'notification-success': notification.type === 'success',
+    'notification-error': notification.type === 'error'
+  }"
+>
   <div class="notification-content">
     <div *ngIf="notification.type === 'success'" class="notification-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
       </svg>
     </div>
     <div *ngIf="notification.type === 'error'" class="notification-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <circle cx="12" cy="12" r="10"></circle>
         <line x1="12" y1="8" x2="12" y2="12"></line>
         <line x1="12" y1="16" x2="12" y2="16"></line>
@@ -22,8 +47,14 @@
 
 <div class="maincontainer">
   <!-- Thêm link Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
   <div class="banner">
     <img src="../../assets/san-pham/banner.png" alt="" />
   </div>
@@ -67,10 +98,97 @@
         </button>
       </div>
       <div class="search-container">
-        <button class="button-trang">
-          <img src="../../assets/san-pham/filter.svg" alt="Bộ lọc" />
-          Bộ lọc
-        </button>
+        <!-- Thêm dropdown lọc nguyên liệu -->
+        <div class="filter-dropdown-container">
+          <button class="button-trang" (click)="toggleFilterDropdown($event)">
+            <img src="../../assets/san-pham/filter.svg" alt="Bộ lọc" />
+            Bộ lọc
+          </button>
+          <div class="filter-dropdown" [class.active]="showFilterDropdown">
+            <div class="filter-content" (click)="$event.stopPropagation()">
+              <div class="filter-header">
+                <h3>Bộ lọc</h3>
+                <span
+                  class="close-filter"
+                  (click)="toggleFilterDropdown($event)"
+                  >×</span
+                >
+              </div>
+
+              <div class="filter-section">
+                <h4>Nguyên liệu</h4>
+                <div class="ingredients-search">
+                  <input
+                    type="text"
+                    placeholder="Tìm nguyên liệu..."
+                    #ingredientSearch
+                    (input)="searchIngredients($event)"
+                  />
+                </div>
+                <div class="ingredients-list">
+                  <div
+                    *ngFor="let ingredient of filteredIngredientsList"
+                    class="filter-option"
+                    [class.selected]="selectedIngredients.includes(ingredient)"
+                    (click)="toggleIngredient(ingredient)"
+                  >
+                    <span class="option-name">{{ ingredient }}</span>
+                    <span
+                      class="checkmark"
+                      *ngIf="selectedIngredients.includes(ingredient)"
+                      >✓</span
+                    >
+                  </div>
+                  <div
+                    *ngIf="filteredIngredientsList.length === 0"
+                    class="no-ingredients"
+                  >
+                    Không tìm thấy nguyên liệu nào
+                  </div>
+                </div>
+              </div>
+
+              <div class="filter-actions">
+                <button
+                  class="button-trang"
+                  (click)="clearFilters(); $event.stopPropagation()"
+                >
+                  Xóa bộ lọc
+                </button>
+                <button
+                  class="button-cam"
+                  (click)="toggleFilterDropdown($event)"
+                >
+                  Áp dụng
+                </button>
+              </div>
+              <!-- Thêm thông báo số lượng sản phẩm đã lọc -->
+              <div
+                class="filter-summary"
+                *ngIf="selectedIngredients.length > 0"
+              >
+                <div class="filter-badge">
+                  Đã tìm thấy: {{ products.length }} sản phẩm chứa nguyên liệu
+                  đã chọn
+                </div>
+                <div class="selected-ingredients">
+                  <span
+                    *ngFor="let ing of selectedIngredients"
+                    class="ingredient-tag"
+                  >
+                    {{ ing }}
+                    <span
+                      class="remove-tag"
+                      (click)="toggleIngredient(ing); $event.stopPropagation()"
+                      >×</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="sort-dropdown">
           <button class="sort-button">
             Sắp xếp theo: {{ getSelectedSortLabel() }}
@@ -89,10 +207,44 @@
       </div>
     </div>
 
+    <!-- Hiển thị các nguyên liệu đã lọc -->
+    <div class="active-filters" *ngIf="selectedIngredients.length > 0">
+      <div class="filters-title">Đang hiển thị sản phẩm chứa nguyên liệu:</div>
+      <div class="filters-tags">
+        <span *ngFor="let ing of selectedIngredients" class="filter-tag">
+          {{ ing }}
+          <span class="remove-filter" (click)="toggleIngredient(ing)">×</span>
+        </span>
+        <button class="clear-filters" (click)="clearFilters()">
+          Xóa bộ lọc
+        </button>
+      </div>
+    </div>
+
+    <div class="loading-error" *ngIf="products.length === 0">
+      <div class="error" *ngIf="selectedIngredients.length > 0">
+        Không tìm thấy sản phẩm nào chứa nguyên liệu:
+        <span
+          class="highlight-ingredient"
+          *ngFor="let ing of selectedIngredients; let last = last"
+        >
+          {{ ing }}{{ !last ? ", " : "" }}
+        </span>
+        <button class="button-cam" (click)="clearFilters()">Xóa bộ lọc</button>
+      </div>
+    </div>
+
     <div class="products-grid">
       <div class="product-card" *ngFor="let product of paginatedProducts">
-        <div class="save-button" (click)="toggleSaveProduct($event, product)" [class.active]="isProductSaved(product._id)">
-          <i class="fa-heart" [ngClass]="isProductSaved(product._id) ? 'fas' : 'far'"></i>
+        <div
+          class="save-button"
+          (click)="toggleSaveProduct($event, product)"
+          [class.active]="isProductSaved(product._id)"
+        >
+          <i
+            class="fa-heart"
+            [ngClass]="isProductSaved(product._id) ? 'fas' : 'far'"
+          ></i>
         </div>
         <a [routerLink]="['/chi-tiet-san-pham', product._id]">
           <div class="product-image">
