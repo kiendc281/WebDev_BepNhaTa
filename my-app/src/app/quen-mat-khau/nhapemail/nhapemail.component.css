@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 514px;
   padding: 40px;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 20px;
   position: relative;
 }
@@ -18,8 +18,8 @@
 }
 
 .close-button img {
-  width: 24px;
-  height: 24px;
+  width: 35px;
+  height: 35px;
 }
 
 .title {
@@ -43,7 +43,7 @@ input {
   width: 100%;
   height: 48px;
   padding: 12px;
-  border: 1px solid #CCCCCC;
+  border: 1px solid #cccccc;
   border-radius: 8px;
   font-size: 16px;
   outline: none;
@@ -51,15 +51,15 @@ input {
 }
 
 input:focus {
-  border-color: #F15A24;
+  border-color: #f15a24;
 }
 
 input.submitted.ng-invalid {
-  border-color: #FF0000;
+  border-color: #ff0000;
 }
 
 .error-message {
-  color: #FF0000;
+  color: #ff0000;
   font-size: 14px;
   margin-top: 4px;
 }
@@ -67,7 +67,7 @@ input.submitted.ng-invalid {
 .button-cam {
   width: 100%;
   height: 48px;
-  background: #F15A24;
+  background: #f15a24;
   color: white;
   border: none;
   border-radius: 8px;
@@ -78,11 +78,11 @@ input.submitted.ng-invalid {
 }
 
 .button-cam:hover {
-  background: #D64A1A;
+  background: #d64a1a;
 }
 
 .button-cam:disabled {
-  background: #CCCCCC;
+  background: #cccccc;
   cursor: not-allowed;
 }
 
@@ -92,7 +92,7 @@ input.submitted.ng-invalid {
 }
 
 .back-link a {
-  color: #F15A24;
+  color: #f15a24;
   text-decoration: none;
   cursor: pointer;
   font-size: 14px;
