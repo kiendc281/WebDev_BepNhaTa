@@ -983,11 +983,11 @@
 }
 
 .recipes-navigation .nav-button-left {
-  left: 5px;
+  left: 80px;
 }
 
 .recipes-navigation .nav-button-right {
-  right: 5px;
+  right: 80px;
   transform: translateY(-50%) rotate(180deg);
 }
 
