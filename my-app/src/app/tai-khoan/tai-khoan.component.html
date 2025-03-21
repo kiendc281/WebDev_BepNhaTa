@@ -882,7 +882,9 @@
               (change)="onProvinceChange()"
               class="form-select"
             >
-              <option value="">Chọn Tỉnh/Thành phố (*)</option>
+              <option value="" disabled selected>
+                Chọn Tỉnh/Thành phố (*)
+              </option>
               <option value="Hồ Chí Minh">Hồ Chí Minh</option>
               <option value="Hà Nội">Hà Nội</option>
               <option value="Đà Nẵng">Đà Nẵng</option>
@@ -923,7 +925,7 @@
               class="form-select"
               [disabled]="!addressForm.get('province')?.value"
             >
-              <option value="">Chọn Quận/Huyện (*)</option>
+              <option value="" disabled selected>Chọn Quận/Huyện (*)</option>
               <option value="Quận 1">Quận 1</option>
               <option value="Quận 2 (Thủ Đức)">Quận 2 (Thủ Đức)</option>
               <option value="Quận 3">Quận 3</option>
@@ -981,7 +983,7 @@
               class="form-select"
               [disabled]="!addressForm.get('district')?.value"
             >
-              <option value="">Chọn Phường/Xã (*)</option>
+              <option value="" disabled selected>Chọn Phường/Xã (*)</option>
               <option value="Phường 1">Phường 1</option>
               <option value="Phường 2">Phường 2</option>
               <option value="Phường 3">Phường 3</option>
@@ -1220,7 +1222,9 @@
               (change)="onProvinceChange()"
               class="form-select"
             >
-              <option value="0">Chọn Tỉnh/Thành phố (*)</option>
+              <option value="" disabled selected>
+                Chọn Tỉnh/Thành phố (*)
+              </option>
               <option value="Hồ Chí Minh">Hồ Chí Minh</option>
               <option value="Hà Nội">Hà Nội</option>
               <option value="Đà Nẵng">Đà Nẵng</option>
@@ -1261,7 +1265,7 @@
               class="form-select"
               [disabled]="!addressForm.get('province')?.value"
             >
-              <option value="">Chọn Quận/Huyện (*)</option>
+              <option value="" disabled selected>Chọn Quận/Huyện (*)</option>
               <option value="Quận 1">Quận 1</option>
               <option value="Quận 2 (Thủ Đức)">Quận 2 (Thủ Đức)</option>
               <option value="Quận 3">Quận 3</option>
@@ -1319,7 +1323,7 @@
               class="form-select"
               [disabled]="!addressForm.get('district')?.value"
             >
-              <option value="">Chọn Phường/Xã (*)</option>
+              <option value="" disabled selected>Chọn Phường/Xã (*)</option>
               <option value="Phường 1">Phường 1</option>
               <option value="Phường 2">Phường 2</option>
               <option value="Phường 3">Phường 3</option>
