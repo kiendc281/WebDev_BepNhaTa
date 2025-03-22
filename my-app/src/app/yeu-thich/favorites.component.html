@@ -2,7 +2,7 @@
 <app-breadcrumb
   category="Tài khoản"
   categoryLink="/tai-khoan"
-  [currentPage]="'Chi tiết sản phẩm'"
+  [currentPage]="'Danh sách yêu thích'"
 ></app-breadcrumb>
 
 <div class="container mt-4">
@@ -232,20 +232,15 @@
             <div class="d-flex flex-wrap gap-2 mb-2">
               <div
                 class="badge bg-light text-dark p-2 d-flex align-items-center"
-                *ngIf="favorite.details?.cookingTime || favorite.details?.time"
               >
                 <img
-                  src="../../assets/san-pham/ph-cooking-pot.svg"
-                  alt="time"
+                  src="../../assets/san-pham/khauphan.svg"
+                  alt="servings"
                   width="16"
                   height="16"
                   class="me-1"
                 />
-                <span>{{
-                  favorite.details?.cookingTime ||
-                    favorite.details?.time ||
-                    "Không xác định"
-                }}</span>
+                <span>4 người</span>
               </div>
               <div
                 class="badge bg-light text-dark p-2 d-flex align-items-center"
@@ -262,18 +257,20 @@
               </div>
               <div
                 class="badge bg-light text-dark p-2 d-flex align-items-center"
-                *ngIf="favorite.details?.servingsOptions?.serves"
+                *ngIf="favorite.details?.cookingTime || favorite.details?.time"
               >
                 <img
-                  src="../../assets/san-pham/ri-bowl-line.svg"
-                  alt="servings"
+                  src="../../assets/san-pham/ph-cooking-pot.svg"
+                  alt="time"
                   width="16"
                   height="16"
                   class="me-1"
                 />
-                <span
-                  >{{ favorite.details?.servingsOptions?.serves }} người</span
-                >
+                <span>{{
+                  favorite.details?.cookingTime ||
+                    favorite.details?.time ||
+                    "Không xác định"
+                }}</span>
               </div>
             </div>
 
@@ -340,7 +337,7 @@
             </h5>
 
             <div class="d-flex flex-wrap gap-2 mb-2">
-              <div
+              <!-- <div
                 class="badge bg-light text-dark p-2 d-flex align-items-center"
                 *ngIf="favorite.details?.category"
               >
@@ -352,7 +349,7 @@
                   class="me-1"
                 />
                 <span>{{ favorite.details?.category }}</span>
-              </div>
+              </div> -->
               <div
                 class="badge bg-light text-dark p-2 d-flex align-items-center"
               >

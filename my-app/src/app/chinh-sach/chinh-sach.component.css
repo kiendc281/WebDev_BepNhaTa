@@ -2,10 +2,14 @@
   display: flex;
   flex-direction: row;
   gap: 71px;
-  padding-bottom: 20px;
-  padding-top: 20px;
+  padding: 20px;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 .container-leftpanel {
+  position: sticky;
+  top: 90px;
+  width: 25%;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -43,8 +47,233 @@
   background: white;
 }
 
+.container-rightpanel h1 {
+  color: var(--color-camdam);
+  /* margin-bottom: 20px; */
+  font-size: 1.8rem;
+}
+
+.container-rightpanel h4 {
+  color: var(--color-camdam);
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.container-rightpanel p,
+.container-rightpanel div {
+  line-height: 1.6;
+}
+
+.container-rightpanel ul,
+.container-rightpanel ol {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.container-rightpanel li {
+  margin-bottom: 8px;
+}
+
 .button-trang.active {
   background-color: var(--color-camdam) !important;
   color: white !important;
   font-weight: bold;
+}
+
+.policy-section {
+  margin-bottom: 25px;
+}
+
+.policy-section h4 {
+  margin-bottom: 12px;
+  color: #333;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.policy-section ul,
+.policy-section ol {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.policy-section li {
+  margin-bottom: 8px;
+}
+
+.policy-section a {
+  color: #e4723c;
+  text-decoration: none;
+}
+
+.policy-section a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .container {
+    gap: 40px;
+    padding: 20px 30px;
+  }
+
+  .container-rightpanel {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .container-leftpanel {
+    position: relative;
+    top: 0;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .button-cam,
+  .button-trang {
+    width: auto;
+    min-width: 200px;
+  }
+
+  .container-rightpanel {
+    width: 100%;
+  }
+
+  .container-rightpanel h1 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+    gap: 20px;
+  }
+
+  .container-leftpanel {
+    gap: 10px;
+  }
+
+  .button-cam,
+  .button-trang {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    min-width: 150px;
+  }
+
+  .button-cam img,
+  .button-trang img {
+    width: 16px;
+    height: 16px;
+  }
+
+  .container-rightpanel h1 {
+    font-size: 1.4rem;
+  }
+
+  .container-rightpanel h4 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 10px;
+  }
+
+  .container-leftpanel {
+    flex-direction: column;
+  }
+
+  .button-cam,
+  .button-trang {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .container-rightpanel {
+    padding: 12px;
+  }
+
+  .container-rightpanel h1 {
+    font-size: 1.3rem;
+  }
+
+  .container-rightpanel h4 {
+    font-size: 1rem;
+  }
+
+  .container-rightpanel ul,
+  .container-rightpanel ol {
+    padding-left: 15px;
+  }
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 15px;
+    gap: 20px;
+  }
+
+  .container-leftpanel {
+    width: 100%;
+    position: relative;
+    top: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .button-trang {
+    width: calc(50% - 10px);
+    min-width: 140px;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .button-trang span {
+    flex: 1;
+    text-align: center;
+  }
+
+  .container-rightpanel {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .container-rightpanel h1 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .policy-section h4 {
+    font-size: 1rem;
+  }
+}
+
+/* Small mobile styles */
+@media screen and (max-width: 480px) {
+  .button-trang {
+    width: 100%;
+  }
+
+  .container-rightpanel {
+    padding: 10px;
+  }
+
+  .policy-section {
+    margin-bottom: 20px;
+  }
 }

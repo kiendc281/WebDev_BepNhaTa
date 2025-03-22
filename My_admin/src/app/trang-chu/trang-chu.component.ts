@@ -6,35 +6,38 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './trang-chu.component.html',
-  styleUrl: './trang-chu.component.css',
+  styleUrls: ['./trang-chu.component.css'],
 })
 export class TrangChuComponent implements OnInit {
   // Dashboard data
   dashboardStats = {
-    revenue: '123.456.789 VNĐ',
-    totalOrders: '123.456.789 VNĐ',
-    productsSold: '123.456.789 VNĐ',
-    totalWebVisits: '123.789 truy cập',
-    dailyVisits: '16.789 truy cập',
-    catalogueViews: '1.789 lượt xem',
-    articleViews: '123.789 lượt xem',
+    revenue: '243.520.000 VNĐ',
+    totalOrders: '1.015 đơn hàng',
+    productsSold: '3.054 sản phẩm',
+    totalWebVisits: '30.000',
+    dailyVisits: '1.050',
+    catalogueViews: '2.120 lượt xem',
+    articleViews: '50.450 lượt xem',
   };
 
   orderStatus = [
     { title: 'Đơn hàng chưa thanh toán', count: '1.200' },
-    { title: 'Đơn hàng chờ xác nhận', count: '1.200' },
-    { title: 'Đơn hàng đang giao', count: '1.200' },
-    { title: 'Đơn hàng đã hủy', count: '1.200' },
+    { title: 'Đơn hàng chờ xác nhận', count: '856' },
+    { title: 'Đơn hàng đang giao', count: '543' },
+    { title: 'Đơn hàng đã hủy', count: '321' },
   ];
 
-  // Submenu state
-  openSubmenu: string | null = null;
+  // Current date
+  currentDate: string = '';
 
   constructor() {}
 
   ngOnInit(): void {
     // Load Font Awesome dynamically
     this.loadFontAwesome();
+
+    // Format current date
+    this.formatCurrentDate();
   }
 
   private loadFontAwesome(): void {
@@ -45,12 +48,12 @@ export class TrangChuComponent implements OnInit {
     document.head.appendChild(link);
   }
 
-  // Toggle submenu function
-  toggleSubmenu(menuName: string): void {
-    if (this.openSubmenu === menuName) {
-      this.openSubmenu = null;
-    } else {
-      this.openSubmenu = menuName;
-    }
+  // Format current date in Vietnamese
+  private formatCurrentDate(): void {
+    const now = new Date();
+    const day = now.getDate();
+    const month = now.getMonth() + 1;
+    const year = now.getFullYear();
+    this.currentDate = `Ngày ${day} tháng ${month}, ${year}`;
   }
 }

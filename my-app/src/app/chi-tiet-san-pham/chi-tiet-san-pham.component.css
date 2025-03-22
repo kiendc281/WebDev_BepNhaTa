@@ -180,15 +180,8 @@
 .button-xam {
   padding: 10px;
 }
-.buttonmua {
-  display: flex;
-  /* padding: 10px 30px; */
-  border-radius: 10px;
-  background: #ea5c2b;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  align-self: stretch;
+.buttonmua .button-cam {
+  width: 100%;
 }
 .quantity-control {
   display: flex;
@@ -218,7 +211,7 @@
 }
 
 .quantity-control button:hover {
-  background-color: #ea5c2b;
+  background-color: var(--color-camdam);
   color: white;
 }
 
@@ -983,11 +976,11 @@
 }
 
 .recipes-navigation .nav-button-left {
-  left: 5px;
+  left: 80px;
 }
 
 .recipes-navigation .nav-button-right {
-  right: 5px;
+  right: 80px;
   transform: translateY(-50%) rotate(180deg);
 }
 

@@ -6,6 +6,8 @@ import { Recipe } from '../models/recipe.interface';
 import { HttpClientModule } from '@angular/common/http';
 import { FavoritesService } from '../services/favorites.service';
 import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
+import { ProductService } from '../services/product.service';
+import { Product } from '../models/product.interface';
 
 interface IngredientPackage {
   id: string;
@@ -20,7 +22,7 @@ interface IngredientPackage {
   imports: [CommonModule, RouterModule, HttpClientModule, BreadcrumbComponent],
   templateUrl: './chi-tiet-cong-thuc.component.html',
   styleUrls: ['./chi-tiet-cong-thuc.component.css'],
-  providers: [RecipeService],
+  providers: [RecipeService, ProductService],
 })
 export class ChiTietCongThucComponent implements OnInit {
   recipe: Recipe | null = null;
@@ -34,13 +36,22 @@ export class ChiTietCongThucComponent implements OnInit {
   notification = {
     show: false,
     message: '',
-    type: 'success',
+    type: 'success' as 'success' | 'error',
   };
+  matchingProduct: Product | null = null;
+
+  // Thêm biến cho công thức gợi ý
+  currentRecipePage: number = 0;
+  recipesPerPage: number = 3;
+  suggestedRecipes: Recipe[] = [];
+  visibleRecipes: Recipe[] = [];
+  savedRecipes: Set<string> = new Set();
 
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
-    private favoritesService: FavoritesService
+    private favoritesService: FavoritesService,
+    private productService: ProductService
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +60,8 @@ export class ChiTietCongThucComponent implements OnInit {
       if (id) {
         this.loadRecipe(id);
         this.checkFavoriteStatus(id);
+        this.loadSavedRecipes();
+        this.loadSuggestedRecipes(id);
       }
     });
   }
@@ -105,6 +118,9 @@ export class ChiTietCongThucComponent implements OnInit {
             : Object.keys(this.recipe.servingsOptions)[0];
         }
         this.isLoading = false;
+
+        // Check if there's a matching product for this recipe
+        this.checkForMatchingProduct(id);
       },
       error: (error) => {
         console.error('Error loading recipe:', error);
@@ -152,7 +168,12 @@ export class ChiTietCongThucComponent implements OnInit {
     });
   }
 
-  toggleSaveRecipe(): void {
+  toggleSaveRecipe(event?: Event, recipeId?: string): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
     const userStr = localStorage.getItem('user');
     if (!userStr) {
       this.showNotification(
@@ -162,35 +183,54 @@ export class ChiTietCongThucComponent implements OnInit {
       return;
     }
 
-    if (!this.recipe || !this.recipe._id) {
+    // If recipeId is provided, use it, otherwise use the current recipe's ID
+    const targetRecipeId = recipeId || this.recipe?._id;
+    if (!targetRecipeId) {
       console.error('Không có thông tin công thức');
       return;
     }
 
-    const recipeId = this.recipe._id;
+    // Check if the recipe is already saved
+    const isSaved = recipeId ? this.isRecipeSaved(recipeId) : this.isSaved;
 
     console.log(
       'Đang xử lý lưu công thức:',
-      recipeId,
+      targetRecipeId,
       'trạng thái hiện tại:',
-      this.isSaved
+      isSaved
     );
 
     this.favoritesService
-      .toggleFavorite(recipeId, 'recipe', this.isSaved)
+      .toggleFavorite(targetRecipeId, 'recipe', isSaved)
       .subscribe({
         next: (response) => {
           console.log('Kết quả lưu công thức:', response);
           if (response.success) {
-            this.isSaved = !this.isSaved;
-            if (this.isSaved) {
+            if (recipeId) {
+              // If this is a suggested recipe
+              if (isSaved) {
+                this.savedRecipes.delete(recipeId);
+              } else {
+                this.savedRecipes.add(recipeId);
+              }
+            } else {
+              // If this is the main recipe
+              this.isSaved = !this.isSaved;
+            }
+
+            const recipeName = recipeId
+              ? this.suggestedRecipes.find((r) => r._id === recipeId)
+                  ?.recipeName
+              : this.recipe?.recipeName;
+
+            if (isSaved) {
               this.showNotification(
-                `Đã thêm "${this.recipe?.recipeName}" vào danh sách yêu thích`,
+                `Đã xóa "${recipeName}" khỏi danh sách yêu thích`,
                 'success'
               );
             } else {
               this.showNotification(
-                `Đã xóa "${this.recipe?.recipeName}" khỏi danh sách yêu thích`,
+                `Đã thêm "${recipeName}" vào danh sách yêu thích`,
                 'success'
               );
             }
@@ -223,5 +263,91 @@ export class ChiTietCongThucComponent implements OnInit {
     setTimeout(() => {
       this.notification.show = false;
     }, 3000);
+  }
+
+  // Thêm các phương thức cho công thức gợi ý
+  loadSuggestedRecipes(currentRecipeId: string): void {
+    this.recipeService.getRecipes().subscribe({
+      next: (recipes) => {
+        // Lọc bỏ công thức hiện tại
+        const filteredRecipes = recipes.filter(
+          (r) => r._id !== currentRecipeId
+        );
+        // Lấy ngẫu nhiên 6 công thức
+        this.suggestedRecipes = this.getRandomRecipes(filteredRecipes, 6);
+        this.updateVisibleRecipes();
+      },
+      error: (error) => {
+        console.error('Error loading suggested recipes:', error);
+      },
+    });
+  }
+
+  getRandomRecipes(recipes: Recipe[], count: number): Recipe[] {
+    const shuffled = [...recipes].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  }
+
+  updateVisibleRecipes(): void {
+    const start = this.currentRecipePage * this.recipesPerPage;
+    this.visibleRecipes = this.suggestedRecipes.slice(
+      start,
+      start + this.recipesPerPage
+    );
+  }
+
+  prevRecipePage(): void {
+    if (this.currentRecipePage > 0) {
+      this.currentRecipePage--;
+      this.updateVisibleRecipes();
+    }
+  }
+
+  nextRecipePage(): void {
+    if (
+      this.currentRecipePage <
+      Math.ceil(this.suggestedRecipes.length / this.recipesPerPage) - 1
+    ) {
+      this.currentRecipePage++;
+      this.updateVisibleRecipes();
+    }
+  }
+
+  isRecipeSaved(recipeId: string): boolean {
+    return this.savedRecipes.has(recipeId);
+  }
+
+  // Thêm phương thức để tải danh sách công thức đã lưu
+  loadSavedRecipes(): void {
+    this.favoritesService.getFavoritesWithDetails('recipe').subscribe({
+      next: (favorites) => {
+        this.savedRecipes.clear();
+        favorites.forEach((item) => {
+          if (item.targetId) {
+            this.savedRecipes.add(item.targetId);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Lỗi khi tải danh sách công thức yêu thích:', error);
+      },
+    });
+  }
+
+  // Check if there's a product matching this recipe
+  checkForMatchingProduct(recipeId: string): void {
+    this.productService.getProductByRecipeId(recipeId).subscribe({
+      next: (product) => {
+        this.matchingProduct = product;
+        console.log(
+          'Matching product for recipe:',
+          product ? product.ingredientName : 'None found'
+        );
+      },
+      error: (error) => {
+        console.error('Error finding matching product:', error);
+        this.matchingProduct = null;
+      },
+    });
   }
 }

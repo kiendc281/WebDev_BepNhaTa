@@ -102,6 +102,7 @@ input[type="password"]::-webkit-password-toggle {
 
 .forgot-password a:hover {
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .button-cam {
@@ -124,8 +125,9 @@ input[type="password"]::-webkit-password-toggle {
   font-weight: 500;
 }
 
-.login-link a {
+.login-link a:hover {
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .error-message {
@@ -139,12 +141,12 @@ input[type="password"]::-webkit-password-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #28A745;
+  color: green;
   font-size: 16px;
   font-weight: 600;
   margin: 16px 0;
   padding: 12px;
-  background-color: #D4EDDA;
+  background-color: #d4edda;
   border-radius: 8px;
   animation: fadeIn 0.3s ease-in-out;
 }
@@ -165,12 +167,12 @@ input[type="password"]::-webkit-password-toggle {
 }
 
 .button-cam:disabled {
-  background: #CCCCCC;
+  background: #cccccc;
   cursor: not-allowed;
 }
 
 .button-cam.loading {
-  background: #F15A24;
+  background: var(--color-camvua);
   color: white;
   border: none;
   border-radius: 8px;
@@ -190,7 +192,7 @@ input[type="password"]::-webkit-password-toggle {
   height: 20px;
   border-radius: 50%;
   border: 2px solid white;
-  border-top-color: #F15A24;
+  border-top-color: var(--color-camvua);
   animation: spin 1s linear infinite;
 }
 

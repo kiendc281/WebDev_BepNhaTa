@@ -27,6 +27,17 @@ export class BlogComponent implements OnInit {
   constructor(private blogService: BlogService, private router: Router) {}
 
   ngOnInit(): void {
+    // Khôi phục tùy chọn số mục trên trang từ localStorage
+    try {
+      const savedPageSize = localStorage.getItem('blogItemsPerPage');
+      if (savedPageSize) {
+        this.itemsPerPage = parseInt(savedPageSize, 10);
+        console.log('Đã khôi phục số mục trên trang:', this.itemsPerPage);
+      }
+    } catch (e) {
+      console.error('Không thể đọc số mục trên trang từ localStorage', e);
+    }
+
     this.loadBlogs();
   }
 
@@ -102,6 +113,14 @@ export class BlogComponent implements OnInit {
     this.calculateTotalPages();
     this.currentPage = 1; // Reset về trang đầu tiên khi thay đổi số mục trên trang
     this.updatePaginatedBlogs();
+
+    // Lưu trữ tùy chọn số mục hiển thị vào localStorage
+    try {
+      localStorage.setItem('blogItemsPerPage', this.itemsPerPage.toString());
+      console.log('Đã lưu số mục trên trang:', this.itemsPerPage);
+    } catch (e) {
+      console.error('Không thể lưu số mục trên trang vào localStorage', e);
+    }
   }
 
   getPageNumbers(): number[] {
@@ -217,5 +236,18 @@ export class BlogComponent implements OnInit {
     return this.sortDirection === 'asc'
       ? 'bi bi-sort-down-alt'
       : 'bi bi-sort-up';
+  }
+
+  // Pagination methods
+  previousPage(): void {
+    this.onPageChange(this.currentPage - 1);
+  }
+
+  nextPage(): void {
+    this.onPageChange(this.currentPage + 1);
+  }
+
+  goToPage(page: number): void {
+    this.onPageChange(page);
   }
 }

@@ -15,7 +15,7 @@ import { CartManagerService } from '../services/cart-manager.service';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './dang-nhap.component.html',
-  styleUrl: './dang-nhap.component.css'
+  styleUrl: './dang-nhap.component.css',
 })
 export class DangNhapComponent {
   @Output() closePopup = new EventEmitter<void>();
@@ -76,28 +76,31 @@ export class DangNhapComponent {
       this.authService.login(emailOrPhone, password).subscribe({
         next: (response) => {
           console.log('Đăng nhập thành công:', response);
-          
+
           // Không cần lưu token và user ở đây vì đã được xử lý trong authService.login
           console.log('Token đã được lưu, bắt đầu đồng bộ giỏ hàng...');
-          
+
           // Kiểm tra giỏ hàng hiện tại trong localStorage
           const localCart = localStorage.getItem('cart');
-          console.log('Giỏ hàng hiện tại trong localStorage trước khi đồng bộ:', localCart);
-          
+          console.log(
+            'Giỏ hàng hiện tại trong localStorage trước khi đồng bộ:',
+            localCart
+          );
+
           // Merge cart from local storage with server cart
           this.cartService.mergeCartsAfterLogin().subscribe({
             next: (cart) => {
               console.log('Giỏ hàng đã được đồng bộ thành công:', cart);
-              
+
               // Hiển thị thông báo thành công
               this.loading = false;
               this.successMessage = 'Đăng nhập thành công!';
-              
+
               // Đợi 1.5 giây rồi đóng popup và chuyển hướng
               setTimeout(() => {
                 this.onClose();
                 // Tải lại trang để đảm bảo giỏ hàng được cập nhật đúng
-                window.location.href = '/';
+                window.location.href = '/trang-chu';
               }, 1500);
             },
             error: (error) => {
@@ -105,23 +108,26 @@ export class DangNhapComponent {
               // Vẫn tiếp tục đăng nhập thành công dù có lỗi giỏ hàng
               this.loading = false;
               this.successMessage = 'Đăng nhập thành công!';
-              
+
               setTimeout(() => {
                 this.onClose();
-                this.router.navigate(['/']);
+                this.router.navigate(['/trang-chu']);
               }, 1500);
-            }
+            },
           });
         },
         error: (error) => {
           console.error('Lỗi đăng nhập:', error);
           this.loading = false;
           if (error.status === 0) {
-            this.errorMessage = 'Không thể kết nối đến server. Vui lòng thử lại sau.';
+            this.errorMessage =
+              'Không thể kết nối đến server. Vui lòng thử lại sau.';
           } else if (error.status === 401) {
             this.errorMessage = 'Email/Số điện thoại hoặc mật khẩu không đúng';
           } else {
-            this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+            this.errorMessage =
+              error.error?.message ||
+              'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
           }
         },
       });

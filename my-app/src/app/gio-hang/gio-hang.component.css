@@ -265,10 +265,9 @@ select.form-control {
 }
 
 .cart-item-name {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 13px !important;
   margin-bottom: 5px;
-  color: var(--color-camdam);
+  color: #000 !important;
 }
 
 .cart-item-price {
@@ -688,16 +687,14 @@ select.form-control {
 }
 
 .product-name {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin: 0 0 5px;
-  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 5px;
 }
 
 .product-serving {
-  font-size: 0.85rem;
+  font-size: 14px;
   color: #666;
-  margin: 0;
 }
 
 /* Price */
@@ -1056,10 +1053,10 @@ select.form-control {
 }
 
 .item-name {
-  font-size: 14px;
+  font-size: 13px !important;
   font-weight: 500;
   margin: 0;
-  color: #333;
+  color: #000 !important;
   white-space: normal;
   word-break: break-word;
   max-width: 100%;

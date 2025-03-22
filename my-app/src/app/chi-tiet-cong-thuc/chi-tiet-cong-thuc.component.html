@@ -248,8 +248,126 @@
         alt=""
       />{{ isSaved ? "Đã lưu công thức" : "Lưu công thức" }}
     </button>
-    <button class="button-cam mt-3 w-100" routerLink="/san-pham">
-      XEM GÓI NGUYÊN LIỆU
+
+    <button
+      class="button-cam mt-3 w-100"
+      [routerLink]="
+        matchingProduct
+          ? ['/chi-tiet-san-pham', matchingProduct._id]
+          : '/san-pham'
+      "
+    >
+      {{ matchingProduct ? "MUA GÓI NGUYÊN LIỆU " : "MUA GÓI NGUYÊN LIỆU" }}
     </button>
+  </div>
+</div>
+
+<!-- Công thức gợi ý -->
+<div class="recipes-section" *ngIf="recipe">
+  <div class="suggested-recipes-container">
+    <div class="suggested-recipes">
+      <div class="section-title">
+        <h2>Công thức <span>Bạn có thể thích</span></h2>
+      </div>
+
+      <div class="recipes-navigation">
+        <!-- Nút điều hướng trái -->
+        <button
+          class="nav-button nav-button-left"
+          (click)="prevRecipePage()"
+          [disabled]="currentRecipePage === 0"
+        >
+          <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
+        </button>
+
+        <div class="products-grid">
+          <div class="product-card" *ngFor="let recipe of visibleRecipes">
+            <div
+              class="save-button"
+              (click)="toggleSaveRecipe($event, recipe._id)"
+            >
+              <span class="heart-icon" *ngIf="!isRecipeSaved(recipe._id)">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="#6c757d"
+                  class="bi bi-heart"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                  />
+                </svg>
+              </span>
+              <svg
+                *ngIf="isRecipeSaved(recipe._id)"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="#dc3545"
+                class="bi bi-heart-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                />
+              </svg>
+            </div>
+            <a [routerLink]="['/cong-thuc', recipe._id]">
+              <img
+                [src]="recipe.recipeImage"
+                [alt]="recipe.recipeName"
+                class="product-image"
+              />
+              <div class="product-content">
+                <h5 class="product-title">{{ recipe.recipeName }}</h5>
+                <div class="product-info">
+                  <div class="info-item">
+                    <img
+                      src="../../assets/san-pham/khauphan.svg"
+                      alt="category"
+                    />
+                    <span>4 Người</span>
+                  </div>
+                  <div class="info-item">
+                    <img
+                      src="../../assets/san-pham/dokho.svg"
+                      alt="difficulty"
+                    />
+                    <span>{{ recipe.difficulty }}</span>
+                  </div>
+                  <div class="info-item">
+                    <img
+                      src="../../assets/san-pham/ph-cooking-pot.svg"
+                      alt="time"
+                    />
+                    <span>{{ recipe.time }}</span>
+                  </div>
+                </div>
+                <div class="product-actionss">
+                  <button class="button-camnhat">XEM CHI TIẾT</button>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Nút điều hướng phải -->
+        <button
+          class="nav-button nav-button-right"
+          (click)="nextRecipePage()"
+          [disabled]="
+            currentRecipePage >= suggestedRecipes.length / recipesPerPage - 1
+          "
+        >
+          <img src="../../assets/trang-chu/slider.svg" alt="Next" />
+        </button>
+      </div>
+    </div>
+    <div class="view-more">
+      <button class="button-cam" routerLink="/cong-thuc">XEM THÊM</button>
+    </div>
   </div>
 </div>

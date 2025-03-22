@@ -60,7 +60,10 @@
               <a
                 routerLink="/san-pham"
                 class="dropdown-toggle"
-                [class.active]="currentRoute.startsWith('/san-pham') || currentRoute.startsWith('/chi-tiet-san-pham')"
+                [class.active]="
+                  currentRoute.startsWith('/san-pham') ||
+                  currentRoute.startsWith('/chi-tiet-san-pham')
+                "
                 >Sản phẩm</a
               >
               <div class="dropdown-content">
@@ -92,7 +95,9 @@
               [class.active]="currentRoute === '/len-thuc-don'"
               >Lên thực đơn</a
             >
-            <a routerLink="/blog" [class.active]="currentRoute === '/blog'"
+            <a
+              routerLink="/blog"
+              [class.active]="currentRoute.startsWith('/blog')"
               >Blog</a
             >
             <a
@@ -322,7 +327,10 @@
       <div
         class="mobile-dropdown"
         [class.active]="activeDropdown === 'sanpham'"
-        [class.active-route]="currentRoute.startsWith('/san-pham') || currentRoute.startsWith('/chi-tiet-san-pham')"
+        [class.active-route]="
+          currentRoute.startsWith('/san-pham') ||
+          currentRoute.startsWith('/chi-tiet-san-pham')
+        "
       >
         <div
           class="mobile-dropdown-toggle"
@@ -367,7 +375,7 @@
       <a
         routerLink="/blog"
         (click)="closeMobileMenu()"
-        [class.active]="currentRoute === '/blog'"
+        [class.active]="currentRoute.startsWith('/blog')"
         >Blog</a
       >
       <a
