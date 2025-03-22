@@ -2,47 +2,62 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 50px 70px;
-  flex-shrink: 0;
+  margin: 50px auto;
+  max-width: 1280px;
   gap: 20px;
-  padding-top: 20px;
+  padding: 20px;
 }
+
 .container {
   display: flex;
   flex-direction: row;
-  gap: 71px;
+  gap: 50px;
+  width: 100%;
 }
+
 .container-leftpanel {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  height: auto;
-  width: 300px;
+  width: 25%;
   position: sticky;
-  top: 160px;
-  height: fit-content;
+  top: 120px;
   align-self: flex-start;
 }
 
 .button-cam,
 .button-trang {
   display: flex;
-  align-items: center; /* Căn giữa theo chiều dọc */
-  justify-content: space-between; /* Chữ bên trái, icon bên phải */
-  width: 300px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 15px;
   border: 2px solid var(--color-camdam);
+  background-color: white;
+  color: var(--color-camdam);
   cursor: pointer;
+  transition: all 0.3s ease;
 }
+
+.button-cam span,
+.button-trang span {
+  flex: 1;
+}
+
 .button-cam img,
 .button-trang img {
-  width: 20px; /* Điều chỉnh kích thước icon */
+  width: 20px;
   height: 20px;
-  margin-left: auto; /* Đẩy icon về phía bên phải */
+}
+
+.button-trang:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .container-rightpanel {
   display: flex;
-  width: 953px;
+  flex: 1;
   padding: 20px;
   flex-direction: column;
   gap: 14px;
@@ -51,10 +66,16 @@
   background: white;
 }
 
+.faq-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .right-content {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 15px;
   border-radius: 10px;
   border: 1px solid var(--color-camnhat);
   background: #fff;
@@ -64,7 +85,7 @@
 }
 
 .right-content.expanded {
-  border: 1px solid var(--color-camdam); /* Khi mở rộng, đổi màu viền */
+  border: 1px solid var(--color-camdam);
 }
 
 .question-container {
@@ -76,19 +97,21 @@
 
 .question {
   flex: 1;
+  line-height: 1.4;
 }
 
 .question-container img {
   width: 20px;
   height: 20px;
+  margin-left: 10px;
 }
 
 .answer {
   font-weight: normal;
-  margin-top: 10px;
+  margin-top: 15px;
   color: #333;
   font-size: 16px;
-  display: none;
+  line-height: 1.6;
 }
 
 .right-content.expanded .answer {
@@ -96,7 +119,119 @@
 }
 
 .button-trang.active {
-  background-color: var(--color-camdam) !important;
-  color: white !important;
+  background-color: var(--color-camdam);
+  color: white;
   font-weight: bold;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .main-container {
+    margin: 40px auto;
+  }
+
+  .container {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 992px) {
+  .main-container {
+    margin: 30px auto;
+  }
+
+  .container {
+    gap: 30px;
+  }
+
+  .container-leftpanel {
+    width: 30%;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    margin: 20px auto;
+    padding: 15px;
+  }
+
+  .container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .container-leftpanel {
+    position: relative;
+    width: 100%;
+    top: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .button-cam,
+  .button-trang {
+    width: calc(50% - 10px);
+    min-width: 140px;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .button-cam span,
+  .button-trang span {
+    text-align: center;
+  }
+
+  .container-rightpanel {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .container-rightpanel h2 {
+    font-size: 1.5rem;
+  }
+
+  .right-content {
+    padding: 12px;
+  }
+
+  .question {
+    font-size: 15px;
+  }
+
+  .answer {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-container {
+    margin: 15px auto;
+    padding: 10px;
+  }
+  .button-cam,
+  .button-trang {
+    width: 100%;
+  }
+
+  .container-rightpanel {
+    padding: 12px;
+  }
+
+  .container-rightpanel h2 {
+    font-size: 1.3rem;
+  }
+
+  .right-content {
+    padding: 10px;
+  }
+
+  .question {
+    font-size: 14px;
+  }
+
+  .answer {
+    font-size: 13px;
+  }
 }
