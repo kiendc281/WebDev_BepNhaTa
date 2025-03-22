@@ -1148,7 +1148,7 @@ input.ng-invalid.ng-touched {
 .order-id-status {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   margin-bottom: 16px;
 }
 

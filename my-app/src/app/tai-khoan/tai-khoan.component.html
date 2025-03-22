@@ -202,7 +202,10 @@
             *ngIf="!loading && (!userOrders || userOrders.length === 0)"
             class="empty-state"
           >
-            <i class="bi bi-clipboard-x" style="font-size: 60px; color: #ccc;"></i>
+            <i
+              class="bi bi-clipboard-x"
+              style="font-size: 60px; color: #ccc"
+            ></i>
             <p>Bạn chưa có đơn hàng nào</p>
           </div>
 
@@ -217,7 +220,7 @@
                     <div class="order-date">
                       Ngày đặt hàng: {{ formatDate(order.createdAt) }}
                     </div>
-                    <div class="order-id">Đơn hàng #{{ order._id }}</div>
+                    <div class="order-id">Mã đơn hàng #{{ order._id }}</div>
                   </div>
                   <span
                     [class]="'order-status ' + getStatusClass(order.status)"
@@ -1472,7 +1475,14 @@
     <div class="modal-body" *ngIf="selectedOrder">
       <div class="order-header-info">
         <div class="order-id-status">
-          <div class="order-id">MÃ ĐƠN HÀNG: {{ selectedOrder._id }}</div>
+          <div>
+            <div class="order-date">
+              Ngày đặt hàng: {{ formatDate(selectedOrder.createdAt) }}
+            </div>
+            <div class="order-id mt-2">
+              Mã đơn hàng: #{{ selectedOrder._id }}
+            </div>
+          </div>
           <div [class]="'order-status ' + getStatusClass(selectedOrder.status)">
             {{ selectedOrder.status }}
           </div>
@@ -1514,8 +1524,8 @@
             <div class="product-serving" *ngIf="item.servingSize">
               Khẩu phần: {{ item.servingSize }} người
             </div>
+            <div class="product-quantity">x{{ item.quantity }}</div>
           </div>
-          <div class="product-quantity">x{{ item.quantity }}</div>
           <div class="product-price">
             {{ formatPrice(item.totalPrice || 0) }}
           </div>
