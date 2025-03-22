@@ -84,6 +84,7 @@ input.submitted.ng-invalid {
   color: var(--color-camdam);
   text-decoration: none;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .back-link a:hover {
