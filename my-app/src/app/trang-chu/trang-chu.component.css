@@ -581,6 +581,7 @@
   transition: all 0.3s ease;
   border: 1px solid transparent;
   width: 380px;
+  cursor: pointer;
 }
 
 .tip-card:hover {
