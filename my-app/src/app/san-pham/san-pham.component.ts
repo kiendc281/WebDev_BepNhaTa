@@ -141,7 +141,7 @@ export class SanPhamComponent implements OnInit {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.updateDisplayedPages();
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
@@ -149,7 +149,7 @@ export class SanPhamComponent implements OnInit {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.updateDisplayedPages();
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
@@ -157,7 +157,7 @@ export class SanPhamComponent implements OnInit {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.updateDisplayedPages();
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
@@ -181,6 +181,9 @@ export class SanPhamComponent implements OnInit {
   filterByCategory(category: string): void {
     this.selectedCategory = category;
     this.currentPage = 1;
+
+    // Scroll to top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     if (category === 'all') {
       this.loadProducts();
@@ -510,6 +513,8 @@ export class SanPhamComponent implements OnInit {
     }
     // Đặt lại về trang 1 và áp dụng bộ lọc
     this.currentPage = 1;
+    // Scroll to top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.filterByIngredients();
   }
 
@@ -518,6 +523,8 @@ export class SanPhamComponent implements OnInit {
     this.selectedIngredients = [];
     this.selectedCategory = 'all';
     this.currentPage = 1;
+    // Scroll to top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.loadProducts();
   }
 }
