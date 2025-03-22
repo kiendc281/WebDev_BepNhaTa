@@ -1,16 +1,41 @@
 <!-- Thông báo -->
-<div *ngIf="notification.show" 
-     class="notification" 
-     [ngClass]="{'notification-success': notification.type === 'success', 'notification-error': notification.type === 'error'}">
+<div
+  *ngIf="notification.show"
+  class="notification"
+  [ngClass]="{
+    'notification-success': notification.type === 'success',
+    'notification-error': notification.type === 'error'
+  }"
+>
   <div class="notification-content">
     <div *ngIf="notification.type === 'success'" class="notification-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
       </svg>
     </div>
     <div *ngIf="notification.type === 'error'" class="notification-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <circle cx="12" cy="12" r="10"></circle>
         <line x1="12" y1="8" x2="12" y2="12"></line>
         <line x1="12" y1="16" x2="12" y2="16"></line>
@@ -81,7 +106,10 @@
             <div class="post-meta">
               <!-- <span class="author">Đăng bởi: <span class="author-name">{{ post.author }}</span></span> -->
               <span class="author"
-                >Đăng bởi: <span class="author-name">{{ post.author?.name || 'Bếp Nhà Ta' }}</span></span
+                >Đăng bởi:
+                <span class="author-name">{{
+                  post.author?.name || "Bếp Nhà Ta"
+                }}</span></span
               >
               <span>|</span>
               <span class="date">{{
@@ -99,7 +127,9 @@
             <div class="post-excerpt">
               <p>{{ post.description }}</p>
             </div>
-            <div class="post-actions d-flex align-items-center justify-content-between">
+            <div
+              class="post-actions d-flex align-items-center justify-content-between"
+            >
               <button
                 [routerLink]="['/blog', post._id]"
                 class="button-cam btn-sm"
@@ -111,11 +141,32 @@
                 class="button-camnhat btn-sm"
                 [class.saved]="post.saved"
               >
-                <svg *ngIf="post.saved" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                <svg
+                  *ngIf="post.saved"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="#ffffff"
+                  class="bi bi-heart-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                  />
                 </svg>
-                <svg *ngIf="!post.saved" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                <svg
+                  *ngIf="!post.saved"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-heart"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                  />
                 </svg>
                 {{ post.saved ? "Đã lưu bài viết" : "Lưu bài viết" }}
               </button>
@@ -142,30 +193,41 @@
 
   <!-- Pagination -->
   <div
-    class="pagination"
+    class="d-flex justify-content-between align-items-center my-3"
     *ngIf="!loading && !error && filteredBlogPosts.length > itemsPerPage"
   >
-    <button
-      class="page-number"
-      (click)="previousPage()"
-      [disabled]="currentPage === 1"
-    >
-      ←
-    </button>
-    <button
-      class="page-number"
-      *ngFor="let page of displayedPages"
-      [class.active]="currentPage === page"
-      (click)="goToPage(page)"
-    >
-      {{ page }}
-    </button>
-    <button
-      class="page-number"
-      (click)="nextPage()"
-      [disabled]="currentPage === totalPages"
-    >
-      →
-    </button>
+    <div class="pagination-info">
+      <span
+        >Trang <b>{{ currentPage }}</b> / {{ totalPages }}</span
+      >
+      <span class="mx-2">|</span>
+      <span
+        >Hiển thị <b>{{ paginatedBlogPosts.length }}</b> trên tổng số
+        {{ filteredBlogPosts.length }} bài viết</span
+      >
+    </div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination mb-0">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="previousPage()">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        </li>
+        <li
+          *ngFor="let page of displayedPages"
+          class="page-item"
+          [class.active]="page === currentPage"
+        >
+          <button class="page-link" (click)="goToPage(page)">
+            {{ page }}
+          </button>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button class="page-link" (click)="nextPage()">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
