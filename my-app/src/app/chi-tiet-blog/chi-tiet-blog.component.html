@@ -103,12 +103,16 @@
 
           <!-- Nút lưu bài viết -->
           <div class="save-blog-actions">
-            <button 
-              class="btn save-button" 
+            <button
+              class="btn save-button"
               [class.saved]="blogPost.saved"
-              (click)="savePost()">
-              <i class="bi" [ngClass]="blogPost.saved ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
-              {{ blogPost.saved ? 'Đã lưu' : 'Lưu bài viết' }}
+              (click)="savePost()"
+            >
+              <i
+                class="bi"
+                [ngClass]="blogPost.saved ? 'bi-bookmark-fill' : 'bi-bookmark'"
+              ></i>
+              {{ blogPost.saved ? "Đã lưu" : "Lưu bài viết" }}
             </button>
             <button class="btn like-button" (click)="likePost()">
               <i class="bi bi-heart"></i> Thích
@@ -235,39 +239,6 @@
         <div class="sidebar">
           <div class="sidebar-widget">
             <h3 class="widget-title">
-              <span class="title-text">Bài viết liên quan</span>
-              <span class="title-underline"></span>
-            </h3>
-            <div class="related-posts">
-              <div class="related-post-item" *ngFor="let post of relatedPosts">
-                <div class="post-image">
-                  <a [routerLink]="['/blog', post._id]">
-                    <img
-                      [src]="post.thumbnail"
-                      [alt]="post.title"
-                      class="img-fluid"
-                    />
-                  </a>
-                </div>
-                <div class="post-info">
-                  <span class="post-category">{{ post.category.name }}</span>
-                  <h4 class="post-title">
-                    <a [routerLink]="['/blog', post._id]">{{ post.title }}</a>
-                  </h4>
-                  <div class="post-meta">
-                    <span class="date">{{
-                      post.publishDate | date : "dd/MM/yyyy"
-                    }}</span>
-                    <span class="divider">|</span>
-                    <span class="views">{{ post.views }} lượt xem</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="sidebar-widget">
-            <h3 class="widget-title">
               <span class="title-text">Danh mục</span>
               <span class="title-underline"></span>
             </h3>
@@ -302,6 +273,38 @@
                 >
               </li>
             </ul>
+          </div>
+          <div class="sidebar-widget">
+            <h3 class="widget-title">
+              <span class="title-text">Bài viết nổi bật</span>
+              <span class="title-underline"></span>
+            </h3>
+            <div class="related-posts">
+              <div class="related-post-item" *ngFor="let post of relatedPosts">
+                <div class="post-image">
+                  <a [routerLink]="['/blog', post._id]">
+                    <img
+                      [src]="post.thumbnail"
+                      [alt]="post.title"
+                      class="img-fluid"
+                    />
+                  </a>
+                </div>
+                <div class="post-info">
+                  <span class="post-category">{{ post.category.name }}</span>
+                  <h4 class="post-title">
+                    <a [routerLink]="['/blog', post._id]">{{ post.title }}</a>
+                  </h4>
+                  <div class="post-meta">
+                    <span class="date">{{
+                      post.publishDate | date : "dd/MM/yyyy"
+                    }}</span>
+                    <span class="divider">|</span>
+                    <span class="views">{{ post.views }} lượt xem</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
