@@ -10,9 +10,10 @@
 
 .banner {
   margin: auto;
-  width: 100%;
+  width: 95%;
   max-width: 100%;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .banner img {

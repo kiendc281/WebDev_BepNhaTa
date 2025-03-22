@@ -16,12 +16,15 @@ a {
 
 .banner-image {
   max-height: 400px;
+  width: 95%;
   overflow: hidden;
+  margin: auto;
 }
 
 .banner-image img {
   object-fit: cover;
-  width: 100%;
+  width: 95%;
+  margin-top: 20px;
 }
 
 /* Blog Title Section Styles */
