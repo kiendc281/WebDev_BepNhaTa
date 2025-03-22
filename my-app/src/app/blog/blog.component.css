@@ -19,6 +19,7 @@ a {
   width: 95%;
   overflow: hidden;
   margin: auto;
+  cursor: pointer;
 }
 
 .banner-image img {
