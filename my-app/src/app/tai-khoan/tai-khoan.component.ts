@@ -386,8 +386,8 @@ export class TaiKhoanComponent implements OnInit {
             // Hiển thị thông báo lỗi bằng toast
             this.showToast(
               'error',
-              'Lỗi!',
-              error.message || 'Không thể cập nhật thông tin tài khoản'
+              'Lỗi',
+              'Email đã được được sử dụng. Vui lòng nhập Email khác!'
             );
           },
         });
