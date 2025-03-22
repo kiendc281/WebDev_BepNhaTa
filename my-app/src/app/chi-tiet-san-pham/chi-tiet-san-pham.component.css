@@ -180,19 +180,8 @@
 .button-xam {
   padding: 10px;
 }
-.buttonmua {
-  display: flex;
-  /* padding: 10px 30px; */
-  border-radius: 10px;
-  background: var(--color-camdam);
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  width: fit-content;
-  align-self: stretch;
+.buttonmua .button-cam {
+  width: 100%;
 }
 .quantity-control {
   display: flex;
