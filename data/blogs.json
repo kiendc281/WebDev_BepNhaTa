@@ -6,7 +6,7 @@
   },
   "title": "Cách phân biệt tôm sú và giá trị dinh dưỡng",
   "slug": "cach-phan-biet-tom-su-va-gia-tri-dinh-duong",
-  "author": "AC03",
+  "author": "AC01",
   "views": 0,
   "likes": 0,
   "likedBy": [],
@@ -102,56 +102,734 @@
 {
   "_id": "BL02",
   "category": {
-    "name": "Món ngon",
-    "slug": "mon-ngon"
+    "name": "Mẹo nấu ăn",
+    "slug": "meo-nau-an"
   },
-  "title": "Các món ngon từ tôm sú",
-  "author": "AC05",
-  "views": 0,
+  "title": "Sơ chế dạ dày heo thế nào cho hết đắng và cách luộc dạ dày trắng giòn",
+  "slug": "so-che-da-day-heo-the-nao-cho-het-dang-va-cach-luoc-da-day-trang-gion",
+  "author": "AC01",
+  "views": 835,
   "likes": 0,
   "likedBy": [],
-  "description": "Tôm sú là nguyên liệu phổ biến để chế biến nhiều món ăn thơm ngon, bổ dưỡng.",
-  "thumbnail": "https://monngonmoingay.com/wp-content/smush-webp/2024/01/tom-su-nuong.jpg.webp",
+  "description": "Để khử mùi hôi cũng như làm sạch nhớt bẩn từ dạ dày heo rất đơn giản, chỉ cần các nguyên liệu sẵn có trong nhà bếp là xong ngay nhé!",
+  "thumbnail": "https://monngonmoingay.com/wp-content/smush-webp/2024/11/da-day-heo-1-1280x853.jpg.webp",
   "sections": [
     {
       "content": {
-        "title": "1. Tôm sú nướng muối ớt",
+        "title": "Sơ chế dạ dày heo",
         "text": [
-          "Tôm sú ướp muối, ớt, tỏi băm và nướng trên than hoa.",
-          "Món ăn có hương vị cay nhẹ, đậm đà và rất hấp dẫn."
+          "Để khử mùi hôi cũng như làm sạch nhớt bẩn từ dạ dày chỉ cần các nguyên liệu sẵn có trong nhà bếp.",
+          "Đầu tiên, dùng dao sắc lọc bỏ phần mỡ thừa bám xung quanh. Sau đó rắc chút bột mì vào mặt trong dạ dày, bóp tuốt bỏ đi. Chú ý tuốt và cho phần chất dư này vào túi rác, vì nếu đổ xuống cống kết dính với dầu mỡ tồn dư trong cống lâu dài dễ làm tắc cống.",
+          "Để khử mùi hôi hiệu quả theo chia sẻ của những hàng bán lòng nên sử dụng các chất chua như mẻ hoặc nước muối dưa chua, chanh, giấm cho vào bóp, rửa sạch. Chính acid lactic trong mẻ, giấm hoặc acid citric trong chanh giúp làm mềm dạ dày bằng cách phá vỡ các liên kết cơ săn chắc. Hơn nữa làm acid này cũng tăng độ mềm mịn của mô liên kết giúp thẩm thấu gia vị vào trong và món ăn có hương vị tốt hơn.",
+          "Ngoài ra, để khử mùi có thể cho chút nước mắm vào nồi nước cùng gừng, hành đập dập rồi cho dạ dày vào chần sơ, vớt ra cho vào nước lạnh, dùng dao cạo và rửa sạch lại. Có nhà dùng hỗn hợp rượu gừng bóp cũng khử mùi hiệu quả. Với cách sơ chế này đảm bảo có có dạ dày trắng thơm đẹp mắt.",
+          "Chú ý không bóp muối nhiều và lâu bởi quy tắc \"muối tách, đường giữ\", muối làm \"ra nước\" khiến dạ dày bị dai khi luộc hoặc chế biến các món ăn."
         ],
-        "imageUrl": "https://monngonmoingay.com/wp-content/smush-webp/2024/01/tom-su-nuong.jpg.webp",
-        "imageCaption": "Tôm sú nướng muối ớt thơm ngon."
+        "imageUrl": "https://monngonmoingay.com/wp-content/smush-webp/2024/11/da-day-heo-1-1280x853.jpg.webp",
+        "imageCaption": ""
       },
       "order": 1,
       "_id": {
-        "$oid": "67cc0f5a58572d5544b0d071"
+        "$oid": "67d50f2978d1158dd6330a96"
       }
     },
     {
       "content": {
-        "title": "2. Tôm sú hấp bia",
+        "title": "Dùng bột mỳ và chanh",
         "text": [
-          "Tôm sú hấp cùng bia, sả và lá chanh giúp giữ nguyên hương vị ngọt tự nhiên.",
-          "Món ăn đơn giản nhưng rất bổ dưỡng và thơm ngon."
+          "Đối với một chiếc dạ dày lợn bình thường, bạn cần sử dụng khoảng 4 muỗng canh bột mỳ và một trái chanh tươi khoảng 70 – 80 gram.",
+          "Đầu tiên, bạn dùng tay lộn phần trong của dạ dày ra ngoài, để lộ ra nhớt vàng. Cho bột mỳ và chanh tươi cắt lát vào, xoa bóp cho bột phủ đều phần nhớt, nhớ bóp mạnh tay để chanh nát ra giúp khử mùi hôi. Sau đó, bạn sẽ thấy bột mỳ dình chặt vào phần nhớt. Bạn chỉ cần dùng tay đẩy nhẹ bột mỳ, kéo hết lớp nhớt ra khỏi dạ dày.",
+          "Sau khi đẩy hết chất nhờn ra cùng bột mỳ, bạn rửa sạch lại với nước và một chút muối là được. Mùi hôi dạ dày sẽ không còn nữa."
         ],
         "imageUrl": "",
         "imageCaption": ""
       },
       "order": 2,
       "_id": {
-        "$oid": "67cc0f5a58572d5544b0d072"
+        "$oid": "67d50f2978d1158dd6330a97"
+      }
+    },
+    {
+      "content": {
+        "title": "Dùng giấm và muối trắng",
+        "text": [
+          "Muối và giấm là nguyên liệu làm sạch, khử mùi rất hữu hiệu. Đầu tiên, bạn lộn phần trong của dạ dày ra ngoài, sau đó cho 3 muỗng canh muối hạt và 1/2 bát giấm vào (bạn có thể dùng giấm nuôi, giấm gạo hoặc giấm táo đều được).",
+          "Dùng tay xoa bóp nhanh để muối xát vào phần nhớt của dạ dày. Sau khoảng 3 phút, bạn sẽ thấy phần nhớt từ từ trôi đi theo động tác xoa bóp.",
+          "Cuối cùng, bạn rửa sạch dạ dày nhiều lần với nước là được."
+        ],
+        "imageUrl": "",
+        "imageCaption": ""
+      },
+      "order": 3,
+      "_id": {
+        "$oid": "67d50f2978d1158dd6330a98"
+      }
+    },
+    {
+      "content": {
+        "title": "Luộc qua với nước nóng",
+        "text": [
+          "Bắc nồi nước lên bếp, cho vào một ít muối và vài lát gừng tươi, bật lửa đun sôi nước rồi cho dạ dày vào chần nhanh. Sau khi vớt ra, bạn dùng dao nhẹ nhàng cạo đi lớp nhớt đã co lại rồi rửa sạch là có ngay chiếc dạ dày sạch bóng."
+        ],
+        "imageUrl": "",
+        "imageCaption": ""
+      },
+      "order": 4,
+      "_id": {
+        "$oid": "67d50f2978d1158dd6330a99"
+      }
+    },
+    {
+      "content": {
+        "title": "Dùng nước mắm",
+        "text": [
+          "Việc bóp dạ dày bằng nước mắm cũng có thể giúp bạn loại bỏ mùi hôi cũng như độ nhớt trên dạ dày lợn. Với cách làm này, bạn sẽ tiết kiệm được thời gian và hiệu quả làm sạch cao, đặc biệt khi ăn sẽ thấy rất thơm ngon.",
+          "Lưu ý, bạn nên sử dụng nước mắm cốt vì nó có độ mặn cao, hiệu quả làm sạch sẽ cao hơn. Vì mùi nước mắm rất nồng nên trong quá trình bóp dạ dày với nước mắm, bạn nên đeo bao tay và làm nhẹ nhàng."
+        ],
+        "imageUrl": "",
+        "imageCaption": ""
+      },
+      "order": 5,
+      "_id": {
+        "$oid": "67d50f2978d1158dd6330a9a"
+      }
+    },
+    {
+      "content": {
+        "title": "Cách luộc dạ dày trắng giòn",
+        "text": [
+          "Sau khi đã làm sạch dạ dày, việc luộc sao cho giòn, trắng và không bị dai là điều quan trọng tiếp theo.",
+          "Đun sôi nồi nước với vài lát gừng tươi và một ít muối. Khi nước sôi, cho dạ dày vào luộc trong khoảng 15-20 phút. Trong quá trình luộc, bạn có thể thêm một ít giấm (khoảng 1-2 muỗng canh) vào nước luộc để dạ dày trắng đẹp hơn.",
+          "Cách kiểm tra dạ dày đã chín chưa là dùng đũa đâm thử, nếu thấy hơi dai một chút là được. Lúc này, bạn vớt dạ dày ra, cho ngay vào tô nước lạnh có đá để dạ dày được giòn.",
+          "Sau khi dạ dày nguội, cắt thành những lát mỏng vừa ăn. Bạn có thể chế biến thành các món như dạ dày luộc chấm mắm gừng, dạ dày xào chua ngọt, dạ dày nấu lagu, v.v."
+        ],
+        "imageUrl": "",
+        "imageCaption": ""
+      },
+      "order": 6,
+      "_id": {
+        "$oid": "67d50f2978d1158dd6330a9b"
       }
     }
   ],
   "publishDate": {
-    "$date": "2025-03-08T09:35:22.639Z"
+    "$date": "2024-11-12T00:00:00.000Z"
   },
   "createdAt": {
-    "$date": "2025-03-08T09:35:22.639Z"
+    "$date": "2024-11-12T00:00:00.000Z"
   },
   "updatedAt": {
-    "$date": "2025-03-08T09:35:22.639Z"
+    "$date": "2024-11-12T00:00:00.000Z"
+  }
+},
+{
+  "_id": "BL03",
+  "category": {
+    "name": "Mẹo nấu ăn",
+    "slug": "meo-nau-an"
   },
-  "slug": "cac-mon-ngon-tu-tom-su"
+  "title": "Ăn yến mạch giảm cân đúng hay không? Các cách ăn yến mạch giảm cân",
+  "slug": "an-yen-mach-giam-can-dung-hay-khong-va-cac-cach-an-yen-mach-giam-can",
+  "author": "AC01",
+  "views": 1250,
+  "likes": 0,
+  "likedBy": [],
+  "description": "Yến mạch là một loại ngũ cốc nguyên hạt rất giàu dinh dưỡng và được nhiều người sử dụng làm bữa chính buổi sáng. Do yến mạch giàu carbs và chất xơ lành mạnh nên nó trở thành một loại thực phẩm hỗ trợ giảm cân lý tưởng.",
+  "thumbnail": "https://pasgo.vn/Upload/anh-blog/an-yen-mach-giam-can-dung-hay-khong--cac-cach-an-yen-mach-giam-can-800-129066154524.webp", 
+  "sections": [
+    {
+      "content": {
+        "title": "1. Ăn yến mạch giảm cân đúng hay không?",
+        "text": [
+          "Như chúng ta đã biết, yến mạch là một loại thực phẩm ngũ cốc rất giàu dinh dưỡng. Đặc biệt yến mạch có chứa rất nhiều hàm lượng chất xơ và carbs nên nó rất hiệu quả cho quá trình ăn kiêng và giảm cân. Hãy cùng tìm hiểu thêm về chế độ ăn kiêng, những lợi ích và rủi ro có thể gặp phải với bột yến mạch dưới đây nhé!"
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/dungtv/anh-bai-blog/anyenmachgiamcandunghaysai/%C4%82n-y%E1%BA%BFn-m%E1%BA%A1ch-gi%E1%BA%A3m-c%C3%A2n-%C4%91%C3%BAng-hay-sai-1.jpg",
+        "imageCaption": "Yến mạch là thực phẩm giàu dinh dưỡng và hỗ trợ giảm cân hiệu quả"
+      },
+      "order": 1,
+      "_id": {
+        "$oid": "67fd1a5a58572d5544b0d073"
+      }
+    },
+    {
+      "content": {
+        "title": "a. Chế độ ăn kiêng với bột yến mạch là gì?",
+        "text": [
+          "Chế độ ăn kiêng với bột yến mạch có nghĩa là chỉ ăn kiêng với một loại thực phẩm ngũ cốc chính duy nhất đó là bột yến mạch. Hay nói cách khác đó là ăn yến mạch như món chính của bạn.",
+          "Kế hoạch ăn kiêng bột yến mạch bao gồm ba giai đoạn:",
+          "Giai đoạn 1: Ăn bột yến mạch trong ba bữa/ngày trong một tuần đầu tiên. Ăn yến mạch nguyên hạt thay vì yến mạch ăn liền. Bạn có thể thêm một số loại trái cây vào yến mạch trong giai đoạn này.",
+          "Giai đoạn 2: Trong tuần thứ hai, bạn cần ăn yến mạch ít nhất một hoặc hai bữa/ngày. Bữa còn lại nên ăn ít chất béo và đường. Bạn có thể ăn bột yến mạch ăn liền và cũng có thể thêm nhiều trái cây và rau vào yến mạch của bạn.",
+          "Giai đoạn 3: Trong giai đoạn thứ ba, bạn nên ăn một bữa bột yến mạch/ngày. Các bữa còn lại bạn ăn uống bình thường nhưng hạn chế hoặc ăn ít đồ có chứa chất béo và đường. Bạn có thể ăn yến mạch ăn liền và ăn nhiều trái cây và rau vào yến mạch của bạn."
+        ],
+        "imageUrl": "",
+        "imageCaption": "Chế độ ăn kiêng với yến mạch gồm 3 giai đoạn chính"
+      },
+      "order": 2,
+      "_id": {
+        "$oid": "67fd1a5a58572d5544b0d074"
+      }
+    },
+    {
+      "content": {
+        "title": "b. Lợi ích của chế độ ăn bột yến mạch",
+        "text": [
+          "Bột yến mạch là lựa chọn tốt cho bữa sáng vì nó giúp bạn cảm thấy no lâu.",
+          "Ăn bột yến mạch làm giảm nguy cơ mắc các bệnh về tim và ung thư đại trực tràng.",
+          "Yến mạch nguyên hạt có thể giúp giảm huyết áp của bạn.",
+          "Chúng cũng hỗ trợ tiêu hóa do giàu chất xơ."
+        ],
+        "imageUrl": "",
+        "imageCaption": "Yến mạch mang lại nhiều lợi ích cho sức khỏe và quá trình giảm cân"
+      },
+      "order": 3,
+      "_id": {
+        "$oid": "67fd1a5a58572d5544b0d075"
+      }
+    },
+    {
+      "content": {
+        "title": "c. Rủi ro của chế độ ăn kiêng với bột yến mạch",
+        "text": [
+          "Chế độ ăn kiêng với bột yến mạch có thể gây hại cho sức khỏe của bạn, cũng giống như các chế độ ăn kiêng khác chỉ tập trung vào một loại thực phẩm. Điều đó nó sẽ làm mất cân bằng dinh dưỡng cho một người.",
+          "Những rủi ro mà bạn gặp phải có thể như khó duy trì được việc giảm cân, sỏi thận, bệnh gút, tăng nguy cơ mắc các vấn đề về sức khỏe mãn tính (bệnh tim, huyết áp cao, loãng xương, ung thư,...)"
+        ],
+        "imageUrl": "",
+        "imageCaption": "Chế độ ăn kiêng quá khắt khe với yến mạch cũng tiềm ẩn rủi ro sức khỏe"
+      },
+      "order": 4,
+      "_id": {
+        "$oid": "67fd1a5a58572d5544b0d076"
+      }
+    },
+    {
+      "content": {
+        "title": "2. Các cách ăn yến mạch giảm cân",
+        "text": [
+          "Như đã đề cập, bột yến mạch rất giàu dinh dưỡng và chúng ta có thể tùy biến để sử dụng nó một cách hiệu quả nhất cho chế độ ăn kiêng giảm cân của mình. Bột yến mạch có thể chế biến làm cháo yến mạch, các loại bánh yến mạch,...",
+          "Sau đây là một số cách giảm cân thông minh với bột yến mạch tuyệt vời mà có thể bạn chưa biết đến:"
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/dungtv/anh-bai-blog/anyenmachgiamcandunghaysai/%C4%82n-y%E1%BA%BFn-m%E1%BA%A1ch-gi%E1%BA%A3m-c%C3%A2n-%C4%91%C3%BAng-hay-sai-2.jpg",
+        "imageCaption": "Yến mạch có thể chế biến thành nhiều món ăn hỗ trợ giảm cân"
+      },
+      "order": 5,
+      "_id": {
+        "$oid": "67fd1a5a58572d5544b0d077"
+      }
+    },
+    {
+      "content": {
+        "title": "Cháo yến mạch truyền thống",
+        "text": [
+          "Cháo yến mạch được nấu với nước hoặc sữa ít béo là cách phổ biến nhất để ăn yến mạch giảm cân. Bạn có thể thêm các loại hạt, trái cây tươi hoặc khô để tăng hương vị mà không cần thêm đường.",
+          "Cách làm: Đun sôi 1 cốc nước hoặc sữa ít béo, thêm 1/2 cốc yến mạch và đun nhỏ lửa trong 5 phút. Có thể thêm một ít quế, hạt chia hoặc trái cây tươi để tăng hương vị."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/dungtv/anh-bai-blog/anyenmachgiamcandunghaysai/%C4%82n-y%E1%BA%BFn-m%E1%BA%A1ch-gi%E1%BA%A3m-c%C3%A2n-%C4%91%C3%BAng-hay-sai-7.jpg",
+        "imageCaption": "Cháo yến mạch truyền thống là món ăn giảm cân phổ biến và hiệu quả"
+      },
+      "order": 6,
+      "_id": {
+        "$oid": "67fd1a5a58572d5544b0d078"
+      }
+    },
+    {
+      "content": {
+        "title": "Overnight oats",
+        "text": [
+          "Đây là phương pháp tiết kiệm thời gian vào buổi sáng. Bạn ngâm yến mạch trong sữa hoặc sữa chua qua đêm, khi thức dậy đã có ngay bữa sáng lành mạnh.",
+          "Cách làm: Trộn 1/2 cốc yến mạch với 1/2 cốc sữa ít béo hoặc sữa chua Hy Lạp, thêm một ít mật ong hoặc trái cây theo sở thích. Đậy kín và để trong tủ lạnh qua đêm."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/dungtv/anh-bai-blog/anyenmachgiamcandunghaysai/%C4%82n-y%E1%BA%BFn-m%E1%BA%A1ch-gi%E1%BA%A3m-c%C3%A2n-%C4%91%C3%BAng-hay-sai-10.jpg",
+        "imageCaption": "Overnight oats - phương pháp chuẩn bị yến mạch tiết kiệm thời gian"
+      },
+      "order": 7,
+      "_id": {
+        "$oid": "67fd1a5a58572d5544b0d079"
+      }
+    },
+    {
+      "content": {
+        "title": "Smoothie yến mạch",
+        "text": [
+          "Thêm yến mạch vào smoothie không chỉ làm tăng lượng chất xơ mà còn giúp bạn cảm thấy no lâu hơn.",
+          "Cách làm: Xay 1/4 cốc yến mạch với 1 cốc sữa ít béo, 1/2 quả chuối, và 1/2 cốc trái cây đông lạnh theo sở thích."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/dungtv/anh-bai-blog/anyenmachgiamcandunghaysai/%C4%82n-y%E1%BA%BFn-m%E1%BA%A1ch-gi%E1%BA%A3m-c%C3%A2n-%C4%91%C3%BAng-hay-sai-9.jpg",
+        "imageCaption": "Smoothie yến mạch - lựa chọn tuyệt vời cho bữa sáng hoặc sau tập luyện"
+      },
+      "order": 8,
+      "_id": {
+        "$oid": "67fd1a5a58572d5544b0d080"
+      }
+    }
+  ],
+  "publishDate": {
+    "$date": "2021-11-16T00:00:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2021-11-16T00:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2021-11-16T00:00:00.000Z"
+  }
+},
+{
+  "_id": "BL04",
+  "category": {
+    "name": "Đặc sản vùng miền",
+    "slug": "dac-san-vung-mien"
+  },
+  "title": "Đến Đà Nẵng nếu chẳng ăn mỳ Quảng thật sự là quá uổng",
+  "slug": "den-da-nang-neu-chang-an-my-quang-that-su-la-qua-uong",
+  "author": "AC02",
+  "views": 1425,
+  "likes": 0,
+  "likedBy": [],
+  "description": "Để tìm được một quán mỳ Quảng Đà Nẵng ngon thì vừa dễ lại vừa khó. Dễ ở chỗ, có rất nhiều nhà hàng ngon để chọn, khó cũng ở chỗ, có … quá nhiều để lựa.",
+  "thumbnail": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/nguyendoan/anh-blog/am-thuc-my-quang-o-da-nang/my-quang-da-nang-1.jpg",
+  "sections": [
+    {
+      "content": {
+        "title": "Mỳ Quảng, món ăn tưởng chừng dân dã nhưng đậm đà đến nhường nào",
+        "text": [
+          "Mỳ Quảng đối với người Đà Nẵng đã quá quen thuộc, đến độ vào cả thơ ca:",
+          "\"Thương nhau múc bát chè xanh",
+          "Làm tô mì Quảng mời anh xơi cùng\"",
+          "Thế mới biết tình cảm người dân Đà Nẵng dành cho tô mỳ Quảng, vốn tưởng dân dã, mà đậm đà đến nhường nào. Mà có gì trong tô mỳ Quảng đâu, chỉ là ít vắt mỳ, vài miếng thịt gà, bò hay cá lóc được kho kĩ, nửa quả trứng ăn kèm với đậu phộng, bánh đa nướng và rau sống, ấy thế mà chiếm được cảm tình của biết bao nhiêu người, từ người địa phương cho đến những người con xa quê, đi đâu cũng mong ngóng tìm cho bằng được một hàng ăn sáng có mỳ Quảng để khuây khỏa đi nỗi nhớ nhà."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/nguyendoan/anh-blog/am-thuc-my-quang-o-da-nang/my-quang-da-nang-2.jpg",
+        "imageCaption": "Tô mỳ Quảng đặc trưng của miền phố biển"
+      },
+      "order": 1,
+      "_id": {
+        "$oid": "68015c9d4532a9c6fa2a9b01"
+      }
+    },
+    {
+      "content": {
+        "title": "Món ăn Việt vươn tầm thế giới",
+        "text": [
+          "Không chỉ dừng lại ở đó, tô mỳ Quảng Đà Nẵng còn vươn tầm với, bước ra thế giới cùng bạn bè năm châu, để những thực khách phương xa chỉ một lần nếm thử đều gật gù khen ngợi. Và gần đây, mỳ Quảng đã được công nhận là 1 trong 12 món ăn Việt Nam có giá trị ẩm thực ở Châu Á rồi đấy nhé. Quá xứng đáng đúng không nào!",
+          "Vậy thì bí mật nào đã khiến cái tên mỳ Quảng trở nên nổi tiếng như thế? Mọi thứ đều có nguyên do của nó. Tưởng không công phu mà công phu không tưởng..."
+        ],
+        "imageUrl": "",
+        "imageCaption": ""
+      },
+      "order": 2,
+      "_id": {
+        "$oid": "68015c9d4532a9c6fa2a9b02"
+      }
+    },
+    {
+      "content": {
+        "title": "Công phu trong từng sợi mỳ",
+        "text": [
+          "Gạo được chọn làm mỳ Quảng phải là loại gạo quê ngon, được ngâm ít nhất trong vòng 1 tiếng, sau đó cho vào cối xay mịn, tráng thành những lá mỳ mỏng, xếp chồng lên nhau và thái sợi bằng máy hoặc tay. Bật mí cho các bạn là nếu dùng dầu phụng phi với củ nén đập dập chín thơm thoa lên bề mặt của bánh thì sợi mỳ sẽ thơm hơn và không bị kết dính đấy!"
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/nguyendoan/anh-blog/am-thuc-my-quang-o-da-nang/my-quang-da-nang-3.jpg",
+        "imageCaption": "Sợi mỳ vàng óng ả nhờ bột nghệ và dầu phụng"
+      },
+      "order": 3,
+      "_id": {
+        "$oid": "68015c9d4532a9c6fa2a9b03"
+      }
+    },
+    {
+      "content": {
+        "title": "Linh hồn của tô mỳ Quảng",
+        "text": [
+          "Yếu tố làm nên sự thành công chính là \"nước nhưn\" chan vào tô Mỳ. Theo truyền thống thì nguyên liệu chính là tôm tự nhiên và thịt heo tươi. Tôm sau khi lấy đầu, làm sạch để nguyên con thì được ướp cùng với thịt, một ít tôm được giã nát để cho vào nước tạo vị ngọt tự nhiên."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/nguyendoan/anh-blog/am-thuc-my-quang-o-da-nang/my-quang-da-nang-4.jpg",
+        "imageCaption": "\"Nước nhưn\" đậm đà là linh hồn của món ăn"
+      },
+      "order": 4,
+      "_id": {
+        "$oid": "68015c9d4532a9c6fa2a9b04"
+      }
+    },
+    {
+      "content": {
+        "title": "Rau ăn kèm - điểm nhấn không thể thiếu",
+        "text": [
+          "Một yếu tố không kém phần quan trọng chính là rổ rau sống ăn kèm. Đối với người gốc Quảng khi làm mỳ thì nhất định phải là loại rau từ làng rau Trà Quế tiếng tăm lẫy lừng chứ không được là loại nào khác, gồm rau húng lủi, rau quế xanh và đặc biệt là phải có hoa chuối thái mỏng. Riêng đối với cá nhân tôi, một người ghiền ăn mỳ Quảng, thì tô mỳ không thể nào thiếu đi trái ớt xanh, thiếu ớt là mất ngon ngay, đã ăn là phải đưa 1 đũa mỳ lên, rồi cầm trái ớt xanh cắn cái \"bụp\" nghe cay cay, vừa ăn vừa xuýt xoa thế mới \"đã\"."
+        ],
+        "imageUrl": "",
+        "imageCaption": ""
+      },
+      "order": 5,
+      "_id": {
+        "$oid": "68015c9d4532a9c6fa2a9b05"
+      }
+    },
+    {
+      "content": {
+        "title": "Khám phá quán mỳ Quảng ngon ở Đà Nẵng",
+        "text": [
+          "Để tìm được một quán mỳ Quảng Đà Nẵng ngon thì vừa dễ lại vừa khó. Dễ ở chỗ, có rất nhiều nhà hàng ngon để chọn, khó cũng ở chỗ, có … quá nhiều để lựa. Hãy để PasGo điểm danh một số quán mỳ Quảng Đà Nẵng ngon và nổi tiếng trong lòng dân địa phương và khách du lịch nhé."
+        ],
+        "imageUrl": "",
+        "imageCaption": ""
+      },
+      "order": 6,
+      "_id": {
+        "$oid": "68015c9d4532a9c6fa2a9b06"
+      }
+    },
+    {
+      "content": {
+        "title": "Nhà hàng Phố Cổ Cafe & Restaurant Phan Đăng Lưu",
+        "text": [
+          "Nhà hàng Phố Cổ Cafe & Restaurant là địa điểm lý tưởng để bạn thưởng thức mỳ Quảng ngon đúng điệu cùng nhiều món ăn truyền thống khác của Đà Nẵng và miền Trung.",
+          "Địa chỉ: Số 167 Phan Đăng Lưu, Phường Hoà Cường Bắc, Quận Hải Châu, TP.Đà Nẵng"
+        ],
+        "imageUrl": "",
+        "imageCaption": ""
+      },
+      "order": 7,
+      "_id": {
+        "$oid": "68015c9d4532a9c6fa2a9b07"
+      }
+    }
+  ],
+  "publishDate": {
+    "$date": "2018-03-07T00:00:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2018-03-07T00:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2018-03-07T00:00:00.000Z"
+  }
+},
+{
+  "_id": "BL05",
+  "category": {
+    "name": "Đặc sản vùng miền",
+    "slug": "dac-san-vung-mien"
+  },
+  "title": "Top 15+ quán phở Hà Nội chuẩn vị cổ truyền ngon nổi tiếng",
+  "slug": "top-15-quan-pho-ha-noi-chuan-vi-co-truyen-ngon-noi-tieng",
+  "author": "AC01",
+  "views": 2150,
+  "likes": 0,
+  "likedBy": [],
+  "description": "Phở Hà Nội có rất nhiều những địa chỉ khác nhau tuy nhiên người \"sành ăn\" sẽ dễ dàng nhận thấy sự khác biệt giữa nước dùng, hương vị cũng như độ tươi ngon của thành phần nguyên liệu. Cùng PasGo Team tham khảo những địa chỉ phở Hà Nội chuẩn vị truyền thống \"chính gốc\" của người Hà Thành.",
+  "thumbnail": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/lanmkt/phohanoi/pho-ha-noi-khac-biet.jpg",
+  "sections": [
+    {
+      "content": {
+        "title": "I. Đặc sản phở Hà Nội có gì khác biệt?",
+        "text": [
+          "Món phở Hà Nội là đặc sản hấp dẫn xuất hiện từ giai đoạn những năm 1930. Giai đoạn thịnh hành nhất của phở là 1960 - 1990 với món phở Hà Nội không thịt. Thời điểm những năm thập niên 90 thì phở được ăn cùng quẩy hấp dẫn, giòn rụm.",
+          "Phở Hà Nội xưa kia được bán rong trên những gánh hàng với nước dùng được nấu chung cùng với quế, hồi, xương bò ninh kỹ và nhiều loại gia vị. Người xưa bán gánh phở với một bên là quang gánh và một bên là nồi nước dùng thơm phức.",
+          "Ngày nay phở Hà Nội được bán trong các nhà hàng từ bình dân cho đến cao cấp đáp ứng mọi nhu cầu của những thực khách. Ngoài việc giữ hương vị truyền thống thì phở ngày nay còn có thêm nhiều gia vị như hạt nêm, mì chính hay gia vị phở bán sẵn tổng hợp. Thịt trong phở cũng rất đa dạng với nhiều cách chế biến khác nhau như thịt bò chín, thịt bò tái hay thịt xào lăn. Phở ngày nay có thể thưởng thức cùng cả quẩy và trứng trần hấp dẫn."
+        ],
+        "imageUrl": "",
+        "imageCaption": "Phở Hà Nội ngày nay đa dạng và gia giảm gia vị phù hợp hơn"
+      },
+      "order": 1,
+      "_id": {
+        "$oid": "680160fc4532a9c6fa2a9b10"
+      }
+    },
+    {
+      "content": {
+        "title": "II. Những quán phở GIA TRUYỀN lâu đời nổi tiếng nhất Hà Nội",
+        "text": [
+          "Hà Nội nổi tiếng với nhiều quán phở gia truyền lâu đời, giữ gìn được bí quyết nấu nước dùng đặc biệt qua nhiều thế hệ. Dưới đây là những quán phở nổi tiếng mà bạn không nên bỏ lỡ khi đến thủ đô."
+        ],
+        "imageUrl": "",
+        "imageCaption": ""
+      },
+      "order": 2,
+      "_id": {
+        "$oid": "680160fc4532a9c6fa2a9b11"
+      }
+    },
+    {
+      "content": {
+        "title": "1. Phở VY NAM – Quán Phở Huyền Thoại Hà Nội Với Hương Vị Truyền Thống Đậm Đà",
+        "text": [
+          "Địa chỉ: 119 Tam Trinh, Mai Động, Hoàng Mai, Hà Nội.",
+          "Mức giá: 35.000 - 55.000 đ/bát",
+          "Giờ mở cửa: Từ gần 5h sáng đến hơn 11h trưa",
+          "Nếu bạn là tín đồ của phở Hà Nội và đang tìm kiếm một địa chỉ uy tín để thưởng thức món phở ngon chuẩn vị, Phở Vy Nam chắc chắn sẽ là lựa chọn không thể bỏ qua. Với gần 40 năm hình thành và phát triển, Phở Vy Nam đã trở thành một trong những thương hiệu phở nổi tiếng và đông khách nhất thủ đô.",
+          "Phở Vy Nam được biết đến là quán phở huyền thoại của hàng vạn thực khách sành ăn, nổi bật với công thức nước dùng phở bò ngon đặc biệt, tạo nên hương vị thơm ngon khó quên. Quán không chỉ thu hút khách địa phương mà còn là điểm đến yêu thích của rất nhiều du khách trong và ngoài nước. Chỉ trong buổi sáng quán phục vụ lượng khách lên tới 1500 người, 5h sáng thực khách đã xếp hàng rất đông để thưởng thức phở ngon.",
+          "Một trong những yếu tố khiến Phở Vy Nam nổi bật chính là công thức nước dùng độc đáo, được ninh từ xương và thịt tươi ngon, hầm trong nhiều giờ để lấy được độ ngọt tự nhiên, tạo nên một hương vị khó quên cho mỗi thực khách khi thưởng thức.",
+          "Thịt bò luôn được chọn lọc kỹ lưỡng, đảm bảo tươi ngon mỗi ngày. Quầy thịt sạch sẽ luôn đầy ắp, được thái miếng rất đẹp, kết hợp với nước dùng thơm ngon tạo nên một tô phở hoàn hảo."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/Ngoc%20Diem%20emopas/10.1/pho-vy-nam-2.jpg",
+        "imageCaption": "Phở Vy Nam - quán phở huyền thoại của Hà Nội với hơn 40 năm lịch sử"
+      },
+      "order": 3,
+      "_id": {
+        "$oid": "680160fc4532a9c6fa2a9b12"
+      }
+    },
+    {
+      "content": {
+        "title": "2. Phở Thìn Lò Đúc - Quán phở ngon hơn nửa thế kỷ, 5h sáng đã xếp hàng",
+        "text": [
+          "Địa chỉ: 13 Lò Đúc, Phạm Đình Hổ, Hai Bà Trưng, Hà Nội",
+          "Mức giá: 70.000 - 80.000 đ/bát",
+          "Giờ mở cửa: 5h00 - 11h và 17h30 - 20h30 hàng ngày",
+          "Quán Phở Thìn Lò Đúc đã có lịch sử phát triển hơn 40 năm, là một trong những quán phở ngon lâu đời nổi tiếng nhất Hà Nội. Quán là địa chỉ yêu thích của rất nhiều thực khách Hà Thành và các tỉnh lân cận.",
+          "Đặc biệt, quán phở Thìn nổi tiếng với cách chế biến thịt bò xào trước khi cho vào tô phở. Đây là điểm khác biệt so với cách làm phở truyền thống khác, tạo nên hương vị đặc biệt riêng có. Thịt bò được xào với hành khô, tỏi, gừng, cùng các gia vị khác tạo nên hương vị thơm ngon khác biệt.",
+          "Nước dùng của phở Thìn trong veo và ngọt thanh, không quá mặn hay quá ngọt, tạo nên sự cân bằng hoàn hảo. Đặc biệt, Phở Thìn không cho thêm mì chính hoặc đường vào nước dùng, giúp giữ được vị ngon tự nhiên."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/lanmkt/phohanoi/pho-ha-noi-pho-lam.jpg",
+        "imageCaption": "Phở Thìn Lò Đúc nổi tiếng với phở bò xào đặc biệt"
+      },
+      "order": 4,
+      "_id": {
+        "$oid": "680160fc4532a9c6fa2a9b13"
+      }
+    },
+    {
+      "content": {
+        "title": "3. Phở Bát Đàn - Thương hiệu phở trăm tuổi giữa lòng phố cổ",
+        "text": [
+          "Địa chỉ: 49 Bát Đàn, Hoàn Kiếm, Hà Nội",
+          "Mức giá: 50.000 - 60.000 đ/bát",
+          "Giờ mở cửa: 6h00 - 10h30 và 17h30 - 21h00",
+          "Phở Bát Đàn là một trong những quán phở lâu đời nhất tại Hà Nội với lịch sử hơn 100 năm. Quán nằm trên con phố cổ nhỏ, giữ nguyên không gian phở truyền thống với những chiếc bàn gỗ nhỏ và ghế thấp.",
+          "Điểm đặc biệt của Phở Bát Đàn là nước dùng được ninh từ xương ống bò trong nhiều giờ, sau đó được lọc kỹ để loại bỏ cặn, tạo nên vị ngọt tự nhiên, trong veo và thơm đặc trưng của phở Hà Nội xưa.",
+          "Phở Bát Đàn phục vụ cả phở bò và phở gà, nhưng nổi tiếng nhất vẫn là phở bò với các loại thịt như tái, nạm, gầu, sách... Bánh phở ở đây mỏng, dai và thơm, ăn kèm với hành hoa và rau thơm tạo nên hương vị hài hòa, đậm đà."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/lanmkt/phohanoi/pho-ha-noi-pho-nguyet.jpg",
+        "imageCaption": "Phở Bát Đàn - thương hiệu phở trăm năm tuổi tại Hà Nội"
+      },
+      "order": 5,
+      "_id": {
+        "$oid": "680160fc4532a9c6fa2a9b14"
+      }
+    },
+    {
+      "content": {
+        "title": "4. Phở Lý Quốc Sư - Quán phở ngon đông khách bậc nhất Hà Nội",
+        "text": [
+          "Địa chỉ: 10 Lý Quốc Sư, Hoàn Kiếm, Hà Nội",
+          "Mức giá: 60.000 - 75.000 đ/bát",
+          "Giờ mở cửa: 6h00 - 14h00 và 17h30 - 22h00",
+          "Phở Lý Quốc Sư đã có mặt tại Hà Nội từ hơn 70 năm và đã trở thành điểm đến quen thuộc của nhiều thế hệ người Hà Nội. Quán nằm ở vị trí đắc địa, ngay trung tâm phố cổ nên luôn đông khách, đặc biệt là vào buổi sáng.",
+          "Điểm nổi bật của Phở Lý Quốc Sư chính là nước dùng trong, ngọt thanh nhưng vẫn đậm đà hương vị. Bánh phở mỏng, dai và không bị nát khi ăn. Thịt bò tươi ngon, được thái mỏng vừa phải, chín tới khi chan nước dùng.",
+          "Quán phục vụ đa dạng các loại phở như phở tái, phở chín, phở tái nạm, phở tái gầu... để thực khách lựa chọn theo sở thích. Đặc biệt, phở ở đây có thể ăn kèm với quẩy nóng giòn, tạo nên sự kết hợp hoàn hảo."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/lanmkt/phohanoi/pho-ha-noi-pho-bo-phu-xuan.jpg",
+        "imageCaption": "Phở Lý Quốc Sư - điểm đến quen thuộc của nhiều thế hệ người Hà Nội"
+      },
+      "order": 6,
+      "_id": {
+        "$oid": "680160fc4532a9c6fa2a9b15"
+      }
+    },
+    {
+      "content": {
+        "title": "5. Phở Tư Lùn - Quán phở làm nên cái tên cho một con ngõ phố cổ",
+        "text": [
+          "Địa chỉ: 34B Hàng Mã, Hoàn Kiếm, Hà Nội",
+          "Mức giá: 40.000 - 55.000 đ/bát",
+          "Giờ mở cửa: 6h00 - 12h00 hàng ngày",
+          "Phở Tư Lùn là một trong những biểu tượng của phở Hà Nội cổ truyền. Quán đã tồn tại hơn 70 năm và vẫn giữ nguyên công thức gia truyền qua nhiều thế hệ. Đặc biệt, quán nằm trong một con ngõ nhỏ trên phố Hàng Mã và con ngõ này được người dân địa phương gọi là 'ngõ phở Tư Lùn'.",
+          "Phở Tư Lùn nổi tiếng với nước dùng đặc biệt, trong veo nhưng đậm đà, được ninh từ xương bò và các gia vị tự nhiên trong nhiều giờ. Thịt bò được chọn lọc kỹ càng, thái mỏng vừa đủ và tươi ngon.",
+          "Đặc biệt, Phở Tư Lùn không sử dụng gia vị công nghiệp, chỉ dùng các gia vị tự nhiên như hành, gừng, quế, hồi... tạo nên hương vị đặc trưng khó quên. Vì vậy, dù quán không quá rộng và chỉ phục vụ buổi sáng, nhưng luôn đông khách và nhiều người sẵn sàng xếp hàng chờ đợi để thưởng thức."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/lanmkt/phohanoi/pho-ha-noi-pho-cuong-hang-muoi.jpg",
+        "imageCaption": "Phở Tư Lùn - quán phở 70 năm tuổi nổi tiếng phố cổ Hà Nội"
+      },
+      "order": 7,
+      "_id": {
+        "$oid": "680160fc4532a9c6fa2a9b16"
+      }
+    }
+  ],
+  "publishDate": {
+    "$date": "2025-02-06T00:00:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2025-02-06T00:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-06T00:00:00.000Z"
+  }
+},
+{
+  "_id": "BL06",
+  "category": {
+    "name": "Đặc sản vùng miền",
+    "slug": "dac-san-vung-mien"
+  },
+  "title": "8 đặc sản Bình Dương nổi tiếng vừa ĂN NGON vừa mang về LÀM QUÀ",
+  "slug": "8-dac-san-binh-duong-noi-tieng-ngon-bo-ban-khong-nen-bo-qua",
+  "author": "AC02",
+  "views": 950,
+  "likes": 0,
+  "likedBy": [],
+  "description": "Bình Dương không chỉ có phong cảnh đẹp tại các khu du lịch, các khu công nghiệp cao tầng, toà nhà văn phòng, nhà hàng quán ăn ngon ở Thuận An, Dĩ An, Thủ Dầu Một, Bến Cát, Tân Uyên,... Mà Bình Dương còn nổi tiếng bởi rất nhiều đặc sản ngon bổ rẻ, đặc biệt là các loại trái cây Bình Dương ngon có thể mua mang về làm quà.",
+  "thumbnail": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/01-le/00001%20Binh-duong/dac-san-vung-mien/9-dac-san-binh-duong/1.%20Hoa%20qua%CC%89%20La%CC%81i%20Thie%CC%82u.png",
+  "sections": [
+    {
+      "content": {
+        "title": "1. Đặc sản trái cây Bình Dương tại miệt vườn Lái Thiêu - Thị xã Thuận An",
+        "text": [
+          "Muốn tìm đặc sản trái cây Bình Dương nổi tiếng nhất thì phải đến miệt vườn Lái Thiêu, thuộc thị xã Thuận An, tỉnh Bình Dương. Đến với miệt vườn Lái Thiêu bạn sẽ bị thu hút bởi những hương thơm đặc biệt hòa quyện của hàng chục loại trái cây hấp dẫn như: sầu riêng, mít tố nữ, mãng cầu, vú sữa, chôm chôm,… Cái lạ ở mỗi miệt vườn là lối đi chỉ vừa có một người.",
+          "Từ tháng 5 – tháng 8 là thời điểm các loại trái cây đặc sản ở Bình Dương chín rộ nhất. Du khách đã đến Bình Dương thì chắc chắn ai cũng háo hức đến thăm vườn trái cây Lái Thiêu nổi tiếng này, vừa được thưởng thức trực tiếp trái cây ngon sạch tại vườn, vừa được mua về làm quà.",
+          "Đặc biệt: vườn trái cây Lái Thiêu không bán vé cho người vào cổng. Thay vào đó, chủ vườn sẽ tính phí dựa trên số lượng trái cây mà người tham quan đã hái và các hoạt động mà người đó tham gia tại vườn, để tránh lãng phí lượng trái cây trong vườn bị hái mà không ăn hết. Bạn cũng đừng lo lắng quá nha vì giá cả bán tại vườn thường rẻ hơn so với bạn mua ngoài chợ hoặc siêu thị đó, nên bạn hoàn toàn có thể thoải mái dạo chơi và mua đặc sản trái cây Bình Dương về làm quà nha!"
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/01-le/00001%20Binh-duong/dac-san-vung-mien/9-dac-san-binh-duong/1.%20Hoa%20qua%CC%89%20La%CC%81i%20Thie%CC%82u.png",
+        "imageCaption": "Hoa quả Lái Thiêu là một trong những đặc sản Bình Dương làm quà được yêu thích nhất"
+      },
+      "order": 1,
+      "_id": {
+        "$oid": "68033c9d4532a9c6fa2a9b30"
+      }
+    },
+    {
+      "content": {
+        "title": "Địa điểm mua đặc sản Bình Dương hoa quả Lái Thiêu nổi tiếng",
+        "text": [
+          "• Vườn cây Bé Hai tại số 93 Khu phố Hưng Thọ, Xã Hưng Định, Thị Xã Thuận An, Bình Dương",
+          "• Vườn cây Ba Tâm – số 83 Khu phố Hưng Thọ, Xã Hưng Định, Thị Xã Thuận An, Bình Dương."
+        ],
+        "imageUrl": "",
+        "imageCaption": ""
+      },
+      "order": 2,
+      "_id": {
+        "$oid": "68033c9d4532a9c6fa2a9b31"
+      }
+    },
+    {
+      "content": {
+        "title": "2. Bánh bèo bì",
+        "text": [
+          "Nhắc đến món ngon Bình Dương người ta sẽ nghĩ ngay đến món bánh bèo bì hơn 100 năm tuổi. Người đầu tiên tạo ra món ăn này là cụ Đỗ Thị Kiểng. Tầm hơn 100 năm trước, cụ Kiểng đã gánh những gánh bánh bèo đi bán khắp nơi với vị vừa ngon vừa lạ.",
+          "Bánh bèo của cụ khác với các vùng khác có bì heo trộn cùng với thịt lạc trắng, rồi phết đậu xanh trên đĩa, thêm rau sống và dưa leo. Cùng với nước chấm chua ngọt có thêm củ cải và cà rốt hòa quyện cùng mắm ớt cay xè. Cụ Kiểng đã mở quán tại chính nhà của mình, rồi truyền cho con gái và các đời cháu nối nghiệp."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/01-le/00001%20Binh-duong/dac-san-vung-mien/9-dac-san-binh-duong/2.%20Ba%CC%81nh%20be%CC%80o%20bi%CC%80.png",
+        "imageCaption": "Đặc sản Bình Dương được làm từ bì heo lạ miệng"
+      },
+      "order": 3,
+      "_id": {
+        "$oid": "68033c9d4532a9c6fa2a9b32"
+      }
+    },
+    {
+      "content": {
+        "title": "Địa chỉ mua bánh bèo đặc sản Bình Dương nổi tiếng của cụ Kiếng",
+        "text": [
+          "• Bánh Bèo Bì Mỹ Liên - 1 ĐT745, An Thạnh, Thuận An, Bình Dương",
+          "• Bánh bèo bì Dì Tám Bình Dương - 737 Đại lộ Bình Dương, Hiệp Thành, Thủ Dầu Một, Bình Dương"
+        ],
+        "imageUrl": "",
+        "imageCaption": ""
+      },
+      "order": 4,
+      "_id": {
+        "$oid": "68033c9d4532a9c6fa2a9b33"
+      }
+    },
+    {
+      "content": {
+        "title": "3. Khô gà Tai Hin và đặc sản giò chả đẳng cấp của ẩm thực Bình Dương",
+        "text": [
+          "Nếu bạn là tín đồ của ẩm thực Việt Nam và đang tìm kiếm một món đặc sản để mang về làm quà, khô gà Tai Hin chính là lựa chọn hàng đầu. Đây là một đặc sản Bình Dương nổi tiếng, mang đến hương vị thơm ngon, đậm đà mà không một ai có thể cưỡng lại.",
+          "Tai Hin là thương hiệu khô gà lâu đời và nổi tiếng nhất nhì Bình Dương. Với nguyên liệu là thịt gà tươi ngon, được chế biến theo công thức gia truyền, kết hợp với các loại gia vị đặc biệt như sả, ớt, tỏi, trái thơm, Tai Hin đã tạo ra những miếng khô gà thơm ngon, giòn dai với hương vị độc đáo.",
+          "Ngoài khô gà, giò chả cũng là một đặc sản không thể bỏ qua khi nhắc đến ẩm thực Bình Dương. Giò chả Bình Dương được làm từ thịt heo tươi ngon, kết hợp với các loại gia vị đặc biệt, tạo nên hương vị đậm đà, thơm ngon mà không nơi nào có được."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/01-le/00001%20Binh-duong/dac-san-vung-mien/9-dac-san-binh-duong/3.%20Ba%CC%81nh%20kho%CC%A3t.png",
+        "imageCaption": "Khô gà Tai Hin - Đặc sản Bình Dương mang về làm quà chất lượng"
+      },
+      "order": 5,
+      "_id": {
+        "$oid": "68033c9d4532a9c6fa2a9b34"
+      }
+    },
+    {
+      "content": {
+        "title": "4. Đặc sản gốm sứ Bình Dương là quà đặc biệt ý nghĩa cho du khách",
+        "text": [
+          "Bình Dương từ lâu đã nổi tiếng với nghề gốm sứ truyền thống, và các sản phẩm gốm sứ từ đây đã trở thành một món đặc sản được nhiều du khách tìm mua. Gốm sứ Bình Dương không chỉ đẹp mắt mà còn mang đậm giá trị văn hóa, lịch sử của vùng đất này.",
+          "Các sản phẩm gốm sứ từ Bình Dương đa dạng về hình dáng, màu sắc, và công dụng. Từ những chiếc bình hoa tinh xảo, bộ ấm trà sang trọng, đến những món đồ trang trí nhỏ xinh như tượng, lọ... tất cả đều được làm thủ công với sự tỉ mỉ và kỹ lưỡng. Đặc biệt, gốm sứ Bình Dương nổi tiếng với kỹ thuật tráng men cao cấp, tạo nên những sản phẩm có độ bền và vẻ đẹp lâu dài."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/01-le/00001%20Binh-duong/dac-san-vung-mien/9-dac-san-binh-duong/4.%20Bu%CC%81n%20To%CC%82m.png",
+        "imageCaption": "Gốm sứ Bình Dương - món quà đặc biệt ý nghĩa cho du khách"
+      },
+      "order": 6,
+      "_id": {
+        "$oid": "68033c9d4532a9c6fa2a9b35"
+      }
+    },
+    {
+      "content": {
+        "title": "5. Đặc sản bánh cốm Thuận An",
+        "text": [
+          "Một trong những đặc sản nổi tiếng của Bình Dương chính là bánh cốm Thuận An. Đây là một loại bánh truyền thống được làm từ cốm dẻo, đậu xanh, và dừa tươi, tạo nên hương vị ngọt ngào, thanh mát, và đậm đà hương vị quê hương.",
+          "Bánh cốm Thuận An được biết đến với lớp vỏ mềm mịn, màu xanh tự nhiên từ lá dứa, bên trong là nhân đậu xanh béo ngậy và thơm phức. Mỗi chiếc bánh đều được làm thủ công, thể hiện sự tỉ mỉ và truyền thống lâu đời của nghề làm bánh nơi đây.",
+          "Khi đến Bình Dương, du khách không thể bỏ qua cơ hội thưởng thức và mua về làm quà loại bánh cốm này. Nó không chỉ là một món ăn ngon mà còn là một phần của văn hóa ẩm thực đặc sắc của vùng đất này."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/01-le/00001%20Binh-duong/dac-san-vung-mien/9-dac-san-binh-duong/5.%20Ga%CC%80%20quay%20xo%CC%82i%20pho%CC%82%CC%80ng.png",
+        "imageCaption": "Bánh cốm Thuận An - đặc sản ngon ngọt của Bình Dương"
+      },
+      "order": 7,
+      "_id": {
+        "$oid": "68033c9d4532a9c6fa2a9b36"
+      }
+    },
+    {
+      "content": {
+        "title": "6. Mắm Bến Cát đặc sản Bình Dương",
+        "text": [
+          "Mắm Bến Cát là một loại mắm đặc trưng của vùng đất Bình Dương, được chế biến từ cá linh, cá sặc, cá rô... tươi ngon đánh bắt từ sông Sài Gòn. Điều đặc biệt của mắm Bến Cát là quy trình chế biến công phu và bí quyết gia truyền qua nhiều thế hệ, tạo nên một loại mắm có hương vị đậm đà, thơm ngon, và không quá mặn như những loại mắm khác.",
+          "Mắm Bến Cát không chỉ là một gia vị không thể thiếu trong nhiều món ăn dân dã của người dân địa phương mà còn là một đặc sản được nhiều du khách tìm mua về làm quà. Khi thưởng thức mắm Bến Cát, bạn có thể cảm nhận được vị mặn mòi của biển, vị ngọt tự nhiên của cá, và hương thơm đặc trưng không thể lẫn với bất kỳ loại mắm nào khác."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/01-le/00001%20Binh-duong/dac-san-vung-mien/9-dac-san-binh-duong/6.%20Bo%CC%80%20nu%CC%9Bo%CC%9B%CC%81ng%20ngo%CC%81i.png",
+        "imageCaption": "Mắm Bến Cát - đặc sản đậm đà của Bình Dương"
+      },
+      "order": 8,
+      "_id": {
+        "$oid": "68033c9d4532a9c6fa2a9b37"
+      }
+    },
+    {
+      "content": {
+        "title": "7. Bánh tráng Phú Cường - Làng nghề truyền thống nổi tiếng Bình Dương",
+        "text": [
+          "Bình Dương nổi tiếng với làng nghề bánh tráng Phú Cường, nơi sản xuất loại bánh tráng đặc biệt với chất lượng và hương vị độc đáo. Bánh tráng Phú Cường được làm từ gạo ngon, được ngâm, xay nhuyễn, và tráng thành những chiếc bánh mỏng, dẻo, và trong veo.",
+          "Điều đặc biệt của bánh tráng Phú Cường là quy trình sản xuất thủ công, từ khâu chọn gạo, ngâm gạo, xay bột, đến việc tráng bánh và phơi khô, tất cả đều được thực hiện với sự tỉ mỉ và truyền thống lâu đời. Chính vì vậy, bánh tráng ở đây có độ giòn, dẻo, và hương vị đặc trưng mà không nơi nào có được.",
+          "Khi đến Bình Dương, du khách không chỉ có cơ hội thưởng thức bánh tráng Phú Cường mà còn có thể tìm hiểu về quy trình làm bánh truyền thống và mua về làm quà cho người thân, bạn bè. Bánh tráng Phú Cường không chỉ là một món ăn ngon mà còn là một phần của di sản văn hóa ẩm thực đáng quý của vùng đất này."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/01-le/00001%20Binh-duong/dac-san-vung-mien/9-dac-san-binh-duong/7.%20Go%CC%89i%20ga%CC%80%20ma%CC%86ng%20cu%CC%A3t.png",
+        "imageCaption": "Bánh tráng Phú Cường - đặc sản truyền thống của Bình Dương"
+      },
+      "order": 9,
+      "_id": {
+        "$oid": "68033c9d4532a9c6fa2a9b38"
+      }
+    },
+    {
+      "content": {
+        "title": "8. Kẹo nho Lái Thiêu - Thức quà ngọt ngào cho người sành ăn",
+        "text": [
+          "Kẹo nho Lái Thiêu là một đặc sản truyền thống của vùng đất Bình Dương, được làm từ nho tươi ngon trồng tại vùng Lái Thiêu nổi tiếng. Đây là một loại kẹo độc đáo, mang đến hương vị ngọt ngào, thanh mát của trái nho kết hợp với sự tinh tế trong cách chế biến.",
+          "Quy trình làm kẹo nho Lái Thiêu rất công phu: nho được chọn lọc kỹ lưỡng, rửa sạch, và tiến hành nấu cùng với đường theo công thức gia truyền. Sau đó, hỗn hợp được nấu liu riu trên lửa nhỏ, khuấy đều cho đến khi đặc lại và có màu nâu đỏ đẹp mắt. Thành phẩm là những viên kẹo nhỏ xinh, có vị ngọt dịu, chua nhẹ, và hương thơm đặc trưng của nho.",
+          "Kẹo nho Lái Thiêu không chỉ là một món quà vặt ngon miệng mà còn là một món quà đặc biệt mà du khách thường mua về làm quà khi đến thăm Bình Dương. Kẹo được đóng gói đẹp mắt, tiện lợi để mang đi xa, và có thể bảo quản trong một thời gian dài mà không mất đi hương vị đặc trưng."
+        ],
+        "imageUrl": "https://cdn.pastaxi-manager.onepas.vn/content/uploads/articles/01-le/00001%20Binh-duong/dac-san-vung-mien/9-dac-san-binh-duong/8.%20La%CC%82%CC%89u%20bo%CC%80%20nhu%CC%81ng%20ma%CC%86%CC%81m%20ruo%CC%82%CC%81c.png",
+        "imageCaption": "Kẹo nho Lái Thiêu - món quà ngọt ngào cho người sành ăn"
+      },
+      "order": 10,
+      "_id": {
+        "$oid": "68033c9d4532a9c6fa2a9b39"
+      }
+    }
+  ],
+  "publishDate": {
+    "$date": "2024-11-23T00:00:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2024-11-23T00:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2024-11-23T00:00:00.000Z"
+  }
 }]
