@@ -6,6 +6,8 @@ import { Recipe } from '../models/recipe.interface';
 import { HttpClientModule } from '@angular/common/http';
 import { FavoritesService } from '../services/favorites.service';
 import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
+import { ProductService } from '../services/product.service';
+import { Product } from '../models/product.interface';
 
 interface IngredientPackage {
   id: string;
@@ -20,7 +22,7 @@ interface IngredientPackage {
   imports: [CommonModule, RouterModule, HttpClientModule, BreadcrumbComponent],
   templateUrl: './chi-tiet-cong-thuc.component.html',
   styleUrls: ['./chi-tiet-cong-thuc.component.css'],
-  providers: [RecipeService],
+  providers: [RecipeService, ProductService],
 })
 export class ChiTietCongThucComponent implements OnInit {
   recipe: Recipe | null = null;
@@ -36,6 +38,7 @@ export class ChiTietCongThucComponent implements OnInit {
     message: '',
     type: 'success' as 'success' | 'error',
   };
+  matchingProduct: Product | null = null;
 
   // Thêm biến cho công thức gợi ý
   currentRecipePage: number = 0;
@@ -47,7 +50,8 @@ export class ChiTietCongThucComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
-    private favoritesService: FavoritesService
+    private favoritesService: FavoritesService,
+    private productService: ProductService
   ) {}
 
   ngOnInit(): void {
@@ -114,6 +118,9 @@ export class ChiTietCongThucComponent implements OnInit {
             : Object.keys(this.recipe.servingsOptions)[0];
         }
         this.isLoading = false;
+
+        // Check if there's a matching product for this recipe
+        this.checkForMatchingProduct(id);
       },
       error: (error) => {
         console.error('Error loading recipe:', error);
@@ -323,6 +330,23 @@ export class ChiTietCongThucComponent implements OnInit {
       },
       error: (error) => {
         console.error('Lỗi khi tải danh sách công thức yêu thích:', error);
+      },
+    });
+  }
+
+  // Check if there's a product matching this recipe
+  checkForMatchingProduct(recipeId: string): void {
+    this.productService.getProductByRecipeId(recipeId).subscribe({
+      next: (product) => {
+        this.matchingProduct = product;
+        console.log(
+          'Matching product for recipe:',
+          product ? product.ingredientName : 'None found'
+        );
+      },
+      error: (error) => {
+        console.error('Error finding matching product:', error);
+        this.matchingProduct = null;
       },
     });
   }

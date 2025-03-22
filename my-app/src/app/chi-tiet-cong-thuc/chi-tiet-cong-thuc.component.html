@@ -248,8 +248,16 @@
         alt=""
       />{{ isSaved ? "Đã lưu công thức" : "Lưu công thức" }}
     </button>
-    <button class="button-cam mt-3 w-100" routerLink="/san-pham">
-      XEM GÓI NGUYÊN LIỆU
+
+    <button
+      class="button-cam mt-3 w-100"
+      [routerLink]="
+        matchingProduct
+          ? ['/chi-tiet-san-pham', matchingProduct._id]
+          : '/san-pham'
+      "
+    >
+      {{ matchingProduct ? "MUA GÓI NGUYÊN LIỆU " : "MUA GÓI NGUYÊN LIỆU" }}
     </button>
   </div>
 </div>
