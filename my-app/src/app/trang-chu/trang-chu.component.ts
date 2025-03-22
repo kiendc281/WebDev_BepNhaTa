@@ -514,7 +514,7 @@ export class TrangChuComponent implements OnInit, OnDestroy {
   }
 
   navigateToBlogDetail(blogId: string): void {
-    this.router.navigate(['/chi-tiet-blog', blogId]);
+    this.router.navigate(['/blog', blogId]);
   }
 
   getFormattedDate(dateString: string): string {
