@@ -122,7 +122,7 @@ import { FooterComponent } from '../footer/footer.component';
       <!-- Không tìm thấy kết quả -->
       <div class="no-results" *ngIf="!loading && totalResults === 0">
         <div class="no-results-content">
-          <img src="../../assets/icons/no-results.svg" alt="Không tìm thấy kết quả" onerror="this.src='../../assets/default-image.jpg'" />
+          <i class="bi bi-search" style="font-size: 60px; color: #ccc; margin-bottom: 20px;"></i>
           <h3>Không tìm thấy kết quả nào phù hợp</h3>
           <p>Vui lòng thử lại với từ khóa khác hoặc duyệt theo danh mục dưới đây</p>
           
@@ -140,8 +140,6 @@ import { FooterComponent } from '../footer/footer.component';
         </div>
       </div>
     </div>
-    
-    <app-footer></app-footer>
   `,
   styles: [`
     .search-results-page {
