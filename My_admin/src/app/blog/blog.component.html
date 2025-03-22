@@ -1,6 +1,14 @@
 <div class="container-fluid">
   <h1 class="text-primary">Quản lý Blog</h1>
-  <p class="mb-4">Tổng cộng có {{ blogs.length }} Blog</p>
+  <div class="d-flex justify-content-between align-items-center">
+    <p class="mb-3">
+      Tổng cộng có <b>{{ blogs.length }}</b> Blog
+    </p>
+    <!-- Add blog button -->
+    <div class="mb-3">
+      <button class="btn btn-themblog" routerLink="/blog/add">THÊM BLOG</button>
+    </div>
+  </div>
 
   <!-- Loading indicator -->
   <div *ngIf="isLoading" class="text-center my-4">
@@ -33,7 +41,7 @@
           <th (click)="sortBlogs('index')" title="Nhấp để sắp xếp theo STT">
             <div class="d-flex align-items-center justify-content-between">
               <span>STT</span>
-              <i [class]="getSortIcon('index')"></i>
+              <!-- <i [class]="getSortIcon('index')"></i> -->
             </div>
           </th>
           <th (click)="sortBlogs('_id')" title="Nhấp để sắp xếp theo Mã Blog">
@@ -117,7 +125,7 @@
 
   <!-- Pagination -->
   <div
-    class="d-flex justify-content-between align-items-center my-3"
+    class="d-flex justify-content-between align-items-center mt-3"
     *ngIf="!isLoading && !error && blogs.length > 0"
   >
     <div>
@@ -134,7 +142,7 @@
     <nav aria-label="Page navigation">
       <ul class="pagination mb-0">
         <li class="page-item" [class.disabled]="currentPage === 1">
-          <button class="page-link" (click)="onPageChange(currentPage - 1)">
+          <button class="page-link" (click)="previousPage()">
             <i class="bi bi-chevron-left"></i>
           </button>
         </li>
@@ -143,12 +151,12 @@
           class="page-item"
           [class.active]="page === currentPage"
         >
-          <button class="page-link" (click)="onPageChange(page)">
+          <button class="page-link" (click)="goToPage(page)">
             {{ page }}
           </button>
         </li>
         <li class="page-item" [class.disabled]="currentPage === totalPages">
-          <button class="page-link" (click)="onPageChange(currentPage + 1)">
+          <button class="page-link" (click)="nextPage()">
             <i class="bi bi-chevron-right"></i>
           </button>
         </li>
@@ -162,10 +170,5 @@
     class="alert alert-info my-3"
   >
     Không có dữ liệu blog.
-  </div>
-
-  <!-- Add blog button -->
-  <div class="mt-3">
-    <button class="btn btn-themblog" routerLink="/blog/add">THÊM BLOG</button>
   </div>
 </div>
