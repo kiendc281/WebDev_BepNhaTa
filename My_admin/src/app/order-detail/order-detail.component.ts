@@ -256,6 +256,7 @@ export class OrderDetailComponent implements OnInit {
 
           // Hiển thị thông báo thành công
           alert('Cập nhật trạng thái đơn hàng thành công');
+          this.router.navigate(['/order']);
         } else {
           alert(
             'Không thể cập nhật trạng thái đơn hàng. Vui lòng thử lại sau.'
