@@ -15,20 +15,24 @@ export class CustomerService {
     return this.http.get<any[]>(this.apiUrl).pipe(
       map((accounts) => {
         console.log('Raw API data:', accounts);
-        return accounts.map((account) => {
-          // Ánh xạ từ dữ liệu API sang Customer interface
-          return {
-            _id: account._id,
-            username: account.email, // Sử dụng email làm username vì API không có trường username
-            fullName: account.name, // API trả về name thay vì fullName
-            email: account.email,
-            phone: account.phone || 'Chưa cập nhật',
-            address: account.address || 'Chưa cập nhật',
-            createdAt: account.createdAt,
-            dateOfBirth: account.birthOfDate, // API trả về birthOfDate thay vì dateOfBirth
-            gender: account.gender,
-          } as Customer;
-        });
+        // Lọc các tài khoản không phải là admin và ánh xạ thành Customer
+        return accounts
+          .filter((account) => account.role !== 'admin')
+          .map((account) => {
+            // Ánh xạ từ dữ liệu API sang Customer interface
+            return {
+              _id: account._id,
+              username: account.email, // Sử dụng email làm username vì API không có trường username
+              fullName: account.name, // API trả về name thay vì fullName
+              email: account.email,
+              phone: account.phone || 'Chưa cập nhật',
+              address: account.address || 'Chưa cập nhật',
+              createdAt: account.createdAt,
+              dateOfBirth: account.birthOfDate, // API trả về birthOfDate thay vì dateOfBirth
+              gender: account.gender,
+              role: account.role,
+            } as Customer;
+          });
       })
     );
   }
@@ -47,6 +51,7 @@ export class CustomerService {
           createdAt: account.createdAt,
           dateOfBirth: account.birthOfDate, // API trả về birthOfDate thay vì dateOfBirth
           gender: account.gender,
+          role: account.role,
         } as Customer;
       })
     );

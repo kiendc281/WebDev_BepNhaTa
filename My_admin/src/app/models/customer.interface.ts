@@ -8,4 +8,5 @@ export interface Customer {
   createdAt?: string;
   dateOfBirth?: string;
   gender?: string;
+  role?: string;
 }
