@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../services/product.service';
@@ -54,6 +54,14 @@ export class TrangChuComponent implements OnInit, OnDestroy {
   currentTipPage = 0;
   tipsPerPage = 3;
   isLoadingTips = false;
+
+  showScrollBtn = false;
+
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    // Hiện button khi scroll xuống 300px
+    this.showScrollBtn = window.scrollY > 300;
+  }
 
   constructor(
     private router: Router,
@@ -520,5 +528,12 @@ export class TrangChuComponent implements OnInit, OnDestroy {
   getFormattedDate(dateString: string): string {
     const date = new Date(dateString);
     return `${date.getDate()} TH${date.getMonth() + 1}`;
+  }
+
+  scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 }
