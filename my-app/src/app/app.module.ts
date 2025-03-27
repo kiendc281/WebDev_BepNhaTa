@@ -5,27 +5,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { PopupComponent } from './popup/popup.component';
 
 import { GuestCartService } from './services/guest-cart.service';
 import { UserCartService } from './services/user-cart.service';
 import { AuthService } from './services/auth.service';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent, PopupComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
   ],
-  providers: [
-    GuestCartService,
-    UserCartService,
-    AuthService
-  ],
-  bootstrap: [AppComponent]
+  providers: [GuestCartService, UserCartService, AuthService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { } 
+export class AppModule {}

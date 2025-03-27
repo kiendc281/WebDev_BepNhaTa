@@ -34,6 +34,7 @@ import { GioHangComponent } from './gio-hang/gio-hang.component';
 import { ChiTietBlogComponent } from './chi-tiet-blog/chi-tiet-blog.component';
 import { ChiTietSanPhamComponent } from './chi-tiet-san-pham/chi-tiet-san-pham.component';
 import { BlogComponent } from './blog/blog.component';
+import { PopupComponent } from './popup/popup.component';
 
 @Component({
   selector: 'app-root',
@@ -66,13 +67,14 @@ import { BlogComponent } from './blog/blog.component';
     GioHangComponent,
     ChiTietBlogComponent,
     ChiTietSanPhamComponent,
-    BlogComponent
+    BlogComponent,
+    PopupComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'my-app';
+  title = 'Bếp Nhà Ta';
   private router: Router; //auto scroll top when route
 
   constructor(router: Router) {

@@ -1,0 +1,48 @@
+<div class="popup-container" *ngIf="isVisible" (click)="closePopup()">
+  <div class="popup-content" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closePopup()">
+      <img
+        src="../../assets/popup/zondicons-close-outline.svg"
+        alt="Close"
+        class="close-icon"
+      />
+    </button>
+    <div class="popup-grid">
+      <div class="image-section">
+        <img
+          src="../../assets/popup/popup.png"
+          alt="Bếp Nhà Ta"
+          class="popup-image"
+        />
+      </div>
+      <div class="content-section">
+        <h1>
+          Khám Phá <br />
+          Hương Vị Việt <br />
+          Ngay Tại Nhà!
+        </h1>
+        <p class="main-text">
+          Bếp Nhà Ta mang đến cho bạn những gói nguyên liệu tươi ngon, chuẩn vị
+          cho món ăn Việt truyền thống.
+        </p>
+        <p class="main-text">Chọn nguyên liệu chuẩn, nấu bữa cơm ngon!</p>
+        <p class="promo-text">
+          Đặt ngay hôm nay - Giảm 20% cho đơn hàng đầu tiên!
+        </p>
+        <p class="main-text">
+          Không cần lo lắng về việc đi chợ hay chuẩn bị nguyên liệu, Bếp Nhà Ta
+          lo hết cho bạn.
+        </p>
+
+        <div class="button-container">
+          <button class="button-trang menu-btn" (click)="navigateToRecipes()">
+            Khám phá menu
+          </button>
+          <button class="button-cam order-btn" (click)="navigateToProducts()">
+            Đặt ngay
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
