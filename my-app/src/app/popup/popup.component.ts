@@ -18,7 +18,7 @@ export class PopupComponent implements OnInit {
     // Hiển thị popup sau 5 giây
     setTimeout(() => {
       this.isVisible = true;
-    }, 5000);
+    }, 4000);
   }
 
   closePopup() {

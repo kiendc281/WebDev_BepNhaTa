@@ -23,7 +23,9 @@
           <div class="nav-links">
             <a
               routerLink="/trang-chu"
-              [class.active]="currentRoute === '/trang-chu'"
+              [class.active]="
+                currentRoute === '/trang-chu' || currentRoute === '/'
+              "
               >Trang chủ</a
             >
             <div class="dropdown">
