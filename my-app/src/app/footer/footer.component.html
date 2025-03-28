@@ -104,14 +104,36 @@
       <div class="newsletter-description">
         Nhận thông báo về các công thức và ưu đãi sớm nhất
       </div>
-      <div class="email-input-container">
-        <input type="email" placeholder="Nhập email" class="email-input" />
-        <button class="submit-button">
-          <div>
-            <img src="../../assets/footer/arrow.svg" alt="" />
-          </div>
-        </button>
+      <form (ngSubmit)="subscribeNewsletter()" #newsletterForm="ngForm">
+        <div class="email-input-container">
+          <input 
+            type="email" 
+            placeholder="Nhập email" 
+            class="email-input" 
+            name="email" 
+            [(ngModel)]="email"
+            required
+            email 
+          />
+          <button type="submit" class="submit-button" [disabled]="loading">
+            <div *ngIf="!loading">
+              <img src="../../assets/footer/arrow.svg" alt="" />
+            </div>
+            <div *ngIf="loading" class="loading-spinner"></div>
+          </button>
+        </div>
+      </form>
+      
+      <!-- Thông báo thành công -->
+      <div *ngIf="success" class="newsletter-message success-message">
+        Đăng ký nhận thông tin thành công!
       </div>
+      
+      <!-- Thông báo lỗi -->
+      <div *ngIf="error" class="newsletter-message error-message">
+        {{ errorMessage }}
+      </div>
+      
       <img
         src="../../assets/footer/bocongthuong.png"
         alt="Bộ Công Thương"
