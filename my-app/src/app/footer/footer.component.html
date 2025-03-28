@@ -106,14 +106,14 @@
       </div>
       <form (ngSubmit)="subscribeNewsletter()" #newsletterForm="ngForm">
         <div class="email-input-container">
-          <input 
-            type="email" 
-            placeholder="Nhập email" 
-            class="email-input" 
-            name="email" 
+          <input
+            type="email"
+            placeholder="Nhập email"
+            class="email-input"
+            name="email"
             [(ngModel)]="email"
             required
-            email 
+            email
           />
           <button type="submit" class="submit-button" [disabled]="loading">
             <div *ngIf="!loading">
@@ -123,17 +123,7 @@
           </button>
         </div>
       </form>
-      
-      <!-- Thông báo thành công -->
-      <div *ngIf="success" class="newsletter-message success-message">
-        Đăng ký nhận thông tin thành công!
-      </div>
-      
-      <!-- Thông báo lỗi -->
-      <div *ngIf="error" class="newsletter-message error-message">
-        {{ errorMessage }}
-      </div>
-      
+
       <img
         src="../../assets/footer/bocongthuong.png"
         alt="Bộ Công Thương"
@@ -143,5 +133,27 @@
   </div>
   <div class="copyright">
     Copyright©2025 by Bếp Nhà Ta. All rights reserved.
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container">
+    <div *ngIf="success" class="toast success">
+      <img
+        src="../../assets/footer/success.svg"
+        alt="Success"
+        class="toast-icon"
+      />
+      <div class="toast-message">Đăng ký nhận thông tin thành công!</div>
+      <button class="toast-close" (click)="closeToast('success')">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+    <div *ngIf="error" class="toast error">
+      <img src="../../assets/footer/error.svg" alt="Error" class="toast-icon" />
+      <div class="toast-message">{{ errorMessage }}</div>
+      <button class="toast-close" (click)="closeToast('error')">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
   </div>
 </div>

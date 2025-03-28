@@ -20,18 +20,45 @@ export class FooterComponent {
   success: boolean = false;
   error: boolean = false;
   errorMessage: string = '';
+  private toastTimeout: any;
 
   constructor(private newsletterService: NewsletterService) {}
+
+  showToast(type: 'success' | 'error', message?: string) {
+    // Clear any existing timeout
+    if (this.toastTimeout) {
+      clearTimeout(this.toastTimeout);
+    }
+
+    // Set the appropriate flag
+    if (type === 'success') {
+      this.success = true;
+      this.error = false;
+    } else {
+      this.error = true;
+      this.success = false;
+      this.errorMessage = message || 'Có lỗi xảy ra';
+    }
+
+    // Auto close after 3 seconds
+    this.toastTimeout = setTimeout(() => {
+      this.closeToast(type);
+    }, 3000);
+  }
+
+  closeToast(type: 'success' | 'error') {
+    if (type === 'success') {
+      this.success = false;
+    } else {
+      this.error = false;
+    }
+  }
 
   subscribeNewsletter() {
     // Kiểm tra email hợp lệ
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!this.email || !emailRegex.test(this.email)) {
-      this.error = true;
-      this.errorMessage = 'Vui lòng nhập email hợp lệ';
-      setTimeout(() => {
-        this.error = false;
-      }, 3000);
+      this.showToast('error', 'Vui lòng nhập email hợp lệ');
       return;
     }
 
@@ -42,14 +69,9 @@ export class FooterComponent {
     // Xử lý tạm thời khi API chưa hoàn thiện - giả lập thành công
     setTimeout(() => {
       console.log('Đăng ký nhận thông tin thành công (giả lập):', this.email);
-      this.success = true;
+      this.showToast('success');
       this.loading = false;
       this.email = ''; // Reset form
-      
-      // Tự động ẩn thông báo sau 3 giây
-      setTimeout(() => {
-        this.success = false;
-      }, 3000);
     }, 1500);
 
     /* 
@@ -58,14 +80,8 @@ export class FooterComponent {
       .pipe(
         catchError(error => {
           console.error('Lỗi khi đăng ký:', error);
-          this.error = true;
-          this.errorMessage = error.error?.message || 'Không thể đăng ký. Vui lòng thử lại sau.';
+          this.showToast('error', error.error?.message || 'Không thể đăng ký. Vui lòng thử lại sau.');
           this.loading = false;
-          
-          // Tự động ẩn thông báo lỗi sau 3 giây
-          setTimeout(() => {
-            this.error = false;
-          }, 3000);
           return of(null);
         })
       )
@@ -89,14 +105,9 @@ export class FooterComponent {
             }
           });
         
-        this.success = true;
+        this.showToast('success');
         this.loading = false;
         this.email = ''; // Reset form
-        
-        // Tự động ẩn thông báo sau 3 giây
-        setTimeout(() => {
-          this.success = false;
-        }, 3000);
       });
     */
   }

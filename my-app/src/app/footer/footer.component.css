@@ -176,7 +176,7 @@
     gap: 30px;
     padding: 0 30px;
   }
-  
+
   .company-info,
   .info-section,
   .policy-section,
@@ -185,7 +185,7 @@
     width: calc(50% - 15px);
     margin-bottom: 30px;
   }
-  
+
   .payment-methods {
     justify-content: flex-start;
   }
@@ -196,23 +196,23 @@
   .footer-content {
     padding: 0 20px;
   }
-  
+
   .company-info,
   .info-section {
     width: 100%;
   }
-  
+
   .policy-section,
   .social-section,
   .newsletter-section {
     width: calc(33.33% - 15px);
   }
-  
+
   .company-description {
     max-width: 500px;
     margin: 0 auto;
   }
-  
+
   .section-title {
     font-size: 16px;
   }
@@ -223,13 +223,13 @@
   .footer {
     padding: 30px 0 0;
   }
-  
+
   .footer-content {
     flex-direction: column;
     gap: 25px;
     padding: 0 15px;
   }
-  
+
   .company-info,
   .info-section,
   .policy-section,
@@ -238,65 +238,65 @@
     width: 100%;
     margin-bottom: 15px;
   }
-  
+
   .company-description {
     text-align: center;
     max-width: 100%;
   }
-  
+
   .logo {
     margin: 0 auto 15px;
   }
-  
+
   .section-title {
     text-align: center;
     margin-bottom: 10px;
   }
-  
-  .company-name, 
-  .company-address, 
+
+  .company-name,
+  .company-address,
   .contact-info {
     justify-content: center;
     text-align: center;
     flex-direction: column;
     align-items: center;
   }
-  
+
   .company-address div,
   .contact-info div {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  
+
   .company-address img,
   .contact-info img {
     margin-bottom: 5px;
   }
-  
+
   .policy-links {
     align-items: center;
   }
-  
+
   .social-icons,
   .payment-methods {
     justify-content: center;
   }
-  
+
   .newsletter-description {
     text-align: center;
   }
-  
+
   .email-input-container {
     max-width: 300px;
     margin: 14px auto;
   }
-  
+
   .certification {
     display: block;
     margin: 0 auto;
   }
-  
+
   .copyright {
     font-size: 12px;
     padding: 15px;
@@ -308,33 +308,33 @@
   .footer {
     padding: 20px 0 0;
   }
-  
+
   .footer-content {
     gap: 20px;
     padding: 0 10px;
   }
-  
+
   .section-title {
     font-size: 15px;
   }
-  
+
   * {
     font-size: 13px;
   }
-  
+
   .logo {
     width: 70px;
     height: 70px;
   }
-  
+
   .payment-methods {
     gap: 10px;
   }
-  
+
   .payment-methods img {
     height: 25px;
   }
-  
+
   .social-icons {
     gap: 15px;
   }
@@ -379,48 +379,101 @@
   }
 }
 
-/* Thông báo */
-.newsletter-message {
-  margin-top: 10px;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 10px;
-  opacity: 0;
-  animation: fadeIn 0.3s forwards;
+/* Toast Notification */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
 }
 
-@keyframes fadeIn {
+.toast {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  padding: 12px 24px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 300px;
+  max-width: 400px;
+  transform: translateX(120%);
+  animation: slideIn 0.3s forwards;
+  opacity: 0;
+}
+
+.toast.success {
+  border-left: 4px solid #28a745;
+}
+
+.toast.error {
+  border-left: 4px solid #dc3545;
+}
+
+.toast-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.toast-message {
+  flex: 1;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-close:hover {
+  color: #333;
+}
+
+@keyframes slideIn {
   from {
+    transform: translateX(120%);
     opacity: 0;
   }
   to {
+    transform: translateX(0);
     opacity: 1;
   }
 }
 
-.success-message {
-  background-color: rgba(40, 167, 69, 0.2);
-  border: 1px solid rgba(40, 167, 69, 0.3);
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+/* Dark mode support */
+.dark-mode .toast {
+  background-color: rgba(33, 37, 41, 0.95);
   color: #fff;
 }
 
-.error-message {
-  background-color: rgba(220, 53, 69, 0.2);
-  border: 1px solid rgba(220, 53, 69, 0.3);
+.dark-mode .toast-message {
   color: #fff;
 }
 
-/* Dark mode */
-.dark-mode .success-message {
-  background-color: rgba(40, 167, 69, 0.2);
-  border: 1px solid rgba(40, 167, 69, 0.3);
+.dark-mode .toast-close {
   color: #fff;
 }
 
-.dark-mode .error-message {
-  background-color: rgba(220, 53, 69, 0.2);
-  border: 1px solid rgba(220, 53, 69, 0.3);
-  color: #fff;
+.dark-mode .toast-close:hover {
+  color: #ccc;
 }
