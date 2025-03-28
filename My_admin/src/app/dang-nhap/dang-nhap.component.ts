@@ -90,7 +90,7 @@ export class DangNhapComponent {
 
           // Đợi 1.5 giây rồi chuyển hướng đến trang quản trị
           setTimeout(() => {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/trang-chu']);
           }, 1500);
         },
         error: (error) => {

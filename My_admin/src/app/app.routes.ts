@@ -13,7 +13,7 @@ import { BlogAddComponent } from './blog-add/blog-add.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/trang-chu', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: DangNhapComponent },
   { path: 'product', component: ProductComponent },
   { path: 'orders', component: OrderComponent },
@@ -72,5 +72,5 @@ export const routes: Routes = [
         (m) => m.ProductDetailComponent
       ),
   },
-  { path: '**', redirectTo: '/trang-chu' },
+  { path: '**', redirectTo: '/login' },
 ];

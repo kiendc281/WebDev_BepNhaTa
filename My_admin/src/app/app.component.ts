@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router } from '@angular/router';
 import { DangNhapComponent } from './dang-nhap/dang-nhap.component';
 import { TrangChuComponent } from './trang-chu/trang-chu.component';
 import { ProductComponent } from './product/product.component';
@@ -33,4 +33,10 @@ import { RecipesDetailComponent } from './recipes-detail/recipes-detail.componen
 })
 export class AppComponent {
   title = 'My_admin';
+  
+  constructor(public router: Router) {}
+  
+  isLoginPage(): boolean {
+    return this.router.url === '/login';
+  }
 }

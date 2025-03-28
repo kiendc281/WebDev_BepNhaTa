@@ -1,11 +1,19 @@
-<app-sidebar></app-sidebar>
-<div class="main-container">
-  <app-header></app-header>
-  <div class="padding">
-    <router-outlet></router-outlet>
-    <!-- <app-trang-chu></app-trang-chu> -->
-    <!-- <app-product></app-product> -->
-    <!-- <app-product-detail></app-product-detail> -->
-    <!-- <app-order-detail></app-order-detail> -->
+<!-- Show sidebar and header only when not on login page -->
+<ng-container *ngIf="!isLoginPage()">
+  <app-sidebar></app-sidebar>
+  <div class="main-container">
+    <app-header></app-header>
+    <div class="padding">
+      <router-outlet></router-outlet>
+      <!-- <app-trang-chu></app-trang-chu> -->
+      <!-- <app-product></app-product> -->
+      <!-- <app-product-detail></app-product-detail> -->
+      <!-- <app-order-detail></app-order-detail> -->
+    </div>
   </div>
-</div>
+</ng-container>
+
+<!-- On login page, only show router-outlet -->
+<ng-container *ngIf="isLoginPage()">
+  <router-outlet></router-outlet>
+</ng-container>
