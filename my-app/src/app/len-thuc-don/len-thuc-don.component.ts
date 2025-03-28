@@ -10,6 +10,10 @@ import { Recipe } from '../models/recipe.interface';
 import { Product } from '../models/product.interface';
 import { CleanTitlePipe } from './clean-title.pipe';
 import { FavoritesService } from '../services/favorites.service';
+import { UserCartService } from '../services/user-cart.service';
+import { GuestCartService } from '../services/guest-cart.service';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 interface MenuDay {
   day: number;
@@ -85,7 +89,11 @@ export class LenThucDonComponent implements OnInit {
     private menuService: MenuService,
     private productService: ProductService,
     private recipeService: RecipeService,
-    private favoritesService: FavoritesService
+    private favoritesService: FavoritesService,
+    private userCartService: UserCartService,
+    private guestCartService: GuestCartService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -205,17 +213,77 @@ export class LenThucDonComponent implements OnInit {
   // Mua cả thực đơn
   buyMenu(menuDay: MenuDay): void {
     console.log('Mua thực đơn:', menuDay.day);
+    
+    let productsAdded = 0;
+    const totalProducts = menuDay.meals.length;
+    
     // Thêm tất cả sản phẩm trong thực đơn vào giỏ hàng
     menuDay.meals.forEach(meal => {
-      if (meal.product && meal.product.id) {
-        this.addToCart(meal.product.id.toString());
+      if (meal.product && meal.product._id) {
+        this.addToCart(meal.product);
+        productsAdded++;
       }
     });
+    
+    // Hiển thị thông báo
+    if (productsAdded > 0) {
+      this.showNotification(`Đã thêm ${productsAdded} sản phẩm vào giỏ hàng`, 'success');
+      
+      // Tự động chuyển đến trang giỏ hàng sau khi thêm
+      setTimeout(() => {
+        this.router.navigate(['/gio-hang']);
+      }, 1500);
+    } else {
+      this.showNotification('Không thể thêm sản phẩm vào giỏ hàng', 'error');
+    }
   }
   
-  addToCart(productId: string): void {
-    // Thêm vào giỏ hàng
-    console.log('Thêm vào giỏ hàng:', productId);
+  addToCart(product: Product): void {
+    if (!product || !product._id) {
+      console.error('Sản phẩm không hợp lệ', product);
+      return;
+    }
+    
+    const productId = product._id;
+    const quantity = 1; // Số lượng mặc định
+    const servingSize = '4 người'; // Khẩu phần mặc định
+    
+    // Lấy giá dựa trên pricePerPortion nếu có
+    let price = 100000; // Giá mặc định
+    if (product.pricePerPortion && product.pricePerPortion[servingSize]) {
+      price = product.pricePerPortion[servingSize];
+    } else if (product.pricePerPortionArray && product.pricePerPortionArray.length > 0) {
+      // Tìm giá cho khẩu phần 4 người
+      const portion = product.pricePerPortionArray.find(p => p.portion === servingSize);
+      if (portion) {
+        price = portion.price;
+      }
+    }
+    
+    console.log('Thêm vào giỏ hàng:', { 
+      productId, 
+      productName: product.ingredientName,
+      quantity, 
+      servingSize, 
+      price
+    });
+    
+    // Kiểm tra người dùng đã đăng nhập chưa
+    if (this.authService.isLoggedIn()) {
+      // Nếu đã đăng nhập, sử dụng UserCartService
+      this.userCartService.addToCart(product, quantity, servingSize, price).subscribe({
+        next: (cart) => {
+          console.log('Đã thêm sản phẩm vào giỏ hàng người dùng:', cart);
+        },
+        error: (error) => {
+          console.error('Lỗi khi thêm sản phẩm vào giỏ hàng người dùng:', error);
+        }
+      });
+    } else {
+      // Nếu chưa đăng nhập, sử dụng GuestCartService
+      this.guestCartService.addToLocalCart(product, quantity, servingSize, price);
+      console.log('Đã thêm sản phẩm vào giỏ hàng khách:', product.ingredientName);
+    }
   }
 
   updateVisibleRecipes() {
