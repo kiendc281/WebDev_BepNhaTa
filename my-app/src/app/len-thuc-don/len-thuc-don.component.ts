@@ -248,16 +248,64 @@ export class LenThucDonComponent implements OnInit {
     const quantity = 1; // Số lượng mặc định
     const servingSize = '4 người'; // Khẩu phần mặc định
     
-    // Lấy giá dựa trên pricePerPortion nếu có
-    let price = 100000; // Giá mặc định
-    if (product.pricePerPortion && product.pricePerPortion[servingSize]) {
-      price = product.pricePerPortion[servingSize];
-    } else if (product.pricePerPortionArray && product.pricePerPortionArray.length > 0) {
-      // Tìm giá cho khẩu phần 4 người
-      const portion = product.pricePerPortionArray.find(p => p.portion === servingSize);
-      if (portion) {
-        price = portion.price;
+    // Tính toán giá theo quy tắc ưu tiên
+    let price = 0;
+    
+    // 1. Log thông tin sản phẩm để debug
+    console.log('Thông tin giá sản phẩm:', {
+      productId,
+      productName: product.ingredientName,
+      pricePerPortion: product.pricePerPortion,
+      pricePerPortionArray: product.pricePerPortionArray,
+      discount: product.discount || 0
+    });
+    
+    // 2. Ưu tiên lấy giá từ pricePerPortion
+    if (product.pricePerPortion && typeof product.pricePerPortion === 'object') {
+      // Tìm khẩu phần phù hợp
+      if (product.pricePerPortion[servingSize]) {
+        price = product.pricePerPortion[servingSize];
+        console.log(`Giá từ pricePerPortion[${servingSize}]:`, price);
+      } else {
+        // Nếu không tìm thấy khẩu phần chính xác, lấy giá đầu tiên có sẵn
+        const availablePortions = Object.keys(product.pricePerPortion);
+        if (availablePortions.length > 0) {
+          const firstPortion = availablePortions[0];
+          price = product.pricePerPortion[firstPortion];
+          console.log(`Không tìm thấy khẩu phần ${servingSize}, sử dụng khẩu phần ${firstPortion}:`, price);
+        }
       }
+    } 
+    // 3. Nếu không có trong pricePerPortion, thử lấy từ pricePerPortionArray
+    else if (product.pricePerPortionArray && Array.isArray(product.pricePerPortionArray) && product.pricePerPortionArray.length > 0) {
+      // Tìm khẩu phần phù hợp
+      const portionItem = product.pricePerPortionArray.find(p => p.portion === servingSize);
+      if (portionItem) {
+        price = portionItem.price;
+        console.log(`Giá từ pricePerPortionArray với khẩu phần ${servingSize}:`, price);
+      } else {
+        // Nếu không tìm thấy khẩu phần chính xác, lấy giá đầu tiên có sẵn
+        price = product.pricePerPortionArray[0].price;
+        console.log(`Không tìm thấy khẩu phần ${servingSize} trong array, sử dụng giá đầu tiên:`, price);
+      }
+    }
+    
+    // 4. Nếu không có thông tin giá, sử dụng giá mặc định
+    if (price <= 0) {
+      price = 100000; // Giá mặc định nếu không tìm thấy
+      console.log('Không tìm thấy thông tin giá hợp lệ, sử dụng giá mặc định:', price);
+    }
+    
+    // 5. Áp dụng giảm giá nếu có
+    if (product.discount && product.discount > 0) {
+      const discountAmount = price * (product.discount / 100);
+      const discountedPrice = price - discountAmount;
+      console.log(`Áp dụng giảm giá ${product.discount}%:`, {
+        original: price,
+        discount: discountAmount,
+        final: discountedPrice
+      });
+      price = discountedPrice;
     }
     
     console.log('Thêm vào giỏ hàng:', { 
@@ -265,13 +313,13 @@ export class LenThucDonComponent implements OnInit {
       productName: product.ingredientName,
       quantity, 
       servingSize, 
-      price
+      price: Math.round(price) // Làm tròn giá để không có số thập phân
     });
     
     // Kiểm tra người dùng đã đăng nhập chưa
     if (this.authService.isLoggedIn()) {
       // Nếu đã đăng nhập, sử dụng UserCartService
-      this.userCartService.addToCart(product, quantity, servingSize, price).subscribe({
+      this.userCartService.addToCart(product, quantity, servingSize, Math.round(price)).subscribe({
         next: (cart) => {
           console.log('Đã thêm sản phẩm vào giỏ hàng người dùng:', cart);
         },
@@ -281,7 +329,7 @@ export class LenThucDonComponent implements OnInit {
       });
     } else {
       // Nếu chưa đăng nhập, sử dụng GuestCartService
-      this.guestCartService.addToLocalCart(product, quantity, servingSize, price);
+      this.guestCartService.addToLocalCart(product, quantity, servingSize, Math.round(price));
       console.log('Đã thêm sản phẩm vào giỏ hàng khách:', product.ingredientName);
     }
   }
