@@ -393,24 +393,13 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
             totalPrice: cart.totalPrice,
           });
 
-          this.cartSuccessMessage = `Đã thêm ${this.quantity} ${this.product?.ingredientName} vào giỏ hàng`;
+          this.showNotification(`Đã thêm ${this.quantity} ${this.product?.ingredientName} vào giỏ hàng`, 'success');
           this.addingToCart = false;
-
-          // Clear success message after 3 seconds
-          setTimeout(() => {
-            this.cartSuccessMessage = null;
-          }, 3000);
         },
         error: (error) => {
           console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
           this.addingToCart = false;
-          this.cartSuccessMessage =
-            'Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.';
-
-          // Clear error message after 3 seconds
-          setTimeout(() => {
-            this.cartSuccessMessage = null;
-          }, 3000);
+          this.showNotification('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.', 'error');
         },
       });
   }

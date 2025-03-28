@@ -13,6 +13,70 @@
   --color-camdam-rgb: 234, 92, 43;
   --color-camnhat-rgb: 255, 191, 159;
   --color-xam-rgb: 237, 237, 237;
+  
+  /* Biến màu cơ bản */
+  --text-color: #333;
+  --background-color: #fff;
+  --background-secondary: #f8f9fa;
+  --border-color: #ddd;
+  --card-background: #fff;
+  --box-shadow: rgba(0, 0, 0, 0.1);
+  --primary-color: #E67E22;
+  --primary-light: #FDEBD0;
+  --dark-color: #333333;
+  --link-color: #E67E22;
+  --input-bg: #FFFFFF;
+  --input-border: #DDD;
+  --secondary-text: #666666;
+  --success-color: #28a745;
+  --error-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+}
+
+/* Chế độ tối */
+.dark-mode {
+  --text-color: #F5F5F5 !important;
+  --background-color: #121212 !important;
+  --background-secondary: #2a2a2a !important;
+  --border-color: #333333 !important;
+  --card-background: #1E1E1E !important;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+  --link-color: #f0ad4e !important;
+  --input-bg: #2D2D2D !important;
+  --input-border: #444444 !important;
+  --secondary-text: #BBBBBB !important;
+}
+
+/* Áp dụng biến màu cho body */
+body {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+  color: var(--text-color) !important;
+  background-color: var(--background-color) !important;
+}
+
+/* Áp dụng biến màu cho card, phần tử box */
+.card, .product-card, .recipe-card, .box, .form-container {
+  background-color: var(--card-background);
+  border-color: var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.dark-mode .card, 
+.dark-mode .product-card, 
+.dark-mode .recipe-card, 
+.dark-mode .box, 
+.dark-mode .form-container {
+  background-color: var(--card-background) !important;
+  border-color: var(--border-color) !important;
 }
 
 h1,
@@ -48,9 +112,23 @@ h5 {
   font-size: 20px !important;
 }
 
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5 {
+  color: #E67E22 !important;
+}
+
 p {
   font-size: 16px !important;
   font-weight: 400 !important;
+}
+
+.dark-mode p,
+.dark-mode span,
+.dark-mode div {
+  color: var(--text-color);
 }
 
 .button-cam,
@@ -82,7 +160,7 @@ p {
 
 .button-trang {
   color: var(--color-camdam);
-  background-color: white;
+  background-color: var(--card-background);
   border: 1px solid var(--color-camdam);
 }
 
@@ -112,7 +190,7 @@ p {
 .button-xam {
   background-color: var(--color-xamnhat);
   border: none;
-  color: #000;
+  color: var(--text-color);
 }
 
 .button-xam:hover {
@@ -131,4 +209,69 @@ p {
 .input-xam:active,
 .input-xam:focus {
   outline: 2px solid var(--color-camdam);
+}
+
+/* Định nghĩa nút chuyển đổi chế độ tối */
+.dark-mode-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+  background-color: rgba(var(--color-xam-rgb), 0.5);
+}
+
+/* Đặt các hiệu ứng chuyển đổi cho thẻ và các phần tử thường dùng */
+.card,
+.container,
+.form-control,
+.btn,
+input,
+select,
+textarea {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Thêm style cho tất cả các nút có background màu */
+.dark-mode .btn:not(.btn-primary):not(.btn-secondary):not(.btn-success):not(.btn-danger) {
+  background-color: var(--card-background);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+/* Thêm các style cho input, button trong chế độ tối */
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+  background-color: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+  color: var(--text-color) !important;
+}
+
+/* Thêm style cho banner và hero section */
+.dark-mode .banner,
+.dark-mode .hero-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), var(--background-image);
+}
+
+/* Thêm style cho các table */
+.dark-mode table {
+  color: var(--text-color);
+  background-color: var(--card-background);
+  border-color: var(--border-color);
+}
+
+.dark-mode th,
+.dark-mode td {
+  border-color: var(--border-color);
+}
+
+.dark-mode tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
 }

@@ -10,6 +10,10 @@ import { DangKyComponent } from '../dang-ky/dang-ky.component';
 import { QuenMatKhauComponent } from '../quen-mat-khau/quen-mat-khau.component';
 import { Subscription, Subject, Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
+import { UserCartService } from '../services/user-cart.service';
+import { GuestCartService } from '../services/guest-cart.service';
+import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-header',
@@ -21,6 +25,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
     DangNhapComponent,
     DangKyComponent,
     QuenMatKhauComponent,
+    ThemeToggleComponent
   ],
   providers: [AuthService],
   templateUrl: './header.component.html',
@@ -51,41 +56,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // Subscribe to router events to track the current route
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
         this.currentRoute = event.url;
-        // Handle query params
-        if (this.currentRoute.includes('?')) {
-          this.currentRoute = this.currentRoute.split('?')[0];
-        }
-      }
-    });
+      });
 
-    // Subscribe to cart changes
-    this.cartSubscription = this.cartService.cartItems$.subscribe((items) => {
-      this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
-    });
-    
-    // Thiết lập debounce cho tìm kiếm
-    this.searchSubscription = this.searchTerms.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(term => {
-        // Luôn hiển thị dropdown kết quả khi có từ khóa, kể cả khi không có kết quả
-        this.showSearchResults = term.trim().length > 0;
-        return term.length < 2 
-          ? of({ recipes: [], products: [], blogs: [] })
-          : this.searchService.getSearchSuggestions(term);
-      })
-    ).subscribe(results => {
-      this.searchResults = results;
-      
-      // Chỉ ẩn kết quả khi không có từ khóa tìm kiếm
-      if (this.searchTerm.trim().length === 0) {
-        this.showSearchResults = false;
-      }
-    });
+    this.currentRoute = this.router.url;
+    this.setupSearchObservable();
+    this.loadCartItemCount();
   }
 
   ngOnDestroy(): void {
@@ -225,5 +204,32 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleDropdown(dropdown: string, event: Event) {
     event.preventDefault();
     this.activeDropdown = this.activeDropdown === dropdown ? null : dropdown;
+  }
+
+  setupSearchObservable() {
+    this.searchSubscription = this.searchTerms.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => {
+        // Luôn hiển thị dropdown kết quả khi có từ khóa, kể cả khi không có kết quả
+        this.showSearchResults = term.trim().length > 0;
+        return term.length < 2 
+          ? of({ recipes: [], products: [], blogs: [] })
+          : this.searchService.getSearchSuggestions(term);
+      })
+    ).subscribe(results => {
+      this.searchResults = results;
+      
+      // Chỉ ẩn kết quả khi không có từ khóa tìm kiếm
+      if (this.searchTerm.trim().length === 0) {
+        this.showSearchResults = false;
+      }
+    });
+  }
+
+  loadCartItemCount() {
+    this.cartSubscription = this.cartService.cartItems$.subscribe((items) => {
+      this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
+    });
   }
 }

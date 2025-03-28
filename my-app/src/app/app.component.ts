@@ -87,5 +87,17 @@ export class AppComponent implements OnInit {
         window.scrollTo(0, 0);
       }
     });
+
+    // Kiểm tra và áp dụng chế độ tối nếu được lưu trong localStorage
+    const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+    console.log('AppComponent - Chế độ tối được lưu:', darkModeEnabled);
+    
+    if (darkModeEnabled) {
+      document.body.classList.add('dark-mode');
+      console.log('AppComponent - Đã áp dụng class dark-mode cho body');
+    } else {
+      document.body.classList.remove('dark-mode');
+      console.log('AppComponent - Đã xóa class dark-mode khỏi body');
+    }
   }
 }

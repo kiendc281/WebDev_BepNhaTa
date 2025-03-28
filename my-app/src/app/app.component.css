@@ -5,7 +5,28 @@
 app-header {
   width: 100%;
   position: fixed;
-  background-color: #fff;
+  background-color: var(--background-color, #fff);
   z-index: 999;
   top: 0;
+  transition: background-color 0.3s ease;
+}
+
+body.dark-mode {
+  background-color: var(--background-color) !important;
+  color: var(--text-color) !important;
+}
+
+body.dark-mode app-header {
+  background-color: var(--background-color) !important;
+}
+
+body.dark-mode .headerbar {
+  background-color: var(--card-background) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* Đảm bảo các component khác cũng áp dụng màu nền đúng */
+body.dark-mode app-root {
+  background-color: var(--background-color) !important;
+  color: var(--text-color) !important;
 }

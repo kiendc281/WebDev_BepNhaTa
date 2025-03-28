@@ -339,3 +339,26 @@
     gap: 15px;
   }
 }
+
+.dark-mode footer {
+  background-color: var(--card-background);
+  color: var(--text-color);
+  border-top: 1px solid var(--border-color);
+}
+
+.dark-mode footer a {
+  color: var(--link-color);
+}
+
+.dark-mode footer h3 {
+  color: var(--text-color);
+}
+
+.dark-mode .social-icons a {
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.dark-mode .social-icons a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

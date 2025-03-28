@@ -238,6 +238,67 @@
   margin-left: auto;
 }
 
+/* CSS cho nút chuyển đổi chế độ tối */
+.dark-mode-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+  margin: 0 5px;
+}
+
+.dark-mode-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode-toggle i {
+  font-size: 22px;
+}
+
+.dark-mode .search-container input {
+  background-color: #333 !important;
+  color: #eee;
+  border: 1px solid #444 !important;
+}
+
+.dark-mode .nav {
+  background-color: var(--background-color) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.dark-mode .dropdown-content {
+  background-color: var(--card-background) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.dark-mode .dropdown-content a {
+  color: var(--text-color) !important;
+}
+
+.dark-mode .nav-links > a,
+.dark-mode .nav-links > .dropdown > a {
+  color: var(--link-color) !important;
+}
+
+.dark-mode .headerbar {
+  background-color: var(--primary-color) !important;
+}
+
+.dark-mode .hr-decor {
+  background-color: var(--primary-color) !important;
+}
+
+.dark-mode .search-container input {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--input-border) !important;
+}
+
 .search-container {
   position: relative;
   width: 180px;
