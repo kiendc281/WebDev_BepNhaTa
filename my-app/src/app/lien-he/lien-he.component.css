@@ -64,6 +64,15 @@ p {
   align-self: stretch;
 }
 
+.social a {
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.social a:hover {
+  transform: scale(1.1);
+}
+
 .thacmac {
   display: flex;
   padding: 30px;
