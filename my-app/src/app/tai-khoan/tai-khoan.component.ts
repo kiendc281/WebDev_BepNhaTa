@@ -272,8 +272,11 @@ export class TaiKhoanComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/trang-chu']);
+    this.showToast('success', 'Thành công', 'Đăng xuất thành công!');
+    setTimeout(() => {
+      this.authService.logout();
+      this.router.navigate(['/trang-chu']);
+    }, 2000);
   }
 
   // Mở modal cập nhật thông tin cá nhân
