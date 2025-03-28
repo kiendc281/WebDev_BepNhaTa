@@ -21,7 +21,7 @@ export class DangNhapComponent {
   submitted = false;
   loading = false;
   showPassword = false;
-  eyeIcon = '../../assets/dang-nhap/clarity-eye-hide-line.svg';
+  eyeIcon = '../../assets/dang-nhap/unhide.svg';
   errorMessage: string = '';
   successMessage: string = '';
 
@@ -112,7 +112,7 @@ export class DangNhapComponent {
   togglePassword() {
     this.showPassword = !this.showPassword;
     this.eyeIcon = this.showPassword
-      ? '../../assets/dang-nhap/unhide.svg'
-      : '../../assets/dang-nhap/clarity-eye-hide-line.svg';
+      ? '../../assets/dang-nhap/clarity-eye-hide-line.svg'
+      : '../../assets/dang-nhap/unhide.svg';
   }
 }
