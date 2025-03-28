@@ -57,7 +57,10 @@ export class FooterComponent {
   subscribeNewsletter() {
     // Kiểm tra email hợp lệ
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!this.email || !emailRegex.test(this.email)) {
+    if (!this.email) {
+      this.showToast('error', 'Vui lòng nhập email');
+      return;
+    } else if (!emailRegex.test(this.email)) {
       this.showToast('error', 'Vui lòng nhập email hợp lệ');
       return;
     }
