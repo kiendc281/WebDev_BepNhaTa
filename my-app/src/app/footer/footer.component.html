@@ -20,8 +20,7 @@
             src="../../assets/footer/destin.svg"
             class="icon-location me-2"
             alt="Location icon"
-          />
-          Số 669 Đỗ Mười, KP. 3, P. Linh Xuân, TP. Thủ Đức, TP. Hồ Chí Minh
+          />Số 669 Đỗ Mười, KP. 3, P. Linh Xuân, TP. Thủ Đức, TP. Hồ Chí Minh
         </div>
       </div>
       <div class="contact-info">
@@ -30,8 +29,7 @@
             src="../../assets/footer/envelop.svg"
             class="icon-email me-2"
             alt="Email icon"
-          />
-          bepnhata&#64;gmail.com
+          />bepnhata&#64;gmail.com
         </div>
       </div>
       <div class="contact-info">
@@ -138,22 +136,18 @@
   <!-- Toast Container -->
   <div class="toast-container">
     <div *ngIf="success" class="toast success">
-      <img
-        src="../../assets/footer/success.svg"
-        alt="Success"
-        class="toast-icon"
-      />
+      <img src="../../assets/check.svg" alt="Success" class="toast-icon" />
       <div class="toast-message">Đăng ký nhận thông tin thành công!</div>
-      <button class="toast-close" (click)="closeToast('success')">
+      <!-- <button class="toast-close" (click)="closeToast('success')">
         <i class="bi bi-x"></i>
-      </button>
+      </button> -->
     </div>
     <div *ngIf="error" class="toast error">
-      <img src="../../assets/footer/error.svg" alt="Error" class="toast-icon" />
+      <img src="../../assets/error.svg" alt="Error" class="toast-icon" />
       <div class="toast-message">{{ errorMessage }}</div>
-      <button class="toast-close" (click)="closeToast('error')">
+      <!-- <button class="toast-close" (click)="closeToast('error')">
         <i class="bi bi-x"></i>
-      </button>
+      </button> -->
     </div>
   </div>
 </div>

@@ -108,14 +108,16 @@
     >
       <div class="notification-content">
         <div class="notification-icon">
-          <i
+          <img
             *ngIf="notification.type === 'success'"
-            class="fas fa-check-circle"
-          ></i>
-          <i
+            src="../../assets/check.svg"
+            alt="Success"
+          />
+          <img
             *ngIf="notification.type === 'error'"
-            class="fas fa-exclamation-circle"
-          ></i>
+            src="../../assets/error.svg"
+            alt="Error"
+          />
         </div>
         <div>{{ notification.message }}</div>
       </div>

@@ -268,7 +268,11 @@ export class TrangChuComponent implements OnInit, OnDestroy {
     // Kiểm tra đăng nhập trước khi thực hiện
     const userStr = localStorage.getItem('user');
     if (!userStr) {
-      alert('Vui lòng đăng nhập để sử dụng tính năng này');
+      // alert('Vui lòng đăng nhập để sử dụng tính năng này');
+      this.showNotification(
+        'Vui lòng đăng nhập để sử dụng tính năng này',
+        'error'
+      );
       return;
     }
 
@@ -350,7 +354,11 @@ export class TrangChuComponent implements OnInit, OnDestroy {
     // Kiểm tra đăng nhập trước khi thực hiện
     const userStr = localStorage.getItem('user');
     if (!userStr) {
-      alert('Vui lòng đăng nhập để sử dụng tính năng này');
+      // alert('Vui lòng đăng nhập để sử dụng tính năng này');
+      this.showNotification(
+        'Vui lòng đăng nhập để sử dụng tính năng này',
+        'error'
+      );
       return;
     }
 

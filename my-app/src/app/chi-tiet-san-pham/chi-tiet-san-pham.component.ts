@@ -393,13 +393,19 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
             totalPrice: cart.totalPrice,
           });
 
-          this.showNotification(`Đã thêm ${this.quantity} ${this.product?.ingredientName} vào giỏ hàng`, 'success');
+          this.showNotification(
+            `Đã thêm ${this.quantity} "${this.product?.ingredientName}" vào giỏ hàng`,
+            'success'
+          );
           this.addingToCart = false;
         },
         error: (error) => {
           console.error('Lỗi khi thêm sản phẩm vào giỏ hàng:', error);
           this.addingToCart = false;
-          this.showNotification('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.', 'error');
+          this.showNotification(
+            'Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.',
+            'error'
+          );
         },
       });
   }
@@ -849,23 +855,29 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     // Tải danh sách sản phẩm đã lưu
     this.favoritesService.getFavorites('product').subscribe({
       next: (favorites) => {
-        this.savedProducts = new Set(favorites.map(item => item.targetId));
-        console.log('Danh sách sản phẩm đã lưu:', Array.from(this.savedProducts));
+        this.savedProducts = new Set(favorites.map((item) => item.targetId));
+        console.log(
+          'Danh sách sản phẩm đã lưu:',
+          Array.from(this.savedProducts)
+        );
       },
       error: (error) => {
         console.error('Lỗi khi tải danh sách sản phẩm đã lưu:', error);
-      }
+      },
     });
 
     // Tải danh sách công thức đã lưu
     this.favoritesService.getFavorites('recipe').subscribe({
       next: (favorites) => {
-        this.savedRecipes = new Set(favorites.map(item => item.targetId));
-        console.log('Danh sách công thức đã lưu:', Array.from(this.savedRecipes));
+        this.savedRecipes = new Set(favorites.map((item) => item.targetId));
+        console.log(
+          'Danh sách công thức đã lưu:',
+          Array.from(this.savedRecipes)
+        );
       },
       error: (error) => {
         console.error('Lỗi khi tải danh sách công thức đã lưu:', error);
-      }
+      },
     });
   }
 }

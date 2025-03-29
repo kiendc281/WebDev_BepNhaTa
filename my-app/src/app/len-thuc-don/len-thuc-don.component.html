@@ -4,9 +4,21 @@
   <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
 
   <!-- Thêm thông báo -->
-  <div class="notification" *ngIf="notificationVisible" [ngClass]="notificationType">
+  <div
+    class="notification"
+    *ngIf="notificationVisible"
+    [ngClass]="notificationType"
+  >
     <div class="notification-content">
-      <i class="notification-icon" [ngClass]="notificationType === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'"></i>
+      <img
+        class="notification-icon"
+        [src]="
+          notificationType === 'success'
+            ? '../../assets/check.svg'
+            : '../../assets/error.svg'
+        "
+        alt="Notification"
+      />
       <span>{{ notificationMessage }}</span>
     </div>
   </div>
@@ -20,11 +32,15 @@
     <div class="subtitle">Thực đơn được đề xuất bởi Bếp Nhà Ta</div>
     <br />
     <p></p>
-    
+
     <!-- Container cho menu và nút điều hướng -->
     <div class="menu-container">
       <!-- Nút điều hướng bên trái -->
-      <button class="nav-button nav-button-left" (click)="prevMenuPage()" [disabled]="currentMenuPage === 0">
+      <button
+        class="nav-button nav-button-left"
+        (click)="prevMenuPage()"
+        [disabled]="currentMenuPage === 0"
+      >
         <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
       </button>
 
@@ -34,7 +50,7 @@
         <div class="meal-type-indicator" data-type="Trưa">Trưa</div>
         <div class="meal-type-indicator" data-type="Tối">Tối</div>
       </div>
-      
+
       <!-- Grid hiển thị thực đơn -->
       <div class="menu-grid">
         <div class="menu-day" *ngFor="let day of visibleMenuDays">
@@ -44,46 +60,75 @@
           </div>
           <div class="menu-day-content">
             <div class="meal-content">
-              <div class="meal-slot" *ngFor="let meal of day.meals" [attr.data-meal-type]="meal.type">
+              <div
+                class="meal-slot"
+                *ngFor="let meal of day.meals"
+                [attr.data-meal-type]="meal.type"
+              >
                 <div class="meal-product">
-                  <img [src]="getProductImage(meal.product)" [alt]="getProductTitle(meal.product)" />
+                  <img
+                    [src]="getProductImage(meal.product)"
+                    [alt]="getProductTitle(meal.product)"
+                  />
                   <div class="meal-product-info">
                     <!-- Use the cleanTitle pipe to remove "Gói nguyên liệu" from product title -->
-                    <div class="meal-product-title">{{ getProductTitle(meal.product) | cleanTitle }}</div>
-                    
+                    <div class="meal-product-title">
+                      {{ getProductTitle(meal.product) | cleanTitle }}
+                    </div>
+
                     <!-- Expanded information section with styled pills -->
                     <div class="meal-details-row">
                       <div class="meal-info-pill">
-                        <img src="../../assets/san-pham/khauphan.svg" alt="Khẩu phần" />
+                        <img
+                          src="../../assets/san-pham/khauphan.svg"
+                          alt="Khẩu phần"
+                        />
                         <span>4 Người</span>
                       </div>
                       <div class="meal-info-pill">
-                        <img src="../../assets/san-pham/dokho.svg" alt="Độ khó" />
-                        <span>{{ meal.product.level || 'Trung bình' }}</span>
+                        <img
+                          src="../../assets/san-pham/dokho.svg"
+                          alt="Độ khó"
+                        />
+                        <span>{{ meal.product.level || "Trung bình" }}</span>
                       </div>
                       <div class="meal-info-pill">
-                        <img src="../../assets/san-pham/ph-cooking-pot.svg" alt="Thời gian" />
-                        <span>{{ meal.product.time || '30 phút' }}</span>
+                        <img
+                          src="../../assets/san-pham/ph-cooking-pot.svg"
+                          alt="Thời gian"
+                        />
+                        <span>{{ meal.product.time || "30 phút" }}</span>
                       </div>
                     </div>
-                    
+
                     <!-- Add view details button -->
-                    <button class="meal-view-details" (click)="viewProductDetails(meal.product)">XEM CHI TIẾT</button>
-                    
+                    <button
+                      class="meal-view-details"
+                      (click)="viewProductDetails(meal.product)"
+                    >
+                      XEM CHI TIẾT
+                    </button>
+
                     <div class="meal-category">{{ meal.product.category }}</div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="menu-actions">
-              <button class="button-buy" (click)="buyMenu(day)">MUA NGAY</button>
+              <button class="button-buy" (click)="buyMenu(day)">
+                MUA NGAY
+              </button>
             </div>
           </div>
         </div>
       </div>
-      
+
       <!-- Nút điều hướng bên phải -->
-      <button class="nav-button nav-button-right" (click)="nextMenuPage()" [disabled]="currentMenuPage >= allMenuDays.length / menusPerPage - 1">
+      <button
+        class="nav-button nav-button-right"
+        (click)="nextMenuPage()"
+        [disabled]="currentMenuPage >= allMenuDays.length / menusPerPage - 1"
+      >
         <img src="../../assets/trang-chu/slider.svg" alt="Next" />
       </button>
     </div>
@@ -98,16 +143,33 @@
 
           <div class="recipes-navigation">
             <!-- Nút điều hướng trái -->
-            <button class="nav-button nav-button-left" (click)="prevRecipePage()" [disabled]="currentRecipePage === 0">
+            <button
+              class="nav-button nav-button-left"
+              (click)="prevRecipePage()"
+              [disabled]="currentRecipePage === 0"
+            >
               <img src="../../assets/trang-chu/slider.svg" alt="Previous" />
             </button>
-           
+
             <div class="products-grid">
-              <div class="product-card" *ngFor=" let recipe of visibleRecipes">
-                <div class="save-button" (click)="toggleSaveRecipe($event, recipe)" [class.active]="isRecipeSaved(recipe._id)">
+              <div class="product-card" *ngFor="let recipe of visibleRecipes">
+                <div
+                  class="save-button"
+                  (click)="toggleSaveRecipe($event, recipe)"
+                  [class.active]="isRecipeSaved(recipe._id)"
+                >
                   <span class="heart-icon" *ngIf="!isRecipeSaved(recipe._id)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#6c757d" class="bi bi-heart" viewBox="0 0 16 16">
-                      <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="#6c757d"
+                      class="bi bi-heart"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                      />
                     </svg>
                   </span>
                   <svg
@@ -135,11 +197,17 @@
                     <h5 class="product-title">{{ recipe.recipeName }}</h5>
                     <div class="product-info">
                       <div class="info-item">
-                        <img src="../../assets/san-pham/khauphan.svg" alt="category" />
+                        <img
+                          src="../../assets/san-pham/khauphan.svg"
+                          alt="category"
+                        />
                         <span>4 Người</span>
                       </div>
                       <div class="info-item">
-                        <img src="../../assets/san-pham/dokho.svg" alt="difficulty" />
+                        <img
+                          src="../../assets/san-pham/dokho.svg"
+                          alt="difficulty"
+                        />
                         <span>{{ recipe.difficulty }}</span>
                       </div>
                       <div class="info-item">
@@ -158,15 +226,24 @@
               </div>
             </div>
             <!-- Nút điều hướng phải -->
-            <button class="nav-button nav-button-right" (click)="nextRecipePage()" [disabled]="currentRecipePage >= suggestedRecipes.length / recipesPerPage - 1">
+            <button
+              class="nav-button nav-button-right"
+              (click)="nextRecipePage()"
+              [disabled]="
+                currentRecipePage >=
+                suggestedRecipes.length / recipesPerPage - 1
+              "
+            >
               <img src="../../assets/trang-chu/slider.svg" alt="Next" />
             </button>
           </div>
         </div>
         <div class="view-more">
-          <button class="view-more-button" routerLink="/cong-thuc">XEM THÊM</button>
+          <button class="view-more-button" routerLink="/cong-thuc">
+            XEM THÊM
+          </button>
         </div>
       </div>
     </div>
-
-  
+  </div>
+</div>
