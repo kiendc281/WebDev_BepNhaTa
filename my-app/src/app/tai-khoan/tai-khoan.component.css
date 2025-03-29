@@ -472,10 +472,6 @@ input.ng-invalid.ng-touched {
   justify-content: end;
 }
 
-.address-actions .lines {
-  cursor: default;
-}
-
 .address-actions button {
   padding: 8px 16px;
   border-radius: 10px;

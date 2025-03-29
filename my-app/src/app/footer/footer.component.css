@@ -76,10 +76,31 @@
 .policy-links a {
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.2s ease;
+  padding-bottom: 2px;
+}
+.policy-links a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  color: white;
+  transition: width 0.3s ease;
 }
 .policy-links a:hover {
-  text-decoration: underline;
+  color: white;
+  transform: translateY(-2px);
+}
+.policy-links a:hover::after {
+  width: 100%;
+}
+.policy-links a:active {
+  transform: translateY(0);
 }
 .social-section {
   width: 221px;
