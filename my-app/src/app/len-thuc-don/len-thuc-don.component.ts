@@ -214,124 +214,222 @@ export class LenThucDonComponent implements OnInit {
   buyMenu(menuDay: MenuDay): void {
     console.log('Mua thực đơn:', menuDay.day);
     
-    let productsAdded = 0;
-    const totalProducts = menuDay.meals.length;
-    
-    // Thêm tất cả sản phẩm trong thực đơn vào giỏ hàng
-    menuDay.meals.forEach(meal => {
-      if (meal.product && meal.product._id) {
-        this.addToCart(meal.product);
-        productsAdded++;
-      }
-    });
-    
-    // Hiển thị thông báo
-    if (productsAdded > 0) {
-      this.showNotification(`Đã thêm ${productsAdded} sản phẩm vào giỏ hàng`, 'success');
-      
-      // Tự động chuyển đến trang giỏ hàng sau khi thêm
-      setTimeout(() => {
-        this.router.navigate(['/gio-hang']);
-      }, 1500);
-    } else {
-      this.showNotification('Không thể thêm sản phẩm vào giỏ hàng', 'error');
-    }
-  }
-  
-  addToCart(product: Product): void {
-    if (!product || !product._id) {
-      console.error('Sản phẩm không hợp lệ', product);
+    // Kiểm tra trước nếu có sản phẩm nào trong thực đơn
+    if (!menuDay.meals || menuDay.meals.length === 0) {
+      this.showNotification('Không có sản phẩm nào trong thực đơn này', 'error');
       return;
     }
+
+    // Hiển thị thông báo đang xử lý
+    this.showNotification('Đang xử lý thêm sản phẩm vào giỏ hàng...', 'success');
+
+    // Tạo bản sao để không ảnh hưởng đến dữ liệu gốc
+    const mealItems = [...menuDay.meals].filter(meal => meal.product && meal.product._id);
     
-    const productId = product._id;
-    const quantity = 1; // Số lượng mặc định
-    const servingSize = '4 người'; // Khẩu phần mặc định
+    // Nếu không có sản phẩm hợp lệ
+    if (mealItems.length === 0) {
+      this.showNotification('Không có sản phẩm hợp lệ nào trong thực đơn này', 'error');
+      return;
+    }
+
+    console.log(`Chuẩn bị xử lý ${mealItems.length} sản phẩm từ thực đơn ngày ${menuDay.day}`);
     
+    let productsAdded = 0;
+    let failedProducts = 0;
+    let outOfStockProducts: string[] = [];
+    const totalProducts = mealItems.length;
+
+    // Sử dụng cờ để theo dõi khi nào tất cả được xử lý
+    let allProcessed = false;
+    
+    // Hàm kiểm tra khi tất cả các sản phẩm đã được xử lý
+    const finalizeProcess = () => {
+      if (allProcessed) return; // Đảm bảo chỉ chạy một lần
+      
+      allProcessed = true;
+      console.log(`Đã hoàn thành việc xử lý: ${productsAdded} thành công, ${failedProducts} thất bại`);
+      
+      // Hiển thị thông báo khi tất cả sản phẩm đã được xử lý
+      if (productsAdded > 0) {
+        let message = `Đã thêm ${productsAdded}/${totalProducts} sản phẩm vào giỏ hàng`;
+        
+        if (outOfStockProducts.length > 0) {
+          // Hiển thị thông báo cụ thể về sản phẩm hết hàng
+          message += `. Các sản phẩm: ${outOfStockProducts.join(', ')} không đủ số lượng trong kho.`;
+          this.showNotification(message, 'error');
+        } else if (failedProducts > 0) {
+          message += ` (${failedProducts} sản phẩm không thành công)`;
+          this.showNotification(message, 'error');
+        } else {
+          this.showNotification(message, 'success');
+        }
+        
+        // Chỉ chuyển đến trang giỏ hàng nếu đã thêm ít nhất một sản phẩm
+        setTimeout(() => {
+          this.router.navigate(['/gio-hang']);
+        }, 2000);
+      } else if (failedProducts > 0) {
+        if (outOfStockProducts.length > 0) {
+          this.showNotification(`Không thể thêm sản phẩm vào giỏ hàng. Các sản phẩm: ${outOfStockProducts.join(', ')} không đủ số lượng trong kho.`, 'error');
+        } else {
+          this.showNotification('Không thể thêm sản phẩm vào giỏ hàng. Vui lòng kiểm tra lại hàng tồn kho.', 'error');
+        }
+      } else {
+        this.showNotification('Không có sản phẩm nào được thêm vào giỏ hàng', 'error');
+      }
+    };
+    
+    // Hàm xử lý thêm sản phẩm vào giỏ hàng
+    const processNextItem = (index: number) => {
+      // Nếu đã xử lý hết các sản phẩm
+      if (index >= mealItems.length) {
+        finalizeProcess();
+        return;
+      }
+      
+      const meal = mealItems[index];
+      const product = meal.product;
+      
+      if (!product || !product._id) {
+        console.warn('Sản phẩm không hợp lệ tại vị trí', index);
+        failedProducts++;
+        processNextItem(index + 1);
+        return;
+      }
+      
+      console.log(`Đang xử lý sản phẩm ${index + 1}/${mealItems.length}: ${this.getProductTitle(product)}`);
+      
+      // Tính toán giá và thêm vào giỏ hàng
+      const quantity = 1;
+      const servingSize = "2";
+      let price = this.calculateProductPrice(product, servingSize);
+      const finalPrice = Math.round(price);
+
+      // In ra cấu trúc pricePerPortion để debug
+      console.log('Chi tiết giá và khẩu phần:', {
+        productName: this.getProductTitle(product),
+        pricePerPortion: product.pricePerPortion,
+        pricePerPortionArray: product.pricePerPortionArray,
+        selectedPortion: servingSize,
+        calculatedPrice: finalPrice
+      });
+
+      // Kiểm tra người dùng đã đăng nhập chưa
+      if (this.authService.isLoggedIn()) {
+        // Nếu đã đăng nhập, sử dụng UserCartService
+        this.userCartService.addToCart(product, quantity, servingSize, finalPrice)
+          .subscribe({
+            next: () => {
+              console.log(`Thêm thành công: ${this.getProductTitle(product)}`);
+              productsAdded++;
+              processNextItem(index + 1);
+            },
+            error: (error) => {
+              failedProducts++;
+              
+              // Chi tiết lỗi để debug
+              console.error(`Lỗi khi thêm sản phẩm ${this.getProductTitle(product)}:`, error);
+              
+              // Kiểm tra lỗi không đủ số lượng
+              let errorMsg = '';
+              if (error && typeof error === 'object') {
+                if ('message' in error) {
+                  errorMsg = String(error.message);
+                } else if ('error' in error && typeof error.error === 'object' && error.error && 'message' in error.error) {
+                  errorMsg = String(error.error.message);
+                }
+                
+                console.log(`Chi tiết lỗi: ${errorMsg}`);
+                
+                if (errorMsg.includes('không đủ số lượng') || errorMsg.includes('out of stock')) {
+                  const productName = this.getProductTitle(product);
+                  if (productName && !outOfStockProducts.includes(productName)) {
+                    outOfStockProducts.push(productName);
+                  }
+                }
+              }
+              
+              processNextItem(index + 1);
+            }
+          });
+      } else {
+        // Nếu chưa đăng nhập, sử dụng GuestCartService
+        try {
+          this.guestCartService.addToLocalCart(product, quantity, servingSize, finalPrice);
+          console.log(`Thêm thành công vào giỏ khách: ${this.getProductTitle(product)}`);
+          productsAdded++;
+        } catch (error) {
+          failedProducts++;
+          
+          // Chi tiết lỗi để debug
+          console.error(`Lỗi khi thêm sản phẩm ${this.getProductTitle(product)} vào giỏ khách:`, error);
+          
+          // Xử lý lỗi cho guest cart tương tự
+          if (error && typeof error === 'object' && 'message' in error) {
+            const errorMsg = String(error.message);
+            console.log(`Chi tiết lỗi: ${errorMsg}`);
+            
+            if (errorMsg.includes('không đủ số lượng') || errorMsg.includes('out of stock')) {
+              const productName = this.getProductTitle(product);
+              if (productName && !outOfStockProducts.includes(productName)) {
+                outOfStockProducts.push(productName);
+              }
+            }
+          }
+        }
+        
+        // Xử lý sản phẩm tiếp theo
+        processNextItem(index + 1);
+      }
+    };
+    
+    // Bắt đầu xử lý từ sản phẩm đầu tiên
+    processNextItem(0);
+  }
+  
+  // Tách logic tính giá thành một phương thức riêng
+  calculateProductPrice(product: Product, servingSize: string): number {
     // Tính toán giá theo quy tắc ưu tiên
     let price = 0;
     
-    // 1. Log thông tin sản phẩm để debug
-    console.log('Thông tin giá sản phẩm:', {
-      productId,
-      productName: product.ingredientName,
-      pricePerPortion: product.pricePerPortion,
-      pricePerPortionArray: product.pricePerPortionArray,
-      discount: product.discount || 0
-    });
-    
-    // 2. Ưu tiên lấy giá từ pricePerPortion
+    // 1. Ưu tiên lấy giá từ pricePerPortion
     if (product.pricePerPortion && typeof product.pricePerPortion === 'object') {
       // Tìm khẩu phần phù hợp
       if (product.pricePerPortion[servingSize]) {
         price = product.pricePerPortion[servingSize];
-        console.log(`Giá từ pricePerPortion[${servingSize}]:`, price);
       } else {
         // Nếu không tìm thấy khẩu phần chính xác, lấy giá đầu tiên có sẵn
         const availablePortions = Object.keys(product.pricePerPortion);
         if (availablePortions.length > 0) {
           const firstPortion = availablePortions[0];
           price = product.pricePerPortion[firstPortion];
-          console.log(`Không tìm thấy khẩu phần ${servingSize}, sử dụng khẩu phần ${firstPortion}:`, price);
         }
       }
     } 
-    // 3. Nếu không có trong pricePerPortion, thử lấy từ pricePerPortionArray
+    // 2. Nếu không có trong pricePerPortion, thử lấy từ pricePerPortionArray
     else if (product.pricePerPortionArray && Array.isArray(product.pricePerPortionArray) && product.pricePerPortionArray.length > 0) {
       // Tìm khẩu phần phù hợp
       const portionItem = product.pricePerPortionArray.find(p => p.portion === servingSize);
       if (portionItem) {
         price = portionItem.price;
-        console.log(`Giá từ pricePerPortionArray với khẩu phần ${servingSize}:`, price);
       } else {
         // Nếu không tìm thấy khẩu phần chính xác, lấy giá đầu tiên có sẵn
         price = product.pricePerPortionArray[0].price;
-        console.log(`Không tìm thấy khẩu phần ${servingSize} trong array, sử dụng giá đầu tiên:`, price);
       }
     }
     
-    // 4. Nếu không có thông tin giá, sử dụng giá mặc định
+    // 3. Nếu không có thông tin giá, sử dụng giá mặc định
     if (price <= 0) {
       price = 100000; // Giá mặc định nếu không tìm thấy
-      console.log('Không tìm thấy thông tin giá hợp lệ, sử dụng giá mặc định:', price);
     }
     
-    // 5. Áp dụng giảm giá nếu có
+    // 4. Áp dụng giảm giá nếu có
     if (product.discount && product.discount > 0) {
       const discountAmount = price * (product.discount / 100);
-      const discountedPrice = price - discountAmount;
-      console.log(`Áp dụng giảm giá ${product.discount}%:`, {
-        original: price,
-        discount: discountAmount,
-        final: discountedPrice
-      });
-      price = discountedPrice;
+      price = price - discountAmount;
     }
     
-    console.log('Thêm vào giỏ hàng:', { 
-      productId, 
-      productName: product.ingredientName,
-      quantity, 
-      servingSize, 
-      price: Math.round(price) // Làm tròn giá để không có số thập phân
-    });
-    
-    // Kiểm tra người dùng đã đăng nhập chưa
-    if (this.authService.isLoggedIn()) {
-      // Nếu đã đăng nhập, sử dụng UserCartService
-      this.userCartService.addToCart(product, quantity, servingSize, Math.round(price)).subscribe({
-        next: (cart) => {
-          console.log('Đã thêm sản phẩm vào giỏ hàng người dùng:', cart);
-        },
-        error: (error) => {
-          console.error('Lỗi khi thêm sản phẩm vào giỏ hàng người dùng:', error);
-        }
-      });
-    } else {
-      // Nếu chưa đăng nhập, sử dụng GuestCartService
-      this.guestCartService.addToLocalCart(product, quantity, servingSize, Math.round(price));
-      console.log('Đã thêm sản phẩm vào giỏ hàng khách:', product.ingredientName);
-    }
+    return price;
   }
 
   updateVisibleRecipes() {
@@ -459,5 +557,102 @@ export class LenThucDonComponent implements OnInit {
           console.error('Error toggling favorite:', error);
         },
       });
+  }
+
+  // Thêm sản phẩm vào giỏ hàng
+  addToCart(product: Product): void {
+    if (!product || !product._id) {
+      console.error('Sản phẩm không hợp lệ', product);
+      return;
+    }
+    
+    const quantity = 1; // Số lượng mặc định
+    const servingSize = "2"; // Khẩu phần mặc định
+    
+    // Tính toán giá sản phẩm
+    const price = this.calculateProductPrice(product, servingSize);
+    const finalPrice = Math.round(price);
+    
+    console.log('Thêm vào giỏ hàng:', { 
+      productId: product._id, 
+      productName: product.ingredientName || product.title,
+      quantity, 
+      servingSize, 
+      price: finalPrice
+    });
+    
+    // In ra cấu trúc pricePerPortion để debug
+    console.log('Chi tiết giá và khẩu phần:', {
+      pricePerPortion: product.pricePerPortion,
+      pricePerPortionArray: product.pricePerPortionArray,
+      selectedPortion: servingSize
+    });
+    
+    // Hiển thị thông báo đang xử lý
+    this.showNotification('Đang thêm sản phẩm vào giỏ hàng...', 'success');
+    
+    // Kiểm tra người dùng đã đăng nhập chưa
+    if (this.authService.isLoggedIn()) {
+      // Nếu đã đăng nhập, sử dụng UserCartService
+      this.userCartService.addToCart(product, quantity, servingSize, finalPrice)
+        .subscribe({
+          next: (cart) => {
+            console.log('Đã thêm sản phẩm vào giỏ hàng người dùng:', cart);
+            const productName = product.ingredientName || product.title || 'Sản phẩm';
+            this.showNotification(`Đã thêm ${productName} vào giỏ hàng`, 'success');
+          },
+          error: (error) => {
+            console.error('Lỗi khi thêm sản phẩm vào giỏ hàng người dùng:', error);
+            
+            // Chi tiết lỗi để debug
+            if (error && typeof error === 'object') {
+              console.log('Chi tiết lỗi HTTP:', JSON.stringify(error));
+            }
+            
+            // Xử lý lỗi cụ thể
+            let errorMessage = 'Lỗi không xác định';
+            
+            if (error && typeof error === 'object') {
+              if ('message' in error) {
+                errorMessage = String(error.message);
+              } else if ('error' in error && typeof error.error === 'object' && error.error && 'message' in error.error) {
+                errorMessage = String(error.error.message);
+              }
+              
+              if (errorMessage.includes('không đủ số lượng') || errorMessage.includes('out of stock')) {
+                const productName = product.ingredientName || product.title || 'Sản phẩm';
+                this.showNotification(`Sản phẩm ${productName} không đủ số lượng trong kho`, 'error');
+                return;
+              }
+            }
+            
+            this.showNotification(`Không thể thêm sản phẩm vào giỏ hàng: ${errorMessage}`, 'error');
+          }
+        });
+    } else {
+      // Nếu chưa đăng nhập, sử dụng GuestCartService
+      try {
+        this.guestCartService.addToLocalCart(product, quantity, servingSize, finalPrice);
+        console.log('Đã thêm sản phẩm vào giỏ hàng khách:', product.ingredientName || product.title);
+        const productName = product.ingredientName || product.title || 'Sản phẩm';
+        this.showNotification(`Đã thêm ${productName} vào giỏ hàng`, 'success');
+      } catch (error) {
+        console.error('Lỗi khi thêm sản phẩm vào giỏ hàng khách:', error);
+        
+        // Kiểm tra loại lỗi
+        let errorMessage = 'Lỗi không xác định';
+        if (error && typeof error === 'object' && 'message' in error) {
+          errorMessage = String(error.message);
+          
+          if (errorMessage.includes('không đủ số lượng') || errorMessage.includes('out of stock')) {
+            const productName = product.ingredientName || product.title || 'Sản phẩm';
+            this.showNotification(`Sản phẩm ${productName} không đủ số lượng trong kho`, 'error');
+            return;
+          }
+        }
+        
+        this.showNotification(`Không thể thêm sản phẩm vào giỏ hàng: ${errorMessage}`, 'error');
+      }
+    }
   }
 }

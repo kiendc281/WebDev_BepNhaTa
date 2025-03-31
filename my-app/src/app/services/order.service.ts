@@ -39,17 +39,45 @@ export class OrderService {
     // Đảm bảo mỗi item trong đơn hàng đều có đủ các trường bắt buộc
     if (orderData.itemOrder && Array.isArray(orderData.itemOrder)) {
       orderData.itemOrder = orderData.itemOrder.map((item: any) => {
-        // Nếu item chưa có name hoặc img, thêm vào
-        if (!item.name || !item.img) {
-          return {
-            ...item,
-            name: item.name || item.productName || 'Sản phẩm không tên',
-            img: item.img || item.mainImage || '',
-            servingSize: item.servingSize || '2'
-          };
-        }
-        return item;
+        return {
+          ...item,
+          productId: item.productId,
+          name: item.name || item.productName || 'Sản phẩm không tên',
+          img: item.img || item.mainImage || item.image || '',
+          quantity: item.quantity,
+          servingSize: item.servingSize || 'Mặc định',
+          totalPrice: item.totalPrice || (item.price * item.quantity)
+        };
       });
+    }
+    
+    // Đảm bảo orderData có đủ các trường bắt buộc theo yêu cầu của backend
+    if (!orderData.prePrice) {
+      orderData.prePrice = orderData.totalPrice;
+    }
+    
+    if (!orderData.status) {
+      orderData.status = 'Đang xử lý';
+    }
+    
+    if (!orderData.discount) {
+      orderData.discount = 0;
+    }
+    
+    if (!orderData.shippingFee) {
+      orderData.shippingFee = 0;
+    }
+    
+    // Đảm bảo guestInfo có đủ thông tin nếu là đơn hàng khách
+    if (isGuestOrder && orderData.guestInfo) {
+      orderData.guestInfo = {
+        ...orderData.guestInfo,
+        fullName: orderData.guestInfo.fullName || '',
+        phone: orderData.guestInfo.phone || '',
+        email: orderData.guestInfo.email || '',
+        address: orderData.guestInfo.address || '',
+        note: orderData.guestInfo.note || ''
+      };
     }
     
     console.log('Đang gửi đơn hàng tới endpoint:', `${environment.apiUrl}/${endpoint}`);
@@ -125,7 +153,7 @@ export class OrderService {
         productId: item.productId,
         name: item.productName || item.ingredientName || 'Sản phẩm không tên',
         img: item.mainImage || '',
-        servingSize: item.servingSize || '2',
+        servingSize: item.servingSize || 'Mặc định',
         quantity: item.quantity,
         totalPrice: item.price * item.quantity
       };
@@ -139,6 +167,7 @@ export class OrderService {
       shippingFee: 0,
       totalPrice: totalPrice,
       paymentMethod: upperCasePaymentMethod,
+      status: 'Đang xử lý',
       guestInfo: {
         fullName: formData.fullName || '',
         phone: formData.phone || '',
@@ -173,7 +202,7 @@ export class OrderService {
         productId: item.productId,
         name: item.productName || item.ingredientName || 'Sản phẩm không tên',
         img: item.mainImage || '',
-        servingSize: item.servingSize || '2',
+        servingSize: item.servingSize || 'Mặc định',
         quantity: item.quantity,
         totalPrice: item.price * item.quantity
       };
@@ -187,7 +216,8 @@ export class OrderService {
       discount: 0,
       shippingFee: 0,
       totalPrice: totalPrice,
-      paymentMethod: upperCasePaymentMethod
+      paymentMethod: upperCasePaymentMethod,
+      status: 'Đang xử lý'
     };
 
     // Nếu có addressId hợp lệ, sử dụng nó

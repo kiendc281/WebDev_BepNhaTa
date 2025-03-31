@@ -1,23 +1,11 @@
 const accountService = require('../services/accountService');
 const Account = require('../models/account');
-const nodemailer = require('nodemailer');
+const emailService = require('../services/emailService');
 require('dotenv').config();
 const crypto = require('crypto');
 
 // Lưu trữ mã OTP tạm thời (trong thực tế nên lưu vào database)
 const otpStore = new Map();
-
-// Cấu hình nodemailer
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
-  },
-  tls: {
-    rejectUnauthorized: false
-  }
-});
 
 // Hàm tạo OTP ngẫu nhiên 6 chữ số
 function generateOTP() {
@@ -57,28 +45,13 @@ exports.sendOTP = async (req, res) => {
 
     // Gửi email chứa OTP
     if (emailOrPhone.includes('@')) {
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: emailOrPhone,
-        subject: 'Mã xác nhận đặt lại mật khẩu - Bếp Nhà Ta',
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;">
-            <h2 style="color: #d35400; text-align: center;">Bếp Nhà Ta</h2>
-            <p>Xin chào,</p>
-            <p>Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. Vui lòng sử dụng mã OTP sau để xác nhận:</p>
-            <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 5px; margin: 20px 0;">
-              ${otp}
-            </div>
-            <p>Mã này sẽ hết hạn sau 5 phút.</p>
-            <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>
-            <p style="margin-top: 30px; font-size: 12px; color: #777; text-align: center;">
-              ${new Date().getFullYear()} Bếp Nhà Ta. Tất cả các quyền được bảo lưu.
-            </p>
-          </div>
-        `
-      };
-
-      await transporter.sendMail(mailOptions);
+      // Sử dụng email service để gửi OTP qua email
+      const emailSent = await emailService.sendPasswordResetOTP(emailOrPhone, otp);
+      
+      if (!emailSent) {
+        return res.status(500).json({ message: 'Không thể gửi mã xác nhận qua email. Vui lòng thử lại sau.' });
+      }
+      
       console.log('Email chứa OTP đã được gửi đến:', emailOrPhone);
     } else {
       // Trong trường hợp thực tế, bạn sẽ tích hợp với dịch vụ SMS ở đây

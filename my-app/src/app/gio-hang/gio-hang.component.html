@@ -1,3 +1,24 @@
+<div
+  *ngIf="notification.show"
+  class="custom-notification"
+  [ngClass]="{
+    success: notification.type === 'success',
+    error: notification.type === 'error'
+  }"
+>
+  <div class="notification-content">
+    <i
+      class="fa"
+      [ngClass]="{
+        'fa-check-circle': notification.type === 'success',
+        'fa-exclamation-circle': notification.type === 'error'
+      }"
+    ></i>
+    <span>{{ notification.message }}</span>
+    <button class="close-button" (click)="notification.show = false">×</button>
+  </div>
+</div>
+
 <div class="container">
   <div class="row">
     <div class="col-md-6">
@@ -10,8 +31,25 @@
             type="button"
             class="btn btn-outline-primary"
             (click)="showAddressModal()"
+            title="Chọn địa chỉ đã lưu từ sổ địa chỉ của bạn"
+            [disabled]="loadingAddresses"
           >
-            <i class="bi bi-geo-alt"></i> Sổ địa chỉ
+            <i
+              class="bi"
+              [ngClass]="{
+                'bi-geo-alt': !loadingAddresses,
+                'bi-arrow-repeat spin': loadingAddresses
+              }"
+            ></i>
+            <span *ngIf="!loadingAddresses">
+              Sổ địa chỉ của bạn
+              <span
+                class="badge bg-primary ms-1"
+                *ngIf="userAddresses.length > 0"
+                >{{ userAddresses.length }}</span
+              >
+            </span>
+            <span *ngIf="loadingAddresses">Đang tải địa chỉ...</span>
           </button>
         </div>
 
@@ -222,6 +260,9 @@
                   />
                   <div class="item-details">
                     <h4 class="item-name">{{ item.ingredientName }}</h4>
+                    <p class="item-serving-size">
+                      Khẩu phần: {{ item.servingSize || "Mặc định" }}
+                    </p>
                   </div>
                 </div>
 
@@ -503,7 +544,17 @@
           *ngIf="!loadingAddresses && userAddresses.length === 0"
           class="text-center p-3"
         >
-          <p>Bạn chưa có địa chỉ nào. Vui lòng nhập thông tin địa chỉ mới.</p>
+          <div class="no-address-message">
+            <i
+              class="bi bi-geo-alt-fill text-muted"
+              style="font-size: 2rem"
+            ></i>
+            <p>Bạn chưa có địa chỉ nào trong sổ địa chỉ.</p>
+            <p class="text-muted">
+              Hãy điền thông tin địa chỉ và tích vào ô "Lưu vào sổ địa chỉ" khi
+              thanh toán.
+            </p>
+          </div>
         </div>
 
         <div
@@ -544,8 +595,53 @@
         </div>
       </div>
       <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="loadUserAddresses()"
+        >
+          <i class="bi bi-arrow-clockwise"></i> Làm mới
+        </button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal xác nhận cho email -->
+<div
+  class="modal fade"
+  id="confirmModal"
+  tabindex="-1"
+  aria-labelledby="confirmModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Xác nhận</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Content will be set dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary btn-cancel"
+          data-bs-dismiss="modal"
+        >
+          Hủy
+        </button>
+        <button type="button" class="btn btn-primary btn-continue">
+          Tiếp tục
         </button>
       </div>
     </div>

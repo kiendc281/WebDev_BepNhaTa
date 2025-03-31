@@ -1,5 +1,6 @@
 const Order = require('../models/order');
 const mongoose = require('mongoose');
+const emailService = require('../services/emailService');
 
 /**
  * Tạo đơn hàng mới (chung cho cả khách và người dùng đã đăng nhập)
@@ -50,7 +51,7 @@ exports.createGuestOrder = async (req, res) => {
 
         // Kiểm tra các trường bắt buộc cơ bản
         if (!itemOrder || !prePrice || !totalPrice || !paymentMethod) {
-            return res.status(400).json({
+            return res.status(400).json({ 
                 status: 'error',
                 message: 'Vui lòng nhập đầy đủ thông tin đơn hàng cơ bản'
             });
@@ -63,11 +64,11 @@ exports.createGuestOrder = async (req, res) => {
                 message: 'Đơn hàng phải có ít nhất một sản phẩm'
             });
         }
-
+        
         // Kiểm tra từng sản phẩm trong đơn hàng có đủ thông tin không
         for (const item of itemOrder) {
             if (!item.productId || !item.name || !item.img || !item.quantity || !item.totalPrice || !item.servingSize) {
-                return res.status(400).json({
+                return res.status(400).json({ 
                     status: 'error',
                     message: 'Thông tin sản phẩm trong đơn hàng không đầy đủ'
                 });
@@ -81,7 +82,7 @@ exports.createGuestOrder = async (req, res) => {
                 message: 'Vui lòng cung cấp họ tên và số điện thoại'
             });
         }
-
+        
         // Xử lý địa chỉ nếu thiếu quận/huyện, phường/xã
         const address = guestInfo.address || '';
         // Loại bỏ các phần trống trong địa chỉ (các dấu phẩy liên tiếp)
@@ -111,6 +112,35 @@ exports.createGuestOrder = async (req, res) => {
         
         console.log('Đã tạo đơn hàng thành công:', savedOrder._id);
         
+        // Kiểm tra và log thông tin hình ảnh sản phẩm
+        if (itemOrder && itemOrder.length > 0) {
+            console.log('Kiểm tra URL hình ảnh sản phẩm trong đơn hàng:');
+            itemOrder.forEach((item, index) => {
+                const hasValidImage = item.img && (item.img.startsWith('http://') || item.img.startsWith('https://'));
+                console.log(`Sản phẩm #${index + 1}: "${item.name}" - URL hình ảnh: ${item.img} - Hợp lệ: ${hasValidImage}`);
+            });
+        }
+
+        // Gửi email xác nhận đơn hàng nếu có email
+        const emailTo = guestInfo.email;
+        if (emailTo) {
+            try {
+                console.log(`Đang gửi email xác nhận đơn hàng đến: ${emailTo} cho đơn hàng #${savedOrder._id}`);
+                const emailResult = await emailService.sendOrderConfirmation(savedOrder, emailTo);
+                
+                if (emailResult) {
+                    console.log(`✅ Đã gửi email xác nhận đơn hàng thành công đến: ${emailTo}`);
+                } else {
+                    console.warn(`⚠️ Không thể gửi email xác nhận đơn hàng đến: ${emailTo} - Lỗi không rõ nguyên nhân`);
+                }
+            } catch (emailError) {
+                console.error(`❌ Lỗi khi gửi email xác nhận đơn hàng đến ${emailTo}:`, emailError);
+                // Không trả về lỗi cho client nếu gửi email thất bại, vẫn xem đơn hàng là thành công
+            }
+        } else {
+            console.log('Không có địa chỉ email để gửi xác nhận đơn hàng');
+        }
+
         return res.status(201).json({
             status: 'success',
             message: 'Tạo đơn hàng khách vãng lai thành công',
