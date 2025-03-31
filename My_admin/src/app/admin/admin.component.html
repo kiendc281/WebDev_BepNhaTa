@@ -1,0 +1,213 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-primary mb-0">Quản lý tài khoản admin</h1>
+    <!-- <button class="btn btn-primary" routerLink="/admin/add">
+      <i class="bi bi-plus-circle me-1"></i>Thêm mới
+    </button> -->
+  </div>
+  <div class="d-flex justify-content-between align-items-end mb-3">
+    <div class="mb-0">
+      Số lượng admin: <b>{{ admins.length }} tài khoản admin</b>
+    </div>
+    <button class="button-cam px-3" routerLink="/admin/add">
+      <i class="bi bi-person-plus me-2"></i>Thêm mới
+    </button>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="text-center my-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Đang tải...</span>
+    </div>
+    <p class="mt-2">Đang tải dữ liệu admin...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="alert alert-danger my-3" role="alert">
+    {{ error }}
+    <button
+      type="button"
+      class="btn btn-sm btn-outline-danger float-end"
+      (click)="loadAdmins()"
+    >
+      Thử lại
+    </button>
+  </div>
+
+  <!-- Admin table -->
+  <div
+    class="table-responsive"
+    *ngIf="!isLoading && !error && admins.length > 0"
+  >
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>STT</th>
+          <th class="sortable" (click)="sortBy('email')">
+            <div class="d-flex align-items-center">
+              <span>Email</span>
+              <i class="bi {{ getSortIcon('email') }} ms-1"></i>
+            </div>
+          </th>
+          <th class="sortable" (click)="sortBy('name')">
+            <div class="d-flex align-items-center">
+              <span>Tên admin</span>
+              <i class="bi {{ getSortIcon('name') }} ms-1"></i>
+            </div>
+          </th>
+          <th class="sortable">
+            <div class="d-flex align-items-center">
+              <span>Số điện thoại</span>
+            </div>
+          </th>
+          <th class="sortable" (click)="sortBy('email')">
+            <div class="d-flex align-items-center">
+              <span>Địa chỉ email</span>
+              <i class="bi {{ getSortIcon('email') }} ms-1"></i>
+            </div>
+          </th>
+          <th class="sortable" (click)="sortBy('createdAt')">
+            <div class="d-flex align-items-center">
+              <span>Ngày tạo</span>
+              <i class="bi {{ getSortIcon('createdAt') }} ms-1"></i>
+            </div>
+          </th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let admin of pagedAdmins; let i = index">
+          <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+          <td [title]="admin.email">{{ admin.email }}</td>
+          <td [title]="admin.name">{{ admin.name }}</td>
+          <td [title]="admin.phone">{{ admin.phone }}</td>
+          <td [title]="admin.email">{{ admin.email }}</td>
+          <td [title]="admin.createdAt | date : 'dd/MM/yyyy'">
+            {{ admin.createdAt | date : "dd/MM/yyyy" }}
+          </td>
+          <td class="text-center">
+            <button
+              class="btn btn-sm btn-outline-primary me-2"
+              [routerLink]="['/admin/detail', admin._id]"
+              title="Xem chi tiết"
+            >
+              <i class="bi bi-eye-fill"></i>
+            </button>
+            <button
+              class="btn btn-sm btn-outline-warning me-2"
+              [routerLink]="['/admin/edit', admin._id]"
+              title="Chỉnh sửa"
+            >
+              <i class="bi bi-pencil-fill"></i>
+            </button>
+            <button
+              class="btn btn-sm btn-outline-danger"
+              (click)="confirmDelete(admin)"
+              title="Xóa"
+            >
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <div>
+        <span class="me-2"
+          >Trang <b>{{ currentPage }}</b
+          >/{{ totalPages }}</span
+        >
+        <span class="me-2">|</span>
+        <span
+          >Hiển thị <b>{{ pagedAdmins.length }}</b> trên tổng số
+          {{ admins.length }} admin</span
+        >
+      </div>
+      <nav aria-label="Page navigation">
+        <ul class="pagination mb-0">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="previousPage()">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+          </li>
+          <li
+            *ngFor="let page of getPageNumbers()"
+            class="page-item"
+            [class.active]="page === currentPage"
+          >
+            <button class="page-link" (click)="goToPage(page)">
+              {{ page }}
+            </button>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link" (click)="nextPage()">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- No data message -->
+  <div
+    *ngIf="!isLoading && !error && admins.length === 0"
+    class="alert alert-info my-3"
+  >
+    Không có dữ liệu admin.
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div
+  class="modal fade show"
+  [class.d-block]="showDeleteConfirm"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="cancelDelete()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có chắc chắn muốn xóa tài khoản admin này?</p>
+        <p class="text-danger">Hành động này không thể hoàn tác.</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancelDelete()"
+        >
+          Hủy
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="deleteAdmin()"
+          [disabled]="isLoading"
+        >
+          <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm me-1"
+          ></span>
+          Xóa
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="showDeleteConfirm"></div>

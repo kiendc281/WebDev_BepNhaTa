@@ -11,6 +11,10 @@ import { BlogDetailComponent } from './blog-detail/blog-detail.component';
 import { BlogEditComponent } from './blog-edit/blog-edit.component';
 import { BlogAddComponent } from './blog-add/blog-add.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { AdminComponent } from './admin/admin.component';
+import { AdminAddComponent } from './admin-add/admin-add.component';
+import { AdminDetailComponent } from './admin-detail/admin-detail.component';
+import { AdminEditComponent } from './admin-edit/admin-edit.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -26,6 +30,10 @@ export const routes: Routes = [
   { path: 'blog/edit/:id', component: BlogEditComponent },
   { path: 'blog/add', component: BlogAddComponent },
   { path: 'recipe', component: RecipeComponent },
+  { path: 'admin', component: AdminComponent },
+  { path: 'admin/add', component: AdminAddComponent },
+  { path: 'admin/detail/:id', component: AdminDetailComponent },
+  { path: 'admin/edit/:id', component: AdminEditComponent },
   {
     path: 'trang-chu',
     loadComponent: () =>

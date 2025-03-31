@@ -76,7 +76,7 @@
           <td [title]="customer.createdAt | date : 'dd/MM/yyyy'">
             {{ customer.createdAt | date : "dd/MM/yyyy" }}
           </td>
-          <td>
+          <td class="text-center">
             <button
               class="btn btn-sm btn-outline-primary me-2"
               (click)="editCustomer(customer._id)"
@@ -84,13 +84,13 @@
             >
               <i class="bi bi-eye-fill"></i>
             </button>
-            <button
+            <!-- <button
               class="btn btn-sm btn-outline-danger"
               (click)="deleteCustomer(customer._id)"
               title="Xóa"
             >
               <i class="bi bi-trash"></i>
-            </button>
+            </button> -->
           </td>
         </tr>
       </tbody>

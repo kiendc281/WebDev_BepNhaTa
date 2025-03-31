@@ -1,0 +1,191 @@
+<div class="container mt-4">
+  <button class="btn btn-outline-secondary mb-3" (click)="onBack()">
+    <i class="bi bi-arrow-left me-1"></i>Quay lại
+  </button>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="mb-0">Chỉnh sửa thông tin admin</h2>
+        </div>
+        <div class="card-body">
+          <!-- Loading state -->
+          <div *ngIf="isLoading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <!-- Error message -->
+          <div *ngIf="error" class="alert alert-danger" role="alert">
+            {{ error }}
+          </div>
+
+          <!-- Success message -->
+          <div *ngIf="success" class="alert alert-success" role="alert">
+            Cập nhật thông tin admin thành công! Đang chuyển hướng...
+          </div>
+
+          <!-- Edit form -->
+          <form *ngIf="admin && !isLoading" (ngSubmit)="onSubmit()">
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                [(ngModel)]="admin.email"
+                name="email"
+                (blur)="onFieldBlur('email'); validateEmail(admin.email)"
+                [class.is-invalid]="isFieldInvalid('email') || !isEmailValid"
+                required
+              />
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('email')">
+                Vui lòng nhập email
+              </div>
+              <div class="invalid-feedback" *ngIf="!isEmailValid">
+                Email không hợp lệ
+              </div>
+            </div>
+
+            <!-- Full name -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Họ và tên</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                [(ngModel)]="admin.name"
+                name="name"
+                (blur)="onFieldBlur('name')"
+                [class.is-invalid]="isFieldInvalid('name')"
+                required
+              />
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('name')">
+                Vui lòng nhập họ và tên
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-3">
+              <label for="phone" class="form-label">Số điện thoại</label>
+              <input
+                type="tel"
+                class="form-control"
+                [class.is-invalid]="
+                  (!isPhoneValid && admin.phone) || isFieldInvalid('phone')
+                "
+                id="phone"
+                [(ngModel)]="admin.phone"
+                (ngModelChange)="validatePhone(admin.phone)"
+                (blur)="onFieldBlur('phone')"
+                name="phone"
+                required
+                placeholder="Nhập số điện thoại"
+                pattern="0\d{9}"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  (!isPhoneValid && admin.phone) || isFieldInvalid('phone')
+                "
+              >
+                <span *ngIf="!isPhoneValid && admin.phone"
+                  >Số điện thoại không hợp lệ. Vui lòng nhập lại!</span
+                >
+                <span *ngIf="isFieldInvalid('phone')"
+                  >Vui lòng nhập số điện thoại</span
+                >
+              </div>
+            </div>
+
+            <!-- Birth date -->
+            <div class="mb-3">
+              <label for="birthOfDate" class="form-label">Ngày sinh</label>
+              <input
+                type="date"
+                class="form-control"
+                id="birthOfDate"
+                [(ngModel)]="admin.birthOfDate"
+                name="birthOfDate"
+                (blur)="onFieldBlur('birthOfDate')"
+                [class.is-invalid]="isFieldInvalid('birthOfDate')"
+                required
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="isFieldInvalid('birthOfDate')"
+              >
+                Vui lòng chọn ngày sinh
+              </div>
+            </div>
+
+            <!-- Gender -->
+
+            <div class="mb-3">
+              <label class="form-label">Giới tính</label>
+              <div class="d-flex gap-2">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="gender"
+                    id="male"
+                    value="male"
+                    [(ngModel)]="admin.gender"
+                    (blur)="onFieldBlur('gender')"
+                    [class.is-invalid]="isFieldInvalid('gender')"
+                    required
+                  />
+                  <label class="form-check-label" for="male">Nam</label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="gender"
+                    id="female"
+                    value="female"
+                    [(ngModel)]="admin.gender"
+                    (blur)="onFieldBlur('gender')"
+                    [class.is-invalid]="isFieldInvalid('gender')"
+                    required
+                  />
+                  <label class="form-check-label" for="female">Nữ</label>
+                </div>
+              </div>
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('gender')">
+                Vui lòng chọn giới tính
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="d-flex gap-2 justify-content-end">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="onCancel()"
+                [disabled]="isLoading"
+              >
+                Hủy
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="isLoading"
+              >
+                <span
+                  class="spinner-border spinner-border-sm me-1"
+                  role="status"
+                  *ngIf="isLoading"
+                ></span>
+                Cập nhật
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
