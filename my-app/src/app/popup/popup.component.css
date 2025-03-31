@@ -12,6 +12,7 @@
   padding: 20px;
   backdrop-filter: blur(5px);
   animation: fadeIn 0.3s ease-out;
+  overflow-y: auto;
 }
 
 @keyframes fadeIn {
@@ -32,6 +33,7 @@
   padding: 0;
   position: relative;
   animation: slideIn 0.5s ease-out;
+  margin: 20px auto;
 }
 
 @keyframes slideIn {
@@ -100,7 +102,7 @@
 
 .content-section .promo-text {
   color: var(--color-camdam);
-  margin: 1.2rem 0;
+  margin: 0.8rem 0;
   padding: 1rem 1.5rem;
   background: rgba(var(--color-camnhat-rgb), 0.6);
   font-weight: 600 !important;
@@ -171,24 +173,89 @@
 }
 
 @media (max-width: 768px) {
+  .popup-content {
+    width: 90%;
+    max-width: 500px;
+  }
+
   .popup-grid {
     grid-template-columns: 1fr;
     min-height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
   }
 
   .image-section {
-    height: 300px;
+    height: 250px;
   }
 
   .content-section {
-    padding: 1.8rem;
+    padding: 1.5rem;
+    max-height: calc(90vh - 250px);
+    overflow-y: auto;
   }
 
   .button-container {
     flex-direction: column;
+    gap: 0.8rem;
   }
 
   .button-container button {
     width: 100%;
+  }
+
+  .content-section h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .content-section .main-text {
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .content-section .promo-text {
+    font-size: 0.9rem;
+    padding: 0.8rem 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .close-btn {
+    top: 10px;
+    right: 10px;
+  }
+
+  .close-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-content {
+    width: 95%;
+    max-width: 300px;
+    margin: 10px auto;
+  }
+
+  .image-section {
+    height: 200px;
+  }
+
+  .content-section {
+    padding: 1.2rem;
+  }
+
+  .content-section h1 {
+    font-size: 1.5rem;
+  }
+
+  .content-section .main-text {
+    font-size: 0.9rem;
+  }
+
+  .content-section .promo-text {
+    font-size: 0.85rem;
+    padding: 0.7rem 1rem;
   }
 }

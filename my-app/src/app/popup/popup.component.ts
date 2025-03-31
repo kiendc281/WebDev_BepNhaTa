@@ -15,10 +15,10 @@ export class PopupComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // Hiển thị popup sau 5 giây
+    // Hiển thị popup sau 3 giây
     setTimeout(() => {
       this.isVisible = true;
-    }, 4000);
+    }, 3000);
   }
 
   closePopup() {
