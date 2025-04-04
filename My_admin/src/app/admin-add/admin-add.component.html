@@ -1,4 +1,7 @@
 <div class="container-fluid">
+  <button class="btn btn-outline-secondary mb-3" (click)="onBack()">
+    <i class="bi bi-arrow-left me-1"></i>Quay lại
+  </button>
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
@@ -58,14 +61,11 @@
             <!-- Password -->
             <div class="mb-3">
               <label for="password" class="form-label">Mật khẩu</label>
-              <div class="input-group">
+              <div class="input-group has-validation">
                 <input
                   [type]="showPassword ? 'text' : 'password'"
                   class="form-control"
-                  [class.is-invalid]="
-                    (!isPasswordValid && admin.password) ||
-                    isFieldInvalid('password')
-                  "
+                  [class.is-invalid]="isPasswordInvalid()"
                   id="password"
                   [(ngModel)]="admin.password"
                   (ngModelChange)="validatePassword(admin.password)"
@@ -86,74 +86,18 @@
                   ></i>
                 </button>
               </div>
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('password')">
-                Vui lòng nhập mật khẩu
-              </div>
-              <!-- Password requirements -->
-              <div class="mt-2">
-                <small class="text-muted"
-                  >Mật khẩu phải đáp ứng các điều kiện sau:</small
+              <div
+                class="invalid-feedback"
+                *ngIf="isPasswordInvalid()"
+                style="display: block"
+              >
+                <span *ngIf="!isPasswordValid && admin.password"
+                  >Mật khẩu phải có ít nhất 8 ký tự, chứa ít nhất 1 chữ hoa, 1
+                  số và 1 ký tự đặc biệt</span
                 >
-                <ul class="list-unstyled mb-0">
-                  <li
-                    [class.text-success]="passwordValidation.hasMinLength"
-                    [class.text-danger]="!passwordValidation.hasMinLength"
-                  >
-                    <i
-                      class="bi"
-                      [class.bi-check-circle-fill]="
-                        passwordValidation.hasMinLength
-                      "
-                      [class.bi-x-circle-fill]="
-                        !passwordValidation.hasMinLength
-                      "
-                    ></i>
-                    Ít nhất 8 ký tự
-                  </li>
-                  <li
-                    [class.text-success]="passwordValidation.hasNumber"
-                    [class.text-danger]="!passwordValidation.hasNumber"
-                  >
-                    <i
-                      class="bi"
-                      [class.bi-check-circle-fill]="
-                        passwordValidation.hasNumber
-                      "
-                      [class.bi-x-circle-fill]="!passwordValidation.hasNumber"
-                    ></i>
-                    Chứa ít nhất 1 số
-                  </li>
-                  <li
-                    [class.text-success]="passwordValidation.hasUpperCase"
-                    [class.text-danger]="!passwordValidation.hasUpperCase"
-                  >
-                    <i
-                      class="bi"
-                      [class.bi-check-circle-fill]="
-                        passwordValidation.hasUpperCase
-                      "
-                      [class.bi-x-circle-fill]="
-                        !passwordValidation.hasUpperCase
-                      "
-                    ></i>
-                    Chứa ít nhất 1 chữ cái in hoa
-                  </li>
-                  <li
-                    [class.text-success]="passwordValidation.hasSpecialChar"
-                    [class.text-danger]="!passwordValidation.hasSpecialChar"
-                  >
-                    <i
-                      class="bi"
-                      [class.bi-check-circle-fill]="
-                        passwordValidation.hasSpecialChar
-                      "
-                      [class.bi-x-circle-fill]="
-                        !passwordValidation.hasSpecialChar
-                      "
-                    ></i>
-                    Chứa ít nhất 1 ký tự đặc biệt
-                  </li>
-                </ul>
+                <span *ngIf="isFieldInvalid('password')"
+                  >Vui lòng nhập mật khẩu</span
+                >
               </div>
             </div>
 
@@ -269,17 +213,15 @@
             </div>
 
             <!-- Submit and Cancel buttons -->
-            <div class="d-flex gap-2">
-              <button type="submit" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-1"></i>Thêm mới
-              </button>
+            <div class="d-flex gap-2 justify-content-end">
               <button
                 type="button"
                 class="btn btn-secondary"
                 (click)="onCancel()"
               >
-                <i class="bi bi-x-circle me-1"></i>Hủy
+                Hủy
               </button>
+              <button type="submit" class="btn btn-primary">Thêm mới</button>
             </div>
           </form>
         </div>

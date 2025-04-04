@@ -109,6 +109,13 @@ export class AdminAddComponent {
     return this.touchedFields[field] && !this.admin[field];
   }
 
+  isPasswordInvalid(): boolean {
+    return (
+      (this.touchedFields['password'] && !this.admin.password) ||
+      (!this.isPasswordValid && this.admin.password.length > 0)
+    );
+  }
+
   onSubmit(): void {
     // Mark all fields as touched
     Object.keys(this.touchedFields).forEach((key) => {
@@ -176,6 +183,10 @@ export class AdminAddComponent {
   }
 
   onCancel(): void {
+    this.router.navigate(['/admin']);
+  }
+
+  onBack(): void {
     this.router.navigate(['/admin']);
   }
 }

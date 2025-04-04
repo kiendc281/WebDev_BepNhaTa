@@ -54,6 +54,21 @@ export class AdminEditComponent implements OnInit {
     this.adminService.getAdmin(id).subscribe({
       next: (data) => {
         this.admin = data;
+        console.log('Loaded admin data:', this.admin);
+        console.log(
+          'Gender value:',
+          this.admin.gender,
+          'Type:',
+          typeof this.admin.gender
+        );
+
+        // Force update if gender is not a string or not 'male'/'female'
+        if (this.admin.gender !== 'male' && this.admin.gender !== 'female') {
+          console.log('Fixing invalid gender value:', this.admin.gender);
+          this.admin.gender = this.admin.gender === 'Nữ' ? 'female' : 'male';
+          console.log('Corrected gender value:', this.admin.gender);
+        }
+
         this.isLoading = false;
       },
       error: (error) => {

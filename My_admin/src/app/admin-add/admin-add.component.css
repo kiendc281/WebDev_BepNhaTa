@@ -40,16 +40,6 @@
   border-color: #ea5c2b;
 }
 
-.btn-primary {
-  background-color: #ea5c2b;
-  border-color: #ea5c2b;
-}
-
-.btn-primary:hover {
-  background-color: #d54d1f;
-  border-color: #d54d1f;
-}
-
 .btn-secondary {
   background-color: #6c757d;
   border-color: #6c757d;
@@ -94,4 +84,27 @@
   .d-flex.gap-2 {
     flex-direction: column;
   }
+}
+
+/* CSS cho input group validation */
+.input-group.has-validation .invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+}
+
+.form-control.is-invalid,
+.btn.is-invalid,
+.input-group.has-validation .form-control.is-invalid,
+.input-group.has-validation .btn.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback.d-block {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
 }
