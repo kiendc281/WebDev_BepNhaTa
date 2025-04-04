@@ -138,3 +138,44 @@
   width: 3px;
   background-color: white;
 }
+
+/* Toast notification styles */
+.logout-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1050;
+  max-width: 350px;
+  overflow: hidden;
+  background-color: #28a745;
+  color: white;
+  border-radius: 4px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.3s ease-in-out, fadeOut 0.5s ease-in-out 1.5s forwards;
+}
+
+.toast-content {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

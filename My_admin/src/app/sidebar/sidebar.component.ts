@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +14,11 @@ export class SidebarComponent {
   // Submenu state
   openSubmenu: string | null = null;
 
-  constructor(private router: Router) {}
+  // Toast state
+  showLogoutToast = false;
+  logoutMessage = 'Đăng xuất thành công!';
+
+  constructor(private router: Router, private authService: AuthService) {}
 
   // Toggle submenu function và điều hướng nếu đang đóng
   toggleSubmenu(menuName: string, targetSubmenu?: string): void {
@@ -38,6 +43,27 @@ export class SidebarComponent {
         this.router.navigate(['/customer']);
       }
     }
+  }
+
+  // Xử lý đăng xuất
+  logout(event: Event): void {
+    event.preventDefault(); // Ngăn router-link tự động điều hướng
+
+    // Gọi service để đăng xuất
+    this.authService.logout();
+
+    // Hiển thị thông báo
+    this.showLogoutToast = true;
+
+    // Sau 2 giây, chuyển đến trang đăng nhập
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 2000);
+  }
+
+  // Đóng toast
+  closeToast(): void {
+    this.showLogoutToast = false;
   }
 
   // Kiểm tra xem URL hiện tại có thuộc về route chính không (cho menu item chính)

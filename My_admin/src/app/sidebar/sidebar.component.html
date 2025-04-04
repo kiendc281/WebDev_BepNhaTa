@@ -85,6 +85,18 @@
         <img src="../../assets/sidebar/admin.svg" alt="" />
         <span>Quản lý admin</span>
       </div>
+      <div class="menu-item" (click)="logout($event)">
+        <img src="../../assets/sidebar/dangxuat-trang.svg" alt="" />
+        <span>Đăng xuất</span>
+      </div>
+
+      <!-- Toast notification for logout -->
+      <div *ngIf="showLogoutToast" class="logout-toast">
+        <div class="toast-content">
+          <i class="bi bi-check-circle-fill me-2"></i>
+          {{ logoutMessage }}
+        </div>
+      </div>
 
       <!-- <div
         class="menu-item with-submenu"
