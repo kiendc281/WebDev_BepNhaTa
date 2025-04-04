@@ -72,7 +72,7 @@ import { PopupComponent } from './popup/popup.component';
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-})
+})  
 export class AppComponent implements OnInit {
   title = 'Bếp Nhà Ta';
   private router: Router; //auto scroll top when route
