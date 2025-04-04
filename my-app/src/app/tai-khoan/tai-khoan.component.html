@@ -259,6 +259,23 @@
                   <button class="button-trang" (click)="navigateToContact()">
                     Liên hệ Bếp Nhà Ta
                   </button>
+                  <button
+                    *ngIf="
+                      order.status === 'Đang xử lý' ||
+                      order.status === 'Đã xác nhận'
+                    "
+                    class="button-xam"
+                    [disabled]="loading"
+                    (click)="cancelOrder(order._id)"
+                  >
+                    <span
+                      *ngIf="loading && cancelingOrderId === order._id"
+                      class="spinner-border spinner-border-sm me-1"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Hủy Đơn
+                  </button>
                   <button class="button-cam" (click)="reorderItems(order)">
                     Mua Lại
                   </button>
@@ -1444,7 +1461,7 @@
     [ngClass]="toast.type === 'success' ? 'toast-success' : 'toast-error'"
     [class.toast-fadeout]="toast.fading"
   >
-    <div class="toast-icon">
+    <div class="toast-icon me-3">
       <img
         *ngIf="toast.type === 'success'"
         src="../../assets/tai-khoan/lets-icons-check-fill.svg"

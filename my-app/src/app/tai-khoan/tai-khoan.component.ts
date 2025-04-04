@@ -60,6 +60,7 @@ export class TaiKhoanComponent implements OnInit {
   userOrders: Order[] = [];
   showOrderDetailModal = false;
   selectedOrder: Order | null = null;
+  cancelingOrderId: string | null = null;
 
   // Form địa chỉ
   addressForm: FormGroup;
@@ -941,6 +942,84 @@ export class TaiKhoanComponent implements OnInit {
             );
           },
         });
+    });
+  }
+
+  /**
+   * Hủy đơn hàng
+   * @param orderId ID của đơn hàng cần hủy
+   */
+  cancelOrder(orderId: string): void {
+    if (!orderId) {
+      this.showToast('error', 'Lỗi', 'Không thể xác định đơn hàng cần hủy');
+      return;
+    }
+
+    if (!confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')) {
+      return;
+    }
+
+    this.loading = true;
+    this.cancelingOrderId = orderId;
+    this.orderService.cancelOrder(orderId).subscribe({
+      next: (response) => {
+        this.loading = false;
+        this.cancelingOrderId = null;
+        console.log('Phản hồi từ API khi hủy đơn hàng:', response);
+
+        // Xử lý phản hồi từ API
+        // Vì có thể API trả về cấu trúc response khác nhau, nên kiểm tra nhiều trường hợp
+        const isSuccess =
+          (response && response.success === true) ||
+          (response && response.status === 'success') ||
+          (response &&
+            response.statusCode >= 200 &&
+            response.statusCode < 300) ||
+          (!response.hasOwnProperty('success') && !response.error);
+
+        if (isSuccess) {
+          // Cập nhật trạng thái đơn hàng trong danh sách và hiển thị thông báo thành công
+          this.userOrders = this.userOrders.map((order) => {
+            if (order._id === orderId) {
+              console.log(
+                `Đã cập nhật trạng thái đơn hàng ${orderId} thành "Đã hủy"`
+              );
+              return { ...order, status: 'Đã hủy' };
+            }
+            return order;
+          });
+
+          // Hiển thị thông báo sau khi cập nhật danh sách
+          this.showToast(
+            'success',
+            'Thành công',
+            'Đơn hàng đã được hủy thành công'
+          );
+        } else {
+          // Chỉ hiển thị thông báo lỗi khi response có lỗi
+          const errorMessage = response.message || 'Không thể hủy đơn hàng';
+          console.error('Lỗi từ API:', errorMessage);
+          this.showToast('error', 'Lỗi', errorMessage);
+        }
+      },
+      error: (error) => {
+        this.loading = false;
+        this.cancelingOrderId = null;
+        console.error('Lỗi khi hủy đơn hàng:', error);
+
+        // Xử lý lỗi phù hợp từ HTTP response
+        let errorMessage = 'Không thể hủy đơn hàng. Vui lòng thử lại sau.';
+
+        if (error.error) {
+          if (typeof error.error === 'string') {
+            errorMessage = error.error;
+          } else if (error.error.message) {
+            errorMessage = error.error.message;
+          }
+        }
+
+        this.showToast('error', 'Lỗi', errorMessage);
+      },
     });
   }
 }
