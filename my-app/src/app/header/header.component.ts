@@ -13,7 +13,6 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { filter } from 'rxjs/operators';
 import { UserCartService } from '../services/user-cart.service';
 import { GuestCartService } from '../services/guest-cart.service';
-import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-header',
@@ -25,7 +24,6 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
     DangNhapComponent,
     DangKyComponent,
     QuenMatKhauComponent,
-    ThemeToggleComponent
   ],
   providers: [AuthService],
   templateUrl: './header.component.html',
