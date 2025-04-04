@@ -66,6 +66,41 @@
   color: #721c24;
 }
 
+/* Password field styles */
+.password-field {
+  position: relative;
+  width: 100%;
+}
+
+.password-field .form-control {
+  padding-right: 45px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+  z-index: 20;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  text-align: left;
+  display: block;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .card {
@@ -84,6 +119,34 @@
   .d-flex.gap-2 {
     flex-direction: column;
   }
+}
+
+/* Override Bootstrap input invalid styles */
+.form-control.is-invalid {
+  background-image: none;
+  border-color: #dc3545;
+  padding-right: 0.75rem;
+}
+
+.form-control.is-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Hide browser password toggle buttons */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-webkit-contacts-auto-fill-button,
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-password-toggle {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+  margin: 0;
 }
 
 /* CSS cho input group validation */

@@ -13,7 +13,15 @@ import { Admin } from '../models/admin.interface';
   styleUrl: './admin-add.component.css',
 })
 export class AdminAddComponent {
-  admin: Omit<Admin, '_id'> = {
+  admin: {
+    email: string;
+    password: string;
+    name: string;
+    phone: string;
+    birthOfDate: string;
+    gender: 'male' | 'female';
+    role: string;
+  } = {
     email: '',
     password: '',
     name: '',
@@ -22,34 +30,32 @@ export class AdminAddComponent {
     gender: 'male',
     role: 'admin',
   };
-  isLoading: boolean = false;
+
+  confirmPassword = '';
+  isConfirmPasswordValid = false;
+  showPassword = false;
+  showConfirmPassword = false;
+  isLoading = false;
+  success = false;
   error: string | null = null;
-  success: boolean = false;
-  showPassword: boolean = false;
+  isEmailValid = true;
+  isPhoneValid = true;
+  isPasswordValid = true;
 
-  // Validation patterns
-  emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   phonePattern = /^0\d{9}$/;
-  passwordPattern =
-    /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
 
-  // Validation states
-  isEmailValid: boolean = true;
-  isPhoneValid: boolean = true;
-  isPasswordValid: boolean = true;
-
-  // Password validation states
   passwordValidation = {
     hasMinLength: false,
-    hasNumber: false,
     hasUpperCase: false,
+    hasNumber: false,
     hasSpecialChar: false,
   };
 
-  // Form field states
   touchedFields = {
     email: false,
     password: false,
+    confirmPassword: false,
     name: false,
     phone: false,
     birthOfDate: false,
@@ -60,6 +66,10 @@ export class AdminAddComponent {
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   validateEmail(email: string): void {
@@ -99,6 +109,18 @@ export class AdminAddComponent {
     if (this.isPasswordValid) {
       this.error = null;
     }
+
+    // Validate confirm password again when password changes
+    if (this.confirmPassword) {
+      this.validateConfirmPassword();
+    }
+  }
+
+  validateConfirmPassword(): void {
+    this.isConfirmPasswordValid = this.confirmPassword === this.admin.password;
+    if (this.isConfirmPasswordValid) {
+      this.error = null;
+    }
   }
 
   onFieldBlur(field: keyof typeof this.touchedFields): void {
@@ -106,13 +128,25 @@ export class AdminAddComponent {
   }
 
   isFieldInvalid(field: keyof typeof this.touchedFields): boolean {
-    return this.touchedFields[field] && !this.admin[field];
+    if (field === 'confirmPassword') {
+      return this.touchedFields[field] && !this.confirmPassword;
+    }
+    return (
+      this.touchedFields[field] && !this.admin[field as keyof typeof this.admin]
+    );
   }
 
   isPasswordInvalid(): boolean {
     return (
       (this.touchedFields['password'] && !this.admin.password) ||
       (!this.isPasswordValid && this.admin.password.length > 0)
+    );
+  }
+
+  isConfirmPasswordInvalid(): boolean {
+    return (
+      (this.touchedFields['confirmPassword'] && !this.confirmPassword) ||
+      (!this.isConfirmPasswordValid && this.confirmPassword.length > 0)
     );
   }
 
@@ -126,12 +160,14 @@ export class AdminAddComponent {
     this.validateEmail(this.admin.email);
     this.validatePhone(this.admin.phone);
     this.validatePassword(this.admin.password);
+    this.validateConfirmPassword();
 
     // Check if any required field is empty
     const emptyFields = Object.entries(this.admin)
       .filter(([key, value]) => {
-        const field = key as keyof typeof this.touchedFields;
-        return this.touchedFields[field] && !value;
+        const field = key as keyof typeof this.admin;
+        const touchedField = key as keyof typeof this.touchedFields;
+        return this.touchedFields[touchedField] && !value;
       })
       .map(([key]) => {
         switch (key) {
@@ -152,6 +188,11 @@ export class AdminAddComponent {
         }
       });
 
+    // Check if confirm password is empty
+    if (!this.confirmPassword) {
+      emptyFields.push('Xác nhận mật khẩu');
+    }
+
     if (emptyFields.length > 0) {
       this.error = `Vui lòng điền đầy đủ thông tin: ${emptyFields.join(', ')}`;
       return;
@@ -160,6 +201,11 @@ export class AdminAddComponent {
     if (!this.isEmailValid || !this.isPhoneValid || !this.isPasswordValid) {
       this.error =
         'Vui lòng kiểm tra lại định dạng email, số điện thoại và mật khẩu.';
+      return;
+    }
+
+    if (!this.isConfirmPasswordValid) {
+      this.error = 'Mật khẩu xác nhận không khớp với mật khẩu.';
       return;
     }
 

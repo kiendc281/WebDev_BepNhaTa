@@ -61,7 +61,7 @@
             <!-- Password -->
             <div class="mb-3">
               <label for="password" class="form-label">Mật khẩu</label>
-              <div class="input-group has-validation">
+              <div class="password-field">
                 <input
                   [type]="showPassword ? 'text' : 'password'"
                   class="form-control"
@@ -74,29 +74,63 @@
                   required
                   placeholder="Nhập mật khẩu"
                 />
-                <button
-                  class="btn btn-outline-secondary"
-                  type="button"
+                <img
+                  [src]="
+                    showPassword
+                      ? '../../assets/dang-nhap/clarity-eye-hide-line.svg'
+                      : '../../assets/dang-nhap/unhide.svg'
+                  "
+                  alt="Hiện/ẩn mật khẩu"
+                  class="toggle-password"
                   (click)="togglePasswordVisibility()"
-                >
-                  <i
-                    class="bi"
-                    [class.bi-eye-fill]="showPassword"
-                    [class.bi-eye-slash-fill]="!showPassword"
-                  ></i>
-                </button>
+                />
               </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="isPasswordInvalid()"
-                style="display: block"
-              >
+              <div class="error-message" *ngIf="isPasswordInvalid()">
                 <span *ngIf="!isPasswordValid && admin.password"
                   >Mật khẩu phải có ít nhất 8 ký tự, chứa ít nhất 1 chữ hoa, 1
                   số và 1 ký tự đặc biệt</span
                 >
                 <span *ngIf="isFieldInvalid('password')"
                   >Vui lòng nhập mật khẩu</span
+                >
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label"
+                >Xác nhận mật khẩu</label
+              >
+              <div class="password-field">
+                <input
+                  [type]="showConfirmPassword ? 'text' : 'password'"
+                  class="form-control"
+                  [class.is-invalid]="isConfirmPasswordInvalid()"
+                  id="confirmPassword"
+                  [(ngModel)]="confirmPassword"
+                  (ngModelChange)="validateConfirmPassword()"
+                  (blur)="onFieldBlur('confirmPassword')"
+                  name="confirmPassword"
+                  required
+                  placeholder="Nhập lại mật khẩu"
+                />
+                <img
+                  [src]="
+                    showConfirmPassword
+                      ? '../../assets/dang-nhap/clarity-eye-hide-line.svg'
+                      : '../../assets/dang-nhap/unhide.svg'
+                  "
+                  alt="Hiện/ẩn mật khẩu"
+                  class="toggle-password"
+                  (click)="toggleConfirmPasswordVisibility()"
+                />
+              </div>
+              <div class="error-message" *ngIf="isConfirmPasswordInvalid()">
+                <span *ngIf="!isConfirmPasswordValid && confirmPassword"
+                  >Mật khẩu xác nhận không khớp</span
+                >
+                <span *ngIf="isFieldInvalid('confirmPassword')"
+                  >Vui lòng xác nhận mật khẩu</span
                 >
               </div>
             </div>
