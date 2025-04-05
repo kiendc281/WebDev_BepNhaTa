@@ -12,7 +12,7 @@ export class AuthService {
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.checkInitialLoginState());
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private checkInitialLoginState(): boolean {
     const token = localStorage.getItem('token');
@@ -37,10 +37,10 @@ export class AuthService {
             // Lưu token và thông tin user
             this.saveToken(response.token);
             localStorage.setItem('user', JSON.stringify(response.account));
-            
+
             // Cập nhật trạng thái đăng nhập
             this.isLoggedInSubject.next(true);
-            
+
             // Thêm class cho icon đăng nhập
             const loginIcon = document.querySelector('.login-icon');
             if (loginIcon) {

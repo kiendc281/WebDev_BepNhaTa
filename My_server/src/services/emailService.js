@@ -18,11 +18,11 @@ class EmailService {
         rejectUnauthorized: false
       }
     });
-    
+
     // Kiểm tra cấu hình email
     this.checkEmailConfig();
   }
-  
+
   /**
    * Kiểm tra cấu hình email khi khởi tạo service
    */
@@ -31,7 +31,7 @@ class EmailService {
       console.error('⚠️ CẢNH BÁO: Thiếu cấu hình email. Các chức năng gửi email sẽ không hoạt động.');
       return false;
     }
-    
+
     try {
       // Kiểm tra kết nối với SMTP server
       await this.transporter.verify();
@@ -42,7 +42,7 @@ class EmailService {
       return false;
     }
   }
-  
+
   /**
    * Gửi email với cơ chế thử lại
    * @param {Object} mailOptions - Tùy chọn email
@@ -51,7 +51,7 @@ class EmailService {
    */
   async sendEmail(mailOptions, maxRetries = 3) {
     let retries = 0;
-    
+
     const tryToSendEmail = async () => {
       try {
         // Kiểm tra thông tin người nhận
@@ -59,25 +59,25 @@ class EmailService {
           console.error('Không có địa chỉ email người nhận');
           return false;
         }
-        
+
         // Kiểm tra định dạng email
         if (!this.isValidEmail(mailOptions.to)) {
           console.error('Địa chỉ email không hợp lệ:', mailOptions.to);
           return false;
         }
-        
+
         // Đảm bảo có email người gửi
         if (!mailOptions.from) {
           mailOptions.from = process.env.EMAIL_USER;
         }
-        
+
         // Gửi email
         await this.transporter.sendMail(mailOptions);
         console.log(`✅ Đã gửi email thành công đến: ${mailOptions.to}`);
         return true;
       } catch (error) {
         console.error(`❌ Lỗi gửi email lần thử ${retries + 1}/${maxRetries}:`, error.message);
-        
+
         // Thử lại nếu chưa đạt số lần tối đa
         if (retries < maxRetries - 1) {
           retries++;
@@ -86,15 +86,15 @@ class EmailService {
           await new Promise(resolve => setTimeout(resolve, 2000));
           return await tryToSendEmail();
         }
-        
+
         console.error('❌ Đã thử gửi email tối đa số lần nhưng thất bại.');
         return false;
       }
     };
-    
+
     return await tryToSendEmail();
   }
-  
+
   /**
    * Kiểm tra định dạng email hợp lệ
    * @param {string} email - Địa chỉ email cần kiểm tra
@@ -105,7 +105,7 @@ class EmailService {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
-  
+
   /**
    * Gửi email xác nhận đơn hàng
    * @param {Object} orderData - Dữ liệu đơn hàng
@@ -126,10 +126,10 @@ class EmailService {
       // Tạo HTML cho các sản phẩm trong đơn hàng
       const itemsHtml = orderData.itemOrder.map(item => {
         // Kiểm tra URL hình ảnh hợp lệ, nếu không thì hiển thị ảnh thay thế
-        const imageUrl = item.img && item.img.startsWith('http') ? 
-          item.img : 
+        const imageUrl = item.img && item.img.startsWith('http') ?
+          item.img :
           'https://placehold.co/100x100/orange/white?text=BepNhaTa';
-         
+
         return `
           <tr>
             <td style="padding: 12px; border-bottom: 1px solid #e0e0e0;">
@@ -144,7 +144,8 @@ class EmailService {
             <td style="padding: 12px; border-bottom: 1px solid #e0e0e0; text-align: center;">${item.quantity}</td>
             <td style="padding: 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${item.totalPrice.toLocaleString('vi-VN')}₫</td>
           </tr>
-      `;}).join('');
+      `;
+      }).join('');
 
       // Địa chỉ giao hàng
       let shippingAddress = '';
@@ -163,11 +164,11 @@ class EmailService {
         to: emailTo,
         subject: `Xác nhận đơn hàng #${orderData._id} - Bếp Nhà Ta`,
         html: this.getOrderConfirmationTemplate(
-          orderData, 
-          recipientName, 
-          recipientPhone, 
-          shippingAddress, 
-          orderDate, 
+          orderData,
+          recipientName,
+          recipientPhone,
+          shippingAddress,
+          orderDate,
           itemsHtml
         )
       };
@@ -179,7 +180,7 @@ class EmailService {
       return false;
     }
   }
-  
+
   /**
    * Gửi mã OTP để đặt lại mật khẩu
    * @param {string} emailTo - Email người nhận
@@ -192,10 +193,10 @@ class EmailService {
       subject: 'Mã xác nhận đặt lại mật khẩu - Bếp Nhà Ta',
       html: this.getPasswordResetOTPTemplate(otp)
     };
-    
+
     return await this.sendEmail(mailOptions);
   }
-  
+
   /**
    * Gửi email chứa thắc mắc từ khách hàng đến admin
    * @param {Object} contactData Thông tin liên hệ từ khách hàng
@@ -204,7 +205,7 @@ class EmailService {
   async sendContactEmail(contactData) {
     try {
       const { name, email, phone, message } = contactData;
-      
+
       // Validate email
       if (!this.isValidEmail(email)) {
         console.log(`❌ Địa chỉ email không hợp lệ: ${email}`);
@@ -243,7 +244,7 @@ class EmailService {
       return false;
     }
   }
-  
+
   /**
    * Lấy template HTML cho email xác nhận đơn hàng
    */
@@ -323,7 +324,7 @@ class EmailService {
       </div>
     `;
   }
-  
+
   /**
    * Lấy template HTML cho email mã OTP đặt lại mật khẩu
    */
