@@ -46,6 +46,7 @@ export class ChiTietCongThucComponent implements OnInit {
   suggestedRecipes: Recipe[] = [];
   visibleRecipes: Recipe[] = [];
   savedRecipes: Set<string> = new Set();
+  showScrollBtn: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -69,6 +70,8 @@ export class ChiTietCongThucComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onScroll() {
     this.updateActiveSection();
+    // Hiện button khi scroll xuống 300px
+    this.showScrollBtn = window.scrollY > 300;
   }
 
   updateActiveSection() {
@@ -348,6 +351,14 @@ export class ChiTietCongThucComponent implements OnInit {
         console.error('Error finding matching product:', error);
         this.matchingProduct = null;
       },
+    });
+  }
+
+  // Scroll to top
+  scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
     });
   }
 }

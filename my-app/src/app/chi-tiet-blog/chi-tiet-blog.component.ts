@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BlogService } from '../services/blog.service';
 import { BlogPost, BlogSection } from '../models/blog.interface';
@@ -28,6 +28,9 @@ export class ChiTietBlogComponent implements OnInit {
     type: 'success' as 'success' | 'error',
   };
 
+  // Biến kiểm soát hiển thị nút scroll-to-top
+  showScrollBtn: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -53,24 +56,26 @@ export class ChiTietBlogComponent implements OnInit {
 
     // Kiểm tra và chuyển đổi giữa ID MongoDB và ID ngắn
     let apiId = id;
-    
+
     // Kiểm tra xem id có phải là MongoDB ID
     if (/^[0-9a-fA-F]{24}$/.test(id)) {
       // Đây có thể là MongoDB ID, cố gắng ánh xạ về ID ngắn
-      const mongoIdMap: {[key: string]: string} = {
+      const mongoIdMap: { [key: string]: string } = {
         '507f1f77bcf86cd799439011': 'BL01',
         '507f1f77bcf86cd799439012': 'BL02',
         '507f1f77bcf86cd799439013': 'BL03',
         '507f1f77bcf86cd799439014': 'BL04',
-        '507f1f77bcf86cd799439015': 'BL05'
+        '507f1f77bcf86cd799439015': 'BL05',
       };
-      
+
       if (mongoIdMap[id]) {
         apiId = mongoIdMap[id];
-        console.log(`Đã chuyển đổi MongoDB ID ${id} thành ID ngắn ${apiId} cho API call`);
+        console.log(
+          `Đã chuyển đổi MongoDB ID ${id} thành ID ngắn ${apiId} cho API call`
+        );
       }
     }
-    
+
     console.log(`Lấy thông tin bài viết với ID: ${apiId}`);
 
     this.blogService.getBlogById(apiId).subscribe({
@@ -286,19 +291,24 @@ export class ChiTietBlogComponent implements OnInit {
     // Lưu trữ bản sao an toàn của tiêu đề bài viết và trạng thái ban đầu
     const postTitle = this.blogPost.title || 'Bài viết';
     const originalSavedState = this.blogPost.saved;
-    
+
     // Cập nhật UI trước để người dùng thấy phản hồi ngay lập tức
     this.blogPost.saved = !originalSavedState;
-    
+
     // Xử lý xóa các ID trước đây trong localStorage nếu đang lưu
     if (!originalSavedState) {
       try {
-        const removedFavorites = JSON.parse(localStorage.getItem('removedFavorites') || '{}');
+        const removedFavorites = JSON.parse(
+          localStorage.getItem('removedFavorites') || '{}'
+        );
         if (removedFavorites['blog'] && removedFavorites['blog'].length > 0) {
-          removedFavorites['blog'] = removedFavorites['blog'].filter((id: string) => 
-            id !== this.blogPost?._id
+          removedFavorites['blog'] = removedFavorites['blog'].filter(
+            (id: string) => id !== this.blogPost?._id
           );
-          localStorage.setItem('removedFavorites', JSON.stringify(removedFavorites));
+          localStorage.setItem(
+            'removedFavorites',
+            JSON.stringify(removedFavorites)
+          );
         }
       } catch (e) {
         console.error('Lỗi khi cập nhật localStorage:', e);
@@ -348,19 +358,23 @@ export class ChiTietBlogComponent implements OnInit {
           } else {
             // Nếu thất bại, khôi phục trạng thái ban đầu
             this.blogPost!.saved = originalSavedState;
-            
+
             // Nếu lỗi là trùng lặp và đang cố thêm vào danh sách yêu thích
-            if (response.message && response.message.includes('duplicate key error') && !originalSavedState) {
+            if (
+              response.message &&
+              response.message.includes('duplicate key error') &&
+              !originalSavedState
+            ) {
               // Đặt lại trạng thái thành "đã lưu" vì mục này thực sự đã tồn tại trong DB
               this.blogPost!.saved = true;
-              
+
               this.showNotification(
                 `"${postTitle}" đã có trong danh sách yêu thích của bạn`,
                 'success'
               );
               return;
             }
-            
+
             console.error('Không thể lưu bài viết:', response.message);
             this.showNotification(
               response.message ||
@@ -372,23 +386,25 @@ export class ChiTietBlogComponent implements OnInit {
         error: (error) => {
           // Khôi phục trạng thái ban đầu nếu có lỗi
           this.blogPost!.saved = originalSavedState;
-          
+
           // Nếu là lỗi 400 với thông báo trùng lặp và đang cố thêm vào danh sách
-          if (error.status === 400 && 
-              error.error && 
-              error.error.message && 
-              error.error.message.includes('duplicate key error') && 
-              !originalSavedState) {
+          if (
+            error.status === 400 &&
+            error.error &&
+            error.error.message &&
+            error.error.message.includes('duplicate key error') &&
+            !originalSavedState
+          ) {
             // Đặt lại trạng thái thành "đã lưu" vì mục này thực sự đã tồn tại trong DB
             this.blogPost!.saved = true;
-            
+
             this.showNotification(
               `"${postTitle}" đã có trong danh sách yêu thích của bạn`,
               'success'
             );
             return;
           }
-          
+
           console.error('Lỗi khi lưu bài viết:', error);
           this.showNotification(
             'Đã xảy ra lỗi khi lưu bài viết. Vui lòng thử lại sau.',
@@ -432,5 +448,20 @@ export class ChiTietBlogComponent implements OnInit {
         show: false,
       };
     }, 3000);
+  }
+
+  // Theo dõi sự kiện cuộn trang
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    // Hiện button khi scroll xuống 300px
+    this.showScrollBtn = window.scrollY > 300;
+  }
+
+  // Phương thức để cuộn lên đầu trang
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 }

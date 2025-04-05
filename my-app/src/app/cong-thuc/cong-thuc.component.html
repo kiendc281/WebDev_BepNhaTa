@@ -49,73 +49,86 @@
             <img src="../../assets/cong-thuc/filter.svg" alt="Bộ lọc" />
             Bộ lọc
           </button>
-          <div
-            class="filter-dropdown"
-            *ngIf="showFilterDropdown"
-            (click)="$event.stopPropagation()"
-          >
-            <div class="filter-section">
-              <h4>Nguyên liệu</h4>
-              <div class="ingredients-search">
-                <input
-                  type="text"
-                  placeholder="Tìm nguyên liệu..."
-                  #ingredientSearch
-                  (input)="searchIngredients($event)"
-                />
-              </div>
-              <div class="ingredients-list">
-                <div
-                  *ngFor="let ingredient of filteredIngredientsList"
-                  class="filter-option"
-                  [class.selected]="selectedIngredients.includes(ingredient)"
-                  (click)="toggleIngredient(ingredient)"
-                >
-                  <span class="option-name">{{ ingredient }}</span>
-                  <span
-                    class="checkmark"
-                    *ngIf="selectedIngredients.includes(ingredient)"
-                    >✓</span
-                  >
-                </div>
-                <div
-                  *ngIf="filteredIngredientsList.length === 0"
-                  class="no-ingredients"
-                >
-                  Không tìm thấy nguyên liệu nào
-                </div>
-              </div>
-            </div>
-
-            <div class="filter-actions">
-              <button
-                class="button-trang"
-                (click)="clearFilters(); $event.stopPropagation()"
-              >
-                Xóa bộ lọc
-              </button>
-              <button class="button-cam" (click)="toggleFilterDropdown($event)">
-                Áp dụng
-              </button>
-            </div>
-            <!-- Thêm thông báo số lượng công thức đã lọc -->
-            <div class="filter-summary" *ngIf="selectedIngredients.length > 0">
-              <div class="filter-badge">
-                Đã tìm thấy: {{ filteredRecipes.length }} công thức chứa TẤT CẢ
-                nguyên liệu đã chọn
-              </div>
-              <div class="selected-ingredients">
+          <div class="filter-dropdown" [class.active]="showFilterDropdown">
+            <div class="filter-content" (click)="$event.stopPropagation()">
+              <div class="filter-header">
+                <h3>Bộ lọc</h3>
                 <span
-                  *ngFor="let ing of selectedIngredients"
-                  class="ingredient-tag"
+                  class="close-filter"
+                  (click)="toggleFilterDropdown($event)"
+                  >×</span
                 >
-                  {{ ing }}
-                  <span
-                    class="remove-tag"
-                    (click)="toggleIngredient(ing); $event.stopPropagation()"
-                    >×</span
+              </div>
+
+              <div class="filter-section">
+                <h4>Nguyên liệu</h4>
+                <div class="ingredients-search">
+                  <input
+                    type="text"
+                    placeholder="Tìm nguyên liệu..."
+                    #ingredientSearch
+                    (input)="searchIngredients($event)"
+                  />
+                </div>
+                <div class="ingredients-list">
+                  <div
+                    *ngFor="let ingredient of filteredIngredientsList"
+                    class="filter-option"
+                    [class.selected]="selectedIngredients.includes(ingredient)"
+                    (click)="toggleIngredient(ingredient)"
                   >
-                </span>
+                    <span class="option-name">{{ ingredient }}</span>
+                    <span
+                      class="checkmark"
+                      *ngIf="selectedIngredients.includes(ingredient)"
+                      >✓</span
+                    >
+                  </div>
+                  <div
+                    *ngIf="filteredIngredientsList.length === 0"
+                    class="no-ingredients"
+                  >
+                    Không tìm thấy nguyên liệu nào
+                  </div>
+                </div>
+              </div>
+
+              <div class="filter-actions">
+                <button
+                  class="button-trang"
+                  (click)="clearFilters(); $event.stopPropagation()"
+                >
+                  Xóa bộ lọc
+                </button>
+                <button
+                  class="button-cam"
+                  (click)="toggleFilterDropdown($event)"
+                >
+                  Áp dụng
+                </button>
+              </div>
+              <!-- Thêm thông báo số lượng công thức đã lọc -->
+              <div
+                class="filter-summary"
+                *ngIf="selectedIngredients.length > 0"
+              >
+                <div class="filter-badge">
+                  Đã tìm thấy: {{ filteredRecipes.length }} công thức chứa ít
+                  nhất một trong các nguyên liệu đã chọn
+                </div>
+                <div class="selected-ingredients">
+                  <span
+                    *ngFor="let ing of selectedIngredients"
+                    class="ingredient-tag"
+                  >
+                    {{ ing }}
+                    <span
+                      class="remove-tag"
+                      (click)="toggleIngredient(ing); $event.stopPropagation()"
+                      >×</span
+                    >
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -147,7 +160,7 @@
     <!-- Hiển thị các nguyên liệu đã lọc -->
     <div class="active-filters" *ngIf="selectedIngredients.length > 0">
       <div class="filters-title">
-        Đang hiển thị công thức chứa TẤT CẢ nguyên liệu:
+        Đang hiển thị công thức chứa ít nhất một trong các nguyên liệu:
       </div>
       <div class="filters-tags">
         <span *ngFor="let ing of selectedIngredients" class="filter-tag">
@@ -214,7 +227,7 @@
       *ngIf="!isLoading && !errorMessage && filteredRecipes.length === 0"
     >
       <p *ngIf="selectedIngredients.length > 0">
-        Không tìm thấy công thức nào chứa TẤT CẢ nguyên liệu:
+        Không tìm thấy công thức nào chứa các nguyên liệu:
         <span
           class="highlight-ingredient"
           *ngFor="let ing of selectedIngredients; let last = last"
@@ -260,3 +273,11 @@
     </div>
   </div>
 </div>
+
+<button
+  class="scroll-top-btn"
+  [class.show]="showScrollBtn"
+  (click)="scrollToTop()"
+>
+  <i class="bi bi-arrow-up"></i>
+</button>

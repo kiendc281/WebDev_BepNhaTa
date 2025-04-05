@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BlogService } from '../services/blog.service';
@@ -33,6 +33,9 @@ export class BlogComponent implements OnInit {
     message: '',
     type: 'success' as 'success' | 'error',
   };
+
+  // Biến kiểm soát hiển thị nút scroll-to-top
+  showScrollBtn: boolean = false;
 
   constructor(
     private blogService: BlogService,
@@ -407,5 +410,20 @@ export class BlogComponent implements OnInit {
         error
       );
     }
+  }
+
+  // Theo dõi sự kiện cuộn trang
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    // Hiện button khi scroll xuống 300px
+    this.showScrollBtn = window.scrollY > 300;
+  }
+
+  // Phương thức để cuộn lên đầu trang
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 }

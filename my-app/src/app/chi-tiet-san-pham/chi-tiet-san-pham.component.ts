@@ -89,6 +89,7 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
     message: '',
     type: 'success' as 'success' | 'error',
   };
+  showScrollBtn: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -878,6 +879,20 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
       error: (error) => {
         console.error('Lỗi khi tải danh sách công thức đã lưu:', error);
       },
+    });
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    // Hiện button khi scroll xuống 300px
+    this.showScrollBtn = window.scrollY > 300;
+  }
+
+  // Phương thức để cuộn lên đầu trang
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
     });
   }
 }

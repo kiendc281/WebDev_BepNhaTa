@@ -49,6 +49,7 @@ export class SanPhamComponent implements OnInit {
   selectedIngredients: string[] = [];
   @ViewChild('ingredientSearch') ingredientSearch!: ElementRef;
   filteredIngredientsList: string[] = [];
+  showScrollBtn: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -526,5 +527,20 @@ export class SanPhamComponent implements OnInit {
     // Scroll to top of the page
     window.scrollTo({ top: 0, behavior: 'smooth' });
     this.loadProducts();
+  }
+
+  // Theo dõi sự kiện cuộn trang
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    // Hiện button khi scroll xuống 300px
+    this.showScrollBtn = window.scrollY > 300;
+  }
+
+  // Phương thức để cuộn lên đầu trang khi nhấn nút
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 }

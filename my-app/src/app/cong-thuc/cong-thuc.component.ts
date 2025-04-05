@@ -55,6 +55,7 @@ export class CongThucComponent implements OnInit {
   selectedIngredients: string[] = [];
   @ViewChild('ingredientSearch') ingredientSearch!: ElementRef;
   filteredIngredientsList: string[] = [];
+  showScrollBtn: boolean = false;
 
   constructor(
     private recipeService: RecipeService,
@@ -137,7 +138,11 @@ export class CongThucComponent implements OnInit {
         if (Array.isArray(data)) {
           this.recipes = [...data];
           this.originalRecipes = [...data];
+
+          // Trích xuất danh sách nguyên liệu từ tất cả công thức
           this.extractIngredients();
+
+          // Áp dụng bộ lọc (theo vùng miền và nguyên liệu nếu có)
           this.filterRecipes();
         } else {
           console.error('Invalid data format:', data);
@@ -157,9 +162,10 @@ export class CongThucComponent implements OnInit {
   }
 
   filterRecipes(): void {
-    // Bước 1: Lọc theo vùng miền
-    let regionFiltered = [...this.recipes];
+    // Bắt đầu lại với danh sách gốc từ recipes
+    this.filteredRecipes = [...this.originalRecipes];
 
+    // Bước 1: Lọc theo vùng miền
     if (this.selectedRegion !== 'Tất cả') {
       const regionToMatch =
         this.selectedRegion === 'Miền Bắc'
@@ -168,7 +174,7 @@ export class CongThucComponent implements OnInit {
           ? 'trung'
           : 'nam';
 
-      regionFiltered = this.recipes.filter((recipe) => {
+      this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
         const normalizedRecipeRegion = this.removeVietnameseTones(
           recipe.region || ''
         ).toLowerCase();
@@ -180,26 +186,24 @@ export class CongThucComponent implements OnInit {
     if (this.selectedIngredients.length > 0) {
       console.log('Đang lọc theo nguyên liệu:', this.selectedIngredients);
 
-      this.filteredRecipes = regionFiltered.filter((recipe) => {
-        // Mảng để theo dõi các nguyên liệu đã tìm thấy
-        const foundIngredients = new Set<string>();
-
-        // Phương pháp 1: Kiểm tra trong servingsOptions
-        if (
-          recipe.servingsOptions &&
-          Object.keys(recipe.servingsOptions).length > 0
-        ) {
-          // Lấy bất kỳ option nào (2 người hoặc 4 người) để kiểm tra
-          const servingOption = Object.keys(recipe.servingsOptions)[0];
+      this.filteredRecipes = this.filteredRecipes.filter((recipe) => {
+        // Kiểm tra xem công thức có chứa bất kỳ nguyên liệu đã chọn nào không
+        for (const selectedIng of this.selectedIngredients) {
+          // Phương pháp 1: Kiểm tra trong servingsOptions
           if (
-            recipe.servingsOptions[servingOption] &&
-            recipe.servingsOptions[servingOption].ingredients
+            recipe.servingsOptions &&
+            Object.keys(recipe.servingsOptions).length > 0
           ) {
-            const ingredients =
-              recipe.servingsOptions[servingOption].ingredients;
+            // Lấy bất kỳ option nào (2 người hoặc 4 người) để kiểm tra
+            const servingOption = Object.keys(recipe.servingsOptions)[0];
+            if (
+              recipe.servingsOptions[servingOption] &&
+              recipe.servingsOptions[servingOption].ingredients
+            ) {
+              const ingredients =
+                recipe.servingsOptions[servingOption].ingredients;
 
-            // Kiểm tra từng nguyên liệu đã chọn
-            for (const selectedIng of this.selectedIngredients) {
+              // Kiểm tra nguyên liệu hiện tại
               const found = ingredients.some(
                 (ing) => ing.name.trim() === selectedIng
               );
@@ -207,47 +211,36 @@ export class CongThucComponent implements OnInit {
                 console.log(
                   `Tìm thấy nguyên liệu ${selectedIng} trong công thức ${recipe.recipeName}`
                 );
-                foundIngredients.add(selectedIng);
+                return true; // Trả về true ngay khi tìm thấy một nguyên liệu khớp
               }
             }
           }
-        }
 
-        // Phương pháp 2: Kiểm tra trong mảng ingredients nếu có
-        const anyIngredients = (recipe as any).ingredients;
-        if (Array.isArray(anyIngredients) && anyIngredients.length > 0) {
-          // Chuyển đổi mảng ingredients sang định dạng tên
-          const ingredientNames = anyIngredients
-            .map((ing) => {
-              if (typeof ing === 'string') return ing.trim();
-              else if (ing && ing.name) return ing.name.trim();
-              return '';
-            })
-            .filter((name) => name !== '');
+          // Phương pháp 2: Kiểm tra trong mảng ingredients nếu có
+          const anyIngredients = (recipe as any).ingredients;
+          if (Array.isArray(anyIngredients) && anyIngredients.length > 0) {
+            // Chuyển đổi mảng ingredients sang định dạng tên
+            const ingredientNames = anyIngredients
+              .map((ing) => {
+                if (typeof ing === 'string') return ing.trim();
+                else if (ing && ing.name) return ing.name.trim();
+                return '';
+              })
+              .filter((name) => name !== '');
 
-          // Kiểm tra từng nguyên liệu đã chọn
-          for (const selectedIng of this.selectedIngredients) {
+            // Kiểm tra nguyên liệu hiện tại
             if (ingredientNames.includes(selectedIng)) {
               console.log(
                 `Tìm thấy nguyên liệu ${selectedIng} trong danh sách ingredients của công thức ${recipe.recipeName}`
               );
-              foundIngredients.add(selectedIng);
+              return true; // Trả về true ngay khi tìm thấy một nguyên liệu khớp
             }
           }
         }
 
-        // Chỉ trả về true nếu TẤT CẢ nguyên liệu đã chọn đều được tìm thấy
-        const allIngredientsFound =
-          foundIngredients.size === this.selectedIngredients.length;
-        if (allIngredientsFound) {
-          console.log(
-            `Công thức ${recipe.recipeName} chứa TẤT CẢ nguyên liệu đã chọn`
-          );
-        }
-        return allIngredientsFound;
+        // Nếu không tìm thấy nguyên liệu nào, trả về false
+        return false;
       });
-    } else {
-      this.filteredRecipes = [...regionFiltered];
     }
 
     console.log('Kết quả lọc:', this.filteredRecipes.length, 'công thức');
@@ -305,6 +298,10 @@ export class CongThucComponent implements OnInit {
       queryParamsHandling: 'merge',
     });
 
+    // Scroll to top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Áp dụng bộ lọc
     this.filterRecipes();
   }
 
@@ -331,7 +328,8 @@ export class CongThucComponent implements OnInit {
 
   selectSort(value: string): void {
     this.selectedSort = value;
-    this.sortRecipes();
+    // Gọi lại filterRecipes để áp dụng đúng thứ tự lọc -> sắp xếp
+    this.filterRecipes();
   }
 
   sortRecipes(): void {
@@ -351,23 +349,7 @@ export class CongThucComponent implements OnInit {
         );
         break;
       case 'default':
-        if (this.selectedRegion === 'Tất cả') {
-          this.filteredRecipes = [...this.originalRecipes];
-        } else {
-          const regionToMatch =
-            this.selectedRegion === 'Miền Bắc'
-              ? 'bac'
-              : this.selectedRegion === 'Miền Trung'
-              ? 'trung'
-              : 'nam';
-
-          this.filteredRecipes = this.originalRecipes.filter((recipe) => {
-            const normalizedRecipeRegion = this.removeVietnameseTones(
-              recipe.region || ''
-            ).toLowerCase();
-            return normalizedRecipeRegion === regionToMatch;
-          });
-        }
+        // Không làm gì cả vì filteredRecipes đã được thiết lập đúng trong filterRecipes()
         break;
     }
     this.updatePaginatedRecipes();
@@ -695,24 +677,37 @@ export class CongThucComponent implements OnInit {
     }
     // Đặt lại về trang 1 khi thay đổi bộ lọc
     this.currentPage = 1;
+    // Cuộn lên đầu trang
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.filterRecipes();
   }
 
-  // Phương thức để lọc theo vùng miền
+  // Phương thức để chọn vùng miền
   selectRegion(region: string): void {
     this.selectedRegion = region;
     // Đặt lại về trang 1 khi thay đổi bộ lọc
     this.currentPage = 1;
+    // Cuộn lên đầu trang
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.filterRecipes();
     this.toggleFilterDropdown();
   }
 
   // Phương thức để xóa tất cả bộ lọc
   clearFilters(): void {
-    this.selectedRegion = 'Tất cả';
     this.selectedIngredients = [];
-    // Đặt lại về trang 1 khi thay đổi bộ lọc
+    this.selectedRegion = 'Tất cả';
     this.currentPage = 1;
+    // Cuộn lên đầu trang
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Tải lại toàn bộ danh sách công thức
     this.filterRecipes();
+  }
+
+  // Theo dõi sự kiện cuộn trang
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    // Hiện button khi scroll xuống 300px
+    this.showScrollBtn = window.scrollY > 300;
   }
 }
