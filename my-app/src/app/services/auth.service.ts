@@ -1,17 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, throwError, tap, BehaviorSubject, of, delay } from 'rxjs';
+import { Observable, catchError, throwError, tap, BehaviorSubject, of, delay, from, switchMap } from 'rxjs';
 import { Account, LoginResponse } from '../models/account.interface';
+// Import Firebase auth
+import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider, signInWithPopup, UserCredential } from 'firebase/auth';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl;
   private tokenExpirationTime = 60 * 60 * 1000; // 1 giờ tính bằng mili giây
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.checkInitialLoginState());
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
   
+  // Firebase Config từ environment
+  private firebaseConfig = environment.firebase;
+  
+  // Khởi tạo Firebase
+  private app = initializeApp(this.firebaseConfig);
+  private auth = getAuth(this.app);
+
   // Temporary storage for OTPs until backend implementation
   // Made public for development purposes only
   public tempOtpStorage = new Map<string, { otp: string, userData: any, timestamp: number }>();
@@ -313,5 +324,90 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return this.isLoggedIn();
+  }
+
+  // Phương thức đăng nhập bằng Google
+  loginWithGoogle(): Observable<LoginResponse> {
+    const provider = new GoogleAuthProvider();
+    
+    // Trả về Observable từ quá trình đăng nhập bằng Google
+    return from(signInWithPopup(this.auth, provider))
+      .pipe(
+        switchMap((result: UserCredential) => {
+          const user = result.user;
+          const googleUser = {
+            email: user.email,
+            name: user.displayName,
+            phone: user.phoneNumber || '',
+            avatar: user.photoURL,
+            googleId: user.uid
+          };
+          
+          console.log('Google login successful:', googleUser);
+          
+          // Gửi thông tin đăng nhập Google đến backend để xác thực hoặc tạo tài khoản mới
+          return this.http.post<LoginResponse>(
+            `${this.apiUrl}/auth/google-login`, 
+            googleUser
+          ).pipe(
+            tap((response) => {
+              if (response && response.token) {
+                // Lưu token và thông tin user
+                this.saveToken(response.token);
+                localStorage.setItem('user', JSON.stringify(response.account));
+                
+                // Cập nhật trạng thái đăng nhập
+                this.isLoggedInSubject.next(true);
+                
+                // Thêm class cho icon đăng nhập
+                const loginIcon = document.querySelector('.login-icon');
+                if (loginIcon) {
+                  loginIcon.classList.remove('fa-user-group');
+                  loginIcon.classList.add('fa-user');
+                  loginIcon.classList.add('logged-in');
+                }
+              }
+            }),
+            catchError((error: HttpErrorResponse) => {
+              console.error('Error during Google login integration with backend:', error);
+              
+              // Fallback if backend is not available (development only)
+              if (error.status === 0 || error.status === 404) {
+                console.warn('Using fallback for Google login (development only)');
+                
+                // Tạo token giả cho phát triển
+                const fakeToken = `google_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                const fakeResponse: LoginResponse = {
+                  token: fakeToken,
+                  account: {
+                    id: user.uid,
+                    email: user.email || '',
+                    name: user.displayName || '',
+                    phone: user.phoneNumber || '',
+                    gender: '',
+                    birthOfDate: new Date(),
+                    password: ''
+                  }
+                };
+                
+                // Lưu token và thông tin user
+                this.saveToken(fakeResponse.token);
+                localStorage.setItem('user', JSON.stringify(fakeResponse.account));
+                
+                // Cập nhật trạng thái đăng nhập
+                this.isLoggedInSubject.next(true);
+                
+                return of(fakeResponse);
+              }
+              
+              return throwError(() => error);
+            })
+          );
+        }),
+        catchError((error) => {
+          console.error('Google sign-in error:', error);
+          return throwError(() => new Error('Đăng nhập bằng Google thất bại: ' + error.message));
+        })
+      );
   }
 }

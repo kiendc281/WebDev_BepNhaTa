@@ -179,4 +179,57 @@ export class DangNhapComponent {
   onClose() {
     this.closePopup.emit();
   }
+
+  // Phương thức đăng nhập bằng Google
+  loginWithGoogle(): void {
+    this.loading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.notification.show = false;
+
+    this.authService.loginWithGoogle().subscribe({
+      next: (response) => {
+        console.log('Đăng nhập bằng Google thành công:', response);
+
+        // Đồng bộ giỏ hàng sau khi đăng nhập
+        this.cartService.mergeCartsAfterLogin().subscribe({
+          next: (cart) => {
+            console.log('Giỏ hàng đã được đồng bộ thành công:', cart);
+
+            // Hiển thị thông báo thành công
+            this.loading = false;
+            this.showNotification('Đăng nhập thành công!', 'success');
+
+            // Đợi 1.5 giây rồi đóng popup và chuyển hướng
+            setTimeout(() => {
+              this.onClose();
+              // Tải lại trang để đảm bảo giỏ hàng được cập nhật đúng
+              window.location.href = '/trang-chu';
+            }, 1500);
+          },
+          error: (error) => {
+            console.error('Lỗi khi đồng bộ giỏ hàng:', error);
+            // Vẫn tiếp tục đăng nhập thành công dù có lỗi giỏ hàng
+            this.loading = false;
+            this.showNotification('Đăng nhập thành công!', 'success');
+
+            setTimeout(() => {
+              this.onClose();
+              this.router.navigate(['/trang-chu']);
+            }, 1500);
+          },
+        });
+      },
+      error: (error) => {
+        console.error('Lỗi đăng nhập bằng Google:', error);
+        this.loading = false;
+        if (error.status === 0) {
+          this.errorMessage = 'Không thể kết nối đến server. Vui lòng thử lại sau.';
+        } else {
+          this.errorMessage = error.message || 'Đăng nhập bằng Google thất bại. Vui lòng thử lại sau.';
+        }
+        this.showNotification(this.errorMessage, 'error');
+      },
+    });
+  }
 }

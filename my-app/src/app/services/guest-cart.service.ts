@@ -223,51 +223,124 @@ export class GuestCartService {
    * @param orderItems - Các sản phẩm trong đơn hàng
    */
   updateInventoryAfterOrder(orderId: string, orderItems: CartItem[]): Observable<any> {
-    console.log('Cập nhật số lượng nguyên liệu sau khi đặt hàng thành công:', { orderId, orderItems });
+    console.log('===== BẮT ĐẦU CẬP NHẬT KHO TỪ FRONTEND =====');
+    console.log('📦 Cập nhật số lượng nguyên liệu sau khi đặt hàng thành công:', { orderId, orderItems });
+    
+    if (!orderId) {
+      console.error('❌ Thiếu orderId để cập nhật kho!');
+      return of({ status: 'error', message: 'Thiếu orderId để cập nhật kho' });
+    }
     
     if (!orderItems || orderItems.length === 0) {
-      console.error('Không có sản phẩm để cập nhật kho!');
+      console.error('❌ Không có sản phẩm để cập nhật kho!');
       return of({ status: 'error', message: 'Không có sản phẩm để cập nhật kho' });
     }
     
     // Log chi tiết từng sản phẩm để kiểm tra
+    console.log('📋 DANH SÁCH SẢN PHẨM CẦN CẬP NHẬT KHO:');
     orderItems.forEach((item, index) => {
-      console.log(`Chi tiết sản phẩm #${index + 1}:`, {
+      console.log(`🔸 Sản phẩm #${index + 1}: ${item.productName || item.ingredientName || 'Không có tên'}`, {
         productId: item.productId,
         quantity: item.quantity,
         servingSize: item.servingSize || 'Không có',
         price: item.price
       });
+      
+      // Chuẩn hóa servingSize để tránh không khớp
+      if (item.servingSize) {
+        console.log(`   - ServingSize gốc: "${item.servingSize}"`);
+      }
+      
+      // Kiểm tra dữ liệu
+      if (!item.productId) {
+        console.error(`❌ Sản phẩm #${index + 1} thiếu productId!`);
+      }
+      
+      if (!item.quantity || item.quantity <= 0) {
+        console.error(`❌ Sản phẩm #${index + 1} có số lượng không hợp lệ: ${item.quantity}`);
+      }
     });
     
-    // Chuẩn bị dữ liệu cập nhật kho
-    const inventoryUpdateData = orderItems.map(item => ({
-      productId: item.productId,
-      quantity: item.quantity,
-      servingSize: item.servingSize || '2' // Mặc định là 2 người nếu không có
-    }));
+    // Lọc bỏ các sản phẩm không hợp lệ
+    const validItems = orderItems.filter(item => 
+      item.productId && item.quantity && item.quantity > 0
+    );
     
-    console.log('Dữ liệu gửi đi để cập nhật kho:', {
+    if (validItems.length === 0) {
+      console.error('❌ Không có sản phẩm hợp lệ để cập nhật kho!');
+      return of({ status: 'error', message: 'Không có sản phẩm hợp lệ để cập nhật kho' });
+    }
+    
+    // Chuẩn bị dữ liệu cập nhật kho
+    const inventoryUpdateData = validItems.map(item => {
+      // Chuẩn hóa servingSize 
+      let normalizedServingSize = item.servingSize || 'Mặc định';
+      
+      // Xử lý đặc biệt cho bún thang
+      const productName = (item.productName || item.ingredientName || '').toLowerCase();
+      console.log(`\n🔍 Xử lý sản phẩm: ${productName}`);
+      
+      if (productName.includes('bún thang') || productName.includes('bun thang')) {
+        console.log(`   ⭐ Phát hiện sản phẩm bún thang, áp dụng xử lý đặc biệt cho servingSize: ${normalizedServingSize}`);
+        
+        // Trích xuất số từ servingSize
+        const numMatch = normalizedServingSize.match(/(\d+)/);
+        if (numMatch) {
+          const originalValue = normalizedServingSize;
+          normalizedServingSize = numMatch[1]; // Chỉ giữ lại phần số
+          console.log(`   ✅ Đã chuẩn hóa servingSize cho bún thang: "${originalValue}" -> "${normalizedServingSize}"`);
+        }
+      } else {
+        console.log(`   📝 Xử lý sản phẩm thông thường: "${productName}" với servingSize: "${normalizedServingSize}"`);
+        
+        // Kiểm tra nếu servingSize chỉ chứa số
+        if (/^\d+$/.test(normalizedServingSize)) {
+          console.log(`   ⚠️ Phát hiện servingSize chỉ có số: "${normalizedServingSize}"`);
+        }
+      }
+      
+      // Đảm bảo servingSize hợp lệ
+      normalizedServingSize = normalizedServingSize.trim();
+      
+      const itemData = {
+        productId: item.productId,
+        quantity: item.quantity,
+        servingSize: normalizedServingSize
+      };
+      
+      console.log(`   📤 Dữ liệu gửi đi: Sản phẩm=${productName}, SL=${item.quantity}, ServingSize="${normalizedServingSize}"`);
+      return itemData;
+    });
+    
+    console.log('\n📦 TÓM TẮT DỮ LIỆU GỬI ĐI:', {
       orderId,
-      items: inventoryUpdateData
+      items: inventoryUpdateData.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        servingSize: item.servingSize
+      }))
     });
     
     // Gọi API cập nhật kho
     const endpoint = `${environment.apiUrl}/ingredients/update-inventory`;
-    console.log('Gọi API endpoint:', endpoint);
+    console.log('🔗 Gọi API endpoint:', endpoint);
+    
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
     
     return this.http.post(endpoint, {
       orderId,
       items: inventoryUpdateData
-    }).pipe(
+    }, { headers }).pipe(
       tap(response => {
-        console.log('Đã cập nhật số lượng nguyên liệu thành công:', response);
+        console.log('✅ ĐÃ CẬP NHẬT SỐ LƯỢNG THÀNH CÔNG:', response);
+        console.log('===== KẾT THÚC CẬP NHẬT KHO TỪ FRONTEND =====');
       }),
       catchError(error => {
-        console.error('Lỗi khi cập nhật số lượng nguyên liệu:', error);
+        console.error('❌ LỖI KHI CẬP NHẬT SỐ LƯỢNG:', error);
         if (error.error) {
-          console.error('Chi tiết lỗi:', error.error);
+          console.error('   Chi tiết lỗi:', error.error);
         }
+        console.log('===== KẾT THÚC CẬP NHẬT KHO TỪ FRONTEND (THẤT BẠI) =====');
         // Không ảnh hưởng đến luồng đặt hàng, chỉ log lỗi
         return of({ status: 'warning', message: 'Đặt hàng thành công nhưng cập nhật kho thất bại' });
       })

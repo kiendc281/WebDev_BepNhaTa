@@ -84,6 +84,21 @@
     </button>
   </form>
 
+  <!-- Phần chia cách -->
+  <div class="separator">
+    <span class="separator-text">Hoặc</span>
+  </div>
+
+  <!-- Nút đăng nhập Google -->
+  <button
+    class="google-login-button"
+    (click)="loginWithGoogle()"
+    [disabled]="loading"
+  >
+    <img src="../../assets/google-icon.svg" alt="Google" class="google-icon" />
+    <span>Đăng nhập bằng Google</span>
+  </button>
+
   <div class="forgot-password">
     <a (click)="navigateToForgotPass()">Quên mật khẩu?</a>
   </div>

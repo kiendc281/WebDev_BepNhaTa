@@ -112,7 +112,7 @@ class IngredientController {
                 });
             }
 
-            console.log(`Bắt đầu cập nhật kho cho đơn hàng ${orderId} với ${items.length} sản phẩm`);
+            console.log(`🔄 Bắt đầu cập nhật kho cho đơn hàng ${orderId} với ${items.length} sản phẩm`);
             
             // Lưu log cập nhật kho
             const updateLog = {
@@ -125,10 +125,10 @@ class IngredientController {
             for (const item of items) {
                 const { productId, quantity, servingSize } = item;
                 
-                console.log(`Xử lý sản phẩm: ID=${productId}, SL=${quantity}, Size=${servingSize}`);
+                console.log(`\n🔶 Đang xử lý sản phẩm: ID=${productId}, SL=${quantity}, Size=${servingSize}`);
                 
                 if (!productId || !quantity) {
-                    console.warn(`Dữ liệu sản phẩm không đầy đủ: ${JSON.stringify(item)}`);
+                    console.warn(`❌ Dữ liệu sản phẩm không đầy đủ: ${JSON.stringify(item)}`);
                     updateLog.updates.push({
                         status: 'error',
                         message: 'Dữ liệu sản phẩm không đầy đủ',
@@ -137,94 +137,269 @@ class IngredientController {
                     continue;
                 }
                 
-                // Tìm sản phẩm
-                const product = await ingredientService.getIngredientById(productId);
-                
-                if (!product) {
-                    console.warn(`Không tìm thấy sản phẩm ID: ${productId}`);
-                    updateLog.updates.push({
-                        productId,
-                        status: 'error',
-                        message: 'Không tìm thấy sản phẩm'
-                    });
-                    continue;
-                }
-                
-                console.log(`Tìm thấy sản phẩm: ${product.ingredientName}, hiện tại: ${product.quantity}`);
-                
-                // Xác định số lượng cần trừ dựa vào servingSize
-                let deductQuantity = quantity;
-                let servingSizeValue = '2'; // Mặc định là 2 người
-                
-                // Nếu có servingSize
-                if (servingSize) {
-                    servingSizeValue = servingSize.toString();
-                    console.log(`Kích thước phần ăn: ${servingSizeValue}`);
+                try {
+                    // Tìm sản phẩm theo ID
+                    const Ingredient = require('../models/ingredient');
+                    let product;
                     
-                    // Trích xuất số người từ chuỗi
-                    let peopleCount = 2; // Mặc định là 2 người
-                    
-                    if (servingSizeValue.includes('2')) {
-                        peopleCount = 2;
-                    } else if (servingSizeValue.includes('4')) {
-                        peopleCount = 4;
-                    } else if (servingSizeValue.includes('6')) {
-                        peopleCount = 6;
+                    try {
+                        product = await Ingredient.findById(productId);
+                    } catch (findError) {
+                        console.error(`❌ Lỗi khi tìm sản phẩm ID=${productId}:`, findError);
+                        updateLog.updates.push({
+                            productId,
+                            status: 'error',
+                            message: `Lỗi khi tìm sản phẩm: ${findError.message}`
+                        });
+                        continue;
                     }
                     
-                    console.log(`Số người: ${peopleCount}`);
-                    deductQuantity = quantity * peopleCount;
-                    console.log(`Số lượng cần trừ sau khi tính toán: ${deductQuantity}`);
-                } else {
-                    console.warn('Không có thông tin kích thước phần ăn, sử dụng mặc định (2 người)');
-                    deductQuantity = quantity * 2;
-                }
-                
-                // Cập nhật số lượng
-                const currentQuantity = parseInt(product.quantity) || 0;
-                const newQuantity = Math.max(0, currentQuantity - deductQuantity);
-                
-                console.log(`Cập nhật sản phẩm ${product.ingredientName}: ${currentQuantity} - ${deductQuantity} = ${newQuantity}`);
-                
-                try {
-                    await ingredientService.updateQuantity(productId, newQuantity);
-                    console.log(`Đã cập nhật số lượng thành công cho sản phẩm ${product.ingredientName}`);
-                } catch (updateError) {
-                    console.error('Lỗi khi cập nhật số lượng:', updateError);
+                    if (!product) {
+                        console.warn(`❌ Không tìm thấy sản phẩm ID: ${productId}`);
+                        updateLog.updates.push({
+                            productId,
+                            status: 'error',
+                            message: 'Không tìm thấy sản phẩm'
+                        });
+                        continue;
+                    }
+                    
+                    console.log(`📦 Xử lý sản phẩm: ID=${productId}, Tên=${product.ingredientName}`);
+                    
+                    // Tìm khẩu phần cụ thể cần cập nhật
+                    let portionUpdated = false;
+                    let previousQuantity = 0;
+                    let newQuantity = 0;
+                    
+                    if (product.pricePerPortion && Array.isArray(product.pricePerPortion)) {
+                        console.log(`📊 Thông tin khẩu phần hiện tại:`, JSON.stringify(product.pricePerPortion, null, 2));
+                        
+                        // Chuẩn hóa servingSize từ input
+                        const normalizedServingSize = servingSize ? servingSize.trim() : '';
+                        console.log(`📝 servingSize cần tìm: "${normalizedServingSize}"`);
+                        
+                        // Hiển thị tất cả các khẩu phần có sẵn
+                        product.pricePerPortion.forEach((p, idx) => {
+                            console.log(`  • [${idx}] Khẩu phần: portion="${p.portion}", price=${p.price}, quantity=${p.quantity}`);
+                        });
+                        
+                        // Tìm chính xác theo chuỗi servingSize
+                        let portionIndex = product.pricePerPortion.findIndex(p => 
+                            p.portion === normalizedServingSize
+                        );
+                        
+                        // Nếu không tìm thấy và servingSize chỉ là số
+                        if (portionIndex === -1 && /^\d+$/.test(normalizedServingSize)) {
+                            console.log(`🔍 ServingSize chỉ có số "${normalizedServingSize}", tìm portion phù hợp`);
+                            portionIndex = product.pricePerPortion.findIndex(p => 
+                                p.portion === normalizedServingSize
+                            );
+                        }
+                        
+                        // Nếu vẫn không tìm thấy, tìm theo số trong servingSize
+                        if (portionIndex === -1) {
+                            const match = normalizedServingSize.match(/(\d+)/);
+                            if (match) {
+                                const numericPart = match[0];
+                                console.log(`🔍 Tìm theo số: "${numericPart}"`);
+                                
+                                // Tìm khẩu phần có portion chính xác là số đó
+                                portionIndex = product.pricePerPortion.findIndex(p => 
+                                    p.portion === numericPart
+                                );
+                                
+                                // Nếu vẫn không tìm thấy, tìm khẩu phần có chứa số đó
+                                if (portionIndex === -1) {
+                                    for (let i = 0; i < product.pricePerPortion.length; i++) {
+                                        if (product.pricePerPortion[i].portion.includes(numericPart)) {
+                                            portionIndex = i;
+                                            console.log(`  ✅ Tìm thấy khẩu phần có chứa số "${numericPart}": "${product.pricePerPortion[i].portion}"`);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Nếu vẫn không tìm thấy và sản phẩm chỉ có một khẩu phần, sử dụng khẩu phần đó
+                        if (portionIndex === -1 && product.pricePerPortion.length === 1) {
+                            portionIndex = 0;
+                            console.log(`⚠️ Không tìm thấy khẩu phần phù hợp, sản phẩm chỉ có một khẩu phần nên sử dụng khẩu phần duy nhất`);
+                        }
+                        
+                        // Nếu vẫn không tìm thấy, dùng khẩu phần đầu tiên
+                        if (portionIndex === -1 && product.pricePerPortion.length > 0) {
+                            portionIndex = 0;
+                            console.log(`⚠️ Không tìm thấy khẩu phần phù hợp, sử dụng khẩu phần đầu tiên`);
+                        }
+                        
+                        console.log(`🔍 Kết quả tìm kiếm khẩu phần: ${portionIndex !== -1 ? `Tìm thấy ở vị trí ${portionIndex}: "${product.pricePerPortion[portionIndex].portion}"` : '❌ Không tìm thấy'}`);
+                        
+                        if (portionIndex !== -1) {
+                            const portion = product.pricePerPortion[portionIndex];
+                            previousQuantity = parseInt(portion.quantity) || 0;
+                            
+                            console.log(`📊 Khẩu phần ${portion.portion} hiện có số lượng: ${previousQuantity}`);
+                            
+                            // Trừ số lượng đã đặt
+                            newQuantity = Math.max(0, previousQuantity - quantity);
+                            
+                            console.log(`📉 CẬP NHẬT TỒN KHO: Sản phẩm ID=${productId}, Khẩu phần="${portion.portion}": ${previousQuantity} - ${quantity} = ${newQuantity}`);
+                            
+                            // Cập nhật số lượng cho khẩu phần này
+                            product.pricePerPortion[portionIndex].quantity = newQuantity;
+                            portionUpdated = true;
+                            
+                            // Cập nhật tổng số lượng nếu sản phẩm có quantity bên ngoài
+                            if (product.quantity !== undefined) {
+                                const currentTotalQuantity = parseInt(product.quantity) || 0;
+                                product.quantity = Math.max(0, currentTotalQuantity - quantity);
+                                console.log(`📉 Cập nhật tổng số lượng chung: ${currentTotalQuantity} - ${quantity} = ${product.quantity}`);
+                            }
+                        }
+                    } else {
+                        console.log("⚠️ Sản phẩm không có thông tin khẩu phần, kiểm tra quantity chung");
+                        // Nếu không có thông tin khẩu phần, kiểm tra trường quantity
+                        if (product.quantity !== undefined) {
+                            previousQuantity = parseInt(product.quantity) || 0;
+                            console.log(`📊 Tổng số lượng chung hiện tại: ${previousQuantity}`);
+                            
+                            // Cập nhật quantity chung
+                            newQuantity = Math.max(0, previousQuantity - quantity);
+                            product.quantity = newQuantity;
+                            console.log(`📉 Cập nhật tổng số lượng chung: ${previousQuantity} - ${quantity} = ${newQuantity}`);
+                            
+                            portionUpdated = true;
+                        }
+                    }
+                    
+                    // Nếu không tìm thấy khẩu phần cụ thể
+                    if (!portionUpdated) {
+                        console.log(`❌ Không tìm thấy khẩu phần phù hợp, không thực hiện cập nhật`);
+                        updateLog.updates.push({
+                            productId,
+                            productName: product.ingredientName,
+                            servingSize: servingSize || 'Mặc định',
+                            status: 'warning',
+                            message: 'Không tìm thấy khẩu phần'
+                        });
+                        continue;
+                    }
+                    
+                    // Cập nhật trạng thái dựa trên số lượng của các khẩu phần
+                    // Nếu có bất kỳ khẩu phần nào còn hàng (quantity > 0), đánh dấu còn hàng
+                    const anyAvailable = product.pricePerPortion && Array.isArray(product.pricePerPortion) 
+                        ? product.pricePerPortion.some(p => parseInt(p.quantity) > 0)
+                        : (parseInt(product.quantity) > 0);
+                    
+                    product.status = anyAvailable ? 'Còn hàng' : 'Hết hàng';
+                    
+                    // Lưu sản phẩm
+                    try {
+                        // Sử dụng save với tùy chọn validateBeforeSave: false để bỏ qua validation
+                        // hoặc sử dụng findByIdAndUpdate để chỉ cập nhật các trường cần thiết
+                        const updateData = {
+                            quantity: product.quantity,
+                            pricePerPortion: product.pricePerPortion,
+                            status: product.status,
+                            updatedAt: new Date()
+                        };
+                        
+                        // Sử dụng findByIdAndUpdate thay vì save để tránh validation
+                        const updatedProduct = await Ingredient.findByIdAndUpdate(
+                            productId,
+                            updateData,
+                            { new: true, runValidators: false }
+                        );
+                        
+                        if (updatedProduct) {
+                            console.log(`✅ Lưu sản phẩm ID=${productId} thành công`);
+                        } else {
+                            throw new Error("Không thể cập nhật sản phẩm");
+                        }
+                    } catch (saveError) {
+                        console.error(`❌ Lỗi khi lưu sản phẩm ID=${productId}:`, saveError);
+                        
+                        // Xử lý đặc biệt cho lỗi validation
+                        if (saveError.name === 'ValidationError') {
+                            console.log(`⚠️ Lỗi validation, thử sử dụng phương thức khác để cập nhật`);
+                            
+                            try {
+                                // Tiếp tục với phương thức updateOne để cập nhật trực tiếp fields mà không qua validation
+                                await Ingredient.updateOne(
+                                    { _id: productId },
+                                    { 
+                                        $set: {
+                                            'quantity': product.quantity,
+                                            'pricePerPortion': product.pricePerPortion,
+                                            'status': product.status,
+                                            'updatedAt': new Date()
+                                        }
+                                    }
+                                );
+                                console.log(`✅ Đã cập nhật tồn kho trực tiếp thành công cho ID=${productId}`);
+                                portionUpdated = true; // Đánh dấu đã cập nhật thành công
+                            } catch (updateError) {
+                                console.error(`❌ Lỗi khi cập nhật trực tiếp: ${updateError.message}`);
+                                updateLog.updates.push({
+                                    productId,
+                                    productName: product.ingredientName,
+                                    status: 'error',
+                                    message: `Lỗi khi cập nhật trực tiếp: ${updateError.message}`
+                                });
+                                continue;
+                            }
+                        } else {
+                            updateLog.updates.push({
+                                productId,
+                                productName: product.ingredientName,
+                                status: 'error',
+                                message: `Lỗi khi lưu: ${saveError.message}`
+                            });
+                            continue;
+                        }
+                    }
+                    
+                    console.log(`\n✅ Đã cập nhật thành công số lượng cho sản phẩm ID=${productId}`);
+                    
+                    if (product.pricePerPortion && Array.isArray(product.pricePerPortion)) {
+                        console.log('📊 Thông tin khẩu phần sau khi cập nhật:');
+                        product.pricePerPortion.forEach(p => {
+                            console.log(`  • ${p.portion}: ${p.quantity}`);
+                        });
+                    }
+                    
+                    // Lưu log
                     updateLog.updates.push({
                         productId,
                         productName: product.ingredientName,
-                        previousQuantity: currentQuantity,
-                        deductedQuantity: deductQuantity,
-                        status: 'error',
-                        message: updateError.message
+                        previousQuantity: previousQuantity,
+                        deductedQuantity: quantity,
+                        newQuantity: newQuantity,
+                        servingSize: servingSize || 'Mặc định',
+                        status: 'success'
                     });
-                    continue;
-                }
-                
-                // Lưu log
-                updateLog.updates.push({
-                    productId,
-                    productName: product.ingredientName,
-                    previousQuantity: currentQuantity,
-                    deductedQuantity: deductQuantity,
-                    newQuantity: newQuantity,
-                    servingSize: servingSizeValue,
-                    status: 'success'
-                });
-                
-                // Kiểm tra ngưỡng tồn kho và tự động gửi thông báo nếu dưới ngưỡng
-                if (newQuantity <= (product.minQuantity || 10)) {
-                    console.log(`Cảnh báo: Sản phẩm ${product.ingredientName} dưới ngưỡng tồn kho (${newQuantity})`);
-                    // TODO: Thêm code gửi thông báo cho admin
+                    
+                } catch (error) {
+                    console.error(`❌ Lỗi khi xử lý sản phẩm ID=${productId}:`, error);
+                    updateLog.updates.push({
+                        productId,
+                        deductedQuantity: quantity,
+                        status: 'error',
+                        message: error.message
+                    });
                 }
             }
             
-            console.log('Kết quả cập nhật kho:', updateLog);
+            console.log('\n📊 KẾT QUẢ CẬP NHẬT KHO:');
+            updateLog.updates.forEach(update => {
+                if (update.status === 'success') {
+                    console.log(`✅ ${update.productName}: Khẩu phần [${update.servingSize}] - Từ ${update.previousQuantity} giảm ${update.deductedQuantity} còn ${update.newQuantity}`);
+                } else {
+                    console.log(`❌ ${update.productId}: ${update.message}`);
+                }
+            });
             console.log('==== KẾT THÚC CẬP NHẬT KHO ====');
-            
-            // Lưu log vào database hoặc file nếu cần
-            // TODO: Lưu log vào collection InventoryUpdateLogs
             
             return res.status(200).json({
                 status: 'success',

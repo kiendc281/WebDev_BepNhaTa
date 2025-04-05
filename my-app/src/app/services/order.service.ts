@@ -83,12 +83,11 @@ export class OrderService {
     console.log('Đang gửi đơn hàng tới endpoint:', `${environment.apiUrl}/${endpoint}`);
     console.log('Dữ liệu đơn hàng:', JSON.stringify(orderData));
     
-    // Lưu lại cartItems để cập nhật kho sau khi đặt hàng thành công
-    const cartItems = isGuestOrder ? [...this.formatCartItemsForInventory(orderData.itemOrder)] : [];
+    // Lưu lại cartItems để cập nhật kho sau khi đặt hàng thành công 
+    // Chuẩn bị dữ liệu cập nhật kho cho tất cả các loại đơn hàng (cả guest và đăng nhập)
+    const cartItems = [...this.formatCartItemsForInventory(orderData.itemOrder)];
     
-    if (isGuestOrder) {
-      console.log('Đây là đơn hàng khách, chuẩn bị dữ liệu cập nhật kho:', cartItems);
-    }
+    console.log('Chuẩn bị dữ liệu cập nhật kho:', cartItems);
     
     // Gửi request đến server
     return this.http.post<any>(`${environment.apiUrl}/${endpoint}`, orderData, { headers })
@@ -96,10 +95,10 @@ export class OrderService {
         switchMap(response => {
           console.log('Phản hồi từ server:', response);
           
-          // Chỉ cập nhật kho nếu là đơn hàng khách và đặt hàng thành công
-          if (isGuestOrder && response && response.data && response.data._id) {
+          // Cập nhật kho cho tất cả đơn hàng (cả guest và đăng nhập)
+          if (response && response.data && response.data._id) {
             const orderId = response.data._id;
-            console.log('Đơn hàng khách thành công, cập nhật kho với orderId:', orderId);
+            console.log('Đơn hàng thành công, cập nhật kho với orderId:', orderId);
             console.log('Số lượng sản phẩm cần cập nhật kho:', cartItems.length);
             
             // Gọi API cập nhật kho
@@ -117,10 +116,10 @@ export class OrderService {
                 switchMap(() => of(response))
               );
           } else {
-            console.log('Không cập nhật kho vì:', isGuestOrder ? 'Thiếu dữ liệu phản hồi' : 'Không phải đơn hàng khách');
+            console.log('Không cập nhật kho vì thiếu dữ liệu phản hồi');
           }
           
-          // Trường hợp đơn hàng user hoặc không có ID đơn hàng, chỉ trả về response ban đầu
+          // Trường hợp không có ID đơn hàng, chỉ trả về response ban đầu
           return of(response);
         })
       );
@@ -294,16 +293,71 @@ export class OrderService {
     const result = orderItems.map(item => {
       console.log('Xử lý sản phẩm cho cập nhật kho:', item);
       
-      // Kiểm tra nếu có servingSize trong item
-      if (!item.servingSize) {
-        console.warn('Không tìm thấy servingSize cho sản phẩm:', item.productId);
+      // Đảm bảo quantity là số dương
+      const quantity = Math.max(1, parseInt(item.quantity, 10) || 1);
+      
+      // Chuẩn hóa servingSize một cách triệt để
+      let normalizedServingSize = item.servingSize || 'Mặc định';
+      
+      // Nếu servingSize chỉ có số, thêm chữ "người" vào
+      if (normalizedServingSize && /^\d+$/.test(normalizedServingSize)) {
+        normalizedServingSize = normalizedServingSize + ' người';
+        console.log(`Phát hiện servingSize chỉ có số, đã chuyển thành: ${normalizedServingSize}`);
       }
+      
+      // Gỡ bỏ các ký tự đặc biệt và chuẩn hóa khoảng trắng
+      normalizedServingSize = normalizedServingSize.trim();
+      
+      // Lọc bỏ các ký tự đặc biệt nếu có
+      normalizedServingSize = normalizedServingSize.replace(/[^\w\sàáạảãăắằẳẵặâấầẩẫậèéẹẻẽêếềểễệìíịỉĩòóọỏõôốồổỗộơớờởỡợùúụủũưứừửữựỳýỵỷỹđ]/gi, '');
+      
+      // Xử lý đặc biệt cho tất cả các món ăn, không chỉ cho bún riêu
+      const productName = (item.name || '').toLowerCase();
+      
+      // Nếu servingSize chứa số, thử khớp với "X người"
+      const numMatch = normalizedServingSize.match(/(\d+)/);
+      if (numMatch) {
+        const numPeople = numMatch[1];
+        // Nếu sản phẩm là bún thang, cần đảm bảo servingSize là số thuần túy để khớp với portion "2" hoặc "4"
+        if (productName.includes('bún thang') || productName.includes('bun thang')) {
+          normalizedServingSize = numPeople;
+          console.log(`Phát hiện sản phẩm bún thang, điều chỉnh servingSize thành: ${normalizedServingSize}`);
+        }
+        // Cho các sản phẩm khác, thử định dạng "X người" 
+        else if (numPeople) {
+          // Nếu servingSize đã chứa từ "người", không cần thêm vào
+          if (!normalizedServingSize.includes('người')) {
+            normalizedServingSize = numPeople + ' người';
+          }
+          console.log(`Đã điều chỉnh servingSize thành: ${normalizedServingSize}`);
+        }
+      }
+
+      // Thêm xử lý cho các kích thước chuẩn
+      const sizeKeywords = {
+        'nhỏ': ['nhỏ', 'small', 's'],
+        'vừa': ['vừa', 'medium', 'm'],
+        'lớn': ['lớn', 'large', 'l', 'xl']
+      };
+      
+      // Chuẩn hóa kích thước
+      for (const [size, keywords] of Object.entries(sizeKeywords)) {
+        if (keywords.some(keyword => normalizedServingSize.toLowerCase().includes(keyword))) {
+          // Đã có kích thước chuẩn trong servingSize, không cần điều chỉnh thêm
+          console.log(`Phát hiện kích thước chuẩn "${size}" trong servingSize: ${normalizedServingSize}`);
+          break;
+        }
+      }
+      
+      // Log chi tiết
+      console.log(`Sản phẩm: ID=${item.productId}, Tên=${item.name}, SL=${quantity}`);
+      console.log(`ServingSize: Gốc=[${item.servingSize}], Chuẩn hóa=[${normalizedServingSize}]`);
       
       return {
         productId: item.productId,
-        quantity: item.quantity,
-        servingSize: item.servingSize || '2', // Mặc định là 2 người nếu không có thông tin
-        price: item.totalPrice / item.quantity,
+        quantity: quantity,
+        servingSize: normalizedServingSize,
+        price: item.totalPrice / quantity,
         productName: item.name || '',
         mainImage: item.img || '',
         selected: false

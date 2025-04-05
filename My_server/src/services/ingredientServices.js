@@ -496,18 +496,12 @@ class IngredientService {
     // Cập nhật số lượng
     async updateQuantity(id, quantity) {
         try {
-            const ingredient = await Ingredient.findByIdAndUpdate(
-                id,
-                { quantity: quantity },
-                { new: true, runValidators: true }
-            );
-
-            if (!ingredient) {
-                throw new Error('Không tìm thấy nguyên liệu');
-            }
-
-            return ingredient;
+            console.warn('DEPRECATED: Phương thức updateQuantity không còn được sử dụng!');
+            console.warn('Vui lòng sử dụng API /ingredients/update-inventory để cập nhật số lượng.');
+            
+            throw new Error('Phương thức updateQuantity đã bị loại bỏ. Vui lòng cập nhật code của bạn.');
         } catch (error) {
+            console.error('Lỗi khi cập nhật số lượng:', error);
             throw new Error('Cập nhật số lượng thất bại: ' + error.message);
         }
     }
