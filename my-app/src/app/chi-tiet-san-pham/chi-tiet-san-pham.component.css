@@ -1064,26 +1064,38 @@
 
 /* Styles for stock info */
 .stock-info {
-  margin: 10px 0;
-  padding: 5px 0;
-  font-size: 14px;
-  color: #666;
-  display: flex;
-  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
 }
 
 .stock-label {
   font-weight: 500;
-  margin-right: 5px;
+  color: #333;
 }
 
 .stock-quantity {
-  color: #28a745; /* Màu xanh cho số lượng bình thường */
-  font-weight: 500;
+  font-weight: 600;
+  color: #28a745; /* Màu xanh cho hàng đủ */
 }
 
-.stock-quantity.low-stock {
-  color: #dc3545; /* Màu đỏ cho số lượng thấp */
+.low-stock {
+  color: #ffc107; /* Màu vàng cảnh báo sắp hết */
+}
+
+.out-of-stock {
+  color: #dc3545; /* Màu đỏ cho hết hàng */
+}
+
+.out-of-stock-text {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.out-of-stock-text i {
+  margin-right: 5px;
+  font-size: 1rem;
 }
 
 /* Styles cho nút lưu khi đã lưu */
@@ -1224,4 +1236,21 @@
   background-color: var(--color-camvua);
   transform: translateY(-3px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Style cho nút bị vô hiệu hóa */
+.button-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #cccccc !important;
+  color: #666666 !important;
+  border-color: #aaaaaa !important;
+}
+
+/* Đảm bảo nút bị vô hiệu hóa không thay đổi màu khi hover */
+.button-disabled:hover {
+  opacity: 0.5;
+  background-color: #cccccc !important;
+  color: #666666 !important;
+  border-color: #aaaaaa !important;
 }

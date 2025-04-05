@@ -192,6 +192,9 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
           // Khởi tạo số lượng hiện có cho khẩu phần đã chọn
           this.currentPortionQuantity = this.getPortionQuantity();
 
+          // Kiểm tra và hiển thị thông báo nếu sản phẩm hết hàng
+          this.checkProductAvailability();
+
           // Load related products
           this.loadRelatedProducts();
 
@@ -246,12 +249,39 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
   }
 
   increaseQuantity(): void {
-    this.quantity++;
+    // Kiểm tra nếu tăng thêm 1 sẽ vượt quá số lượng hiện có
+    if (this.quantity + 1 > this.currentPortionQuantity) {
+      this.showNotification(
+        `Chỉ còn ${this.currentPortionQuantity} sản phẩm cho khẩu phần ${this.selectedServing} người`,
+        'error'
+      );
+      // Đảm bảo số lượng không vượt quá số lượng hiện có
+      this.quantity = this.currentPortionQuantity;
+      return;
+    }
+    this.quantity += 1;
   }
 
   decreaseQuantity(): void {
     if (this.quantity > 1) {
-      this.quantity--;
+      this.quantity -= 1;
+    }
+  }
+
+  // Xử lý khi người dùng thay đổi số lượng trực tiếp
+  onQuantityChange(): void {
+    // Đảm bảo quantity không lớn hơn số lượng hiện có
+    if (this.quantity > this.currentPortionQuantity) {
+      this.quantity = this.currentPortionQuantity;
+      this.showNotification(
+        `Chỉ còn ${this.currentPortionQuantity} sản phẩm cho khẩu phần ${this.selectedServing} người`,
+        'error'
+      );
+    }
+    
+    // Đảm bảo quantity không nhỏ hơn 1
+    if (this.quantity < 1) {
+      this.quantity = 1;
     }
   }
 
@@ -314,6 +344,30 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
 
     // Cập nhật số lượng hiện có cho khẩu phần đã chọn
     this.currentPortionQuantity = this.getPortionQuantity();
+    
+    // Kiểm tra và hiển thị thông báo nếu sản phẩm hết hàng
+    this.checkProductAvailability();
+  }
+
+  // Kiểm tra và hiển thị thông báo nếu sản phẩm hết hàng
+  checkProductAvailability(): void {
+    if (this.currentPortionQuantity <= 0 && this.product) {
+      console.log(`Sản phẩm "${this.product.ingredientName}" khẩu phần ${this.selectedServing} người đã hết hàng`);
+      // Không hiển thị thông báo lỗi trên giao diện, chỉ log ra console
+      // this.error = `Sản phẩm "${this.product.ingredientName}" khẩu phần ${this.selectedServing} người hiện đã hết hàng`;
+      
+      // Không cần xóa thông báo lỗi sau 5 giây vì không hiển thị
+      // setTimeout(() => {
+      //   if (this.error && this.error.includes('hết hàng')) {
+      //     this.error = null;
+      //   }
+      // }, 5000);
+    } else {
+      // Xóa thông báo lỗi về hết hàng nếu có
+      if (this.error && this.error.includes('hết hàng')) {
+        this.error = null;
+      }
+    }
   }
 
   // Phương thức để lấy số lượng hàng hiện có của khẩu phần đã chọn
@@ -370,6 +424,15 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
 
   addToCart(): void {
     if (!this.product) return;
+    
+    // Kiểm tra nếu số lượng khẩu phần hiện tại bằng 0
+    if (this.currentPortionQuantity <= 0) {
+      this.showNotification(
+        `Sản phẩm "${this.product.ingredientName}" khẩu phần ${this.selectedServing} người đã hết hàng`,
+        'error'
+      );
+      return;
+    }
 
     this.addingToCart = true;
 
@@ -393,6 +456,9 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
             totalQuantity: cart.totalQuantity,
             totalPrice: cart.totalPrice,
           });
+
+          // Cập nhật lại số lượng sản phẩm sau khi thêm vào giỏ hàng
+          this.currentPortionQuantity = Math.max(0, this.currentPortionQuantity - this.quantity);
 
           this.showNotification(
             `Đã thêm ${this.quantity} "${this.product?.ingredientName}" vào giỏ hàng`,
@@ -475,6 +541,15 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
   buyNow(): void {
     if (!this.product) return;
 
+    // Kiểm tra nếu số lượng khẩu phần hiện tại bằng 0
+    if (this.currentPortionQuantity <= 0) {
+      this.showNotification(
+        `Sản phẩm "${this.product.ingredientName}" khẩu phần ${this.selectedServing} người đã hết hàng`,
+        'error'
+      );
+      return;
+    }
+
     // First add to cart
     this.cartService
       .addToCart(
@@ -485,6 +560,9 @@ export class ChiTietSanPhamComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: () => {
+          // Cập nhật lại số lượng sản phẩm sau khi mua
+          this.currentPortionQuantity = Math.max(0, this.currentPortionQuantity - this.quantity);
+          
           // Then navigate to cart page
           this.router.navigate(['/gio-hang']);
         },

@@ -189,9 +189,17 @@
         <span class="stock-label">Còn lại: </span>
         <span
           class="stock-quantity"
-          [class.low-stock]="currentPortionQuantity < 10"
+          [class.low-stock]="
+            currentPortionQuantity > 0 && currentPortionQuantity < 10
+          "
+          [class.out-of-stock]="currentPortionQuantity <= 0"
         >
-          {{ currentPortionQuantity }} sản phẩm
+          <span *ngIf="currentPortionQuantity > 0"
+            >{{ currentPortionQuantity }} sản phẩm</span
+          >
+          <span *ngIf="currentPortionQuantity <= 0" class="out-of-stock-text">
+            <i class="bi bi-exclamation-triangle-fill"></i> Hết hàng
+          </span>
         </span>
       </div>
 
@@ -200,12 +208,23 @@
           <div>Số lượng:</div>
           <div class="quantity-control">
             <button (click)="decreaseQuantity()">-</button>
-            <input type="number" [(ngModel)]="quantity" min="1" />
+            <input
+              type="number"
+              [(ngModel)]="quantity"
+              min="1"
+              [max]="currentPortionQuantity"
+              (change)="onQuantityChange()"
+            />
             <button (click)="increaseQuantity()">+</button>
           </div>
         </div>
         <div class="twobutton">
-          <button class="add-to-wishlist button-trang" (click)="addToCart()">
+          <button
+            class="add-to-wishlist button-trang"
+            (click)="addToCart()"
+            [disabled]="currentPortionQuantity <= 0"
+            [ngClass]="{ 'button-disabled': currentPortionQuantity <= 0 }"
+          >
             Thêm vào giỏ hàng
           </button>
           <button
@@ -245,7 +264,14 @@
         </div>
       </div>
       <div class="buttonmua">
-        <button class="button-cam" (click)="buyNow()">MUA NGAY</button>
+        <button
+          class="button-cam"
+          (click)="buyNow()"
+          [disabled]="currentPortionQuantity <= 0"
+          [ngClass]="{ 'button-disabled': currentPortionQuantity <= 0 }"
+        >
+          MUA NGAY
+        </button>
       </div>
     </div>
   </div>
