@@ -25,6 +25,21 @@
   <div class="title">Đăng nhập</div>
   <p>Cùng Bếp Nhà Ta khám phá 200+ món ăn và công thức hấp dẫn!</p>
 
+  <!-- Nút đăng nhập Google -->
+  <button
+    class="google-login-button"
+    (click)="loginWithGoogle()"
+    [disabled]="loading"
+  >
+    <img src="../../assets/google-icon.svg" alt="Google" class="google-icon" />
+    <span>Đăng nhập bằng Google</span>
+  </button>
+
+  <!-- Phần chia cách -->
+  <div class="separator">
+    <span class="separator-text">Hoặc</span>
+  </div>
+
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <input
@@ -83,21 +98,6 @@
       <span *ngIf="loading">ĐANG XỬ LÝ...</span>
     </button>
   </form>
-
-  <!-- Phần chia cách -->
-  <div class="separator">
-    <span class="separator-text">Hoặc</span>
-  </div>
-
-  <!-- Nút đăng nhập Google -->
-  <button
-    class="google-login-button"
-    (click)="loginWithGoogle()"
-    [disabled]="loading"
-  >
-    <img src="../../assets/google-icon.svg" alt="Google" class="google-icon" />
-    <span>Đăng nhập bằng Google</span>
-  </button>
 
   <div class="forgot-password">
     <a (click)="navigateToForgotPass()">Quên mật khẩu?</a>
