@@ -1,0 +1,71 @@
+<!-- Thông báo -->
+<div
+  *ngIf="notification.show"
+  class="notification"
+  [ngClass]="{
+    'notification-success': notification.type === 'success',
+    'notification-error': notification.type === 'error'
+  }"
+>
+  <div class="notification-content">
+    <div *ngIf="notification.type === 'success'" class="notification-icon">
+      <img src="../../../../assets/check.svg" alt="Success" />
+    </div>
+    <div *ngIf="notification.type === 'error'" class="notification-icon">
+      <img src="../../../../assets/error.svg" alt="Error" />
+    </div>
+    <span>{{ notification.message }}</span>
+  </div>
+</div>
+
+<div class="container">
+  <button class="close-button" (click)="onClose()">
+    <img
+      src="../../../../assets/sign in up/zondicons-close-outline.svg"
+      alt="Đóng"
+    />
+  </button>
+  <div class="title">Xác thực OTP</div>
+  <p>
+    Chúng tôi đã gửi mã OTP đến email <strong>{{ email }}</strong
+    >. Vui lòng nhập mã OTP để hoàn tất đăng ký.
+  </p>
+
+  <form [formGroup]="otpForm" (ngSubmit)="verifyOTP()">
+    <div class="otp-inputs">
+      <div
+        class="form-group otp-input"
+        *ngFor="let control of otpControls; let i = index"
+      >
+        <input
+          type="text"
+          maxlength="1"
+          class="otp-digit"
+          [formControlName]="'digit' + (i + 1)"
+          (keyup)="onOtpDigitInput($event, i)"
+          (paste)="onPaste($event)"
+          [class.submitted]="
+            submitted && otpForm.get('digit' + (i + 1))?.errors
+          "
+        />
+      </div>
+    </div>
+
+    <div class="error-message" *ngIf="otpError">
+      {{ otpError }}
+    </div>
+
+    <div class="timer" *ngIf="!canResend">
+      Bạn có thể gửi lại mã sau {{ remainingTime }} giây
+    </div>
+
+    <div class="resend" *ngIf="canResend">
+      <a (click)="resendOTP()">Gửi lại mã</a>
+    </div>
+
+    <button class="button-cam" type="submit" [disabled]="loading">
+      <span *ngIf="!loading">XÁC THỰC</span>
+      <span *ngIf="loading">ĐANG XỬ LÝ...</span>
+    </button>
+  </form>
+</div>

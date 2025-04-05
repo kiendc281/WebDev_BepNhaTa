@@ -349,6 +349,68 @@ class EmailService {
       </div>
     `;
   }
+
+  /**
+   * Gửi mã OTP để xác thực đăng ký tài khoản
+   * @param {string} emailTo - Email người nhận
+   * @param {string} otp - Mã OTP
+   * @param {string} name - Tên người đăng ký (nếu có)
+   * @returns {Promise<boolean>} - Kết quả gửi email
+   */
+  async sendRegistrationOTP(emailTo, otp, name = '') {
+    // Tạo thông tin email
+    const mailOptions = {
+      to: emailTo,
+      subject: 'Xác thực đăng ký tài khoản - Bếp Nhà Ta',
+      html: this.getRegistrationOTPTemplate(otp, name, emailTo)
+    };
+
+    // Gửi email và trả về kết quả
+    return await this.sendEmail(mailOptions);
+  }
+
+  /**
+   * Lấy template HTML cho email OTP xác thực đăng ký
+   * @param {string} otp - Mã OTP
+   * @param {string} name - Tên người dùng (nếu có)
+   * @param {string} email - Email người dùng
+   * @returns {string} - HTML template
+   */
+  getRegistrationOTPTemplate(otp, name = '', email) {
+    const greeting = name ? `Xin chào ${name},` : 'Xin chào,';
+    
+    return `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="display: inline-block; background-color: #ff6600; color: white; font-weight: bold; font-size: 24px; padding: 10px 20px; border-radius: 8px; letter-spacing: 1px; margin-bottom: 15px;">
+            BẾP NHÀ TA
+            <div style="font-size: 14px; font-weight: normal; margin-top: 5px;">Mang yêu thương đến căn bếp của bạn</div>
+          </div>
+        </div>
+        
+        <h2 style="color: #ff6600; text-align: center; margin-bottom: 20px;">Xác Thực Đăng Ký Tài Khoản</h2>
+        
+        <p>${greeting}</p>
+        <p>Cảm ơn bạn đã đăng ký tài khoản tại <strong>Bếp Nhà Ta</strong>. Để hoàn tất quá trình đăng ký, vui lòng sử dụng mã xác thực bên dưới:</p>
+        
+        <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 28px; font-weight: bold; letter-spacing: 5px; margin: 25px 0; border-radius: 8px; border: 1px dashed #ff6600;">
+          ${otp}
+        </div>
+        
+        <p style="font-size: 14px; color: #555;">Mã này sẽ hết hạn sau <strong>10 phút</strong>. Vui lòng không chia sẻ mã này với bất kỳ ai.</p>
+        
+        <div style="background-color: #fff8e1; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0; border-radius: 4px;">
+          <p style="margin: 0; font-size: 14px;"><strong>Lưu ý:</strong> Nếu bạn không thực hiện yêu cầu đăng ký này, vui lòng bỏ qua email hoặc liên hệ với chúng tôi ngay để được hỗ trợ.</p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px; color: #666; font-size: 14px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+          <p>Nếu bạn cần hỗ trợ, vui lòng liên hệ với chúng tôi:</p>
+          <p>Email: <a href="mailto:bepnhata@gmail.com" style="color: #0066cc;">bepnhata@gmail.com</a> | Điện thoại: <a href="tel:0987654321" style="color: #0066cc;">0987 654 321</a></p>
+          <p style="margin-top: 20px;">&copy; ${new Date().getFullYear()} Bếp Nhà Ta. Tất cả các quyền được bảo lưu.</p>
+        </div>
+      </div>
+    `;
+  }
 }
 
 module.exports = new EmailService();

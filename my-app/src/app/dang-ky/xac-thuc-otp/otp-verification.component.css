@@ -1,0 +1,146 @@
+/* Notification Styles */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 15px 20px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease-in-out;
+  max-width: 350px;
+  min-width: 300px;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+}
+
+.notification-icon {
+  margin-right: 10px;
+}
+
+.notification-success {
+  background-color: #d4edda;
+  color: #155724;
+  border-left: 5px solid #28a745;
+}
+
+.notification-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-left: 5px solid #dc3545;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.container {
+  max-width: 500px;
+  padding: 30px;
+  border-radius: 20px;
+  position: relative;
+}
+
+.title {
+  color: black;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+p {
+  font-weight: 600 !important;
+  margin: 22px 0;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.close-button img {
+  width: 35px;
+  height: 35px;
+}
+
+.otp-inputs {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 0;
+}
+
+.otp-input {
+  width: 50px;
+  margin: 0 5px;
+}
+
+.otp-digit {
+  width: 100%;
+  height: 60px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.otp-digit:focus {
+  outline: none;
+  background-color: white;
+  border: 2px solid var(--color-camvua) !important;
+}
+
+.otp-digit.submitted.ng-invalid {
+  border: 2px solid red !important;
+}
+
+.timer {
+  text-align: center;
+  margin: 15px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.resend {
+  text-align: center;
+  margin: 15px 0;
+}
+
+.resend a {
+  color: var(--color-camdam);
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.resend a:hover {
+  text-decoration: underline;
+}
+
+.button-cam {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.error-message {
+  color: red;
+  font-style: italic;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+}

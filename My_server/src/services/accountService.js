@@ -6,50 +6,90 @@ const mongoose = require("mongoose");
 class AccountService {
   // Xử lý đăng ký
   async register(userData) {
-    const { password, name, email, phone, role, gender, birthOfDate } =
-      userData;
+    try {
+      // Kiểm tra userData hợp lệ
+      if (!userData) {
+        throw new Error("Dữ liệu người dùng không hợp lệ");
+      }
 
-    // Kiểm tra email tồn tại
-    const existingEmail = await Account.findOne({ email });
-    if (existingEmail) {
-      throw new Error("Email đã được sử dụng");
+      const { password, name, email, phone, role, gender, birthOfDate } = userData;
+
+      // Kiểm tra các trường bắt buộc
+      if (!email) throw new Error("Email không được để trống");
+      if (!password) throw new Error("Mật khẩu không được để trống");
+      if (!name) throw new Error("Tên không được để trống");
+      if (!phone) throw new Error("Số điện thoại không được để trống");
+
+      // Kiểm tra định dạng email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw new Error("Định dạng email không hợp lệ");
+      }
+
+      // Kiểm tra định dạng số điện thoại Việt Nam
+      const phoneRegex = /^(?:\+84|0)(3[2-9]|5[6-9]|7[0|6-9]|8[1-9]|9[0-4|6-9])[0-9]{7}$/;
+      if (!phoneRegex.test(phone)) {
+        throw new Error("Định dạng số điện thoại không hợp lệ");
+      }
+
+      // Kiểm tra email tồn tại
+      const existingEmail = await Account.findOne({ email });
+      if (existingEmail) {
+        throw new Error("Email đã được sử dụng");
+      }
+
+      // Kiểm tra phone tồn tại
+      const existingPhone = await Account.findOne({ phone });
+      if (existingPhone) {
+        throw new Error("Số điện thoại đã được sử dụng");
+      }
+
+      // Hash password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Chuẩn bị dữ liệu cho tài khoản mới
+      const accountData = {
+        password: hashedPassword,
+        name,
+        email,
+        phone,
+        role: role || 'customer'
+      };
+
+      // Thêm các trường tùy chọn nếu có
+      if (gender) accountData.gender = gender;
+      if (birthOfDate) accountData.birthOfDate = birthOfDate;
+
+      // Log dữ liệu tài khoản (loại bỏ password khi log)
+      console.log('Creating account with data:', { 
+        ...accountData, 
+        password: '[PROTECTED]' 
+      });
+
+      // Tạo tài khoản mới
+      const account = new Account(accountData);
+
+      const savedAccount = await account.save();
+      console.log('Account created successfully with ID:', savedAccount._id);
+
+      // Tạo token
+      const token = this.generateToken(savedAccount._id);
+
+      return {
+        token,
+        account: {
+          id: savedAccount._id,
+          name: savedAccount.name,
+          email: savedAccount.email,
+          phone: savedAccount.phone,
+          gender: savedAccount.gender,
+          birthOfDate: savedAccount.birthOfDate,
+        },
+      };
+    } catch (error) {
+      console.error('Error in accountService.register:', error);
+      throw error;
     }
-
-    // Kiểm tra phone tồn tại
-    const existingPhone = await Account.findOne({ phone });
-    if (existingPhone) {
-      throw new Error("Số điện thoại đã được sử dụng");
-    }
-
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Tạo tài khoản mới
-    const account = new Account({
-      password: hashedPassword,
-      name,
-      email,
-      phone,
-      gender,
-      birthOfDate,
-    });
-
-    const savedAccount = await account.save();
-
-    // Tạo token
-    const token = this.generateToken(savedAccount._id);
-
-    return {
-      token,
-      account: {
-        id: savedAccount._id,
-        name: savedAccount.name,
-        email: savedAccount.email,
-        phone: savedAccount.phone,
-        gender: savedAccount.gender,
-        birthOfDate: savedAccount.birthOfDate,
-      },
-    };
   }
 
   // Xử lý đăng nhập

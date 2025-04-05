@@ -10,6 +10,12 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CartManagerService } from '../services/cart-manager.service';
 
+interface Notification {
+  show: boolean;
+  message: string;
+  type: 'success' | 'error';
+}
+
 @Component({
   selector: 'app-dang-nhap',
   standalone: true,
@@ -29,6 +35,11 @@ export class DangNhapComponent {
   eyeIcon = '../../assets/sign in up/clarity-eye-hide-line.svg';
   errorMessage: string = '';
   successMessage: string = '';
+  notification: Notification = {
+    show: false,
+    message: '',
+    type: 'success'
+  };
 
   constructor(
     private router: Router,
@@ -64,10 +75,25 @@ export class DangNhapComponent {
     return this.loginForm.controls;
   }
 
+  // Hiển thị thông báo
+  showNotification(message: string, type: 'success' | 'error'): void {
+    this.notification = {
+      show: true,
+      message,
+      type,
+    };
+
+    // Tự động ẩn thông báo sau 3 giây
+    setTimeout(() => {
+      this.notification.show = false;
+    }, 3000);
+  }
+
   onSubmit() {
     this.submitted = true;
     this.errorMessage = '';
     this.successMessage = '';
+    this.notification.show = false;
 
     if (this.loginForm.valid) {
       this.loading = true;
@@ -94,7 +120,7 @@ export class DangNhapComponent {
 
               // Hiển thị thông báo thành công
               this.loading = false;
-              this.successMessage = 'Đăng nhập thành công!';
+              this.showNotification('Đăng nhập thành công!', 'success');
 
               // Đợi 1.5 giây rồi đóng popup và chuyển hướng
               setTimeout(() => {
@@ -107,7 +133,7 @@ export class DangNhapComponent {
               console.error('Lỗi khi đồng bộ giỏ hàng:', error);
               // Vẫn tiếp tục đăng nhập thành công dù có lỗi giỏ hàng
               this.loading = false;
-              this.successMessage = 'Đăng nhập thành công!';
+              this.showNotification('Đăng nhập thành công!', 'success');
 
               setTimeout(() => {
                 this.onClose();
@@ -129,6 +155,7 @@ export class DangNhapComponent {
               error.error?.message ||
               'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
           }
+          this.showNotification(this.errorMessage, 'error');
         },
       });
     }

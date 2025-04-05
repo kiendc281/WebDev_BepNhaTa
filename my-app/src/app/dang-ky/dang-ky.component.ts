@@ -8,11 +8,18 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { OtpVerificationComponent } from './xac-thuc-otp/otp-verification.component';
+
+interface Notification {
+  show: boolean;
+  message: string;
+  type: 'success' | 'error';
+}
 
 @Component({
   selector: 'app-dang-ky',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, OtpVerificationComponent],
   templateUrl: './dang-ky.component.html',
   styleUrls: ['./dang-ky.component.css'],
   providers: [AuthService]
@@ -23,11 +30,21 @@ export class DangKyComponent {
 
   registerForm: FormGroup;
   submitted = false;
+  loading = false;
   showPassword = false;
   showConfirmPassword = false;
   passwordIcon = '../../assets/sign in up/clarity-eye-hide-line.svg';
   confirmPasswordIcon = '../../assets/sign in up/clarity-eye-hide-line.svg';
   errorMessage: string = '';
+  
+  // Add notification and OTP verification state
+  notification: Notification = {
+    show: false,
+    message: '',
+    type: 'success'
+  };
+  showOtpVerification = false;
+  registrationData: any = null;
 
   constructor(
     private router: Router,
@@ -66,6 +83,20 @@ export class DangKyComponent {
     );
   }
 
+  // Method to show notifications
+  showNotification(message: string, type: 'success' | 'error'): void {
+    this.notification = {
+      show: true,
+      message,
+      type,
+    };
+
+    // Automatically hide notification after 3 seconds
+    setTimeout(() => {
+      this.notification.show = false;
+    }, 3000);
+  }
+
   // Custom validator for password match
   passwordMatchValidator(g: FormGroup) {
     return g.get('password')?.value === g.get('confirmPassword')?.value
@@ -86,7 +117,9 @@ export class DangKyComponent {
     console.log('Form valid:', this.registerForm.valid);
 
     if (this.registerForm.valid) {
-      // Chỉ lấy 4 trường cần thiết cho API
+      this.loading = true;
+      
+      // Prepare user data for registration
       const userData = {
         name: this.registerForm.value.name,
         email: this.registerForm.value.email,
@@ -94,23 +127,64 @@ export class DangKyComponent {
         password: this.registerForm.value.password
       };
 
-      console.log('Dữ liệu gửi lên server:', userData);
+      console.log('Dữ liệu chuẩn bị gửi lên server:', userData);
 
-      this.authService.register(userData).subscribe({
-        next: (response) => {
-          console.log('Đăng ký thành công:', response);
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify(response.account));
-          
-          // Thay vì chuyển hướng đến trang đăng nhập, emit sự kiện để chuyển sang popup đăng nhập
-          this.switchToLogin.emit();
-        },
-        error: (error) => {
-          console.error('Lỗi đăng ký:', error);
-          this.errorMessage = error.error?.message || 'Đăng ký thất bại. Vui lòng thử lại.';
+      // Check if the email is already registered (for better UX)
+      this.checkIfEmailExists(userData.email).then(exists => {
+        if (exists) {
+          this.loading = false;
+          this.errorMessage = 'Email đã được đăng ký. Vui lòng sử dụng email khác hoặc đăng nhập.';
+          this.showNotification(this.errorMessage, 'error');
+          return;
         }
+
+        // Request OTP for verification
+        this.requestOtp(userData);
       });
     }
+  }
+
+  // Check if email exists (simplified for now)
+  private async checkIfEmailExists(email: string): Promise<boolean> {
+    // This is a placeholder - in actual implementation, you'd check with the server
+    // For now, we'll assume email doesn't exist
+    return false;
+  }
+
+  // Request OTP
+  private requestOtp(userData: any) {
+    this.authService.requestOTP(userData.email, userData.name).subscribe({
+      next: (response) => {
+        this.loading = false;
+        this.registrationData = userData;
+        this.showOtpVerification = true;
+        this.showNotification('Mã OTP đã được gửi đến email của bạn!', 'success');
+      },
+      error: (error) => {
+        this.loading = false;
+        console.error('Lỗi khi yêu cầu OTP:', error);
+        
+        // Handle specific error cases
+        if (error.status === 0) {
+          this.errorMessage = 'Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng và thử lại.';
+        } else if (error.status === 404) {
+          // This is the current error - let's provide a helpful message
+          this.errorMessage = 'Tính năng xác thực OTP đang được phát triển. Bạn vẫn có thể tiếp tục để kiểm tra giao diện.';
+        } else {
+          this.errorMessage = error.error?.message || 'Không thể gửi mã OTP. Vui lòng thử lại sau.';
+        }
+        
+        this.showNotification(this.errorMessage, 'error');
+        
+        // For development, allow user to proceed to OTP screen despite errors
+        if (error.status === 404) {
+          setTimeout(() => {
+            this.registrationData = userData;
+            this.showOtpVerification = true;
+          }, 2000);
+        }
+      }
+    });
   }
 
   togglePassword() {
@@ -133,5 +207,18 @@ export class DangKyComponent {
 
   onClose() {
     this.closePopup.emit();
+  }
+
+  // Handle OTP verification success
+  onVerificationSuccess() {
+    this.showNotification('Đăng ký thành công!', 'success');
+    setTimeout(() => {
+      this.switchToLogin.emit();
+    }, 1500);
+  }
+
+  // Close OTP verification popup
+  onCloseOtpVerification() {
+    this.showOtpVerification = false;
   }
 }

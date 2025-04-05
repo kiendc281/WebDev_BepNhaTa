@@ -325,11 +325,11 @@ export class TrangChuComponent implements OnInit, OnDestroy {
   }
 
   isRecipeSaved(recipeId: string): boolean {
-    console.log(
-      'Checking if recipe is saved:',
-      recipeId,
-      this.savedRecipes.has(recipeId)
-    );
+    // console.log(
+    //   'Checking if recipe is saved:',
+    //   recipeId,
+    //   this.savedRecipes.has(recipeId)
+    // );
     return this.savedRecipes.has(recipeId);
   }
 
@@ -379,8 +379,8 @@ export class TrangChuComponent implements OnInit, OnDestroy {
         .removeFromFavorites(productId, 'product')
         .subscribe({
           next: (response) => {
-            console.log('Remove from favorites response:', response);
-            this.savedProducts.delete(productId);
+            // console.log('Remove from favorites response:', response);
+            // this.savedProducts.delete(productId);
             // Force change detection
             this.savedProducts = new Set(this.savedProducts);
 
@@ -413,11 +413,11 @@ export class TrangChuComponent implements OnInit, OnDestroy {
   }
 
   isProductSaved(productId: string): boolean {
-    console.log(
-      'Checking if product is saved:',
-      productId,
-      this.savedProducts.has(productId)
-    );
+    // console.log(
+    //   'Checking if product is saved:',
+    //   productId,
+    //   this.savedProducts.has(productId)
+    // );
     return this.savedProducts.has(productId);
   }
 

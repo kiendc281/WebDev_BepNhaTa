@@ -1,3 +1,23 @@
+<!-- Thông báo -->
+<div
+  *ngIf="notification.show"
+  class="notification"
+  [ngClass]="{
+    'notification-success': notification.type === 'success',
+    'notification-error': notification.type === 'error'
+  }"
+>
+  <div class="notification-content">
+    <div *ngIf="notification.type === 'success'" class="notification-icon">
+      <img src="../../assets/check.svg" alt="Success" />
+    </div>
+    <div *ngIf="notification.type === 'error'" class="notification-icon">
+      <img src="../../assets/error.svg" alt="Error" />
+    </div>
+    <span>{{ notification.message }}</span>
+  </div>
+</div>
+
 <div class="container">
   <button class="close-button" (click)="onClose()">
     <img src="../../assets/sign in up/zondicons-close-outline.svg" alt="Đóng" />
@@ -56,14 +76,6 @@
 
     <div class="error-message" *ngIf="errorMessage">
       {{ errorMessage }}
-    </div>
-
-    <div class="success-message" *ngIf="successMessage">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="11" stroke="#28A745" stroke-width="2"/>
-        <path d="M7 12L10.5 15.5L17 9" stroke="#28A745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      {{ successMessage }}
     </div>
 
     <button class="button-cam" type="submit" [disabled]="loading">

@@ -1,10 +1,41 @@
-<div class="container">
+<!-- Thông báo -->
+<div
+  *ngIf="notification.show"
+  class="notification"
+  [ngClass]="{
+    'notification-success': notification.type === 'success',
+    'notification-error': notification.type === 'error'
+  }"
+>
+  <div class="notification-content">
+    <div *ngIf="notification.type === 'success'" class="notification-icon">
+      <img src="../../assets/check.svg" alt="Success" />
+    </div>
+    <div *ngIf="notification.type === 'error'" class="notification-icon">
+      <img src="../../assets/error.svg" alt="Error" />
+    </div>
+    <span>{{ notification.message }}</span>
+  </div>
+</div>
+
+<!-- OTP Verification Component -->
+<app-otp-verification
+  *ngIf="showOtpVerification"
+  [email]="registerForm.value.email"
+  [userData]="registrationData"
+  (closePopup)="onCloseOtpVerification()"
+  (verificationSuccess)="onVerificationSuccess()"
+  (switchToLogin)="navigateToLogin()"
+></app-otp-verification>
+
+<!-- Registration Form -->
+<div class="container" *ngIf="!showOtpVerification">
   <button class="close-button" (click)="onClose()">
     <img src="../../assets/sign in up/zondicons-close-outline.svg" alt="" />
   </button>
   <div class="title">Đăng ký</div>
   <p>
-    Tạo tài khoản để lưu ngay công thức yêu thích và nhận những ưu đãi đặc biết!
+    Tạo tài khoản để lưu ngay công thức yêu thích và nhận những ưu đãi đặc biệt!
   </p>
 
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
@@ -141,7 +172,10 @@
       {{ errorMessage }}
     </div>
 
-    <button class="button-cam" type="submit">HOÀN TẤT</button>
+    <button class="button-cam" type="submit" [disabled]="loading">
+      <span *ngIf="!loading">HOÀN TẤT</span>
+      <span *ngIf="loading">ĐANG XỬ LÝ...</span>
+    </button>
   </form>
 
   <div class="login-link">

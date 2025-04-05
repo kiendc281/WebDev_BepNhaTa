@@ -18,5 +18,7 @@ router.delete("/accounts/:id", accountController.deleteAccount);
 // Auth Routes
 router.post("/auth/register", accountController.register);
 router.post("/auth/login", accountController.login);
+router.post("/auth/request-otp", accountController.requestRegistrationOTP);
+router.post("/auth/verify-otp", accountController.verifyRegistrationOTP);
 
 module.exports = router;

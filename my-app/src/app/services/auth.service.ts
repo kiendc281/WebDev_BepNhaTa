@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, throwError, tap, BehaviorSubject } from 'rxjs';
+import { Observable, catchError, throwError, tap, BehaviorSubject, of, delay } from 'rxjs';
 import { Account, LoginResponse } from '../models/account.interface';
 
 @Injectable({
@@ -11,6 +11,10 @@ export class AuthService {
   private tokenExpirationTime = 60 * 60 * 1000; // 1 giờ tính bằng mili giây
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.checkInitialLoginState());
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
+  
+  // Temporary storage for OTPs until backend implementation
+  // Made public for development purposes only
+  public tempOtpStorage = new Map<string, { otp: string, userData: any, timestamp: number }>();
 
   constructor(private http: HttpClient) { }
 
@@ -70,6 +74,139 @@ export class AuthService {
       `${this.apiUrl}/auth/register`,
       userData
     );
+  }
+
+  // Method to generate a random 6-digit OTP code
+  private generateOTP(): string {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  }
+
+  // Request OTP from server for registration
+  requestOTP(email: string, name: string = ''): Observable<{ message: string }> {
+    // Gọi API endpoint thực tế để yêu cầu OTP
+    return this.http.post<{ message: string }>(`${this.apiUrl}/auth/request-otp`, { email, name })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error requesting OTP:', error);
+          
+          // Nếu server trả về lỗi 0 (không kết nối được) hoặc lỗi 404 (endpoint không tồn tại),
+          // sử dụng phương pháp giả lập như fallback cho mục đích phát triển
+          if (error.status === 0 || error.status === 404) {
+            console.warn('Falling back to client-side OTP generation for development');
+            return this.fallbackRequestOTP(email);
+          }
+          
+          return throwError(() => error);
+        })
+      );
+  }
+  
+  // Phương thức fallback để tạo OTP ở client (chỉ dùng khi API chưa hoạt động)
+  private fallbackRequestOTP(email: string): Observable<{ message: string }> {
+    // Generate a random OTP code
+    const otp = this.generateOTP();
+    
+    // Log for development purposes
+    console.log(`[Dev Only] Generated OTP for ${email}: ${otp}`);
+    console.log('%c OTP CODE: ' + otp + ' ', 'background: #34495e; color: #fff; font-size: 16px; font-weight: bold; padding: 5px 10px; border-radius: 5px;');
+    
+    // Store the OTP temporarily
+    this.tempOtpStorage.set(email, {
+      otp,
+      userData: null,
+      timestamp: Date.now() + 10 * 60 * 1000 // 10 minutes from now
+    });
+
+    return of({ message: 'OTP sent successfully (client-side fallback)' }).pipe(delay(1000));
+  }
+
+  // Get the current OTP for an email (for development purposes)
+  getCurrentOTP(email: string): string | null {
+    const otpData = this.tempOtpStorage.get(email);
+    return otpData ? otpData.otp : null;
+  }
+
+  // Verify OTP and complete registration
+  verifyOTP(email: string, otp: string, userData: Account): Observable<LoginResponse> {
+    // Gửi thông tin người dùng và OTP để xác thực 
+    const requestData = {
+      email,
+      otp,
+      name: userData.name,
+      phone: userData.phone,
+      password: userData.password,
+      gender: userData.gender,
+      birthOfDate: userData.birthOfDate
+    };
+    
+    console.log('Sending verification data:', {...requestData, password: '[PROTECTED]'});
+    
+    // Gọi API endpoint thực tế để xác thực OTP
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/verify-otp`, requestData)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error verifying OTP with server:', error);
+          
+          // Nếu server trả về lỗi 0 (không kết nối được) hoặc lỗi 404 (endpoint không tồn tại),
+          // sử dụng phương pháp giả lập như fallback cho mục đích phát triển
+          if (error.status === 0 || error.status === 404) {
+            console.warn('Falling back to client-side OTP verification for development');
+            return this.fallbackVerifyOTP(email, otp, userData);
+          }
+          
+          return throwError(() => error);
+        })
+      );
+  }
+  
+  // Phương thức fallback để xác thực OTP ở client (chỉ dùng khi API chưa hoạt động)
+  private fallbackVerifyOTP(email: string, otp: string, userData: Account): Observable<LoginResponse> {
+    // Check if OTP exists and is valid
+    const otpData = this.tempOtpStorage.get(email);
+    
+    if (!otpData) {
+      return throwError(() => {
+        const error = new HttpErrorResponse({
+          error: { message: 'No OTP was requested for this email' },
+          status: 400,
+          statusText: 'Bad Request'
+        });
+        return error;
+      });
+    }
+    
+    // Check if OTP has expired
+    if (Date.now() > otpData.timestamp) {
+      return throwError(() => {
+        const error = new HttpErrorResponse({
+          error: { message: 'OTP has expired' },
+          status: 401,
+          statusText: 'Unauthorized'
+        });
+        return error;
+      });
+    }
+    
+    // Check if OTP matches
+    if (otpData.otp !== otp) {
+      return throwError(() => {
+        const error = new HttpErrorResponse({
+          error: { message: 'Invalid OTP' },
+          status: 400,
+          statusText: 'Bad Request'
+        });
+        return error;
+      });
+    }
+
+    // OTP is valid, proceed with registration
+    console.log(`[Dev Only] OTP verified successfully for ${email}`);
+    
+    // Clear the OTP from storage
+    this.tempOtpStorage.delete(email);
+    
+    // Call the actual registration API
+    return this.register(userData);
   }
 
   // Method to update user account information
