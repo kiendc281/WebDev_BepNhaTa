@@ -66,7 +66,7 @@ h1 {
   color: var(--color-camdam);
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
+  /* font-weight: 500; */
   transition: all 0.3s ease;
 }
 
@@ -235,6 +235,10 @@ h1 {
 .related-info h4 {
   margin-bottom: 15px;
   color: #333;
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-camnhat);
+  padding-bottom: 8px;
+  display: inline-block;
 }
 
 .related-info ul {
@@ -244,15 +248,30 @@ h1 {
 }
 
 .related-info li {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  position: relative;
+  padding-left: 22px;
+  line-height: 1.5;
+}
+
+.related-info li:before {
+  content: "•";
+  color: var(--color-camdam);
+  font-size: 18px;
+  position: absolute;
+  left: 5px;
+  top: -2px;
 }
 
 .related-info a {
-  color: #0066cc;
+  color: black;
   text-decoration: none;
+  transition: color 0.2s, text-decoration 0.2s;
+  /* font-weight: 500; */
 }
 
 .related-info a:hover {
+  color: var(--color-camdam);
   text-decoration: underline;
 }
 

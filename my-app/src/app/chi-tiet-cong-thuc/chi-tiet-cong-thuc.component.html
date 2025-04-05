@@ -169,8 +169,20 @@
     <div class="related-info">
       <h4>Xem thêm thông tin hữu ích</h4>
       <ul>
-        <li *ngFor="let info of recipe.relatedInfo">
-          <a [href]="info.link">{{ info.title }}</a>
+        <li>
+          <a [routerLink]="['/blog', 'BL05']"
+            >Top 15+ quán phở Hà Nội chuẩn vị cổ truyền ngon nổi tiếng</a
+          >
+        </li>
+        <li>
+          <a [routerLink]="['/blog', 'BL06']"
+            >8 đặc sản Bình Dương nổi tiếng vừa ĂN NGON vừa mang về LÀM QUÀ</a
+          >
+        </li>
+        <li>
+          <a [routerLink]="['/blog', 'BL04']"
+            >Đến Đà Nẵng nếu chẳng ăn mỳ Quảng thật sự là quá uổng</a
+          >
         </li>
       </ul>
     </div>
