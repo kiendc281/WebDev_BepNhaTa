@@ -1,19 +1,19 @@
 <div class="container">
   <button class="close-button" (click)="onClose()">
-    <img src="../../../assets/sign in up/zondicons-close-outline.svg" alt="Đóng" />
+    <img
+      src="../../../assets/sign in up/zondicons-close-outline.svg"
+      alt="Đóng"
+    />
   </button>
   <div class="title">Đặt lại mật khẩu</div>
-  <p>
-    Để đặt lại mật khẩu, vui lòng nhập Email/Số điện thoại đã đăng ký trên Bếp
-    Nhà Ta
-  </p>
+  <p>Để đặt lại mật khẩu, vui lòng nhập Email đã đăng ký trên Bếp Nhà Ta</p>
 
   <form [formGroup]="resetForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <input
         type="text"
         formControlName="emailOrPhone"
-        placeholder="Email/SĐT của bạn"
+        placeholder="Nhập Email của bạn"
         [class.submitted]="submitted && f['emailOrPhone'].errors"
         autocomplete="email"
       />
@@ -21,19 +21,13 @@
         class="error-message"
         *ngIf="submitted && f['emailOrPhone'].errors?.['required']"
       >
-        (*) Vui lòng nhập Email hoặc SĐT của bạn
+        (*) Vui lòng nhập Email của bạn
       </div>
       <div
         class="error-message"
         *ngIf="submitted && f['emailOrPhone'].errors?.['invalidEmail']"
       >
         (*) Định dạng Email chưa đúng
-      </div>
-      <div
-        class="error-message"
-        *ngIf="submitted && f['emailOrPhone'].errors?.['invalidPhone']"
-      >
-        (*) Định dạng SĐT chưa đúng
       </div>
       <div class="error-message" *ngIf="errorMessage">
         {{ errorMessage }}
