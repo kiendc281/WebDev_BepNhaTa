@@ -57,25 +57,6 @@ export class LenThucDonComponent implements OnInit {
   // Lưu trữ ID các công thức đã lưu
   savedRecipes = new Set<string>();
   
-  // FAQ
-  faqs: FAQ[] = [
-    {
-      question: 'Thực đơn được cập nhật trong bao lâu?',
-      answer: 'Thực đơn được cập nhật hàng tuần để đảm bảo sự đa dạng và phong phú.',
-      isOpen: false
-    },
-    {
-      question: 'Có thể thay đổi món ăn trong thực đơn không?',
-      answer: 'Có, bạn có thể tùy chỉnh các món ăn trong thực đơn theo sở thích cá nhân.',
-      isOpen: false
-    },
-    {
-      question: 'Có thể đặt mua toàn bộ thực đơn không?',
-      answer: 'Có, bạn có thể đặt mua toàn bộ thực đơn hoặc chỉ chọn những món mà bạn yêu thích.',
-      isOpen: false
-    }
-  ];
-  
   currentRecipePage = 0;
   recipesPerPage = 3;
   visibleRecipes: any[] = [];
